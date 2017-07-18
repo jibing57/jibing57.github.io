@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Recording</title>
+  <subtitle>Recording, Sharing, TimeSaving -- 一切成本皆时间</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://jibing57.com/"/>
+  <updated>2017-07-17T08:36:41.000Z</updated>
+  <id>http://jibing57.com/</id>
+  
+  <author>
+    <name>jibing57</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Hello World</title>
+    <link href="http://jibing57.com/2017/07/17/hello-world/"/>
+    <id>http://jibing57.com/2017/07/17/hello-world/</id>
+    <published>2017-07-17T08:36:41.000Z</published>
+    <updated>2017-07-17T08:36:41.000Z</updated>
+    
+    <summary type="html">
+    
+      Add description of freemind to title &quot;Hello World&quot;
+    
+    </summary>
+    
+      <category term="test_category" scheme="http://jibing57.com/categories/test-category/"/>
+    
+    
+      <category term="test_tag1" scheme="http://jibing57.com/tags/test-tag1/"/>
+    
+      <category term="test_tag2" scheme="http://jibing57.com/tags/test-tag2/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>使用Hexo搭建Blog</title>
+    <link href="http://jibing57.com/2017/07/17/%E4%BD%BF%E7%94%A8Hexo%E6%90%AD%E5%BB%BABlog/"/>
+    <id>http://jibing57.com/2017/07/17/使用Hexo搭建Blog/</id>
+    <published>2017-07-17T08:19:32.000Z</published>
+    <updated>2017-07-18T08:52:37.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;Hexo-安装&quot;&gt;&lt;a href=&quot;#Hexo-安装&quot; class=&quot;headerlink&quot; title=&quot;Hexo 安装&quot;&gt;&lt;/a&gt;Hexo 安装&lt;/h2&gt;&lt;h3 id=&quot;安装前提&quot;&gt;&lt;a href=&quot;#安装前提&quot; class=&quot;headerlink&quot; title=&quot;安装前提&quot;&gt;&lt;/a&gt;安装前提&lt;/h3&gt;&lt;p&gt;安装Hexo需要依赖如下两个程序, 需要提前安装&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Node.js&lt;/li&gt;
+&lt;li&gt;git
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>How to get subtitle of local video</title>
+    <link href="http://jibing57.com/2017/07/17/How-to-get-subtitle-of-local-video/"/>
+    <id>http://jibing57.com/2017/07/17/How-to-get-subtitle-of-local-video/</id>
+    <published>2017-07-17T06:54:03.000Z</published>
+    <updated>2017-07-17T06:58:09.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;a href=&quot;https://github.com/agermanidis/autosub&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;autosub&lt;/a&gt;是一款由python 2编写的通过Google Web Speech API和FFmpeg来
+    
+    </summary>
+    
+      <category term="tools" scheme="http://jibing57.com/categories/tools/"/>
+    
+    
+      <category term="video" scheme="http://jibing57.com/tags/video/"/>
+    
+  </entry>
+  
+</feed>

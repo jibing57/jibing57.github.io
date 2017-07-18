@@ -1,0 +1,382 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>使用Hexo搭建Blog | Recording</title>
+  <meta name="author" content="jibing57">
+  
+  <meta name="description" content="AWS, 阅读, Architecture, PostgreSQL">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="使用Hexo搭建Blog"/>
+  <meta property="og:site_name" content="Recording"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/css/themes/bootstrap.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/comment.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+  
+  <!-- analytics -->
+  
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?a45bf9506f898d2215502df6cc64ff59";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+</head>
+
+ <body>  
+  <nav id="main-nav" class="navbar  navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+	<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+       <a class="navbar-brand" href="/">Recording</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class="fa fa-archive"></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class="fa fa-folder"></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class="fa fa-tags"></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/douban" title="Douban">
+			  <i class="fa fa-book"></i>Douban
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header ">		
+			<h1 class="title "> 使用Hexo搭建Blog</h1>
+		</div>		
+	
+
+
+
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
+
+	<!-- content -->
+	<div class="mypage">		
+	  		
+
+	  <h2 id="Hexo-安装"><a href="#Hexo-安装" class="headerlink" title="Hexo 安装"></a>Hexo 安装</h2><h3 id="安装前提"><a href="#安装前提" class="headerlink" title="安装前提"></a>安装前提</h3><p>安装Hexo需要依赖如下两个程序, 需要提前安装</p>
+<ul>
+<li>Node.js</li>
+<li>git<a id="more"></a>
+</li>
+</ul>
+<h3 id="安装Hexo"><a href="#安装Hexo" class="headerlink" title="安装Hexo"></a>安装Hexo</h3><p>Node.js和git都安装完毕后，执行如下命令安装Hexo</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ npm install -g hexo-cli</div></pre></td></tr></table></figure>
+<h3 id="初始化Blog"><a href="#初始化Blog" class="headerlink" title="初始化Blog"></a>初始化Blog</h3><p>cd到存放博客的目标目录，执行<code>hexo init</code>命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo init my_blog</div></pre></td></tr></table></figure>
+<p>其中<code>my_blog</code>就是博客所在的文件夹名字。</p>
+<p>注意: 最新版的<code>hexo</code>不需要切换到文件夹下敲击<code>npm install</code>了，<code>init</code>的时候会一并安装所需的npm packet。</p>
+<p>进入目录，目录结构类似如下.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">$ cd my_blog/</div><div class="line">$ tree -I &quot;node_modules&quot; ./</div><div class="line">./</div><div class="line">├── _config.yml</div><div class="line">├── db.json</div><div class="line">├── package.json</div><div class="line">├── scaffolds</div><div class="line">│   ├── draft.md</div><div class="line">│   ├── page.md</div><div class="line">│   └── post.md</div><div class="line">├── source</div><div class="line">│   └── _posts</div><div class="line">│       └── hello-world.md</div><div class="line">└── themes</div></pre></td></tr></table></figure>
+<p>执行下面的命令开启<code>hexo</code>服务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo -s --debug</div></pre></td></tr></table></figure>
+<p>访问 <code>http://0.0.0.0:4000</code>应该就能看到默认的页面了。</p>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h3 id="基本信息配置"><a href="#基本信息配置" class="headerlink" title="基本信息配置"></a>基本信息配置</h3><p>打开博客根目录下的<code>_config.yml</code>文件，修改<code>title</code>, <code>subtitle</code>, <code>description</code>, <code>author</code>, <code>url</code>等个人信息</p>
+<p>将<code>language</code>设置为<code>default</code>.</p>
+<p>配置文件中默认参数的描述可以参见官网说明 <a href="https://hexo.io/zh-cn/docs/configuration.html" target="_blank" rel="external">https://hexo.io/zh-cn/docs/configuration.html</a></p>
+<h2 id="更换Theme"><a href="#更换Theme" class="headerlink" title="更换Theme"></a>更换Theme</h2><p>以下以更换<a href="(https://github.com/wzpan/hexo-theme-freemind/)">hexo-theme-freemind</a>主题为例:</p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>使用如下命令安装<a href="(https://github.com/wzpan/hexo-theme-freemind/)">hexo-theme-freemind</a>主题</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git clone https://github.com/wzpan/hexo-theme-freemind.git themes/freemind</div></pre></td></tr></table></figure>
+<p>安装可选插件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ npm install hexo-tag-bootstrap --save</div><div class="line">$ npm install hexo-tag-bootstrap --save</div></pre></td></tr></table></figure>
+<h3 id="启用freemind预定义的几个pages"><a href="#启用freemind预定义的几个pages" class="headerlink" title="启用freemind预定义的几个pages"></a>启用freemind预定义的几个pages</h3><p>Freemind 预先定义了 Categories（分类）、Tags（标签） 和 About（关于）页面，要使用它们，你需要先在博客的<code>source</code>目录中添加相应页面。</p>
+<p>使用如下命令来生成几个Pages页面</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ hexo new page &quot;tags&quot;</div><div class="line">$ hexo new page &quot;categories&quot;</div><div class="line">$ hexo new page &quot;about&quot;</div></pre></td></tr></table></figure>
+<p>修改生成的目录下的<code>index.md</code>文件为如下内容:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">$ cat about/index.md</div><div class="line">---</div><div class="line">title: About</div><div class="line">layout: about</div><div class="line">---</div><div class="line">$ cat categories/index.md</div><div class="line">---</div><div class="line">title: Categories</div><div class="line">layout: categories</div><div class="line">---</div><div class="line">$ cat tags/index.md</div><div class="line">---</div><div class="line">title: Tags</div><div class="line">layout: tags</div><div class="line">---</div><div class="line">$</div></pre></td></tr></table></figure>
+<h3 id="启用-freemind"><a href="#启用-freemind" class="headerlink" title="启用 freemind"></a>启用 freemind</h3><p>在根目录_config.yml中，替换<code>theme</code>选项为<code>freemind</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># Extensions</div><div class="line">## Plugins: https://hexo.io/plugins/</div><div class="line">## Themes: https://hexo.io/themes/</div><div class="line"># theme: landscape</div><div class="line">theme: freemind</div></pre></td></tr></table></figure>
+<h3 id="修改freemind的配置文件"><a href="#修改freemind的配置文件" class="headerlink" title="修改freemind的配置文件"></a>修改freemind的配置文件</h3><ul>
+<li>修改<code>slogan</code></li>
+<li>修改<code>links</code>为自己想要链接的网址</li>
+<li>暂时不想开启评论，因此注释掉了<code>comment_js</code></li>
+<li>修改<code>theme</code>来调整color theme, <code>freemind</code>所支持的<a href="http://www.hahack.com/hexo-theme-freemind/2016/01/30/color-themes/" target="_blank" rel="external">color theme</a></li>
+</ul>
+<p>freemind配置文件的详细解释参见<a href="(https://github.com/wzpan/hexo-theme-freemind/)">freemind github</a>中的Configuration章节。</p>
+<h3 id="freemind-front-matter-选项"><a href="#freemind-front-matter-选项" class="headerlink" title="freemind front-matter 选项"></a>freemind front-matter 选项</h3><p>根据<a href="(https://github.com/wzpan/hexo-theme-freemind/)">Github</a>中的描述，<code>freemind</code>共提供了如下5个设置:</p>
+<ul>
+<li>description - a short description about the articles that will be display at the top of the post</li>
+<li>feature - sets a feature image that will be show at the index page</li>
+<li>toc - renders a table of contents</li>
+<li>top - pin the article to top if it is set to true</li>
+<li>issue_id - comment.js issue_id for explicitly point out which Github issue should be connect to your post. For most situations you don’t need it unless the post doesn’t link to the issue you want.</li>
+</ul>
+<p>以Hexo默认生成的<code>_posts/hello-world.md</code>的为例来展示<code>description</code>,<code>feature</code>,<code>toc</code>,<code>top</code>四个设置的显示效果。</p>
+<p>首先修改后的<code>hello-world.md</code>文件头部如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">title: Hello World</div><div class="line">description: Add description of freemind to title &quot;Hello World&quot;</div><div class="line">feature: images/7217667e206c9bec45dbddb7b608bcb4.jpg</div><div class="line">toc: true</div><div class="line">top: true</div></pre></td></tr></table></figure>
+<p>设置<code>description</code>和<code>toc</code>后的效果如下:</p>
+<p><img src="/images//Hexo/Starting/freemind_description_toc.jpg" alt="info"></p>
+<p>设置<code>feature</code>和<code>top</code>后的显示效果如下:</p>
+<p><img src="/images//Hexo/Starting/freemind_top_feature.jpg" alt="info"></p>
+<h3 id="添加统计"><a href="#添加统计" class="headerlink" title="添加统计"></a>添加统计</h3><p>开启<a href="https://tongji.baidu.com" target="_blank" rel="external">百度统计</a></p>
+<p>freemind自带百度统计功能，在主题的_config.yml中找到Analytics, 设置baidu_tongji一栏下面的enable为true，再添加上siteid即可</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"># Analytics</div><div class="line">google_analytics:</div><div class="line">  enable: false</div><div class="line">  siteid:</div><div class="line">baidu_tongji:</div><div class="line">  enable: true</div><div class="line">  siteid: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</div></pre></td></tr></table></figure>
+<h2 id="安装插件"><a href="#安装插件" class="headerlink" title="安装插件"></a>安装插件</h2><h3 id="安装豆瓣插件"><a href="#安装豆瓣插件" class="headerlink" title="安装豆瓣插件"></a>安装豆瓣插件</h3><p>安装豆瓣插件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install hexo-generator-douban --save</div></pre></td></tr></table></figure>
+<p>在hexo的<code>_config.yml</code>的<code>Extensions</code>设置下添加如下配置:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">douban:</div><div class="line">    user: douban_id</div></pre></td></tr></table></figure>
+<p>在<code>freemind</code>的<code>_config.yml</code>的<code>menu</code>项下添加豆瓣的page页面</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">- title: Douban</div><div class="line">  url: douban</div><div class="line">  intro: &quot;Douban&quot;</div><div class="line">  icon: &quot;fa fa-book&quot;</div></pre></td></tr></table></figure>
+<p>重启一下就能看到主页中Douban的page了。</p>
+<h3 id="安装rss插件"><a href="#安装rss插件" class="headerlink" title="安装rss插件"></a>安装rss插件</h3><p>添加<code>hexo-generator-feed</code>插件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ npm install hexo-generator-feed</div></pre></td></tr></table></figure>
+<p>修改_config.yml，添加Extensions</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"># Feed Atom</div><div class="line">feed:</div><div class="line">  type: atom</div><div class="line">  path: atom.xml</div><div class="line">  limit: 20</div><div class="line">  hub:</div><div class="line">  content:</div></pre></td></tr></table></figure>
+<p>设置完成后，可以访问<code>http://jibing57.github.io/atom.xml</code>来检验是否成功生成。</p>
+<h3 id="安装sitemap"><a href="#安装sitemap" class="headerlink" title="安装sitemap"></a>安装sitemap</h3><p>添加<code>hexo-generator-sitemap</code>插件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ npm install hexo-generator-sitemap --save</div></pre></td></tr></table></figure>
+<p>修改_config.yml, 添加Extensions</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sitemap:</div><div class="line">  path: sitemap.xml</div></pre></td></tr></table></figure>
+<p>设置完成后，访问<code>http://jibing57.github.io/sitemap.xml</code>来检验是否成功生成了sitemap</p>
+<h3 id="安装搜索插件"><a href="#安装搜索插件" class="headerlink" title="安装搜索插件"></a>安装搜索插件</h3><p>添加<code>hexo-generator-search</code>插件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ npm install hexo-generator-search --save</div></pre></td></tr></table></figure>
+<h2 id="post相关"><a href="#post相关" class="headerlink" title="post相关"></a>post相关</h2><h3 id="修改默认的post脚手架"><a href="#修改默认的post脚手架" class="headerlink" title="修改默认的post脚手架"></a>修改默认的post脚手架</h3><p>修改<code>scaffolds/post.md</code>，添加如下freemind支持的<code>Front-matter</code>, 每次<code>hexo new post xx</code>的时候，就自动会生成到新的post文件中，不用每次手动生成了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">---</div><div class="line">title: &#123;&#123; title &#125;&#125;</div><div class="line">date: &#123;&#123; date &#125;&#125;</div><div class="line">categories:</div><div class="line">tags:</div><div class="line">description:</div><div class="line">feature:</div><div class="line">toc: true</div><div class="line">---</div></pre></td></tr></table></figure>
+<h3 id="调整post的侧边栏"><a href="#调整post的侧边栏" class="headerlink" title="调整post的侧边栏"></a>调整post的侧边栏</h3><p>将Toc调整为显示时间之下，categories和tags之上，并且调整显示时间为精确到秒</p>
+<p>修改调整 <code>themes/freemind/layout/_partial/post/meta.ejs</code>的内容如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">&lt;!-- date --&gt;</div><div class="line">&lt;% if (item.date) &#123; %&gt;</div><div class="line">&lt;div class=&quot;meta-widget&quot;&gt;</div><div class="line">&lt;i class=&quot;fa fa-clock-o&quot;&gt;&lt;/i&gt;</div><div class="line">&lt;%= item.date.format(config.date_format)+&apos; &apos;+item.date.format(config.time_format) %&gt;</div><div class="line">&lt;/div&gt;</div><div class="line">&lt;% &#125; %&gt;</div><div class="line"></div><div class="line">&lt;!-- toc --&gt;</div><div class="line">&lt;div class=&quot;meta-widget&quot;&gt;</div><div class="line">&lt;% if(item.toc)&#123; %&gt;</div><div class="line">   &lt;a data-toggle=&quot;collapse&quot; data-target=&quot;#toc&quot;&gt;&lt;i class=&quot;fa fa-bars&quot;&gt;&lt;/i&gt;&lt;/a&gt;</div><div class="line">   &lt;div id=&quot;toc&quot; class=&quot;toc collapse in&quot;&gt;</div><div class="line">		&lt;%- toc(item.content, &#123;class: &quot;toc-article&quot;, list_number:false&#125;) %&gt;</div><div class="line">	&lt;/div&gt;</div><div class="line">&lt;% &#125; %&gt;</div><div class="line">&lt;/div&gt;</div></pre></td></tr></table></figure>
+<h3 id="Post文章在列表中的预览"><a href="#Post文章在列表中的预览" class="headerlink" title="Post文章在列表中的预览"></a>Post文章在列表中的预览</h3><p>默认情况下，在列表预览中会将所有的文章内容都显示出来，会显得比较冗余，可以在Post文章中，添加<code>&lt;!-- more --&gt;</code>预览标签，这样列表预览中只会显示文章开头到<code>&lt;!-- more --&gt;</code>预览标签之间的文字。</p>
+<h3 id="多tag"><a href="#多tag" class="headerlink" title="多tag"></a>多tag</h3><p>给文章设置多个tags的方法:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># 方法1</div><div class="line">tags: [tag1,tag2,tag3]</div><div class="line"></div><div class="line">#方法2</div><div class="line">tags:</div><div class="line">  - tag1</div><div class="line">  - tag2</div><div class="line">  - tag3</div></pre></td></tr></table></figure>
+<h2 id="deploy部署至Github-Pages"><a href="#deploy部署至Github-Pages" class="headerlink" title="deploy部署至Github Pages"></a>deploy部署至Github Pages</h2><h3 id="deploy至Github-Pages"><a href="#deploy至Github-Pages" class="headerlink" title="deploy至Github Pages"></a>deploy至Github Pages</h3><p>首先需要在<code>github</code>上创建<code>jibing57.github.io</code>的repository, 其中<code>jibing57</code>需要替换为自己的<code>github</code>的用户名, 还需要在<code>~/.ssh/config</code>中设置好访问<code>github</code>的私钥。</p>
+<p>安装Hexo的扩展</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ npm install hexo-deployer-git --save</div></pre></td></tr></table></figure>
+<p>修改<code>_config.yml</code>中<code>deploy</code>一栏的设置:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">deploy:</div><div class="line">  type: git</div><div class="line">  repo: https://github.com/jibing57/jibing57.github.io.git</div><div class="line">  branch: master</div></pre></td></tr></table></figure>
+<p>使用以下命令发布到Github Pages</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo d</div></pre></td></tr></table></figure>
+<h3 id="绑定个人域名"><a href="#绑定个人域名" class="headerlink" title="绑定个人域名"></a>绑定个人域名</h3><h2 id="未定的小特性"><a href="#未定的小特性" class="headerlink" title="未定的小特性"></a>未定的小特性</h2><ol>
+<li>Categories和Tags中，需要支持日期排列<ul>
+<li>tags 类似 <a href="https://rickhw.github.io/tags/JSON/" target="_blank" rel="external">https://rickhw.github.io/tags/JSON/</a></li>
+<li>category 类似 <a href="https://rickhw.github.io/categories/Blog/" target="_blank" rel="external">https://rickhw.github.io/categories/Blog/</a></li>
+</ul>
+</li>
+<li>支持https</li>
+<li>404公益页面</li>
+<li>自定义github域名</li>
+<li>支持评论</li>
+<li>支持google，baidu统计</li>
+</ol>
+<h2 id="待定"><a href="#待定" class="headerlink" title="待定"></a>待定</h2><ul>
+<li>还有一个豆瓣的插件 <a href="https://github.com/mythsman/hexo-douban" target="_blank" rel="external">https://github.com/mythsman/hexo-douban</a> 可以分享读书和电影，后续可以尝试下<ul>
+<li>读书页面 <a href="https://blog.mythsman.com/books/" target="_blank" rel="external">https://blog.mythsman.com/books/</a></li>
+<li>电影页面 <a href="https://blog.mythsman.com/movies/" target="_blank" rel="external">https://blog.mythsman.com/movies/</a><br>-</li>
+</ul>
+</li>
+</ul>
+	  
+	</div>
+
+	<div>
+  	<center>
+	<div class="pagination">
+<ul class="pagination">
+	 
+				
+    	<li class="prev"><a href="/2017/07/17/hello-world/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>Prev</a></li>
+  		
+
+        <li><a href="/archives"><i class="fa fa-archive"></i>Archive</a></li>
+
+		
+		   <li class="next"><a href="/2017/07/17/How-to-get-subtitle-of-local-video/" class="alignright next">Next<i class="fa fa-arrow-circle-o-right"></i></a></li>         
+        
+	
+</ul>
+</div>
+
+    </center>
+	</div>
+
+    <!-- share -->
+    
+        
+    <div class="bdsharebuttonbox">
+        <a href="#" class="bds_more" data-cmd="more"></a>
+        <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+        <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+        <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+        <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+        <a href="#" class="bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+        <a href="#" class="bds_evernotecn" data-cmd="evernotecn" title="分享到印象笔记"></a>
+        <a href="#" class="bds_youdao" data-cmd="youdao" title="分享到有道云笔记"></a>
+        <a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+    </div>
+    <script>
+        window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"24"},"share":{}};
+        with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+    </script>
+
+
+        
+
+    
+	
+	<!-- comment -->
+	
+<section id="comment">
+  <h2 class="title">Comments</h2>
+  
+</section>
+
+
+	</div> <!-- col-md-9/col-md-12 -->
+		
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta">
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2017-07-17 16:19:32
+	</div>
+	
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
+	   <div id="toc" class="toc collapse in">
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#Hexo-安装"><span class="toc-article-text">Hexo 安装</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#安装前提"><span class="toc-article-text">安装前提</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#安装Hexo"><span class="toc-article-text">安装Hexo</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#初始化Blog"><span class="toc-article-text">初始化Blog</span></a></li></ol></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#配置"><span class="toc-article-text">配置</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#基本信息配置"><span class="toc-article-text">基本信息配置</span></a></li></ol></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#更换Theme"><span class="toc-article-text">更换Theme</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#安装"><span class="toc-article-text">安装</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#启用freemind预定义的几个pages"><span class="toc-article-text">启用freemind预定义的几个pages</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#启用-freemind"><span class="toc-article-text">启用 freemind</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#修改freemind的配置文件"><span class="toc-article-text">修改freemind的配置文件</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#freemind-front-matter-选项"><span class="toc-article-text">freemind front-matter 选项</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#添加统计"><span class="toc-article-text">添加统计</span></a></li></ol></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#安装插件"><span class="toc-article-text">安装插件</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#安装豆瓣插件"><span class="toc-article-text">安装豆瓣插件</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#安装rss插件"><span class="toc-article-text">安装rss插件</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#安装sitemap"><span class="toc-article-text">安装sitemap</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#安装搜索插件"><span class="toc-article-text">安装搜索插件</span></a></li></ol></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#post相关"><span class="toc-article-text">post相关</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#修改默认的post脚手架"><span class="toc-article-text">修改默认的post脚手架</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#调整post的侧边栏"><span class="toc-article-text">调整post的侧边栏</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#Post文章在列表中的预览"><span class="toc-article-text">Post文章在列表中的预览</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#多tag"><span class="toc-article-text">多tag</span></a></li></ol></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#deploy部署至Github-Pages"><span class="toc-article-text">deploy部署至Github Pages</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#deploy至Github-Pages"><span class="toc-article-text">deploy至Github Pages</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#绑定个人域名"><span class="toc-article-text">绑定个人域名</span></a></li></ol></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#未定的小特性"><span class="toc-article-text">未定的小特性</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#待定"><span class="toc-article-text">待定</span></a></li></ol>
+		</div>
+	
+	</div>
+
+	<!-- categories -->
+    
+
+	<!-- tags -->
+	
+
+    <hr>
+
+</div><!-- col-md-3 -->
+
+	</div>
+		
+
+</div><!-- row -->
+
+
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  &copy; 2017 jibing57
+  
+      with help from <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>.    
+</p> </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>

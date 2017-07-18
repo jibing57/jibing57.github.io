@@ -42,14 +42,26 @@
     <link href="http://jibing57.com/2017/07/17/%E4%BD%BF%E7%94%A8Hexo%E6%90%AD%E5%BB%BABlog/"/>
     <id>http://jibing57.com/2017/07/17/使用Hexo搭建Blog/</id>
     <published>2017-07-17T08:19:32.000Z</published>
-    <updated>2017-07-18T08:52:37.000Z</updated>
+    <updated>2017-07-18T08:54:37.000Z</updated>
     
     <summary type="html">
     
       &lt;h2 id=&quot;Hexo-安装&quot;&gt;&lt;a href=&quot;#Hexo-安装&quot; class=&quot;headerlink&quot; title=&quot;Hexo 安装&quot;&gt;&lt;/a&gt;Hexo 安装&lt;/h2&gt;&lt;h3 id=&quot;安装前提&quot;&gt;&lt;a href=&quot;#安装前提&quot; class=&quot;headerlink&quot; title=&quot;安装前提&quot;&gt;&lt;/a&gt;安装前提&lt;/h3&gt;&lt;p&gt;安装Hexo需要依赖如下两个程序, 需要提前安装&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Node.js&lt;/li&gt;
-&lt;li&gt;git
+&lt;li&gt;git&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;安装Hexo&quot;&gt;&lt;a href=&quot;#安装Hexo&quot; class=&quot;headerlink&quot; title=&quot;安装Hexo&quot;&gt;&lt;/a&gt;安装Hexo&lt;/h3&gt;&lt;p&gt;Node.js和git都安装完毕后，执行如下命令安装Hexo&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ npm install -g hexo-cli&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h3 id=&quot;初始化Blog&quot;&gt;&lt;a href=&quot;#初始化Blog&quot; class=&quot;headerlink&quot; title=&quot;初始化Blog&quot;&gt;&lt;/a&gt;初始化Blog&lt;/h3&gt;&lt;p&gt;cd到存放博客的目标目录，执行&lt;code&gt;hexo init&lt;/code&gt;命令&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ hexo init my_blog&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;其中&lt;code&gt;my_blog&lt;/code&gt;就是博客所在的文件夹名字。&lt;/p&gt;
+&lt;p&gt;注意: 最新版的&lt;code&gt;hexo&lt;/code&gt;不需要切换到文件夹下敲击&lt;code&gt;npm install&lt;/code&gt;了，&lt;code&gt;init&lt;/code&gt;的时候会一并安装所需的npm packet。&lt;/p&gt;
+&lt;p&gt;进入目录，目录结构类似如下.&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;10&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;11&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;12&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;13&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;14&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ cd my_blog/&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;$ tree -I &amp;quot;node_modules&amp;quot; ./&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;./&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;├── _config.yml&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;├── db.json&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;├── package.json&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;├── scaffolds&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;│   ├── draft.md&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;│   ├── page.md&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;│   └── post.md&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;├── source&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;│   └── _posts&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;│       └── hello-world.md&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;└── themes&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;执行下面的命令开启&lt;code&gt;hexo&lt;/code&gt;服务&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ hexo -s --debug&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;访问 &lt;code&gt;http://0.0.0.0:4000&lt;/code&gt;应该就能看到默认的页面了。&lt;/p&gt;
     
     </summary>
     

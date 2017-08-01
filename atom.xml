@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://jibing57.com/"/>
-  <updated>2017-07-17T08:36:41.000Z</updated>
+  <updated>2017-08-01T15:09:14.000Z</updated>
   <id>http://jibing57.com/</id>
   
   <author>
@@ -16,33 +16,48 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Hello World</title>
-    <link href="http://jibing57.com/2017/07/17/hello-world/"/>
-    <id>http://jibing57.com/2017/07/17/hello-world/</id>
-    <published>2017-07-17T08:36:41.000Z</published>
-    <updated>2017-07-17T08:36:41.000Z</updated>
+    <title>日上清单</title>
+    <link href="http://jibing57.com/2017/08/01/rishang/"/>
+    <id>http://jibing57.com/2017/08/01/rishang/</id>
+    <published>2017-08-01T14:52:59.000Z</published>
+    <updated>2017-08-01T15:09:14.000Z</updated>
     
     <summary type="html">
     
-      Add description of freemind to title &quot;Hello World&quot;
+      &lt;h2 id=&quot;精华乳液&quot;&gt;&lt;a href=&quot;#精华乳液&quot; class=&quot;headerlink&quot; title=&quot;精华乳液&quot;&gt;&lt;/a&gt;精华乳液&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;1 MOISTURIZING SOFT LOTION 海蓝之谜精华乳液 50ml * 1&lt;/strong&gt;&lt;
     
     </summary>
     
-      <category term="test_category" scheme="http://jibing57.com/categories/test-category/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Macos中如何语音朗读文字</title>
+    <link href="http://jibing57.com/2017/07/25/how-to-read-text-on-macos/"/>
+    <id>http://jibing57.com/2017/07/25/how-to-read-text-on-macos/</id>
+    <published>2017-07-25T07:21:28.000Z</published>
+    <updated>2017-07-25T07:35:10.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;场景&quot;&gt;&lt;a href=&quot;#场景&quot; class=&quot;headerlink&quot; title=&quot;场景&quot;&gt;&lt;/a&gt;场景&lt;/h2&gt;&lt;p&gt;Macos上看到大段大段的英文，有时候除了看以外，还想边听边看&lt;/p&gt;
+&lt;h2 id=&quot;解决方法&quot;&gt;&lt;a href=&quot;#解决方法&quot; clas
+    
+    </summary>
+    
+      <category term="Tools" scheme="http://jibing57.com/categories/Tools/"/>
     
     
-      <category term="test_tag1" scheme="http://jibing57.com/tags/test-tag1/"/>
-    
-      <category term="test_tag2" scheme="http://jibing57.com/tags/test-tag2/"/>
+      <category term="Macos" scheme="http://jibing57.com/tags/Macos/"/>
     
   </entry>
   
   <entry>
     <title>使用Hexo搭建Blog</title>
-    <link href="http://jibing57.com/2017/07/17/%E4%BD%BF%E7%94%A8Hexo%E6%90%AD%E5%BB%BABlog/"/>
-    <id>http://jibing57.com/2017/07/17/使用Hexo搭建Blog/</id>
+    <link href="http://jibing57.com/2017/07/17/hexo-github-blog/"/>
+    <id>http://jibing57.com/2017/07/17/hexo-github-blog/</id>
     <published>2017-07-17T08:19:32.000Z</published>
-    <updated>2017-07-18T08:54:37.000Z</updated>
+    <updated>2017-07-18T10:12:09.000Z</updated>
     
     <summary type="html">
     
@@ -65,19 +80,34 @@
     
     </summary>
     
+      <category term="Blog" scheme="http://jibing57.com/categories/Blog/"/>
+    
+    
+      <category term="Hexo" scheme="http://jibing57.com/tags/Hexo/"/>
+    
+      <category term="Github" scheme="http://jibing57.com/tags/Github/"/>
     
   </entry>
   
   <entry>
-    <title>How to get subtitle of local video</title>
+    <title>如何给本地视频生成字幕</title>
     <link href="http://jibing57.com/2017/07/17/How-to-get-subtitle-of-local-video/"/>
     <id>http://jibing57.com/2017/07/17/How-to-get-subtitle-of-local-video/</id>
     <published>2017-07-17T06:54:03.000Z</published>
-    <updated>2017-07-17T06:58:09.000Z</updated>
+    <updated>2017-07-19T03:35:36.000Z</updated>
     
     <summary type="html">
     
-      &lt;p&gt;&lt;a href=&quot;https://github.com/agermanidis/autosub&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;autosub&lt;/a&gt;是一款由python 2编写的通过Google Web Speech API和FFmpeg来
+      &lt;h2 id=&quot;场景&quot;&gt;&lt;a href=&quot;#场景&quot; class=&quot;headerlink&quot; title=&quot;场景&quot;&gt;&lt;/a&gt;场景&lt;/h2&gt;&lt;p&gt;适合如下场景:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;视频本身不带字幕&lt;/li&gt;
+&lt;li&gt;直接看英文视频比较吃力&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;此时可以使用&lt;code&gt;autosub&lt;/code&gt;这个工具来根据视频中的声音来生成对应的字幕，虽然生成的字幕并不总是那么正确，但当做参考还是不错的。&lt;/p&gt;
+&lt;h2 id=&quot;autosub简介&quot;&gt;&lt;a href=&quot;#autosub简介&quot; class=&quot;headerlink&quot; title=&quot;autosub简介&quot;&gt;&lt;/a&gt;autosub简介&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/agermanidis/autosub&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;autosub&lt;/a&gt;是一款由python 2编写的通过Google Web Speech API和FFmpeg来获取视频subtitle的软件&lt;/p&gt;
+&lt;p&gt;Github地址: &lt;a href=&quot;https://github.com/agermanidis/autosub&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/agermanidis/autosub&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Github上的Usage:&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;10&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;11&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;12&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;13&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;14&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;15&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;16&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;17&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;18&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;19&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;20&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;21&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;22&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;23&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;24&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;25&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;26&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;27&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;28&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ autosub -h&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;usage: autosub [-h] [-C CONCURRENCY] [-o OUTPUT] [-F FORMAT] [-S SRC_LANGUAGE]&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;               [-D DST_LANGUAGE] [-K API_KEY] [--list-formats]&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;               [--list-languages]&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;               [source_path]&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;positional arguments:&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  source_path           Path to the video or audio file to subtitle&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;optional arguments:&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  -h, --help            show this help message and exit&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  -C CONCURRENCY, --concurrency CONCURRENCY&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;                        Number of concurrent API requests to make&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  -o OUTPUT, --output OUTPUT&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;                        Output path for subtitles (by default, subtitles are&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;                        saved in the same directory and name as the source&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;                        path)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  -F FORMAT, --format FORMAT&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;                        Destination subtitle format&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  -S SRC_LANGUAGE, --src-language SRC_LANGUAGE&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;                        Language spoken in source file&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  -D DST_LANGUAGE, --dst-language DST_LANGUAGE&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;                        Desired language for the subtitles&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  -K API_KEY, --api-key API_KEY&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;                        The Google Translate API key to be used. (Required for&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;                        subtitle translation)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  --list-formats        List all available subtitle formats&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  --list-languages      List all available source/destination languages&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
     
     </summary>
     
@@ -85,6 +115,8 @@
     
     
       <category term="video" scheme="http://jibing57.com/tags/video/"/>
+    
+      <category term="tips" scheme="http://jibing57.com/tags/tips/"/>
     
   </entry>
   

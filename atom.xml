@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://jibing57.com/"/>
-  <updated>2017-08-02T01:52:17.000Z</updated>
+  <updated>2017-08-05T14:38:25.000Z</updated>
   <id>http://jibing57.com/</id>
   
   <author>
@@ -16,21 +16,34 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>日上清单</title>
-    <link href="http://jibing57.com/2017/08/01/rishang/"/>
-    <id>http://jibing57.com/2017/08/01/rishang/</id>
-    <published>2017-08-01T14:52:59.000Z</published>
-    <updated>2017-08-02T01:52:17.000Z</updated>
+    <title>Linux 和 Mac下date命令的基本用法</title>
+    <link href="http://jibing57.com/2017/08/03/date-command-on-Linux-and-Mac/"/>
+    <id>http://jibing57.com/2017/08/03/date-command-on-Linux-and-Mac/</id>
+    <published>2017-08-03T13:54:02.000Z</published>
+    <updated>2017-08-05T14:38:25.000Z</updated>
     
     <summary type="html">
     
-      &lt;h2 id=&quot;折扣券&quot;&gt;&lt;a href=&quot;#折扣券&quot; class=&quot;headerlink&quot; title=&quot;折扣券&quot;&gt;&lt;/a&gt;折扣券&lt;/h2&gt;&lt;p&gt;&lt;img src=&quot;/images/RiShang/1.pic.jpg&quot; alt=&quot;折扣券&quot;&gt;&lt;/p&gt;
-&lt;hr&gt;
-&lt;hr&gt;
-&lt;hr&gt;
+      &lt;p&gt;Mac下的date命令是BDS系的, Linux下date命令是GNU系的，两者的用法有一些区别，罗列如下:&lt;/p&gt;
+&lt;h3 id=&quot;共同点&quot;&gt;&lt;a href=&quot;#共同点&quot; class=&quot;headerlink&quot; title=&quot;共同点&quot;&gt;&lt;/a&gt;共同点&lt;/h3&gt;&lt;p&gt;基本的时间格式的缩写是相同的，规则如下:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;%Y 表示四位数形式的年份, 比如2017&lt;/li&gt;
+&lt;li&gt;%m 表示带前导0的月份，比如02,12&lt;/li&gt;
+&lt;li&gt;%d 表示带前导0的日子， 比如 02，28&lt;/li&gt;
+&lt;li&gt;%H 表示带前导0的24小时， 比如 01, 23&lt;/li&gt;
+&lt;li&gt;%M 表示带前导0的分钟数， 比如 05, 22&lt;/li&gt;
+&lt;li&gt;%S 表示带前导0的秒数， 比如 06，45&lt;/li&gt;
+&lt;li&gt;%s 表示距离格林威治时间(1970年1月1日0点)的秒数&lt;/li&gt;
+&lt;/ul&gt;
     
     </summary>
     
+      <category term="Shell" scheme="http://jibing57.com/categories/Shell/"/>
+    
+    
+      <category term="Macos" scheme="http://jibing57.com/tags/Macos/"/>
+    
+      <category term="Linux" scheme="http://jibing57.com/tags/Linux/"/>
     
   </entry>
   
@@ -52,6 +65,26 @@
     
     
       <category term="Macos" scheme="http://jibing57.com/tags/Macos/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>AWS相关的一些有用的网址</title>
+    <link href="http://jibing57.com/2017/07/25/useful-website-of-aws/"/>
+    <id>http://jibing57.com/2017/07/25/useful-website-of-aws/</id>
+    <published>2017-07-25T02:49:10.000Z</published>
+    <updated>2017-07-26T10:06:46.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;cloudping-info&quot;&gt;&lt;a href=&quot;#cloudping-info&quot; class=&quot;headerlink&quot; title=&quot;cloudping.info&quot;&gt;&lt;/a&gt;cloudping.info&lt;/h3&gt;&lt;p&gt;&lt;a href=&quot;http://www.cl
+    
+    </summary>
+    
+      <category term="AWS" scheme="http://jibing57.com/categories/AWS/"/>
+    
+    
+      <category term="tools" scheme="http://jibing57.com/tags/tools/"/>
     
   </entry>
   

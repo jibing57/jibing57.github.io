@@ -3,6 +3,143 @@
   
     
     <entry>
+      <title><![CDATA[如何在aws cli中使用多个配置文件]]></title>
+      <url>/2017/10/24/how-to-use-aws-cli-with-multi-user/</url>
+      <content type="html"><![CDATA[<p><code>aws cli</code>使用中，可能会有在多个IAM账户中进行切换的需求，手动切换<code>~/.aws/</code>目录下的<code>config</code>和<code>credentials</code>是十分费力的事情。还好<code>aws cli</code>本身就可以支持多个aws credentials</p>
+<h3 id="配置多个profile"><a href="#配置多个profile" class="headerlink" title="配置多个profile"></a>配置多个profile</h3><p><code>aws configure</code>时，加上<code>--profile</code>参数来命名不同的账户, 依次输入access id, access key, region和output format。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ aws configure --profile user1</div><div class="line">$ aws configure --profile user2</div></pre></td></tr></table></figure>
+<p>此时生成的<code>config</code>和<code>credentials</code>文件中，会使用账户名来分割不同的配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">[carlshen@carl-macpro-lan ~]$ cat ~/.aws/config</div><div class="line">[profile user1]</div><div class="line">output = json</div><div class="line">region = us-west-2</div><div class="line">[profile user2]</div><div class="line">output = json</div><div class="line">region = ap-northeast-2</div><div class="line">[carlshen@carl-macpro-lan ~]$</div><div class="line">[carlshen@carl-macpro-lan ~]$ cat ~/.aws/credentials</div><div class="line">[user1]</div><div class="line">aws_access_key_id = AKIAXXXXXXXXXXXXXXXX</div><div class="line">aws_secret_access_key = XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</div><div class="line">[user2]</div><div class="line">aws_access_key_id = AKIAXXXXXXXXXXXXXXXX</div><div class="line">aws_secret_access_key = XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</div><div class="line">[carlshen@carl-macpro-lan ~]$</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<h3 id="使用多个profile"><a href="#使用多个profile" class="headerlink" title="使用多个profile"></a>使用多个profile</h3><h4 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h4><p>使用的时候，在命令后面加上参数<code>--profile user_name</code>即可使用user_name对应的profile</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ aws s3 ls --profile user_name</div></pre></td></tr></table></figure>
+<p>如下命令使用user2的profile来查看S3下的bucket list</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[carlshen@carl-macpro-lan ~]$ aws s3 ls --profile user2</div><div class="line">2017-10-24 11:18:38 carl-test-at-seoul</div><div class="line">[carlshen@carl-macpro-lan ~]$</div></pre></td></tr></table></figure>
+<h4 id="简化"><a href="#简化" class="headerlink" title="简化"></a>简化</h4><p>每次输入<code>--profile user_name</code>是很繁琐的事情，在Mac或者Linux下，可以使用alias来简化</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ alias aws_user_name=&apos;aws --profile user_name&apos;</div></pre></td></tr></table></figure>
+<p>这样，每次使用的时候，直接使用<code>aws_user_name</code>来使用user_name的profile来运行aws命令</p>
+<p>以下命令设置aws_user2为使用user2的profile来运行aws命名</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[carlshen@carl-macpro-lan ~]$ alias aws_user2=&apos;aws --profile user2&apos;</div><div class="line">[carlshen@carl-macpro-lan ~]$ aws_user2 s3 ls</div><div class="line">2017-10-24 11:18:38 carl-test-at-seoul</div><div class="line">[carlshen@carl-macpro-lan ~]$</div></pre></td></tr></table></figure>
+<p>添加到~/.bashrc中使得alias永久生效</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ echo &quot;alias aws_user2=&apos;aws --profile user2&apos;&quot; &gt;&gt; ~/.bashrc</div></pre></td></tr></table></figure>
+<h4 id="设置默认profile"><a href="#设置默认profile" class="headerlink" title="设置默认profile"></a>设置默认profile</h4><p>如果有一个账号是使用的比较频繁的，而不想每次都使用alias的方式来运行aws，那么也可以设置环境变量<code>AWS_DEFAULT_PROFILE</code>为频繁使用的账号名，此时输入aws时候，会自动使用指定的账号配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ export AWS_DEFAULT_PROFILE=user2</div></pre></td></tr></table></figure>
+<p>运行结果如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">## 没有设置AWS_DEFAULT_PROFILE时</div><div class="line">[carlshen@carl-macpro-lan ~]$ echo $AWS_DEFAULT_PROFILE</div><div class="line"></div><div class="line">[carlshen@carl-macpro-lan ~]$ aws s3 ls</div><div class="line">Unable to locate credentials. You can configure credentials by running &quot;aws configure&quot;.</div><div class="line">[carlshen@carl-macpro-lan ~]$</div><div class="line"></div><div class="line">## 设置了AWS_DEFAULT_PROFILE为user2后，aws默认就会使用user2的profile</div><div class="line">[carlshen@carl-macpro-lan ~]$ export AWS_DEFAULT_PROFILE=user2</div><div class="line">[carlshen@carl-macpro-lan ~]$ aws s3 ls</div><div class="line">2017-10-24 11:18:38 carl-test-at-seoul</div><div class="line">[carlshen@carl-macpro-lan ~]$</div></pre></td></tr></table></figure>
+<p>添加到~/.bashrc中来使AWS_DEFAULT_PROFILE永久生效</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ echo &quot;export AWS_DEFAULT_PROFILE=user2&quot; &gt;&gt; ~/.bashrc</div></pre></td></tr></table></figure>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ol>
+<li>配置 AWS CLI - <a href="http://docs.aws.amazon.com/zh_cn/cli/latest/userguide/cli-chap-getting-started.html" target="_blank" rel="external">http://docs.aws.amazon.com/zh_cn/cli/latest/userguide/cli-chap-getting-started.html</a></li>
+</ol>
+]]></content>
+      
+        <categories>
+            
+            <category> AWS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Aws CLI </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[使用aws codecommit作为私有的git远程服务器]]></title>
+      <url>/2017/10/24/how-to-use-aws-codecommit/</url>
+      <content type="html"><![CDATA[<p>博客的hexo的代码，一直是保存在本地的。上次电脑花了一次屏后，感觉到保存在本地实在是不够安全。因此考虑寻觅一个远端的私密git库，存起来。</p>
+<p>开始寻寻觅觅合适的仓库.</p>
+<ul>
+<li>Github?,私有库是收费的。但为了这些哪条就不更新的markdown，每月7刀开个Developer的Plan，感觉不划算。</li>
+<li>自建Gitlab？嫌麻烦麻烦。</li>
+<li>oschina的私有库？不想用。</li>
+<li>。。。。。。</li>
+</ul>
+<p>好吧，我承认我就是想尝试用一下aws的codecommit。</p>
+<p>关于CodeCommit的免费额度，<a href="https://aws.amazon.com/cn/codecommit/pricing/" target="_blank" rel="external">官网</a>介绍:</p>
+<ul>
+<li>最初5位活动用户<ul>
+<li>无限存储库</li>
+<li>50GB的月存储量</li>
+<li>每月10000个git请求</li>
+</ul>
+</li>
+</ul>
+<p>托管我一个小博客，妥妥的够了。毕竟除了我，没人还会来关心这点markdown文件, 5位用户免费足够了。至于50GB的月存储量么，除非把看过的电影都commit进git来，要不然应该是足够了。</p>
+<a id="more"></a>
+<h3 id="创建Repository"><a href="#创建Repository" class="headerlink" title="创建Repository"></a>创建Repository</h3><ol>
+<li><p>在aws console的Services中，找到CodeCommit<br><img src="/images/AWS/CodeCommit/find_codecommit.jpg" alt="find_codecommit"></p>
+</li>
+<li><p>在CodeCommit页面中点击Create, 打开新建Repository的页面，在<strong>Repository Name</strong>中填入仓库的名字，<strong>Description</strong>中填写仓库的描述, 然后点击<strong>Create repository</strong>创建仓库。<br><img src="/images/AWS/CodeCommit/codecommit_create_repository.jpg" alt="codecommit_create_repository"></p>
+</li>
+</ol>
+<h3 id="配置ssh-key"><a href="#配置ssh-key" class="headerlink" title="配置ssh key"></a>配置ssh key</h3><ol>
+<li><p>CodeCommit有两种访问方式，分别是ssh和https模式。我习惯使用ssh方式。</p>
+</li>
+<li><p>首先，需要在IAM User中添加SSH keys, 用来访问CodeCommit。</p>
+<ul>
+<li>打开IAM，切换到User界面，</li>
+<li>在<code>Security credentials</code>的tab下，找到<code>SSH keys for AWS CodeCommit</code>一栏</li>
+<li>点击下面<code>Upload SSH public key</code>按钮</li>
+<li>在打开的上传key的页面中输入常用的key pair的public key, 然后点击<code>Upload SSH public Key</code>的按钮<br><img src="/images/AWS/CodeCommit/upload_ssh_for_codecommit.jpg" alt="upload_ssh_for_codecommit.jpg"></li>
+</ul>
+</li>
+<li><p>上传完毕后，就会生成一个新的Entry，复制或保存此处SSH key ID的值。<br><img src="/images/AWS/CodeCommit/publickey_of_IAM_used_for_codecommit.jpg" alt="publickey_of_IAM_used_for_codecommit.jpg"></p>
+</li>
+<li><p>配置本地~/.ssh/config, 添加有关CodeCommit的Host条目, <code>IdentityFile</code>设置为private key, 并保存。如果本地还没有~/.ssh/config文件，则创建，并在保存后使用命令<code>chmod 600 ~/.ssh/config</code>将访问属性修改为600.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Host git-codecommit.*.amazonaws.com</div><div class="line">  User APKAIHTDFHHOYTHJYI3Q</div><div class="line">  IdentityFile ~/.ssh/id_rsa</div></pre></td></tr></table></figure>
+</li>
+<li><p>打开codeCommit的repository, 点击<code>Clone URL</code>，选择SSH来获取仓库的ssh地址, 我此处的地址是 ssh://git-codecommit.ap-northeast-2.amazonaws.com/v1/repos/my_blog<br><img src="/images/AWS/CodeCommit/get_ssh_url_of_codecommit.jpg" alt="get_ssh_url_of_codecommit"></p>
+</li>
+<li><p>找个临时目录，使用git clone命令来测试是否可以正常访问新建的仓库</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">$ git clone ssh://git-codecommit.ap-northeast-2.amazonaws.com/v1/repos/my_blog</div><div class="line">Cloning into &apos;my_blog&apos;...</div><div class="line">The authenticity of host &apos;git-codecommit.ap-northeast-2.amazonaws.com (52.95.194.93)&apos; can&apos;t be established.</div><div class="line">RSA key fingerprint is 9f:68:48:9b:5f:fc:96:69:39:45:58:87:95:b3:69:ed.</div><div class="line">Are you sure you want to continue connecting (yes/no)? yes</div><div class="line">Warning: Permanently added &apos;git-codecommit.ap-northeast-2.amazonaws.com,52.95.194.93&apos; (RSA) to the list of known hosts.</div><div class="line">warning: You appear to have cloned an empty repository.</div><div class="line">Checking connectivity... done.</div><div class="line">$ ll</div><div class="line">total 0</div><div class="line">drwxr-xr-x  3 carlshen  staff  102 10 24 21:32 my_blog</div><div class="line">$</div></pre></td></tr></table></figure>
+<h3 id="push已有的repository到CodeCommit"><a href="#push已有的repository到CodeCommit" class="headerlink" title="push已有的repository到CodeCommit"></a>push已有的repository到CodeCommit</h3><p>刚建立的repository是空的，我们可以clone下来，然后逐次添加文件，也可以将已经存在的git reposigory push到CodeCommit上的空仓库中。</p>
+<p>切换到已有的git 仓库中，然后使用如下命令将git仓库push到CodeCommit中<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git push https://git-codecommit.us-east-2.amazonaws.com/v1/repos/MyFirstRepo --all</div></pre></td></tr></table></figure></p>
+<p>如下是将本地的my_blog推送到远端的步骤:</p>
+<ol>
+<li><p>本地的remote为空</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ git remote -v</div><div class="line">$</div></pre></td></tr></table></figure>
+</li>
+<li><p>推送本地的所有代码到CodeCommit上</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">$ git push ssh://git-codecommit.ap-northeast-2.amazonaws.com/v1/repos/my_blog --all</div><div class="line">Warning: Permanently added the RSA host key for IP address &apos;52.95.194.107&apos; to the list of known hosts.</div><div class="line">Counting objects: 490, done.</div><div class="line">Delta compression using up to 8 threads.</div><div class="line">Compressing objects: 100% (463/463), done.</div><div class="line">Writing objects: 100% (490/490), 6.71 MiB | 441.00 KiB/s, done.</div><div class="line">Total 490 (delta 214), reused 0 (delta 0)</div><div class="line">remote: processing To ssh://git-codecommit.ap-northeast-2.amazonaws.com/v1/repos/my_blog</div><div class="line"> * [new branch]      master -&gt; master</div><div class="line">$</div></pre></td></tr></table></figure>
+</li>
+<li><p>将CodeCommit上的仓库设置为远端的origin</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ git remote add origin ssh://git-codecommit.ap-northeast-2.amazonaws.com/v1/repos/my_blog</div><div class="line">$ git remote -v</div><div class="line">origin	ssh://git-codecommit.ap-northeast-2.amazonaws.com/v1/repos/my_blog (fetch)</div><div class="line">origin	ssh://git-codecommit.ap-northeast-2.amazonaws.com/v1/repos/my_blog (push)</div></pre></td></tr></table></figure>
+</li>
+<li><p>关联本地和远端的master分支</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ git branch --set-upstream-to=origin/master master</div><div class="line">Branch master set up to track remote branch master from origin.</div><div class="line">$ git pull</div><div class="line">Already up-to-date.</div><div class="line">$</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ol>
+<li>将 Git 存储库迁移到 AWS CodeCommit - <a href="https://docs.aws.amazon.com/zh_cn/codecommit/latest/userguide/how-to-migrate-repository-existing.html" target="_blank" rel="external">https://docs.aws.amazon.com/zh_cn/codecommit/latest/userguide/how-to-migrate-repository-existing.html</a></li>
+<li>在 Linux, macOS, or Unix 上设置到 AWS CodeCommit 存储库的 SSH 连接的步骤 - <a href="https://docs.aws.amazon.com/zh_cn/codecommit/latest/userguide/setting-up-ssh-unixes.html#setting-up-ssh-unixes-keys-unixes" target="_blank" rel="external">https://docs.aws.amazon.com/zh_cn/codecommit/latest/userguide/setting-up-ssh-unixes.html#setting-up-ssh-unixes-keys-unixes</a></li>
+</ol>
+]]></content>
+      
+        <categories>
+            
+            <category> AWS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Git </tag>
+            
+            <tag> CodeCommit </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[Linux 和 Mac下date命令的基本用法]]></title>
       <url>/2017/08/03/date-command-on-Linux-and-Mac/</url>
       <content type="html"><![CDATA[<p>Mac下的date命令是BDS系的, Linux下date命令是GNU系的，两者的用法有一些区别，罗列如下:</p>
@@ -35,9 +172,9 @@
         
         <tags>
             
-            <tag> Macos </tag>
-            
             <tag> Linux </tag>
+            
+            <tag> Macos </tag>
             
         </tags>
         
@@ -83,6 +220,7 @@
 <li>国内测试的结果:<br><img src="/images/AWS/Tools/cloudping_on_cn.jpg" alt="cloudping_on_cn"></li>
 </ul>
 <p>在国内使用AWS全球账号时，在韩国首尔Region建测试服务延迟会小一点。</p>
+<a id="more"></a>
 <h3 id="open-guides-og-aws"><a href="#open-guides-og-aws" class="headerlink" title="open-guides og-aws"></a>open-guides og-aws</h3><p>AWS拥有非常多的Service，每个Service都有着厚厚的UserGuide, <a href="https://github.com/open-guides/og-aws" target="_blank" rel="external">og-aws</a> 所做的，就是从AWS文档中提炼出各个Service的一些要点，再结合实际使用中各个工程师的经验, 汇总成了一份Guide。通读一遍就可以对整个AWS的服务有个整体的了解，可以结合实际操作经验隔段时间就来读一遍。</p>
 <p>内容包含如下:</p>
 <ul>
@@ -102,7 +240,1642 @@
         
         <tags>
             
-            <tag> tools </tag>
+            <tag> Tools </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[AWS Certified Developer - Associate Road Map]]></title>
+      <url>/2017/07/24/AWS-Certified-Developer/</url>
+      <content type="html"><![CDATA[<h2 id="Official-AWS-Centification-Page"><a href="#Official-AWS-Centification-Page" class="headerlink" title="Official AWS Centification Page"></a>Official AWS Centification Page</h2><p>访问官网<a href="https://amazonaws-china.com/certification/certification-prep/" target="_blank" rel="external">AWS Centification</a></p>
+<ul>
+<li>参加 AWS 培训课程</li>
+<li>查看考试指南和样题<ul>
+<li>了解考试涉及的概念并整体了解需要学习哪些内容, <a href="http://awstrainingandcertification.s3.amazonaws.com/production/AWS_certified_developer_associate_blueprint.pdf" target="_blank" rel="external">AWS Certified Developer – Associate 考试指南</a> 相当于考试大纲, 必看,而且需要反复的看。因为学习过一阵后再来看Guide，会有更深的体会。</li>
+<li><a href="https://d0.awsstatic-china.com/training-and-certification/docs/AWS_certified_developer_associate_examsample.pdf" target="_blank" rel="external">考试样题</a>用于熟悉题目题型</li>
+</ul>
+</li>
+<li>完成自主进度动手实验和备考任务<ul>
+<li>官方<a href="https://www.qwiklabs.com/learning_paths/20/lab_catalogue?locale=en" target="_blank" rel="external">qwikLABS 任务</a>提供了一系列动手实验, 提供部分免费实验，但大部分实验所需的积分都需要购买。高性价比的做法是， 注册一个AWS全球账号，使用一年的免费额度来对照着实验手册来进行试验。</li>
+</ul>
+</li>
+<li>学习 AWS 白皮书<ul>
+<li>白皮书是纯英文的，而且每个白皮书篇幅都很长，读起来既费时又枯燥。但是有时间还是建议把推荐的几个都看一下。</li>
+</ul>
+</li>
+<li>查看 AWS 常见问题<ul>
+<li>官网推荐的FAQ都建议看完，另外<a href="https://amazonaws-china.com/cn/dynamodb/faqs/" target="_blank" rel="external">DynamoDB FAQ</a>这个必须要看。</li>
+</ul>
+</li>
+<li>参加模拟考试<ul>
+<li>20美刀一次，主要目的是为了让人熟悉考试时上机的流程。是否需要因人而异, 特别想先熟悉下考试流程的可以考虑参加一次。我个人觉得没有必要, 因为真实考试时，操作界面一目了然，没有磕磕绊绊的机关，省下20美刀可以去买一份课程。</li>
+</ul>
+</li>
+<li>报名考试并获得认证<ul>
+<li>登陆<a href="https://www.aws.training/certification" target="_blank" rel="external">https://www.aws.training/certification</a>注册进行考试</li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<h2 id="考试指南"><a href="#考试指南" class="headerlink" title="考试指南"></a>考试指南</h2><p><a href="http://awstrainingandcertification.s3.amazonaws.com/production/AWS_certified_developer_associate_blueprint.pdf" target="_blank" rel="external">AWS Certified Developer – Associate 考试指南</a> 读三遍，读三遍，读三遍</p>
+<p>各个Domain的分数比例如下:<br><img src="/images/AWS/Developer/Domain_on_developer_associate_blueprint.jpg" alt="Domain_on_developer_associate_blueprint"></p>
+<p>Domain 3 Deployment and Security 中3.2 中最后一句[CIA and AAA models, ingress vs. egress filtering, and which AWS services and features fit]中的CIA和AAA的解释如下:</p>
+<p>CIA are the fundamentals of Information Security</p>
+<ul>
+<li>Confidentiality 机密性 (generally encryption)</li>
+<li>Integrity 完整性 (the accuracy of a message or server…i.e. hash value)</li>
+<li>Availability 可用性 (availability of a service)</li>
+</ul>
+<p>AAA</p>
+<ul>
+<li>Authentication</li>
+<li>Authorization</li>
+<li>Accounting</li>
+</ul>
+<p>参考自: <a href="https://acloud.guru/forums/aws-certified-developer-associate/discussion/-KTdRPtz4PF2rLHO1_tD/what-is-cia-and-aaa-models-ingress-vs-egress-filtering-and-which-aws-services-an" target="_blank" rel="external">Acloudguru discussion</a></p>
+<h2 id="视频学习"><a href="#视频学习" class="headerlink" title="视频学习"></a>视频学习</h2><p><a href="https://acloud.guru" target="_blank" rel="external">Acloudguru</a> 中<a href="https://acloud.guru/course/aws-certified-developer-associate/dashboard" target="_blank" rel="external">aws-centified-developer-associate</a>视频的学习，大体内容和Centified Solutions Architect-Associate的大同小异，多了DynamoDB的部分</p>
+<h3 id="要点摘录"><a href="#要点摘录" class="headerlink" title="要点摘录"></a>要点摘录</h3><h4 id="IAM"><a href="#IAM" class="headerlink" title="IAM"></a>IAM</h4><ul>
+<li><p>IAM give</p>
+<ul>
+<li>Centralised control of your AWS account</li>
+<li>Shared Access to your AWS account</li>
+<li>Granular Permissions</li>
+<li>Identity Federation (including Active Directory, Facebook, Linkedin etc)</li>
+<li>Multifactor Authentication</li>
+<li>Provide temporary access for users/devices and services where necessary</li>
+<li>Allows you to set up your own password rotation policy</li>
+<li>Integrates with many different AWS services</li>
+<li>Supports PCI DSS Compliance</li>
+</ul>
+</li>
+<li><p>IAM consists of the following:</p>
+<ul>
+<li>Users - End Users (think people)</li>
+<li>Groups (A collection of users under one set of permissions. A way to group our users and apply polices to them collectively)</li>
+<li>Roles - You create roles and can then assign them to AWS resources</li>
+<li>Policy Documents - A document that defines one (or more permissions) - <a href="https://awspolicygen.s3.amazonaws.com/policygen.html" target="_blank" rel="external">IAM Online Policy Generator</a><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    &quot;Version&quot;: &quot;2012-10-17&quot;,</div><div class="line">    &quot;Statement&quot;: [</div><div class="line">        &#123;</div><div class="line">            &quot;Effect&quot;: &quot;Allow&quot;,</div><div class="line">            &quot;Action&quot;: &quot;*&quot;,</div><div class="line">            &quot;Resource&quot;: &quot;*&quot;</div><div class="line">        &#125;</div><div class="line">    ]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>IAM is universal, It does not apply to regions at this time.</p>
+</li>
+<li>The “root account” is simply the account created when first setup your AWS account. It has complete Admin access.</li>
+<li>New Users have NO permissions when first created.</li>
+<li>New Users are assigned <strong>Access Key ID &amp; Secret Access Keys</strong> when first created.</li>
+<li>There are not the same as a password, and you cannot use the <strong>Access key ID &amp; Secret Access Key</strong> to Login in to the console. You can use this to access AWS via the APIs and Command Line however.</li>
+<li>You only get to view these once. If you lose them, you have to regenerate them. So save them in a secure location.</li>
+<li>Always setup Multifactor Authentication on your root account.</li>
+<li>You can create and customise your own password rotation policies.</li>
+<li>Determining whether a request is allowed or denied – <a href="http://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic.html" target="_blank" rel="external">http://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic.html</a><ul>
+<li>Start with default deny, and evaluate all applicable policies</li>
+<li>If there is explicit deny, result is deny</li>
+<li>If there is explicit allow, result is allow<br><img src="/images/AWS/Developer/reference_policies_evaluation_logic.jpg" alt="reference policies evaluation logic"></li>
+</ul>
+</li>
+</ul>
+<h4 id="STS"><a href="#STS" class="headerlink" title="STS"></a>STS</h4><ul>
+<li>In The Exam<ul>
+<li>Develop and Identity Broker to communicate with LDAP and AWS STS</li>
+<li>Identity Broker always authenticates with LDAP first, THEN with AWS STS</li>
+<li>Application then gets temporary access to AWS resource</li>
+</ul>
+</li>
+</ul>
+<h4 id="EC2"><a href="#EC2" class="headerlink" title="EC2"></a>EC2</h4><ul>
+<li><p>know the differences between:</p>
+<ul>
+<li>On Demand - allow you to pay a fixed rate by the hour with no commitment</li>
+<li>Spot - enable you to bi whatever price you want for instance capacity, providing for even greater savings if your applications have flexible start and end times.<ul>
+<li>If you terminate the instance, you pay for the hour</li>
+<li>If AWS terminates the spot instance, you get the hour it was terminated in for free.</li>
+</ul>
+</li>
+<li>Reserved - provide you with a capacity reservation, and offer a significant discount on the hourly charge for an instance. 1 Year or 3 Year Terms</li>
+<li>Dedicated Hosts - Physical EC2 server dedicated for your use. Dedicated Hosts can help you reduce costs by allowing you to use your existing server-bound software licenses.</li>
+</ul>
+</li>
+<li><p>EC2 Instance Types</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Family</th>
+<th style="text-align:center">Speciality</th>
+<th style="text-align:right">Use case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>D2</td>
+<td style="text-align:center">Dense Storage</td>
+<td style="text-align:right">Fileservers/Data Wareshousing/Hadoop</td>
+</tr>
+<tr>
+<td>R4</td>
+<td style="text-align:center">Memory Optimized</td>
+<td style="text-align:right">Memory Intensive Apps/DBs</td>
+</tr>
+<tr>
+<td>M4</td>
+<td style="text-align:center">General Purpose</td>
+<td style="text-align:right">Application Servers</td>
+</tr>
+<tr>
+<td>C4</td>
+<td style="text-align:center">Compute Optimized</td>
+<td style="text-align:right">CPU Intensive Apps/DBs</td>
+</tr>
+<tr>
+<td>G2</td>
+<td style="text-align:center">Graphics Intensive</td>
+<td style="text-align:right">Video Encoding/3D Application Streaming</td>
+</tr>
+<tr>
+<td>I2</td>
+<td style="text-align:center">High Speed Storage</td>
+<td style="text-align:right">NoSQL DBs, Data Warehousing etc</td>
+</tr>
+<tr>
+<td>F1</td>
+<td style="text-align:center">Field Programmable Gate Array</td>
+<td style="text-align:right">Hardware acceleration for your code</td>
+</tr>
+<tr>
+<td>T2</td>
+<td style="text-align:center">Lowest Cost, General Purpose</td>
+<td style="text-align:right">Web Servers/Small DBs</td>
+</tr>
+<tr>
+<td>P2</td>
+<td style="text-align:center">Graphics/General Purpose GPU</td>
+<td style="text-align:right">Machine Learning, Bit Coin Mining etc</td>
+</tr>
+<tr>
+<td>X1</td>
+<td style="text-align:center">Memory Optimize</td>
+<td style="text-align:right">SAP HANA/Apache Spark etc</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>How to remember Instance type</p>
+<ul>
+<li>D for Density</li>
+<li>R for RAM</li>
+<li>M - main choice for general purpose apps</li>
+<li>C for Compute</li>
+<li>G - Graphics</li>
+<li>I for IOPS</li>
+<li>F for FPGA</li>
+<li>T cheap general purpose (think T2 micro)</li>
+<li>P - Graphics (think Pics)</li>
+<li>X - Extreme Memory</li>
+<li><strong>DR Mc GIFT PX</strong></li>
+</ul>
+</li>
+<li><p>EBS Consists of:</p>
+<ul>
+<li>SSD, General Purpose - GP2 - (Up to 10,000 IOPS)<ul>
+<li>General purpose, balances both price and performance.</li>
+<li>Ratio of 3 IOPS per GB with up to 10000 IOPS and the ability to burst up to 3000 IOPS for extended periods of time for volumes under 1Gib.</li>
+</ul>
+</li>
+<li>SSD, Provisioned IOPS - IO1 - (More than 10,000 IOPS)<ul>
+<li>Designed for I/O intensive applications such as large relational or NoSQL databases.</li>
+<li>Use if you need more than 10000 IOPS</li>
+<li>Can provision up to 20000 IOPS per volume.</li>
+</ul>
+</li>
+<li>HDD, Throughput Optimized - ST1 - frequently accessed workloads<ul>
+<li>Big data</li>
+<li>Data warehouse</li>
+<li>Log processing</li>
+<li>Cannot be a boot volume</li>
+</ul>
+</li>
+<li>HDD, Cold - SC1 - less frequently accessed data.<ul>
+<li>Lowest Cost Storage for infrequently accessed workloads</li>
+<li>File Server</li>
+<li>Cannot be a boot volume</li>
+</ul>
+</li>
+<li>HDD, Magnetic - Standard - cheap, infrequently accessed storage<ul>
+<li>Lowest cost per gigabyte of all EBS volume types that is <strong>bootable</strong>. Magnetic volumes are ideal for workloads where data is accessed infrequently, and applications where the lowest storage cost is important.</li>
+</ul>
+</li>
+<li>You cannot mount 1 EBS volume to multiple EC2 instances, instead use EFS.</li>
+</ul>
+</li>
+<li><p>EC2 Lab Exam Tips</p>
+<ul>
+<li>Termination Protection is turned off by default, you must turn it on.</li>
+<li>On an EBS-backed instance, the default action is for the root EBS volume to be deleted when the instance is terminated.</li>
+<li>EBS Root Volumes of your DEFAULT AMI’s cannot be encrypted. you need a third party tool(such as bit locker etc) to encrypt the root volume or this can be done when creating AMI’s in the AWS console or using the API.</li>
+<li>Additional volumes can be encrypted.</li>
+</ul>
+</li>
+<li><p>Upgrading EBS Volume Types</p>
+<ul>
+<li>EBS Volumes can be changed on the fly (except for magnetic standard)</li>
+<li>Best practice to stop the EC2 instance and then change the volume</li>
+<li>You can change volume types by taking a snapshot and then using the snapshot to create a new volume</li>
+<li>If you change a volume on the fly you must wait for 6 hours before making another change</li>
+<li>You can scale EBS Volumes up only</li>
+<li>Volumes must be in the same AZ as the EC2 instances</li>
+</ul>
+</li>
+<li><p>Security Group</p>
+<ul>
+<li>All Inbound Traffic is Blocked By Default</li>
+<li>All Outbound Traffic is Allowed</li>
+<li>Changes to Security Groups take effect immediately</li>
+<li>You can have any number of EC2 instances within a security group.</li>
+<li>You can have multiple security groups attached to EC2 Instances</li>
+<li>Security Groups are <strong>STATEFUL</strong><ul>
+<li>If you create an inbound rule allowing traffic in, that traffic is automatically allowed back out again.</li>
+</ul>
+</li>
+<li>You cannot block specific IP addresses using Security Groups, instead use Network Access Control Lists.</li>
+<li>You can specify allow rules, but not deny rules.</li>
+</ul>
+</li>
+<li><p>Volumes vs Snapshots</p>
+<ul>
+<li>Volumes exist on EBS<ul>
+<li>Virtual Hard Disk</li>
+</ul>
+</li>
+<li>Snapshots exist on S3</li>
+<li>You can take a snapshot of a volume, this will store that volume on S3.</li>
+<li>Snapshots are point in time copies of Volumes.</li>
+<li>Snapshots are incremental, this means that only the blocks that have changed since your last snapshot are moved to S3.</li>
+<li>If this is your first snapshot, it may take some time to create.</li>
+</ul>
+</li>
+<li><p>Volumes vs Snapshots - Security</p>
+<ul>
+<li>Snapshots of encrypted volumes are encrypted automatically.</li>
+<li>Volumes restored from encrypted snapshots are encrypted automatically.</li>
+<li>You can share snapshots, but only if they are unencrypted.<ul>
+<li>These snapshots can be shared with other AWS accounts of made public.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Snapshots of Root Device Volumes</p>
+<ul>
+<li>To Create a snapshot for Amazon EBS volumes that serve as root devices, you should stop the instance before taking the snapshot.</li>
+</ul>
+</li>
+<li><p>EBS vs Instance Store</p>
+<ul>
+<li>Instance Store Volumes are sometimes called Ephemeral Storage.</li>
+<li>Instance store volumes cannot be stopped. If the underlying host fails, you will lose your data.</li>
+<li>EBS backed instances can be stopped. You will not lose the data on this instance if it is stopped.</li>
+<li>You can reboot both, you will not lose your data.</li>
+<li>By default, both ROOT volumes will be deleted on termination, however with EBS volumes, you can tell AWS to keep the root device volume.</li>
+</ul>
+</li>
+<li><p>How can I take a Snapshot of a RAID Array?</p>
+<ul>
+<li>Problem - Take a snapshot, the snapshot excludes data held in the cache by applications and the OS. This tends not to matter on a single volume, however using multiple volumes in a RAID array, this can be a problem due to interdependencies of the array.</li>
+<li>Solution - Take an application consistent snapshot.<ul>
+<li>Stop the application from writing to disk.</li>
+<li>Flush all caches to the disk.</li>
+<li>How can we do this?<ul>
+<li>Freeze the file system</li>
+<li>Unmount the RAID Array</li>
+<li>Shutting down the associated EC2 instance.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Amazon Machine Images</p>
+<ul>
+<li>AMI’s are regional. You can only launch an AMI from the region in which it is stored. However you can copy AMI’s to other regions using the console, command line or the Amazon EC2 API.</li>
+</ul>
+</li>
+<li><p>CloudWatch and CloudTrail</p>
+<ul>
+<li>Standard Monitoring = 5 Minutes</li>
+<li>Detailed Monitoring = 1 Minute</li>
+<li>CloudWatch is for performance monitoring</li>
+<li>CloudTrail is for auditing</li>
+<li>CloudWatch<ul>
+<li>Dashboards - Creates awesome dashboards to see what is happening with your AWS environment.</li>
+<li>Alarms - Allows you to set Alarms that notify you when particular thresholds are hit.</li>
+<li>Events - CloudWatch Events helps you to respond to state changes in your AWS resources.</li>
+<li>Logs - CloudWatch Logs helps you to aggregate, monitor, and store logs.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>EC2 Role</p>
+<ul>
+<li>Roles are more secure than storing your access key and secret access key on individual EC2 instances.</li>
+<li>Roles are easier to manage</li>
+<li>Roles can only be assigned when that EC2 instance is being provisioned.</li>
+<li>Roles are universal, you can use them in any region.</li>
+</ul>
+</li>
+<li><p>Instance Meta-data</p>
+<ul>
+<li>Used to get information about an instance(such as public ip)</li>
+<li>curl <a href="http://169.254.169.254/latest/meta-data/" target="_blank" rel="external">http://169.254.169.254/latest/meta-data/</a></li>
+<li>No such thing as user-data for an instance</li>
+</ul>
+</li>
+<li><p>EFS Features</p>
+<ul>
+<li>Supports the Network File System version 4(NFSv4) protocol</li>
+<li>You only pay for the storage you use (no pre-provisioning required)</li>
+<li>Can scale up to the petabytes</li>
+<li>Can support thousands of concurrent NFS connections</li>
+<li>Data is stored across multiple AZ’s within a region</li>
+<li>Read After Write Consistency</li>
+<li><strong>Great use cases for a file server</strong>. You can apply both file level and directory level permissions within EFS.</li>
+</ul>
+</li>
+<li><p>EC2 CLI Command</p>
+<ul>
+<li>aws ec2 describe-instances</li>
+<li>aws ec2 describe-images</li>
+<li>aws ec2 run-instances</li>
+<li>Do not confuse <strong>start-instances</strong> with <strong>run-instances</strong><ul>
+<li><strong>start-instances</strong> starts an stopped instance</li>
+<li><strong>run-instances</strong> is used to create a new instance</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Lambda</p>
+<ul>
+<li>AWS Lambda is a compute service where you can upload your code and create a Lambda function. AWS Lambda takes care of provisioning and managing the servers that you use to run the code. You don’t have to worry about operating systems, patching, scaling, etc. You can use Lambda in the following ways.<ul>
+<li>As an event-driven compute service where AWS Lambda runs your code in response to events. These events could be changes to data in an Amazon S3 bucket or an Amazon DynamoDB table.</li>
+<li>As a compute service to run your code in response to HTTP requests using Amazon API Gateway or API calls made using AWS SDKs.</li>
+</ul>
+</li>
+<li>Language supported<ul>
+<li>Node.js</li>
+<li>Java</li>
+<li>Python</li>
+<li>C#</li>
+</ul>
+</li>
+<li>Lambda Priced<ul>
+<li>Number of requests<ul>
+<li>First 1 million requests are free. $0.20 per 1 million requests thereafter.</li>
+</ul>
+</li>
+<li>Duration<ul>
+<li>Duration is calculated from the time you code begins executing until it returns or otherwise terminates, rounded up to the nearest 100ms. The price depends on the amount of memory you allocate to your function. You are charged $0.00001667 for every GB-second used.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Why is Lambda Cool<ul>
+<li>No Servers!</li>
+<li>Continuous Scaling</li>
+<li>Super super super cheap!</li>
+</ul>
+</li>
+<li>The default timeout of Lambda Function is 3 second, maximum time is 300 second (5 mins), minimum time is 1 second.</li>
+<li>Lambda code(and any dependent libraries) as a Zip and upload to console, Uploads must be no larger than 50MB(compressed).</li>
+<li>Compute resource : You can set your memory in 64MB increments from 128MB to 1.5GB</li>
+</ul>
+</li>
+<li><p>Elastic Load Balancers</p>
+<ul>
+<li>Instances monitored by ELB are reported as:<ul>
+<li>InService</li>
+<li>OutOfService</li>
+</ul>
+</li>
+<li>Health Checks check the instance health by talking to it</li>
+<li>Have their own DNS name. You are never given an IP address.</li>
+<li>Classic Load Balancer FAQ</li>
+</ul>
+</li>
+<li><p>SDK Tips</p>
+<ul>
+<li>Available SDK<ul>
+<li><a href="https://aws.amazon.com/tools/" target="_blank" rel="external">https://aws.amazon.com/tools/</a></li>
+<li>Android, iOS, JavaScript(Browser)</li>
+<li>Java</li>
+<li>.Net</li>
+<li>Node.js</li>
+<li>PHP</li>
+<li>Python</li>
+<li>Ruby</li>
+<li>Go</li>
+<li>C++</li>
+</ul>
+</li>
+<li>Default Region - US-EAST-1<ul>
+<li>Some have default regions(Java)</li>
+<li>Some do not (Node.js)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="S3"><a href="#S3" class="headerlink" title="S3"></a>S3</h4><ul>
+<li><p>Exam Tips</p>
+<ul>
+<li>Remember that S3 is Object based i.e. allows you to upload files.</li>
+<li>File can be from 0 Bytes to 5TB.</li>
+<li>There is unlimited storage.</li>
+<li>Files are stored in Buckets.</li>
+<li>S3 is a universal namespace, that is, names must be unique globally.</li>
+<li><a href="https://s3-eu-west-1.amazonaws.com/acloudguru" target="_blank" rel="external">https://s3-eu-west-1.amazonaws.com/acloudguru</a></li>
+<li>Read after Write consistency for PUTS of new Objects</li>
+<li>Eventual Consistency for overwrite PUTS and DELETS (can take some time to propagate)</li>
+<li>Object based storage only ( for files)</li>
+<li><strong>Not suitable to install an operating system on.</strong></li>
+<li>You can insert a presigned url into a webpage to download private data directly from S3.</li>
+</ul>
+</li>
+<li><p>S3 object consist of:</p>
+<ul>
+<li>Key (This is simply the name of the object)</li>
+<li>Value (This is simply the data and is made up of a sequence of bytes)</li>
+<li>Version ID (Important for versioning)</li>
+<li>Metadata (Data about the data you are storing)</li>
+<li>Subresources<ul>
+<li>Access control lists</li>
+<li>Torrent</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>S3 The Basics</p>
+<ul>
+<li>Built for 99.99 availability for the S3 platform.</li>
+<li>Amazon Guarantee 99.9% availability</li>
+<li>Amazon Guarantees 99.999999999% durability for S3 information. ( Remember 11x9’s)</li>
+<li>Tiered Storage Available</li>
+<li>Lifecycle Management</li>
+<li>Versioning</li>
+<li>Encryption</li>
+<li>Secure your data using Access Control Lists and Bucket Policies</li>
+</ul>
+</li>
+<li><p>S3 Storage Classes/Tiers</p>
+<ul>
+<li>S3 (durable, immediately available, frequently accessed)<ul>
+<li>99.99% availability, 99.999999999% durability, stored redundantly across multiple devices in multiple facilities and is designed to sustain the loss of 2 facilities concurrently.</li>
+</ul>
+</li>
+<li>S3 - IA (durable, immediately available, infrequently accessed)<ul>
+<li>For data that is accessed less frequently, but requires rapid access when needed. Lower fee than S3, but you are charged a retrieval fee.</li>
+</ul>
+</li>
+<li>S3 - Reduced Redundancy Storage (data that is easily reproducible, such as thumb nails etc).<ul>
+<li>Designed to provide 99.99% durability and 99.99% availability of objects over a given year.</li>
+</ul>
+</li>
+<li>Glacier - Archived data, where you can wait 3 -5 hours before accessing.</li>
+<li>S3 Storage Tier<br><img src="/images/AWS/Developer/s3_storage_tier.jpg" alt="s3_storage_tier"></li>
+<li>S3 vs Glacier<br><img src="/images/AWS/Developer/s3_vs_glacier.jpg" alt="s3_vs_glacier"></li>
+</ul>
+</li>
+<li><p>S3 Charges</p>
+<ul>
+<li>Storage</li>
+<li>Requests</li>
+<li>Storage Management Pricing</li>
+<li>Data Transfer Pricing</li>
+<li>Transfer Acceleration</li>
+</ul>
+</li>
+<li><p>S3 - Versioning</p>
+<ul>
+<li>Stores all versions of an object (including all writes and even if you delete an object)</li>
+<li>Great backup tool.</li>
+<li>Once enabled, Versioning cannot be disabled, only suspended.</li>
+<li>Integrates with Lifecycle rules.</li>
+<li>Versioning’s MFA Delete capability, which uses multi-factor authentication, can be used to provide an additional layer of security.</li>
+<li>Cross Region Replication, requires versioning enabled on the source bucket.</li>
+<li>Any objects uploaded prior to versioning will have the version ID as NULL</li>
+</ul>
+</li>
+<li><p>Cross Region Replication</p>
+<ul>
+<li>Versioning must be enabled on both the source and destination buckets.</li>
+<li>Regions must be unique.</li>
+<li>Files in an existing bucket are not replicated automatically. All subsequent updated files will be replicated automatically.</li>
+<li>You cannot replicate to multiple buckets of use daisy chaining (at this time).</li>
+<li>When delete object, the delete markers are replicated.</li>
+<li>Deleting individual versions or delete markers will not be replicated.</li>
+</ul>
+</li>
+<li><p>Lifecycle Management</p>
+<ul>
+<li>Can be used in conjunction with versioning.</li>
+<li>Can be applied to current versions and previous versions.</li>
+<li>Following actions can now be done:<ul>
+<li>Transition to the Standard - Infrequent Access Storage Class(128Kb and 30 days after the creation date).</li>
+<li>Archive to the Glacier Storage Class (30 days after IA, if relevant)</li>
+<li>Permanently Delete</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>CloudFront</p>
+<ul>
+<li>Edge Location - This is the location where content will be cached. This is separate to an AWS Region/AZ</li>
+<li>Origin - This is the origin of all the files that the CDN will distribute. This can be either an S3 Bucket, an EC2 Instance, an Elastic Load Balancer or Route53.</li>
+<li>Distribution - This is the name given the CDN which consists of a collection of Edge Locations.<ul>
+<li>Web Distribution - Typically used for Websites.</li>
+<li>RTMP - Used for Media Streaming.</li>
+</ul>
+</li>
+<li>Edge locations are not just READ only, you can write to them too. (ie put an object on to them)</li>
+<li>Objects are cached for the life of the TTL (Time To Live)</li>
+<li>You can clear cached objects, but you will be charged.</li>
+<li>Restrict viewer access by signed URL or Signed Cookies</li>
+<li>Restrict content based on geo location(whitelist and blacklist)</li>
+</ul>
+</li>
+<li><p>Securing your buckets</p>
+<ul>
+<li>By default, all newly created buckets are PRIVATE</li>
+<li>You can setup access control to your buckets using:<ul>
+<li>Bucket Policies</li>
+<li>Access Control Lists</li>
+</ul>
+</li>
+<li>S3 buckets can be configured to create access logs which log all requests made to the S3 bucket. This can be done to another bucket.</li>
+</ul>
+</li>
+<li><p>Encryption</p>
+<ul>
+<li>In Transit:<ul>
+<li>SSL/TLS</li>
+</ul>
+</li>
+<li>At Rest<ul>
+<li>Server Side Encryption<ul>
+<li>S3 Managed Keys - SSE-S3</li>
+<li>AWS Key Management Service, Managed Keys - SSE-KMS</li>
+<li>Server Side Encryption With Customer Provided Keys - SSE-C</li>
+</ul>
+</li>
+<li>Client Side Encryption</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Storage Gateway</p>
+<ul>
+<li>File Gateway - For flat files, stored directly on S3.<ul>
+<li>NFS</li>
+<li>Unlimited amount of storage. However maximal file size is 5TB.</li>
+</ul>
+</li>
+<li>Volume Gateway<ul>
+<li>Stored Volumes - Entire Dataset is stored on site and is asynchronously backed up to S3.<ul>
+<li>iSCSI based block storage</li>
+<li>Each Volume can store up to 16TB in Size.</li>
+<li>32 Volumes supported. 512TB of data can be stored (32*16)</li>
+</ul>
+</li>
+<li>Cached Volumes - Entire Dataset is stored on S3 and the most frequently accessed data is cache on site.<ul>
+<li>iSCSI based block storage</li>
+<li>Each Volume can store up to 32TB in Size.</li>
+<li>32 Volumes supported. 1PB of data can be stored(32*32)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Gateway Virtual Tape Library (VTL)<ul>
+<li>Used for backup and uses popular backup applications like NetBackup, Backup Exec, Veam etc<ul>
+<li>iSCSI based virtual tape solution</li>
+<li>Virtual Tape Library (S3) 1500 virtual tapes (1PB)</li>
+<li>Virtual Tape Shelf (Glacier) unlimited tapes.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Storage Gateway - General Facts</p>
+<ul>
+<li>Can be deployed on-premise, or as an EC2 instance.</li>
+<li>Can schedule snapshots.</li>
+<li>You can use Storage Gateway with Direct Connect.</li>
+<li>You can implement bandwidth throttling.</li>
+<li>On-Premise needs with either Vmware’s ESXi or Hyper-V.</li>
+<li>Hardware Requirements:<ul>
+<li>4 or 8vCPUs</li>
+<li>7.5 GB of RAM</li>
+<li>75 GB for installation of VM image and system data</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Storage Gateway - Storage Requirements</p>
+<ul>
+<li>For gateway-cached volume configuration, you will need storage for the local cache and an upload buffer.</li>
+<li>For gateway-stored volume configuration, you will need storage for your entire dataset and an upload buffer. Gateway-stored volumes can range from 1GiB to 1 TB. Each gateway configured for gateway-stored volumes can support up to 12 volumes and a total volume storage of 16TB.</li>
+<li>For gateway-VTL configuration, you will need storage for the local cache and an upload buffer.</li>
+</ul>
+</li>
+<li><p>Storage Gateway - Networking Requirements</p>
+<ul>
+<li>Open port 443 on your firewalls.</li>
+<li>Internally, you will need to allow port 80 (activation only), port 3260 (by local systems to connect to iSCSI targets exposed by the gateway) and port UDP 53 (DNS)</li>
+</ul>
+</li>
+<li><p>Storage Gateway - Encryption</p>
+<ul>
+<li>Data in transit is secured using SSL</li>
+<li>Data at rest can be encrypted using AES-256</li>
+</ul>
+</li>
+<li><p>Gateway-Cached and Gateway-Stored Volumes</p>
+<ul>
+<li>You can take point-in-time, incremental snapshots of your volume and store them in Amazon S3 in the form of Amazon EBS snapshots.</li>
+<li>Snapshots can be initiated on a scheduled or ad-hoc basis.</li>
+<li>Gateway Stored Snapshots<ul>
+<li>If your volume data is stored on-premises, snapshots provide durable, off-site backups in Amazon S3.</li>
+<li>You can create a new Gateway-Stored volume from a snapshot in the event you need to recover a backup.</li>
+<li>You can also use a snapshot of your Gateway-Stored volume as the starting point for a new Amazon EBS volume which you can then attach to an Amazon EC2 instance.</li>
+</ul>
+</li>
+<li>Gateway Cached Snapshots<ul>
+<li>Snapshots can be used to preserve versions of your data, allowing you to revert to a prior version when required or to repurpose a point-in-time version as a new Gateway-Cached volume.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Gateway-Virtual Tape Library Retrieval<br>  The virtual tape containing your data must be stored in a Virtual Tape Library before it can be accessed. Access to virtual tapes in your Virtual Tape Library is <strong>instantaneous</strong>.</p>
+<p>  If the virtual tape containing your data is in your Virtual Tape Shelf, you must first retrieve the virtual tape from your Virtual Tape Shelf. It takes about <strong>24 Hours</strong> for the retrieved virtual tape to be available in the selected Virtual Tape Library.</p>
+</li>
+<li><p>Gateway-Virtual Tape Library Supports</p>
+<ul>
+<li>Symantec NetBackup version 7.x</li>
+<li>Symantec Backup Exec 2012</li>
+<li>Symantec Backup Exec 2014</li>
+<li>Symantec Backup Exec 15</li>
+<li>Microsoft System Center 2012 R2 Data Protection Manager</li>
+<li>Veeam Backup &amp; Replication V7</li>
+<li>Veeam Backup &amp; Replication V8</li>
+<li>Dell NetVault Backup 10.0</li>
+</ul>
+</li>
+<li><p>Storage Gateway Exam Tips</p>
+<ul>
+<li>Know the four different Storage Gateway Types:<ul>
+<li>File Gateway</li>
+<li>Volume Gateway<ul>
+<li>Cached - OLD NAME (Gateway-Cached Volumes)</li>
+<li>Stored - OLD NAME (Gateway-Stored Volumes)</li>
+</ul>
+</li>
+<li>Tape Gateway - OLD NAME (Gateway-Virtual Tape Library)</li>
+</ul>
+</li>
+<li>Remember that access to virtual tapes in your virtual tape library are instantaneous. If your tape is in the virtual tape shelf(glacier) it can take 24 hours to get back to your virtual tape library.</li>
+<li>Encrypted using SSL for transit and is encrypted at rest in Amazon S3 using AES-256.</li>
+<li>Gateway-Stored Volumes - stores data as Amazon EBS Snapshots in S3.</li>
+<li>Snapshot can be scheduled.</li>
+<li>Bandwidth can be throttled (good for remote sites)</li>
+<li>You need a storage gateway in each site if using multiple locations.</li>
+</ul>
+</li>
+<li><p>Snowball</p>
+<ul>
+<li>Types<ul>
+<li>Snowball</li>
+<li>Snowball Edge</li>
+<li>Snowmobile</li>
+</ul>
+</li>
+<li>Understand what Snowball is</li>
+<li>Understand what Import Export is</li>
+<li>Snowball Can<ul>
+<li>Import to S3</li>
+<li>Export from S3</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Import/Export</p>
+<ul>
+<li>Import/Export Disk<ul>
+<li>Import to S3, EBS, Glacier</li>
+<li>export from S3</li>
+</ul>
+</li>
+<li>Import/Export Snowball<ul>
+<li>Import to S3</li>
+<li>Export to S3</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>S3 Transfer Acceleration</p>
+<ul>
+<li>You can speed up transfers to S3 using S3 transfer acceleration. This costs extra, and has the greatest impact on people who are in for away location.</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>S3 static Websites</p>
+<ul>
+<li>You can use S3 to host static websites</li>
+<li>Serverless</li>
+<li>Very cheap, scales automatically.</li>
+<li>STATIC only, cannot host dynamic sites.</li>
+<li>Website url example: <a href="http://examplebucket.s3-website-us-west-2.amazonaws.com/" target="_blank" rel="external">http://examplebucket.s3-website-us-west-2.amazonaws.com/</a></li>
+</ul>
+</li>
+<li><p>S3 CORS</p>
+<ul>
+<li>Cross Origin Resource Sharing</li>
+<li>Need to enable it on the resources bucket and state the URL for the origin that will be calling the bucket.</li>
+<li><a href="http://mybucketname.s3-website.en-west-2.amazonaws.com" target="_blank" rel="external">http://mybucketname.s3-website.en-west-2.amazonaws.com</a></li>
+<li><a href="https://s3.eu-west-2.amazonaws.com/mybucketname" target="_blank" rel="external">https://s3.eu-west-2.amazonaws.com/mybucketname</a></li>
+</ul>
+</li>
+<li><p>S3 multipart upload advantages</p>
+<ul>
+<li>Improved throughput - You can upload parts in parallel to improve throughput.</li>
+<li>Quick recovery from any network issues - Smaller part size minimizes the impact of restarting a failed upload due to a network error.</li>
+<li>Pause and resume object uploads - You can upload object parts over time. Once you initiate a multipart upload there is no expiry; you must explicitly complete or abort the multipart upload.</li>
+<li>Begin an upload before you know the final object size - You can upload an object as you are creating it.</li>
+</ul>
+</li>
+<li><p>Last Few Tips</p>
+<ul>
+<li>Write to S3 - HTTP 200 code for a successful write.</li>
+<li>You can load files to S3 much faster by enabling multipart upload.</li>
+<li>Read the S3 FAQ before taking the exam. It comes up A LOT!</li>
+<li>S3 bucket name rules<ul>
+<li>Bucket names must be at least 3 and no more than 63 characters long</li>
+<li>Bucket names must be a series of one or more labels. Adjacent labels are separated by a single period (.). Bucket names can contain lowercase letters, numbers, and hyphens. Each label must start and end with a lowercase letter or a number (可以有多个lable，每个lable使用.分割，每个lable中只能包含小写字母，数字和连字符-， lable首尾必须要是小写字母或者数字)</li>
+<li>Bucket names must not be formatted as an IP address (e.g., 192.168.5.4).</li>
+<li>When using virtual hosted–style buckets with SSL, the SSL wildcard certificate only matches buckets that do not contain periods. To work around this, use HTTP or write your own certificate verification logic. We recommend that you do not use periods (“.”) in bucket names.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="Database"><a href="#Database" class="headerlink" title="Database"></a>Database</h4><ul>
+<li><p>Database component</p>
+<ul>
+<li>Database</li>
+<li>Tables</li>
+<li>Row</li>
+<li>Fields(Columns)</li>
+</ul>
+</li>
+<li><p>RDS Types</p>
+<ul>
+<li>SQL Server</li>
+<li>Oracle</li>
+<li>MySQL Server</li>
+<li>PostgreSQL</li>
+<li>Aurora</li>
+<li>MariaDB</li>
+</ul>
+</li>
+<li><p>Non Relational Databases</p>
+<ul>
+<li>Database<ul>
+<li>Collection        = Table</li>
+<li>Document          = Row</li>
+<li>Key Value Pairs   = Fields</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Data Warehousing</p>
+<ul>
+<li>Used for business intelligence. Tools like Cognos, Jaspersoft, SQL Server Reporting Services, Oracle Hyperion, SAP NetWeaver.</li>
+<li>Used to pull in very large and complex data sets. Usually used by management to do queries on data ( such as current performance vs targets etc)</li>
+</ul>
+</li>
+<li><p>OLTP vs OLAP</p>
+<ul>
+<li>Online Transaction Processing (OLTP) differs from Online Analytics Processing (OLAP) in terms of the types of queries run.</li>
+<li>OLTP Example:<br>  Order number 2120212<br>  Pulls up a row of data such as Name, Date, Address to Deliver to, Delivery Status etc.</li>
+<li><p>OLAP transaction Example:<br>  Net profit for EMEA and Pacific for the Digital Radio Product.<br>  Pulls in large numbers of records</p>
+<p>  Sum of Radios Sold in EMEA<br>  Sum of Radios Sold in Pacific<br>  Unit Cost of Radio in each region<br>  Sales price of each radio<br>  Sales price - unit cost.</p>
+<p>  Data Warehousing databases use different type of architecture both from a database perspective and infrastructure layer.</p>
+</li>
+</ul>
+</li>
+<li><p>Elasticache</p>
+<ul>
+<li>Elastic Cache is a web service that makes it easy to deploy, operate, and scale an in-memory cache in the cloud. The service improves the performance of web applications by allowing you to retrieve information from fast, managed, in-memory caches, instead of relying entirely on slower disk-based databases.</li>
+<li>ElastiCache supports two open-source in-memory caching engines:<ul>
+<li>Memcached</li>
+<li>Redis</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>DMS</p>
+<ul>
+<li>Announced at re:Invent 2015, DMS stands for Database Migration Service. Allows you to migrate your production database to AWS. Once the migration has started, AWS manages all the complexities of the migration process like data type transformation, compression, and parallel transfer ( for faster data transfer) while ensuring that data changes to the source database that occur during the migration process are automatically replicated to the target.</li>
+<li>AWS schema conversion tool automatically converts the source database schema and a majority of the custom code, including views, stored procedures, and functions, to a format compatible with the target database.</li>
+</ul>
+</li>
+<li><p>Database Summary</p>
+<ul>
+<li>RDS -OLTP<ul>
+<li>SQL</li>
+<li>MySQL</li>
+<li>PostgreSQL</li>
+<li>Oracle</li>
+<li>Aurora</li>
+<li>MariaDB</li>
+</ul>
+</li>
+<li>DynamoDB - No SQL</li>
+<li>Redshift - OLAP</li>
+<li>Elasticache - In Memory Caching.<ul>
+<li>Memcached</li>
+<li>Redis</li>
+</ul>
+</li>
+<li>DMS</li>
+</ul>
+</li>
+</ul>
+<h4 id="DynamoDB"><a href="#DynamoDB" class="headerlink" title="DynamoDB"></a>DynamoDB</h4><ul>
+<li>Quick Facts about DynameDB<ul>
+<li>Stored on SSD Storage</li>
+<li>Spread Across 3 geographically distinct data centers</li>
+<li>Eventual Consistent Reads (Default)<ul>
+<li>Consistency across all copies of data is usually reached within a second. Repeating a read after a short time should return the updated data. (Best Read Performance)</li>
+</ul>
+</li>
+<li>Strongly Consistent Reads<ul>
+<li>A strongly consistent read returns a result that reflects all writes that received a successful response prior to the read.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>The Basic</p>
+<ul>
+<li>Tables</li>
+<li>Items ( Think a row of data in table)</li>
+<li>Attributes (Think of a column of data in a table)</li>
+</ul>
+</li>
+<li><p>Pricing</p>
+<ul>
+<li>Provisioned Throughput Capacity<ul>
+<li>Write Throughput $0.0065 per hour for every 10 units</li>
+<li>Read Throughput $0.0065 per hour for every 50 units</li>
+</ul>
+</li>
+<li>First 25 GB stored per month is free</li>
+<li>Storage costs of $0.25 GB per month there after.</li>
+</ul>
+</li>
+<li><p>Primary Keys</p>
+<ul>
+<li>Two Types of Primary Keys Available<ul>
+<li>Single Attribute (think unique ID)<ul>
+<li>Partition Key (Hash Key) composed of one attribute.</li>
+</ul>
+</li>
+<li>Composite (think unique ID and a data range)<ul>
+<li>Partition Key &amp; Sort Key (Hash &amp; Range) composed of two attributes.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Partition Key and Sort Key<ul>
+<li>DynamoDB uses the partition key’s value as input to an internal hash function. The output from the hash function determines the partition (this is simply the physical location in which the data is stored)</li>
+<li>Two items can have the same partition key, but they <strong>must have a different sort key</strong>.</li>
+<li>All items with the same partition key are stored together, in sorted order by sort key value.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>DynamoDB - Indexes</p>
+<ul>
+<li>Local Secondary Index<ul>
+<li>Has the SAME Partition key, different sort key.</li>
+<li>Can ONLY be created when creating a table. They cannot be removed or modified later.</li>
+</ul>
+</li>
+<li>Global Secondary Index<ul>
+<li>Has DIFFERENT Partition key and different sort key.</li>
+<li>Can be created at table creation or added LATER.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>DynamoDB Streams<br>Used to capture any kind of modification of the DynamoDB tables.</p>
+<ul>
+<li>If a new item is added to the table, the stream captures an image of the entire item, including all of its attributes.</li>
+<li>If an item is updated, the stream captures the “before” and “after” image of any attributes that were modified in the item.</li>
+<li>If an item is deleted from the table, the stream captures an image of the entire item before it was deleted</li>
+</ul>
+</li>
+<li><p>Query &amp; Scans</p>
+<ul>
+<li>Query<ul>
+<li>A Query operation finds items in a table using only primary key attribute values. You must provide a partition key attribute name and a distinct value to search for.</li>
+<li>You can optionally provide a sort key attribute name and value, and use a comparison operator to refine the search results.</li>
+<li>A Scan operation examines every item in the table. By default, a Scan returns all of the data attributes for every item; however, you can use the <strong>ProjectionExpression</strong> parameter so that the Scan only returns some of the attributes, rather than all of them.</li>
+<li>Query results are always sorted by the sort key. If the data type of the sort key is a number, the results are returned in numeric order; otherwise, the results are returned in order of ASCII character code values. By default, the sort order is ascending. To reverse the order, set the <strong>ScanIndexForward</strong> parameter to false.</li>
+<li>By Default is eventually consistent but can be changed to be strongly consistent.</li>
+</ul>
+</li>
+<li>Scan<ul>
+<li>A Scan operation examines every item in the table. By default, a Scan returns all of the data attributes for every item; however, you can use the <strong>ProjectionExpression</strong> parameter so that the Scan only returns some of the attributes, rather than all of them.</li>
+</ul>
+</li>
+<li>Try to use a query operation over a Scan operation as it is more efficient.</li>
+</ul>
+</li>
+<li><p>DynamoDB Provisioned Throughput</p>
+<ul>
+<li>One read capacity unit represents one strongly consistent read per second, or two eventually consistent reads per second, for an item up to 4 KB in size</li>
+<li>One write capacity unit represents one write per second for an item up to 1 KB in size</li>
+<li><strong>400 HTTP Status Code - ProvisionedThroughputExceededException</strong> indicated You exceeded your maximum allowed provisioned throughput for a table or for one or more global secondary indexes.</li>
+<li>Example</li>
+</ul>
+</li>
+<li><p>Step taken to authenticate</p>
+<ul>
+<li>User Authenticates with ID provider (such as Facebook)</li>
+<li>They are passed a Token by their ID provider.</li>
+<li>Your code calls <strong>AssumeRoleWithWebIdentity</strong> API and provides the providers token and specifies the ARN for the IAM Role</li>
+<li>App can now access Dynamodb from between 15 minutes to 1 hour (default is 1 hour)</li>
+</ul>
+</li>
+<li><p>Conditional Writes<br>IF item = $10 then update to $12</p>
+<ul>
+<li>The conditional writes are idempotent</li>
+<li>You can send the same conditional write request multiple times, but it will have no further effect on the item after the first time DynamoDB performs the specified update.</li>
+</ul>
+</li>
+<li><p>Atomic Counters</p>
+<ul>
+<li>DynamoDB supports atomic counters</li>
+<li>use the <strong>UpdateItem</strong> operation to increment or decrement the value of an existing attribute without interfering with other write requests.</li>
+<li>All write requests are applied in the order in which they were received</li>
+</ul>
+</li>
+<li><p>Batch Operations<br>If you application needs to read multiple items, you can use the <strong>BatchGetItem</strong> API. A single <strong>BatchGetItem</strong> request can retrieve up to 16 MB of data, which can contain as many as 100 items. In addition, a single BatchGetItem request can retrieve items from multiple tables.</p>
+</li>
+<li><p>DynamoDB的操作</p>
+<ul>
+<li>DynamoDB的插入操作<ul>
+<li>PutItem</li>
+<li>BatchWriteItem (<strong>记住并没有BatchPutItem这种操作</strong>)</li>
+</ul>
+</li>
+<li>DynamoDB的检索操作<ul>
+<li>GetItem</li>
+<li>BatchGetItem</li>
+<li>Query API</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Dynamodb limit</p>
+<ul>
+<li>maximum 5 local secondary index per table</li>
+<li>maximum 5 global secondary index per table</li>
+<li>default provision throughput (Account can increase them by contacting AWS)<ul>
+<li>US East (N. Virginia) Region<ul>
+<li>Per table – 40,000 read capacity units and 40,000 write capacity units</li>
+<li>Per account – 80,000 read capacity units and 80,000 write capacity units</li>
+</ul>
+</li>
+<li>All Other Regions<ul>
+<li>Per table – 10,000 read capacity units and 10,000 write capacity units</li>
+<li>Per account – 20,000 read capacity units and 20,000 write capacity units</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>No table size limit</li>
+<li>There is an initial limit of 256 tables per region.</li>
+<li>Maximum item size is 400KB(包括属性名称和属性值)</li>
+<li>No limit on the number of attributes of a item, but the size of item can’t exceed 400KB</li>
+<li>BatchGetItem - A single BatchGetItem operation can retrieve a maximum of 100 items. The total size of all the items retrieved cannot exceed 16 MB</li>
+<li>Query - The result set from a Query is limited to 1 MB per call</li>
+<li>Scan - The result set from a Scan is limited to 1 MB per call</li>
+<li>The smallest Reserved Capacity offering is 100 Capacity units(reads or writes)</li>
+</ul>
+</li>
+<li><p><strong>Read The FAQ!!!</strong></p>
+</li>
+</ul>
+<h4 id="SQS"><a href="#SQS" class="headerlink" title="SQS"></a>SQS</h4><ul>
+<li>SQS usage example<ul>
+<li>Asynchronously pulls the task messages from the queue</li>
+<li>Retrieves the named file</li>
+<li>Processes the conversion</li>
+<li>Writes the image back to Amazon S3</li>
+<li>Writes a “task complete” message to another queue</li>
+<li>Deletes the original task message</li>
+<li>Checks for more messages in the worker queue</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>SQS Tips</p>
+<ul>
+<li>Does not offer FIFO</li>
+<li>12 hours visibility time out</li>
+<li>Amazon SQS is engineered to provide “at least once” delivery of all messages in its queues. Although most of the time each message will be delivered to your application exactly once, you should design your system so that processing a message more than once does not create any errors or inconsistencies.</li>
+<li>256kb message size now available</li>
+<li>Billed at 64kb “Chunks”</li>
+<li>A 256kb message will be 4*64kb “chunks”</li>
+<li>You can create any number of message queues.</li>
+</ul>
+</li>
+<li><p>SQS Pricing</p>
+<ul>
+<li>First 1 million Amazon SQS requests per month are free</li>
+<li>$0.05 per 1 million Amazon SQS Requests per month thereafter ($0.00000050 per SQS Request)</li>
+<li>A single request can have from 1 to 10 messages, up to a maximum total payload of 256KB.</li>
+<li>Each 64KB ‘chunk’ of payload is billed as 1 request. For example, a single API call with a 256KB payload will be billed as four requests.</li>
+</ul>
+</li>
+<li><p>SQS Delivery</p>
+<ul>
+<li>SQS messages can be delivered multiple times and in any order.</li>
+</ul>
+</li>
+<li><p>SQS Default Visibility Time Out</p>
+<ul>
+<li>Default Visibility Time Out is 30 Seconds</li>
+<li>Maximum Time Out is 12 Hours</li>
+<li>When you receive a message from a queue and begin processing it, you may find the visibility timeout for the queue is insufficient to fully process and delete that message. To give yourself more time to process the message, you can extend its visibility timeout by using the <strong>ChangeMessageVisibility</strong> action to specify a new timeout value. Amazon SQS restarts the timeout period using the new value.</li>
+</ul>
+</li>
+<li><p>SQS Long Polling</p>
+<ul>
+<li>SQS long polling is a way to retrieve messages from your SQS queues. While the traditional SQS short polling returns immediately, even if the queue being polled is empty, SQS long polling doesn’t return a response until a message arrives in the queue, or the long poll times out. SQS long polling makes it easy and inexpensive to retrieve messages from your SQS queue as soon as they are available.</li>
+<li>Maximum Long Poll Time Out = 20 seconds</li>
+<li>队列属性<strong>ReceiveMessageWaitTimeSeconds</strong>设置为1~20的数字，在队列中启动长轮询</li>
+<li>单个ReveiveMessge的请求中将WaitTimeSeconds设置为1~20的数字</li>
+</ul>
+</li>
+<li><p>SQS Fanning Out</p>
+<ul>
+<li>Create an SNS topic first using SNS. Then create and subscribe multiple SQS queues to the SNS topic.</li>
+<li>Now whenever a message is sent to the SNS topic, the message will be fanned out to the SQS queues, i.e. SNS will deliver the message to all the SQS queues that are subscribed to the topic.</li>
+</ul>
+</li>
+</ul>
+<h4 id="SNS"><a href="#SNS" class="headerlink" title="SNS"></a>SNS</h4><ul>
+<li><p>SNS Benefits</p>
+<ul>
+<li>Instantaneous, push-based delivery (no polling)</li>
+<li>Simple APIs and easy integration with applications</li>
+<li>Flexible message delivery over multiple transport protocols</li>
+<li>Inexpensive, pay-as-you-go model with no up-front costs</li>
+<li>Web-based AWS Management Console offers the simplicity of a point-and-click interface</li>
+</ul>
+</li>
+<li><p>SNS vs SQS</p>
+<ul>
+<li>Both Messaging Services in AWS</li>
+<li>SNS - Push</li>
+<li>SQS - Polls (Pulls)</li>
+</ul>
+</li>
+<li><p>SNS Pricing</p>
+<ul>
+<li>Users pay $0.50 per 1 million Amazon SNS Requests</li>
+<li>$0.06 per 100,000 Notification deliveries over HTTP</li>
+<li>$0.75 per 100 Notification deliveries over SMS</li>
+<li>$2.00 per 100,000 Notification deliveries over Email</li>
+</ul>
+</li>
+<li><p>SNS Summary</p>
+<ul>
+<li>Instantaneous, push-bashed delivery (no polling)</li>
+<li>Protocols include:<ul>
+<li>HTTP</li>
+<li>HTTPS</li>
+<li>Email</li>
+<li>Email-JSON</li>
+<li>Amazon SQS</li>
+<li>Application</li>
+<li>AWS Lambda</li>
+<li>SMS</li>
+</ul>
+</li>
+<li>Messages can be customized for each protocol</li>
+</ul>
+</li>
+<li><p>Valid arguments for an SNS Publish request</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">POST / HTTP/1.1</div><div class="line">x-amz-sns-message-type: SubscriptionConfirmation</div><div class="line">x-amz-sns-message-id: 165545c9-2a5c-472c-8df2-7ff2be2b3b1b</div><div class="line">x-amz-sns-topic-arn: arn:aws:sns:us-west-2:123456789012:MyTopic</div><div class="line">Content-Length: 1336</div><div class="line">Content-Type: text/plain; charset=UTF-8</div><div class="line">Host: myhost.example.com</div><div class="line">Connection: Keep-Alive</div><div class="line">User-Agent: Amazon Simple Notification Service Agent</div><div class="line"></div><div class="line">&#123;</div><div class="line">  &quot;Type&quot; : &quot;SubscriptionConfirmation&quot;,</div><div class="line">  &quot;MessageId&quot; : &quot;165545c9-2a5c-472c-8df2-7ff2be2b3b1b&quot;,</div><div class="line">  &quot;Token&quot; : &quot;2336412f37fb687f5d51e6e241d09c805a5a57b30d712f794cc5f6a988666d92768dd60a747ba6f3beb71854e285d6ad02428b09ceece29417f1f02d609c582afbacc99c583a916b9981dd2728f4ae6fdb82efd087cc3b7849e05798d2d2785c03b0879594eeac82c01f235d0e717736&quot;,</div><div class="line">  &quot;TopicArn&quot; : &quot;arn:aws:sns:us-west-2:123456789012:MyTopic&quot;,</div><div class="line">  &quot;Message&quot; : &quot;You have chosen to subscribe to the topic arn:aws:sns:us-west-2:123456789012:MyTopic.\nTo confirm the subscription, visit the SubscribeURL included in this message.&quot;,</div><div class="line">  &quot;SubscribeURL&quot; : &quot;https://sns.us-west-2.amazonaws.com/?Action=ConfirmSubscription&amp;TopicArn=arn:aws:sns:us-west-2:123456789012:MyTopic&amp;Token=2336412f37fb687f5d51e6e241d09c805a5a57b30d712f794cc5f6a988666d92768dd60a747ba6f3beb71854e285d6ad02428b09ceece29417f1f02d609c582afbacc99c583a916b9981dd2728f4ae6fdb82efd087cc3b7849e05798d2d2785c03b0879594eeac82c01f235d0e717736&quot;,</div><div class="line">  &quot;Timestamp&quot; : &quot;2012-04-26T20:45:04.751Z&quot;,</div><div class="line">  &quot;SignatureVersion&quot; : &quot;1&quot;,</div><div class="line">  &quot;Signature&quot; : &quot;EXAMPLEpH+DcEwjAPg8O9mY8dReBSwksfg2S7WKQcikcNKWLQjwu6A4VbeS0QHVCkhRS7fUQvi2egU3N858fiTDN6bkkOxYDVrY0Ad8L10Hs3zH81mtnPk5uvvolIC1CXGu43obcgFxeL3khZl8IKvO61GWB6jI9b5+gLPoBc1Q=&quot;,</div><div class="line">  &quot;SigningCertURL&quot; : &quot;https://sns.us-west-2.amazonaws.com/SimpleNotificationService-f3ecfb7224c7233fe7bb5f59f96de52f.pem&quot;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>SNS limit</p>
+<ul>
+<li>Topic names are limited to 256 characters.</li>
+<li>Token included in the confirmation message sent to end-points on a subscription request are valid for 3 days.</li>
+</ul>
+</li>
+</ul>
+<h4 id="SWF"><a href="#SWF" class="headerlink" title="SWF"></a>SWF</h4><ul>
+<li>SWF worker<ul>
+<li>Workers are programs that interact with Amazon SWF to get tasks, process received tasks, and return the results.</li>
+</ul>
+</li>
+<li>SWF Decider<ul>
+<li>The Decider is a program that controls the coordination of tasks, i.e. their ordering, concurrency, and scheduling according to the application logic.</li>
+</ul>
+</li>
+<li>SWF Workers &amp; Deciders<ul>
+<li>The workers and the decider can run on cloud infrastructure, such as Amazon EC2, or on machines behind firewalls. Amazon SWF brokers the interactions between workers and the decider. It allows the decider to get consistent views into the progress of tasks and to initiate new tasks in an ongoing manner. At the same time, Amazon SWF stores tasks, assigns them to workers when they are ready, and monitors their progress. It ensures that a task is assigned only once and is never duplicated. Since Amazon SWF maintains the application’s state durably, workers and deciders don’t have to keep track of execution state. They can run independently and scale quickly.</li>
+</ul>
+</li>
+<li>SWF Domains<ul>
+<li>Your workflow and activity types and the workflow execution itself are all scoped to a domain. Domains isolate a set of types, executions, and task lists from others within the same account. You can register a domain by using the AWS Management Console or by using the RegisterDomain action in the Amazon SWF API.</li>
+<li>The parameter are specified in JavaScript Object Notation(JSON) format.<br><a href="https://swf.us-east-1.amazonaws.com" target="_blank" rel="external">https://swf.us-east-1.amazonaws.com</a><br>RetisterDomain<br>{<br>  “name” : “1234567”,<br>  “description” : “music”,<br>  “workflowExecutionRetentionPeriodInDays” : “60”<br>}</li>
+</ul>
+</li>
+<li>Maximum WorkFlow can be 1 year and the value is always measured in seconds.</li>
+<li><p>SWF vs SQS</p>
+<ul>
+<li>Amazon SWF presents a task-oriented API, whereas Amazon SQS offers a message-oriented API.</li>
+<li>Amazon SWF ensures that a task is assigned only once and is never duplicated. With Amazon SQS, you need to handle duplicated messages and may also need to ensure that a message is processed only once.</li>
+<li>Amazon SWF keeps track of all the tasks and events in an application. With Amazon SQS, you need to implement your own application-level tracking especially if your application uses multiple queues.</li>
+</ul>
+</li>
+<li><p>SWF limit</p>
+<ul>
+<li>maximum number of SWF domains is 100 (includes both registered and deprecated domains)</li>
+<li>Maximum workflow and activity types - 10,000 each per domain (includes both registered and deprecated types)</li>
+<li>Maximum request size is 1 MB per request (including the request header and all other associated request data.)</li>
+<li>Maximum open workflow executions - 100,000 per domain (includes child workflow executions)</li>
+<li>Maximum workflow execution time - 1 year</li>
+<li>You can only have a maximum of 1,000 open activity tasks per workflow execution.</li>
+</ul>
+</li>
+</ul>
+<h4 id="Elastic-Beanstalk"><a href="#Elastic-Beanstalk" class="headerlink" title="Elastic Beanstalk"></a>Elastic Beanstalk</h4><ul>
+<li>Supported Application<ul>
+<li>Java</li>
+<li>.NET</li>
+<li>PHP</li>
+<li>Node.js</li>
+<li>Python</li>
+<li>Ruby</li>
+<li>Go</li>
+<li>Docker</li>
+</ul>
+</li>
+<li>Its uses ASG, ELB, EC2, RDS, SNS and S3 to provision things.</li>
+<li>Environment Tier - WebServer, Worker</li>
+<li>Preconfigured docker:<ul>
+<li>Glassfish</li>
+<li>Python</li>
+<li>Go</li>
+</ul>
+</li>
+<li>Environment URL - has to be unique</li>
+<li>Console Item<ul>
+<li>Dashboard</li>
+<li>Configuration<ul>
+<li>Scaling</li>
+<li>Instances(DIRTMCG instance types, key pair)</li>
+<li>Notifications</li>
+<li>Software configuration</li>
+<li>Updates and Deployments</li>
+<li>Health</li>
+<li>Managed Updates</li>
+<li>Networking tier(ELB, VPC)</li>
+<li>Data tier(RDS)</li>
+</ul>
+</li>
+<li>Logs</li>
+<li>Health</li>
+<li>Monitoring</li>
+<li>Alarms</li>
+<li>Managed Updates</li>
+<li>Events</li>
+<li>Tags</li>
+</ul>
+</li>
+</ul>
+<h4 id="Route53-DNS"><a href="#Route53-DNS" class="headerlink" title="Route53 DNS"></a>Route53 DNS</h4><ul>
+<li>ELB’s do not have pre-defined IPv4 addresses, you resolve to them using a DNS name.</li>
+<li>Understand the difference between an Alias Record and a CNAME</li>
+<li>Given the choice, always choose an Alias Record over a CNAME.</li>
+<li>Remember the different routing policies and their use cases.<ul>
+<li>Simple</li>
+<li>Weighted</li>
+<li>Latency</li>
+<li>Failover</li>
+<li>Geolocation</li>
+</ul>
+</li>
+</ul>
+<h4 id="VPC"><a href="#VPC" class="headerlink" title="VPC"></a>VPC</h4><ul>
+<li>Basic Info<ul>
+<li>Think of a VPC as a logical datacenter in AWS</li>
+<li>Consists of IGW’s (Or Virtual Private Gateways), Route Tables, Network Access Control Lists, Subnets, Security Groups</li>
+<li>1 Subnet = 1 Availability Zone</li>
+<li>Security Groups are Stateful, Network Access Control Lists are Stateless.</li>
+<li>Can Peer VPCs both in the same account and with other AWS accounts.</li>
+<li>No Transitive Peering</li>
+<li>Custom VPC network block size has to be between a /16 netmask and /28 netmask.</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>What can you do with a VPC<ul>
+<li>Launch instances into a subnet of your choosing</li>
+<li>Assign custom IP address ranges in each subnet</li>
+<li>Configure route tables between subnets</li>
+<li>Create internet gateway and attach it to our VPC</li>
+<li>Much better security control over your AWS resources</li>
+<li>Instance security groups</li>
+<li>Subnet network access control lists (ACLS)</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>Default VPC vs Custom VPC</p>
+<ul>
+<li>Default VPC is user friendly, allowing you to immediately deploy instances</li>
+<li>All Subnets in default VPC have a route out to the internet.</li>
+<li>Each EC2 instance has both a public and private IP address</li>
+<li>If you delete the default VPC the only way to get it back is to contact AWS.</li>
+</ul>
+</li>
+<li><p>VPC peering</p>
+<ul>
+<li>Allows you to connect one VPC with another via a direct network route using private IP addresses.</li>
+<li>Instances behave as if they were on the same private network</li>
+<li>You can peer VPC’s with other AWS accounts as well as with other VPCs in the same account.</li>
+<li>Peering is in a star configuration, ie 1 central VPC peers with 4 others, <strong>NO TRANSITIVE PEERING!!!</strong></li>
+</ul>
+</li>
+<li><p>Create VPC</p>
+<ul>
+<li>things automatically created<ul>
+<li>Route tables</li>
+<li>Network ACLs</li>
+<li>Security Groups</li>
+<li>DHCP options set</li>
+</ul>
+</li>
+<li>things are not automatically created<ul>
+<li>Internet Gateways</li>
+<li>Subnets</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>VPC Subnet</p>
+<ul>
+<li>There are 5 IP address reserved in each subnet by AWS, take CIDR block 10.0.0.0/24 as example<ul>
+<li>10.0.0.0 Network address</li>
+<li>10.0.0.1 Reserved by AWS for the VPC router</li>
+<li>10.0.0.2 Reserved by AWS for DNS</li>
+<li>10.0.0.3 Reserved by AWS for future use.</li>
+<li>10.0.0.255 Network broadcast address, we do not support broadcast in a VPC, therefore we reserve this address.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>NAT instances</p>
+<ul>
+<li>When creating a NAT instance, Disable Source/Destination Check on the Instance</li>
+<li>NAT instance must be in a public subnet</li>
+<li>Must have an elastic IP address to work</li>
+<li>There must be a route out of the private subnet to the NAT instance, in order for this to work</li>
+<li>The amount of traffic that NAT instances supports, depends on the instance size. If you are bottlenecking, increase the instance size</li>
+<li>You can create high availability using Autoscaling Groups, multiple subnets in different AZ’s and a script to automate failover</li>
+<li>Behind a Security Group.</li>
+</ul>
+</li>
+<li><p>NAT Gateways</p>
+<ul>
+<li>Very new</li>
+<li>Preferred by the enterprise</li>
+<li>Scale automatically up to 10Gbps</li>
+<li>No need to patch</li>
+<li>Not associated with security groups</li>
+<li>Automatically assigned a public ip address</li>
+<li>Remember to update your route tables.</li>
+<li>No need to disable Source/Destination Checks.</li>
+</ul>
+</li>
+<li><p>NAT instances vs NAT Gateways</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th style="text-align:left">NAT gateway</th>
+<th style="text-align:left">NAT instance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Availability</td>
+<td style="text-align:left">Highly available. NAT gateways in each Availability Zone are implemented with redundancy. Create a NAT gateway in each Availability Zone to ensure zone-independent architecture.</td>
+<td style="text-align:left">Use a script to manage failover between instances.</td>
+</tr>
+<tr>
+<td>Bandwidth</td>
+<td style="text-align:left">Supports bursts of up to 10Gbps.</td>
+<td style="text-align:left">Depends on the bandwidth of the instance type.</td>
+</tr>
+<tr>
+<td>Maintenance</td>
+<td style="text-align:left">Managed by AWS.You do not need to perform any maintenance.</td>
+<td style="text-align:left">Managed by you, for example, by installing software updates or operating system patches on the instance.</td>
+</tr>
+<tr>
+<td>Performance</td>
+<td style="text-align:left">Software is optimized for handling NAT traffic.</td>
+<td style="text-align:left">A generic Amazon Linux AMI that’s configured to perform NAT.</td>
+</tr>
+<tr>
+<td>Cost</td>
+<td style="text-align:left">Charged depending on the number of NAT gateways you use, duration of usage, and amount of data that you send through the NAT gateways.</td>
+<td style="text-align:left">Charged depending on the number of NAT instances that you use, duration of usage, and instance type and size.</td>
+</tr>
+<tr>
+<td>Type and size</td>
+<td style="text-align:left">Uniform offering; you don’t need to decide on the type or size.</td>
+<td style="text-align:left">Choose a suitable instance type and size, according to your predicted workload.</td>
+</tr>
+<tr>
+<td>Public IP addresses</td>
+<td style="text-align:left">Choose the Elastic IP address to associate with a NAT gateway at creation.</td>
+<td style="text-align:left">Use an Elastic IP address or a public IP address with a NAT instance. You can change the public IP address at any time by associating a new Elastic IP address with the instance.</td>
+</tr>
+<tr>
+<td>Private IP addresses</td>
+<td style="text-align:left">Automatically selected from the subnet’s IP address range when you create the gateway.</td>
+<td style="text-align:left">Assign a specific private IP address from the subnet’s IP address range when you launch the instance.</td>
+</tr>
+<tr>
+<td>Security groups</td>
+<td style="text-align:left">Cannot be associated with a NAT gateway. You can associate security groups with your resources behind the NAT gateway to control inbound and outbound traffic.</td>
+<td style="text-align:left">Associate with your NAT instance and the resources behind your NAT instance to control inbound and outbound traffic.</td>
+</tr>
+<tr>
+<td>Network ACLs</td>
+<td style="text-align:left">Use a network ACL to control the traffic to and from the subnet in which your NAT gateway resides.</td>
+<td style="text-align:left">Use a network ACL to control the traffic to and from the subnet in which your NAT instance resides.</td>
+</tr>
+<tr>
+<td>Flow logs</td>
+<td style="text-align:left">Use flow logs to capture the traffic.</td>
+<td style="text-align:left">Use flow logs to capture the traffic.</td>
+</tr>
+<tr>
+<td>Port forwarding</td>
+<td style="text-align:left">Not supported.</td>
+<td style="text-align:left">Manually customize the configuration to support port forwarding.</td>
+</tr>
+<tr>
+<td>Bastion servers</td>
+<td style="text-align:left">Not supported.</td>
+<td style="text-align:left">Use as a bastion server.</td>
+</tr>
+<tr>
+<td>Traffic metrics</td>
+<td style="text-align:left">Not supported.</td>
+<td style="text-align:left">View CloudWatch metrics.</td>
+</tr>
+<tr>
+<td>Timeout behavior</td>
+<td style="text-align:left">When a connection times out, a NAT gateway returns an RST packet to any resources behind the NAT gateway that attempt to continue the connection (it does not send a FIN packet).</td>
+<td style="text-align:left">When a connection times out, a NAT instance sends a FIN packet to resources behind the NAT instance to close the connection.</td>
+</tr>
+<tr>
+<td>IP fragmentation</td>
+<td style="text-align:left">Supports forwarding of IP fragmented packets for the UDP protocol. Does not support fragmentation for the TCP and ICMP protocols. Fragmented packets for these protocols will get dropped.</td>
+<td style="text-align:left">Supports reassembly of IP fragmented packets for the UDP, TCP, and ICMP protocols.</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>Network ACL’s</p>
+<ul>
+<li>Your VPC automatically comes a default network ACL and by default it allows all outbound and inbound traffic.</li>
+<li>You can create a custom network ACL. By default, each custom network ACL denies all inbound and outbound traffic until you add rules.</li>
+<li>Each subnet in your VPC must be associated with a network ACL. If you don’t explicitly associate a subnet with a network ACL, the subnet is automatically associated with the default network ACL.</li>
+<li>You can associate a network ACL with multiple subnets; however, a subnet can be associated with only one network ACL at a time. When you associate a network ACL with a subnet, the previous association is removed.</li>
+<li>A network ACl contains a numbered list of rules that is evaluated in order, starting with the lowest numbered rule.</li>
+<li>A network ACl has separate inbound and outbound rules, and each rule can either allow or deny traffic.</li>
+<li>Network ACLs are stateless responses to allowed inbound traffic are subject to the rules for outbound traffic (and vice versa)</li>
+<li>Block IP Addresses using network ACL’s not Security Groups</li>
+</ul>
+</li>
+<li><p>Security Group vs Network ACL</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Security Group</th>
+<th style="text-align:left">Network ACL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>operates at the instance level (first layer of defense)</td>
+<td style="text-align:left">Operates at the subnet level (second layer of defense)</td>
+</tr>
+<tr>
+<td>Supports allow rules only</td>
+<td style="text-align:left">Supports allow rules and deny rules</td>
+</tr>
+<tr>
+<td>Is stateful: Return traffic is automatically allowed, regardless of any rules</td>
+<td style="text-align:left">Is stateless: Return traffic must be explicitly allowed by rules</td>
+</tr>
+<tr>
+<td>We evaluate all rules before deciding whether to allow traffic</td>
+<td style="text-align:left">We process rules in number order when deciding whether to allow traffic</td>
+</tr>
+<tr>
+<td>Applies to an instance only if someone specifies the security group when launching the instance, or associates the security group with the instance later on</td>
+<td style="text-align:left">Automatically applies to all instances in the subnets it’s associated with (backup layer of defense, so you don’t have to rely on someone specifying the security group)</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>NAT vs Bastions</p>
+<ul>
+<li>A NAT is used to provide internet traffic to EC2 instances in private subnets</li>
+<li>A Bastion is used to securely administer EC2 instance (using SSH or RDP) in private subnets. In Australia we call them jump boxes.</li>
+</ul>
+</li>
+<li><p>Resilient Architecture</p>
+<ul>
+<li>If you want resiliency, always have 2 public subnets and 2 private subnets. Make sure each subnet is in different availability zones.</li>
+<li>With ELB’s make sure they are in 2 public subnets in 2 different availability zones.</li>
+<li>With Bastion hosts, put them behind an autoscaling group with a minimum size of 2. Use Route53 (either round robin or using a health check) to automatically fail over.</li>
+<li>NAT instances are tricky to make resilient. You need 1 in each public subnet, each with their own public IP address, and you need to write a script to fail between the two. Instead where possible, use NAT gateways.</li>
+</ul>
+</li>
+<li><p>VPC Flow Logs</p>
+<ul>
+<li>You can monitor network traffic within your custom VPC’s using VPC Flow Logs.</li>
+</ul>
+</li>
+<li><p>VPC limit</p>
+<ul>
+<li>Currently you can create 200 subnets per VPC by default</li>
+</ul>
+</li>
+</ul>
+<h4 id="CloudFormation"><a href="#CloudFormation" class="headerlink" title="CloudFormation"></a>CloudFormation</h4><ul>
+<li>Use of CFT(CloudFormation Templates), Beanstalk and AutoScaling are free but you pay for the AWS resources that these services create.</li>
+<li>Fn::GetAtt - values that you can use to return result for an AWS created resource or used to display in output</li>
+<li>By Default - rollback everything on error</li>
+<li>Infrastructure as a code, Version controlled, declarative and flexible</li>
+<li>API ListStackResources is used to list all resources that belong to a CloudFormation Stack</li>
+<li><p>You can use intrinsic functions only in specific parts of a template. Currently, you can use intrinsic functions in resource properties, metadata attributes, and update policy attributes.</p>
+</li>
+<li><p>CloudFormation Basic</p>
+<ul>
+<li><a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/gettingstarted.templatebasics.html" target="_blank" rel="external">http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/gettingstarted.templatebasics.html</a></li>
+<li>Learn about the following about templates:<ul>
+<li>Declaring resources and their properties</li>
+<li><strong>Ref</strong>erencing(提取) other resources with the <strong>Ref</strong> function and resource attributes using the Fn::GetAtt function</li>
+<li>Using parameters to enable users to specify values at stack creation time and using constraints to validate parameter input</li>
+<li>Using mappings to determine conditional values</li>
+<li>Using the Fn::Join function to construct values based on parameters, resource attributes, and other things</li>
+<li>Using output values based to capture information about the stack’s resources.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>CloudFormation intrinsic Function</p>
+<ul>
+<li>Fn::Base64<ul>
+<li>returns the Base64 representation of the input string. this function is typically used to pass encoded data to Amazon EC2 instances by way of the UserData property.</li>
+<li>JSON Format { “Fn::Base64” : valueToEncode }</li>
+</ul>
+</li>
+<li>Fn::FindInMap<ul>
+<li>returns the value corresponding to keys in a two-level map that is declared in the Mapping section.</li>
+<li>JSON Format { “Fn::FindInMap” : [ “MapName”, “TopLevelKey”, “SecondLevelKey”] }</li>
+</ul>
+</li>
+<li>Fn::GetAtt<ul>
+<li>returns the value of an attribute from a resource in the template</li>
+<li>JSON Format { “Fn::GetAtt” : [ “logicalNameOfResource”, “attributeName” ] }</li>
+</ul>
+</li>
+<li>Fn::Join<ul>
+<li>Fn::Join appends a set of values into a single value, separated by the specified delimiter. If a delimiter is the empty string, the set of values are concatenated with no delimiter.</li>
+<li>JSON Format { “Fn::Join” : [ “delimiter”, [ comma-delimited list of values ] ] }</li>
+<li>JSON example {“Fn::Join” : [ “:”, [ “a”, “b”, “c” ] ]} will returns “a:b:c”</li>
+</ul>
+</li>
+<li>Fn::Select<ul>
+<li>returns a single object from a list of objects by index</li>
+<li>JSON Format { “Fn::Select” : [ index, listOfObjects ] }</li>
+<li>JSON example { “Fn::Select” : [ “1”, [ “apples”, “grapes”, “oranges”, “mangoes” ] ] } will returns “grapes”</li>
+</ul>
+</li>
+<li>Fn::Split<ul>
+<li>To split a string into a list of string values so that you can select an element from the resulting string list.</li>
+<li>JSON Format { “Fn::Split” : [ “delimiter”, “source string” ] }</li>
+<li>JSON example { “Fn::Split” : [ “|” , “a|b|c” ] } will return [“a”, “b”, “c”]</li>
+</ul>
+</li>
+<li><p>Fn::Sub</p>
+<ul>
+<li>将输入字符串中的变量替换为您指定的值</li>
+<li>JSON Format  { “Fn::Sub” : [ String, { Var1Name: Var1Value, Var2Name: Var2Value } ] }</li>
+<li>JSON example - 将AWS::Region和AWS::StackName替换为实际的值<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&quot;UserData&quot;: &#123; &quot;Fn::Base64&quot;: &#123; &quot;Fn::Join&quot;: [&quot;\n&quot;, [</div><div class="line">&quot;#!/bin/bash -xe&quot;,</div><div class="line">&quot;yum update -y aws-cfn-bootstrap&quot;,</div><div class="line">&#123; &quot;Fn::Sub&quot;: &quot;/opt/aws/bin/cfn-init -v --stack $&#123;AWS::StackName&#125; --resource LaunchConfig --configsets wordpress_install --region $&#123;AWS::Region&#125;&quot; &#125;,</div><div class="line">&#123; &quot;Fn::Sub&quot;: &quot;/opt/aws/bin/cfn-signal -e $? --stack $&#123;AWS::StackName&#125; --stack $&#123;AWS::StackName&#125; --resource WebServer --region $&#123;AWS::Region&#125;&quot; &#125;]]</div><div class="line">&#125;&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>Ref</p>
+<ul>
+<li>returns the value of the specified parameter or resource.<ul>
+<li>When you specify a parameter’s logical name, it returns the value of the parameter.</li>
+<li>When you specify a resource’s logical name, it returns a value that you can typically use to refer to that resource, such as a physical ID.</li>
+</ul>
+</li>
+<li>JSON Format { “Ref” : “logicalName” }</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>CloudFormation limit</p>
+<ul>
+<li>You can include up to 60 parameters and 60 outputs in a template.</li>
+<li>There are no limit to the number of templates.</li>
+<li>Each AWS CloudFormation account is limited to a maximum of 200 stacks.</li>
+</ul>
+</li>
+<li><p>CloudFormation – Ref, Fn::Join, GetAtt, Fn::split, Fn::select and etc function</p>
+</li>
+</ul>
+<h2 id="Doc"><a href="#Doc" class="headerlink" title="Doc"></a>Doc</h2><h3 id="DynamoDB-Doc"><a href="#DynamoDB-Doc" class="headerlink" title="DynamoDB Doc"></a>DynamoDB Doc</h3><ul>
+<li><a href="https://docs.aws.amazon.com/zh_cn/amazondynamodb/latest/developerguide/Introduction.html" target="_blank" rel="external">DynamoDB Developer Guide (Html)</a></li>
+<li><a href="https://docs.aws.amazon.com/zh_cn/amazondynamodb/latest/developerguide/dynamodb-dg-zh_cn.pdf" target="_blank" rel="external">DynamoDB Developer Guide (PDF)</a></li>
+<li><a href="https://amazonaws-china.com/dynamodb/faqs/" target="_blank" rel="external">DynamoDB FAQ</a></li>
+</ul>
+<h3 id="FAQ"><a href="#FAQ" class="headerlink" title="FAQ"></a>FAQ</h3><ul>
+<li><a href="https://amazonaws-china.com/cn/dynamodb/faqs/?nc1=h_ls" target="_blank" rel="external">https://amazonaws-china.com/cn/dynamodb/faqs/?nc1=h_ls</a></li>
+<li><a href="https://amazonaws-china.com/lambda/faqs/" target="_blank" rel="external">https://amazonaws-china.com/lambda/faqs/</a></li>
+<li><a href="https://amazonaws-china.com/api-gateway/faqs/" target="_blank" rel="external">https://amazonaws-china.com/api-gateway/faqs/</a></li>
+</ul>
+<h3 id="考点"><a href="#考点" class="headerlink" title="考点"></a>考点</h3><ul>
+<li><a href="http://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers.html" target="_blank" rel="external">http://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers.html</a></li>
+<li><a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/template-anatomy.html" target="_blank" rel="external">http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/template-anatomy.html</a><ul>
+<li>Template Sections</li>
+</ul>
+</li>
+<li><a href="https://aws.amazon.com/security/penetration-testing/" target="_blank" rel="external">https://aws.amazon.com/security/penetration-testing/</a></li>
+</ul>
+<h3 id="注意点摘录"><a href="#注意点摘录" class="headerlink" title="注意点摘录:"></a>注意点摘录:</h3><ul>
+<li>筛选表达式(–filter-expression)在 Scan 已完成但结果尚未返回时应用。因此，无论是否存在筛选表达式，Scan 都将占用同等数量的读取容量</li>
+</ul>
+<h2 id="术语"><a href="#术语" class="headerlink" title="术语"></a>术语</h2><ul>
+<li>scalar data types –&gt; 标量数据类型</li>
+<li>collection data types –&gt; 集合数据类型</li>
+<li>projection –&gt; 投影</li>
+<li>Fine Grained Access Control (FGAC)  –&gt; 精细访问控制</li>
+<li>write-through –&gt; 直写</li>
+<li>optimistic – 乐观</li>
+</ul>
+<h2 id="外部资料"><a href="#外部资料" class="headerlink" title="外部资料"></a>外部资料</h2><ul>
+<li>老外心得 <a href="https://acloud.guru/forums/aws-certified-developer-associate/discussion/-KUdI5f2LNbi4wvK7v4I/how-to-pass-aws-certified-developer-exam" target="_blank" rel="external">https://acloud.guru/forums/aws-certified-developer-associate/discussion/-KUdI5f2LNbi4wvK7v4I/how-to-pass-aws-certified-developer-exam</a></li>
+<li>老外心得 <a href="https://acloud.guru/forums/aws-certified-developer-associate/discussion/-KPuWHwfTCiCJNsGzAwu/passed" target="_blank" rel="external">https://acloud.guru/forums/aws-certified-developer-associate/discussion/-KPuWHwfTCiCJNsGzAwu/passed</a></li>
+<li>re:Invent videos. “Deep Dive on Amazon DynamoDB” <a href="https://www.youtube.com/watch?v=bCW3lhsJKfw" target="_blank" rel="external">https://www.youtube.com/watch?v=bCW3lhsJKfw</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> AWS </category>
+            
+            <category> AWS Certified </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Developer </tag>
             
         </tags>
         
@@ -202,25 +1975,6 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">deploy:</div><div class="line">  type: git</div><div class="line">  repo: https://github.com/jibing57/jibing57.github.io.git</div><div class="line">  branch: master</div></pre></td></tr></table></figure>
 <p>使用以下命令发布到Github Pages</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo d</div></pre></td></tr></table></figure>
-<h3 id="绑定个人域名"><a href="#绑定个人域名" class="headerlink" title="绑定个人域名"></a>绑定个人域名</h3><h2 id="未定的小特性"><a href="#未定的小特性" class="headerlink" title="未定的小特性"></a>未定的小特性</h2><ol>
-<li>Categories和Tags中，需要支持日期排列<ul>
-<li>tags 类似 <a href="https://rickhw.github.io/tags/JSON/" target="_blank" rel="external">https://rickhw.github.io/tags/JSON/</a></li>
-<li>category 类似 <a href="https://rickhw.github.io/categories/Blog/" target="_blank" rel="external">https://rickhw.github.io/categories/Blog/</a></li>
-</ul>
-</li>
-<li>支持https</li>
-<li>404公益页面</li>
-<li>自定义github域名</li>
-<li>支持评论</li>
-<li>支持google，baidu统计</li>
-</ol>
-<h2 id="待定"><a href="#待定" class="headerlink" title="待定"></a>待定</h2><ul>
-<li>还有一个豆瓣的插件 <a href="https://github.com/mythsman/hexo-douban" target="_blank" rel="external">https://github.com/mythsman/hexo-douban</a> 可以分享读书和电影，后续可以尝试下<ul>
-<li>读书页面 <a href="https://blog.mythsman.com/books/" target="_blank" rel="external">https://blog.mythsman.com/books/</a></li>
-<li>电影页面 <a href="https://blog.mythsman.com/movies/" target="_blank" rel="external">https://blog.mythsman.com/movies/</a><br>-</li>
-</ul>
-</li>
-</ul>
 ]]></content>
       
         <categories>
@@ -261,16 +2015,16 @@
       
         <categories>
             
-            <category> tools </category>
+            <category> Tools </category>
             
         </categories>
         
         
         <tags>
             
-            <tag> video </tag>
+            <tag> Video </tag>
             
-            <tag> tips </tag>
+            <tag> Tips </tag>
             
         </tags>
         

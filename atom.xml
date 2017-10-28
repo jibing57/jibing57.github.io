@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>Recording</title>
+  
   <subtitle>Recording, Sharing, TimeSaving -- 一切成本皆时间</subtitle>
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://jibing57.com/"/>
-  <updated>2017-08-05T14:38:25.000Z</updated>
+  <updated>2017-10-28T15:25:40.000Z</updated>
   <id>http://jibing57.com/</id>
   
   <author>
@@ -14,6 +15,70 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>如何在aws cli中使用多个配置文件</title>
+    <link href="http://jibing57.com/2017/10/24/how-to-use-aws-cli-with-multi-user/"/>
+    <id>http://jibing57.com/2017/10/24/how-to-use-aws-cli-with-multi-user/</id>
+    <published>2017-10-24T13:50:10.000Z</published>
+    <updated>2017-10-28T15:25:40.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;code&gt;aws cli&lt;/code&gt;使用中，可能会有在多个IAM账户中进行切换的需求，手动切换&lt;code&gt;~/.aws/&lt;/code&gt;目录下的&lt;code&gt;config&lt;/code&gt;和&lt;code&gt;credentials&lt;/code&gt;是十分费力的事情。还好&lt;code&gt;aws cli&lt;/code&gt;本身就可以支持多个aws credentials&lt;/p&gt;
+&lt;h3 id=&quot;配置多个profile&quot;&gt;&lt;a href=&quot;#配置多个profile&quot; class=&quot;headerlink&quot; title=&quot;配置多个profile&quot;&gt;&lt;/a&gt;配置多个profile&lt;/h3&gt;&lt;p&gt;&lt;code&gt;aws configure&lt;/code&gt;时，加上&lt;code&gt;--profile&lt;/code&gt;参数来命名不同的账户, 依次输入access id, access key, region和output format。&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ aws configure --profile user1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;$ aws configure --profile user2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;此时生成的&lt;code&gt;config&lt;/code&gt;和&lt;code&gt;credentials&lt;/code&gt;文件中，会使用账户名来分割不同的配置&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;10&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;11&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;12&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;13&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;14&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;15&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;16&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;[carlshen@carl-macpro-lan ~]$ cat ~/.aws/config&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;[profile user1]&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;output = json&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;region = us-west-2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;[profile user2]&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;output = json&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;region = ap-northeast-2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;[carlshen@carl-macpro-lan ~]$&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;[carlshen@carl-macpro-lan ~]$ cat ~/.aws/credentials&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;[user1]&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;aws_access_key_id = AKIAXXXXXXXXXXXXXXXX&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;aws_secret_access_key = XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;[user2]&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;aws_access_key_id = AKIAXXXXXXXXXXXXXXXX&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;aws_secret_access_key = XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;[carlshen@carl-macpro-lan ~]$&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+    
+    </summary>
+    
+      <category term="AWS" scheme="http://jibing57.com/categories/AWS/"/>
+    
+    
+      <category term="Aws CLI" scheme="http://jibing57.com/tags/Aws-CLI/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>使用aws codecommit作为私有的git远程服务器</title>
+    <link href="http://jibing57.com/2017/10/24/how-to-use-aws-codecommit/"/>
+    <id>http://jibing57.com/2017/10/24/how-to-use-aws-codecommit/</id>
+    <published>2017-10-24T12:10:54.000Z</published>
+    <updated>2017-10-28T15:31:20.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;博客的hexo的代码，一直是保存在本地的。上次电脑花了一次屏后，感觉到保存在本地实在是不够安全。因此考虑寻觅一个远端的私密git库，存起来。&lt;/p&gt;
+&lt;p&gt;开始寻寻觅觅合适的仓库.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Github?,私有库是收费的。但为了这些哪条就不更新的markdown，每月7刀开个Developer的Plan，感觉不划算。&lt;/li&gt;
+&lt;li&gt;自建Gitlab？嫌麻烦麻烦。&lt;/li&gt;
+&lt;li&gt;oschina的私有库？不想用。&lt;/li&gt;
+&lt;li&gt;。。。。。。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;好吧，我承认我就是想尝试用一下aws的codecommit。&lt;/p&gt;
+&lt;p&gt;关于CodeCommit的免费额度，&lt;a href=&quot;https://aws.amazon.com/cn/codecommit/pricing/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;官网&lt;/a&gt;介绍:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;最初5位活动用户&lt;ul&gt;
+&lt;li&gt;无限存储库&lt;/li&gt;
+&lt;li&gt;50GB的月存储量&lt;/li&gt;
+&lt;li&gt;每月10000个git请求&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;托管我一个小博客，妥妥的够了。毕竟除了我，没人还会来关心这点markdown文件, 5位用户免费足够了。至于50GB的月存储量么，除非把看过的电影都commit进git来，要不然应该是足够了。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="AWS" scheme="http://jibing57.com/categories/AWS/"/>
+    
+    
+      <category term="Git" scheme="http://jibing57.com/tags/Git/"/>
+    
+      <category term="CodeCommit" scheme="http://jibing57.com/tags/CodeCommit/"/>
+    
+  </entry>
   
   <entry>
     <title>Linux 和 Mac下date命令的基本用法</title>
@@ -41,9 +106,9 @@
       <category term="Shell" scheme="http://jibing57.com/categories/Shell/"/>
     
     
-      <category term="Macos" scheme="http://jibing57.com/tags/Macos/"/>
-    
       <category term="Linux" scheme="http://jibing57.com/tags/Linux/"/>
+    
+      <category term="Macos" scheme="http://jibing57.com/tags/Macos/"/>
     
   </entry>
   
@@ -52,12 +117,15 @@
     <link href="http://jibing57.com/2017/07/25/how-to-read-text-on-macos/"/>
     <id>http://jibing57.com/2017/07/25/how-to-read-text-on-macos/</id>
     <published>2017-07-25T07:21:28.000Z</published>
-    <updated>2017-07-25T07:35:10.000Z</updated>
+    <updated>2017-10-28T15:26:39.000Z</updated>
     
     <summary type="html">
     
-      &lt;h2 id=&quot;场景&quot;&gt;&lt;a href=&quot;#场景&quot; class=&quot;headerlink&quot; title=&quot;场景&quot;&gt;&lt;/a&gt;场景&lt;/h2&gt;&lt;p&gt;Macos上看到大段大段的英文，有时候除了看以外，还想边听边看&lt;/p&gt;
+      
+      
+        &lt;h2 id=&quot;场景&quot;&gt;&lt;a href=&quot;#场景&quot; class=&quot;headerlink&quot; title=&quot;场景&quot;&gt;&lt;/a&gt;场景&lt;/h2&gt;&lt;p&gt;Macos上看到大段大段的英文，有时候除了看以外，还想边听边看&lt;/p&gt;
 &lt;h2 id=&quot;解决方法&quot;&gt;&lt;a href=&quot;#解决方法&quot; clas
+      
     
     </summary>
     
@@ -73,18 +141,73 @@
     <link href="http://jibing57.com/2017/07/25/useful-website-of-aws/"/>
     <id>http://jibing57.com/2017/07/25/useful-website-of-aws/</id>
     <published>2017-07-25T02:49:10.000Z</published>
-    <updated>2017-07-26T10:06:46.000Z</updated>
+    <updated>2017-10-28T15:21:19.000Z</updated>
     
     <summary type="html">
     
-      &lt;h3 id=&quot;cloudping-info&quot;&gt;&lt;a href=&quot;#cloudping-info&quot; class=&quot;headerlink&quot; title=&quot;cloudping.info&quot;&gt;&lt;/a&gt;cloudping.info&lt;/h3&gt;&lt;p&gt;&lt;a href=&quot;http://www.cl
+      &lt;h3 id=&quot;cloudping-info&quot;&gt;&lt;a href=&quot;#cloudping-info&quot; class=&quot;headerlink&quot; title=&quot;cloudping.info&quot;&gt;&lt;/a&gt;cloudping.info&lt;/h3&gt;&lt;p&gt;&lt;a href=&quot;http://www.cloudping.info/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;clougping.info&lt;/a&gt;是一个可以检测当前浏览器到AWS各个Region的延迟的网站, 可以用来评估访问哪个Region更快一点。在建立测试服务的时候十分有用。&lt;/p&gt;
+&lt;p&gt;单次的测试结果不一定准确，建议多试几次后再选取平均延迟低的结果。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;国内测试的结果:&lt;br&gt;&lt;img src=&quot;/images/AWS/Tools/cloudping_on_cn.jpg&quot; alt=&quot;cloudping_on_cn&quot;&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;在国内使用AWS全球账号时，在韩国首尔Region建测试服务延迟会小一点。&lt;/p&gt;
     
     </summary>
     
       <category term="AWS" scheme="http://jibing57.com/categories/AWS/"/>
     
     
-      <category term="tools" scheme="http://jibing57.com/tags/tools/"/>
+      <category term="Tools" scheme="http://jibing57.com/tags/Tools/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>AWS Certified Developer - Associate Road Map</title>
+    <link href="http://jibing57.com/2017/07/24/AWS-Certified-Developer/"/>
+    <id>http://jibing57.com/2017/07/24/AWS-Certified-Developer/</id>
+    <published>2017-07-24T07:27:17.000Z</published>
+    <updated>2017-10-28T15:21:43.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;Official-AWS-Centification-Page&quot;&gt;&lt;a href=&quot;#Official-AWS-Centification-Page&quot; class=&quot;headerlink&quot; title=&quot;Official AWS Centification Page&quot;&gt;&lt;/a&gt;Official AWS Centification Page&lt;/h2&gt;&lt;p&gt;访问官网&lt;a href=&quot;https://amazonaws-china.com/certification/certification-prep/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;AWS Centification&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;参加 AWS 培训课程&lt;/li&gt;
+&lt;li&gt;查看考试指南和样题&lt;ul&gt;
+&lt;li&gt;了解考试涉及的概念并整体了解需要学习哪些内容, &lt;a href=&quot;http://awstrainingandcertification.s3.amazonaws.com/production/AWS_certified_developer_associate_blueprint.pdf&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;AWS Certified Developer – Associate 考试指南&lt;/a&gt; 相当于考试大纲, 必看,而且需要反复的看。因为学习过一阵后再来看Guide，会有更深的体会。&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://d0.awsstatic-china.com/training-and-certification/docs/AWS_certified_developer_associate_examsample.pdf&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;考试样题&lt;/a&gt;用于熟悉题目题型&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;完成自主进度动手实验和备考任务&lt;ul&gt;
+&lt;li&gt;官方&lt;a href=&quot;https://www.qwiklabs.com/learning_paths/20/lab_catalogue?locale=en&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;qwikLABS 任务&lt;/a&gt;提供了一系列动手实验, 提供部分免费实验，但大部分实验所需的积分都需要购买。高性价比的做法是， 注册一个AWS全球账号，使用一年的免费额度来对照着实验手册来进行试验。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;学习 AWS 白皮书&lt;ul&gt;
+&lt;li&gt;白皮书是纯英文的，而且每个白皮书篇幅都很长，读起来既费时又枯燥。但是有时间还是建议把推荐的几个都看一下。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;查看 AWS 常见问题&lt;ul&gt;
+&lt;li&gt;官网推荐的FAQ都建议看完，另外&lt;a href=&quot;https://amazonaws-china.com/cn/dynamodb/faqs/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;DynamoDB FAQ&lt;/a&gt;这个必须要看。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;参加模拟考试&lt;ul&gt;
+&lt;li&gt;20美刀一次，主要目的是为了让人熟悉考试时上机的流程。是否需要因人而异, 特别想先熟悉下考试流程的可以考虑参加一次。我个人觉得没有必要, 因为真实考试时，操作界面一目了然，没有磕磕绊绊的机关，省下20美刀可以去买一份课程。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;报名考试并获得认证&lt;ul&gt;
+&lt;li&gt;登陆&lt;a href=&quot;https://www.aws.training/certification&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://www.aws.training/certification&lt;/a&gt;注册进行考试&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+    
+    </summary>
+    
+      <category term="AWS" scheme="http://jibing57.com/categories/AWS/"/>
+    
+      <category term="AWS Certified" scheme="http://jibing57.com/categories/AWS/AWS-Certified/"/>
+    
+    
+      <category term="Developer" scheme="http://jibing57.com/tags/Developer/"/>
     
   </entry>
   
@@ -93,7 +216,7 @@
     <link href="http://jibing57.com/2017/07/17/hexo-github-blog/"/>
     <id>http://jibing57.com/2017/07/17/hexo-github-blog/</id>
     <published>2017-07-17T08:19:32.000Z</published>
-    <updated>2017-07-18T10:12:09.000Z</updated>
+    <updated>2017-10-28T15:22:25.000Z</updated>
     
     <summary type="html">
     
@@ -130,7 +253,7 @@
     <link href="http://jibing57.com/2017/07/17/How-to-get-subtitle-of-local-video/"/>
     <id>http://jibing57.com/2017/07/17/How-to-get-subtitle-of-local-video/</id>
     <published>2017-07-17T06:54:03.000Z</published>
-    <updated>2017-07-19T03:35:36.000Z</updated>
+    <updated>2017-10-28T14:59:58.000Z</updated>
     
     <summary type="html">
     
@@ -147,12 +270,12 @@
     
     </summary>
     
-      <category term="tools" scheme="http://jibing57.com/categories/tools/"/>
+      <category term="Tools" scheme="http://jibing57.com/categories/Tools/"/>
     
     
-      <category term="video" scheme="http://jibing57.com/tags/video/"/>
+      <category term="Video" scheme="http://jibing57.com/tags/Video/"/>
     
-      <category term="tips" scheme="http://jibing57.com/tags/tips/"/>
+      <category term="Tips" scheme="http://jibing57.com/tags/Tips/"/>
     
   </entry>
   

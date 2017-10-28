@@ -1,0 +1,360 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>使用aws codecommit作为私有的git远程服务器 | Recording</title>
+  <meta name="author" content="jibing57">
+  
+  <meta name="description" content="AWS, 阅读, Architecture, PostgreSQL">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="使用aws codecommit作为私有的git远程服务器"/>
+  <meta property="og:site_name" content="Recording"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/css/themes/bootstrap.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/comment.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+  
+  <!-- analytics -->
+  
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?a45bf9506f898d2215502df6cc64ff59";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+</head>
+
+ <body>  
+  <nav id="main-nav" class="navbar  navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+	<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+       <a class="navbar-brand" href="/">Recording</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class="fa fa-archive"></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class="fa fa-folder"></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class="fa fa-tags"></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/douban" title="Douban">
+			  <i class="fa fa-book"></i>Douban
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header ">		
+			<h1 class="title "> 使用aws codecommit作为私有的git远程服务器</h1>
+		</div>		
+	
+
+
+
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
+
+	<!-- content -->
+	<div class="mypage">		
+	  		
+
+	  <p>博客的hexo的代码，一直是保存在本地的。上次电脑花了一次屏后，感觉到保存在本地实在是不够安全。因此考虑寻觅一个远端的私密git库，存起来。</p>
+<p>开始寻寻觅觅合适的仓库.</p>
+<ul>
+<li>Github?,私有库是收费的。但为了这些哪条就不更新的markdown，每月7刀开个Developer的Plan，感觉不划算。</li>
+<li>自建Gitlab？嫌麻烦麻烦。</li>
+<li>oschina的私有库？不想用。</li>
+<li>。。。。。。</li>
+</ul>
+<p>好吧，我承认我就是想尝试用一下aws的codecommit。</p>
+<p>关于CodeCommit的免费额度，<a href="https://aws.amazon.com/cn/codecommit/pricing/" target="_blank" rel="external">官网</a>介绍:</p>
+<ul>
+<li>最初5位活动用户<ul>
+<li>无限存储库</li>
+<li>50GB的月存储量</li>
+<li>每月10000个git请求</li>
+</ul>
+</li>
+</ul>
+<p>托管我一个小博客，妥妥的够了。毕竟除了我，没人还会来关心这点markdown文件, 5位用户免费足够了。至于50GB的月存储量么，除非把看过的电影都commit进git来，要不然应该是足够了。</p>
+<a id="more"></a>
+<h3 id="创建Repository"><a href="#创建Repository" class="headerlink" title="创建Repository"></a>创建Repository</h3><ol>
+<li><p>在aws console的Services中，找到CodeCommit<br><img src="/images/AWS/CodeCommit/find_codecommit.jpg" alt="find_codecommit"></p>
+</li>
+<li><p>在CodeCommit页面中点击Create, 打开新建Repository的页面，在<strong>Repository Name</strong>中填入仓库的名字，<strong>Description</strong>中填写仓库的描述, 然后点击<strong>Create repository</strong>创建仓库。<br><img src="/images/AWS/CodeCommit/codecommit_create_repository.jpg" alt="codecommit_create_repository"></p>
+</li>
+</ol>
+<h3 id="配置ssh-key"><a href="#配置ssh-key" class="headerlink" title="配置ssh key"></a>配置ssh key</h3><ol>
+<li><p>CodeCommit有两种访问方式，分别是ssh和https模式。我习惯使用ssh方式。</p>
+</li>
+<li><p>首先，需要在IAM User中添加SSH keys, 用来访问CodeCommit。</p>
+<ul>
+<li>打开IAM，切换到User界面，</li>
+<li>在<code>Security credentials</code>的tab下，找到<code>SSH keys for AWS CodeCommit</code>一栏</li>
+<li>点击下面<code>Upload SSH public key</code>按钮</li>
+<li>在打开的上传key的页面中输入常用的key pair的public key, 然后点击<code>Upload SSH public Key</code>的按钮<br><img src="/images/AWS/CodeCommit/upload_ssh_for_codecommit.jpg" alt="upload_ssh_for_codecommit.jpg"></li>
+</ul>
+</li>
+<li><p>上传完毕后，就会生成一个新的Entry，复制或保存此处SSH key ID的值。<br><img src="/images/AWS/CodeCommit/publickey_of_IAM_used_for_codecommit.jpg" alt="publickey_of_IAM_used_for_codecommit.jpg"></p>
+</li>
+<li><p>配置本地~/.ssh/config, 添加有关CodeCommit的Host条目, <code>IdentityFile</code>设置为private key, 并保存。如果本地还没有~/.ssh/config文件，则创建，并在保存后使用命令<code>chmod 600 ~/.ssh/config</code>将访问属性修改为600.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Host git-codecommit.*.amazonaws.com</div><div class="line">  User APKAIHTDFHHOYTHJYI3Q</div><div class="line">  IdentityFile ~/.ssh/id_rsa</div></pre></td></tr></table></figure>
+</li>
+<li><p>打开codeCommit的repository, 点击<code>Clone URL</code>，选择SSH来获取仓库的ssh地址, 我此处的地址是 ssh://git-codecommit.ap-northeast-2.amazonaws.com/v1/repos/my_blog<br><img src="/images/AWS/CodeCommit/get_ssh_url_of_codecommit.jpg" alt="get_ssh_url_of_codecommit"></p>
+</li>
+<li><p>找个临时目录，使用git clone命令来测试是否可以正常访问新建的仓库</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">$ git clone ssh://git-codecommit.ap-northeast-2.amazonaws.com/v1/repos/my_blog</div><div class="line">Cloning into &apos;my_blog&apos;...</div><div class="line">The authenticity of host &apos;git-codecommit.ap-northeast-2.amazonaws.com (52.95.194.93)&apos; can&apos;t be established.</div><div class="line">RSA key fingerprint is 9f:68:48:9b:5f:fc:96:69:39:45:58:87:95:b3:69:ed.</div><div class="line">Are you sure you want to continue connecting (yes/no)? yes</div><div class="line">Warning: Permanently added &apos;git-codecommit.ap-northeast-2.amazonaws.com,52.95.194.93&apos; (RSA) to the list of known hosts.</div><div class="line">warning: You appear to have cloned an empty repository.</div><div class="line">Checking connectivity... done.</div><div class="line">$ ll</div><div class="line">total 0</div><div class="line">drwxr-xr-x  3 carlshen  staff  102 10 24 21:32 my_blog</div><div class="line">$</div></pre></td></tr></table></figure>
+<h3 id="push已有的repository到CodeCommit"><a href="#push已有的repository到CodeCommit" class="headerlink" title="push已有的repository到CodeCommit"></a>push已有的repository到CodeCommit</h3><p>刚建立的repository是空的，我们可以clone下来，然后逐次添加文件，也可以将已经存在的git reposigory push到CodeCommit上的空仓库中。</p>
+<p>切换到已有的git 仓库中，然后使用如下命令将git仓库push到CodeCommit中<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git push https://git-codecommit.us-east-2.amazonaws.com/v1/repos/MyFirstRepo --all</div></pre></td></tr></table></figure></p>
+<p>如下是将本地的my_blog推送到远端的步骤:</p>
+<ol>
+<li><p>本地的remote为空</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ git remote -v</div><div class="line">$</div></pre></td></tr></table></figure>
+</li>
+<li><p>推送本地的所有代码到CodeCommit上</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">$ git push ssh://git-codecommit.ap-northeast-2.amazonaws.com/v1/repos/my_blog --all</div><div class="line">Warning: Permanently added the RSA host key for IP address &apos;52.95.194.107&apos; to the list of known hosts.</div><div class="line">Counting objects: 490, done.</div><div class="line">Delta compression using up to 8 threads.</div><div class="line">Compressing objects: 100% (463/463), done.</div><div class="line">Writing objects: 100% (490/490), 6.71 MiB | 441.00 KiB/s, done.</div><div class="line">Total 490 (delta 214), reused 0 (delta 0)</div><div class="line">remote: processing To ssh://git-codecommit.ap-northeast-2.amazonaws.com/v1/repos/my_blog</div><div class="line"> * [new branch]      master -&gt; master</div><div class="line">$</div></pre></td></tr></table></figure>
+</li>
+<li><p>将CodeCommit上的仓库设置为远端的origin</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ git remote add origin ssh://git-codecommit.ap-northeast-2.amazonaws.com/v1/repos/my_blog</div><div class="line">$ git remote -v</div><div class="line">origin	ssh://git-codecommit.ap-northeast-2.amazonaws.com/v1/repos/my_blog (fetch)</div><div class="line">origin	ssh://git-codecommit.ap-northeast-2.amazonaws.com/v1/repos/my_blog (push)</div></pre></td></tr></table></figure>
+</li>
+<li><p>关联本地和远端的master分支</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ git branch --set-upstream-to=origin/master master</div><div class="line">Branch master set up to track remote branch master from origin.</div><div class="line">$ git pull</div><div class="line">Already up-to-date.</div><div class="line">$</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ol>
+<li>将 Git 存储库迁移到 AWS CodeCommit - <a href="https://docs.aws.amazon.com/zh_cn/codecommit/latest/userguide/how-to-migrate-repository-existing.html" target="_blank" rel="external">https://docs.aws.amazon.com/zh_cn/codecommit/latest/userguide/how-to-migrate-repository-existing.html</a></li>
+<li>在 Linux, macOS, or Unix 上设置到 AWS CodeCommit 存储库的 SSH 连接的步骤 - <a href="https://docs.aws.amazon.com/zh_cn/codecommit/latest/userguide/setting-up-ssh-unixes.html#setting-up-ssh-unixes-keys-unixes" target="_blank" rel="external">https://docs.aws.amazon.com/zh_cn/codecommit/latest/userguide/setting-up-ssh-unixes.html#setting-up-ssh-unixes-keys-unixes</a></li>
+</ol>
+	  
+	</div>
+
+	<div>
+  	<center>
+	<div class="pagination">
+<ul class="pagination">
+	 
+				
+    	<li class="prev"><a href="/2017/10/24/how-to-use-aws-cli-with-multi-user/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>Prev</a></li>
+  		
+
+        <li><a href="/archives"><i class="fa fa-archive"></i>Archive</a></li>
+
+		
+		   <li class="next"><a href="/2017/08/03/date-command-on-Linux-and-Mac/" class="alignright next">Next<i class="fa fa-arrow-circle-o-right"></i></a></li>         
+        
+	
+</ul>
+</div>
+
+    </center>
+	</div>
+
+    <!-- share -->
+    
+        
+    <div class="bdsharebuttonbox">
+        <a href="#" class="bds_more" data-cmd="more"></a>
+        <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+        <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+        <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+        <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+        <a href="#" class="bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+        <a href="#" class="bds_evernotecn" data-cmd="evernotecn" title="分享到印象笔记"></a>
+        <a href="#" class="bds_youdao" data-cmd="youdao" title="分享到有道云笔记"></a>
+        <a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+    </div>
+    <script>
+        window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"24"},"share":{}};
+        with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+    </script>
+
+
+        
+
+    
+	
+	<!-- comment -->
+	
+<section id="comment">
+  <h2 class="title">Comments</h2>
+  
+</section>
+
+
+	</div> <!-- col-md-9/col-md-12 -->
+		
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta">
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2017-10-24 20:10:54
+	</div>
+	
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
+	   <div id="toc" class="toc collapse in">
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#创建Repository"><span class="toc-article-text">创建Repository</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#配置ssh-key"><span class="toc-article-text">配置ssh key</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#push已有的repository到CodeCommit"><span class="toc-article-text">push已有的repository到CodeCommit</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#Reference"><span class="toc-article-text">Reference</span></a></li></ol>
+		</div>
+	
+	</div>
+
+	<!-- categories -->
+    
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>
+    <ul id="categorys" class="tag_box list-unstyled collapse in">
+          
+  <li>
+    <li><a href="/categories/AWS/">AWS<span>4</span></a></li>
+  </li>
+
+    </ul>
+	</div>
+	
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>
+    <ul id="tags" class="tag_box list-unstyled collapse in">
+	    
+  <li><a href="/tags/Git/">Git<span>1</span></a></li> <li><a href="/tags/CodeCommit/">CodeCommit<span>1</span></a></li>
+    </ul>
+	</div>
+	
+
+    <hr>
+
+</div><!-- col-md-3 -->
+
+	</div>
+		
+
+</div><!-- row -->
+
+
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  &copy; 2017 jibing57
+  
+      with help from <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>.    
+</p> </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>

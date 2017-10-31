@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://jibing57.com/"/>
-  <updated>2017-10-31T06:56:47.000Z</updated>
+  <updated>2017-10-31T14:44:22.000Z</updated>
   <id>http://jibing57.com/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="http://jibing57.com/2017/10/31/hexo-bind-domain-to-github-pages/"/>
     <id>http://jibing57.com/2017/10/31/hexo-bind-domain-to-github-pages/</id>
     <published>2017-10-31T13:17:50.000Z</published>
-    <updated>2017-10-31T06:56:47.000Z</updated>
+    <updated>2017-10-31T14:44:22.000Z</updated>
     
     <summary type="html">
     
@@ -175,9 +175,9 @@
       <category term="Shell" scheme="http://jibing57.com/categories/Shell/"/>
     
     
-      <category term="Linux" scheme="http://jibing57.com/tags/Linux/"/>
-    
       <category term="Macos" scheme="http://jibing57.com/tags/Macos/"/>
+    
+      <category term="Linux" scheme="http://jibing57.com/tags/Linux/"/>
     
   </entry>
   

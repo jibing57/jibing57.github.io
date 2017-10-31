@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Paperclip destroy的callback中attachment的各个attribute为nil的问题调查 | Recording</title>
+  <title>绑定万网域名到github pages | Recording</title>
   <meta name="author" content="jibing57">
   
   <meta name="description" content="AWS, 阅读, Architecture, PostgreSQL">
@@ -11,7 +11,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="Paperclip destroy的callback中attachment的各个attribute为nil的问题调查"/>
+  <meta property="og:title" content="绑定万网域名到github pages"/>
   <meta property="og:site_name" content="Recording"/>
 
   
@@ -108,7 +108,7 @@ var _hmt = _hmt || [];
 
 	
 		<div class="page-header ">		
-			<h1 class="title "> Paperclip destroy的callback中attachment的各个attribute为nil的问题调查</h1>
+			<h1 class="title "> 绑定万网域名到github pages</h1>
 		</div>		
 	
 
@@ -128,19 +128,19 @@ var _hmt = _hmt || [];
 	<div class="mypage">		
 	  		
 
-	  <h3 id="问题点"><a href="#问题点" class="headerlink" title="问题点"></a>问题点</h3><p>Rails的Image的models中，使用了paperclip这个Gem来处理图片。近期需要添加一个功能，删除image后，需要向某个email地址发送一封邮件，告之某个图片已经被删除了。</p>
-<p>实际操作中，发现在无论函数是定义在before_destroy或after_destroy的callback中，attachment_file_name,attachment_file_size, attachment_content_type, attachment_updated_at的属性，取出来都是nil。</p>
-<p>调查了一下，现将结果汇总如下:<br><a id="more"></a></p>
-<h3 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h3><p>有两个办法可以解决这个问题:</p>
-<h4 id="方法一"><a href="#方法一" class="headerlink" title="方法一:"></a>方法一:</h4><p>将自己的before_destroy置于 has_attached_file 之前，这样就能够在执行Paperclip的 before_destroy之前执行你的before_destroy的方法，此时相关字段还没有设置为nil，还能访问到.</p>
-<h4 id="方法二"><a href="#方法二" class="headerlink" title="方法二:"></a>方法二:</h4><p>将自己的before_destory置于 has_attached_file 之后，此时Paperclip的before_destroy会先于自己写的before_destroy之前调用，会将相关字段设置为nil。<br>此时，只能依靠activerecord的_was方法来获取修改前的值, 比如获取attachment_file_name的话，就调用attachment_file_name_was</p>
-<h4 id="适用情况"><a href="#适用情况" class="headerlink" title="适用情况"></a>适用情况</h4><p>如果要before_destroy中callback中获取以上字段的值，上述两个方法都可行</p>
-<p>如果是after_destroy的话，就只能依靠上述的方法二来获取attachment_file_name之类的值</p>
-<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
-<li><a href="http://www.tikalk.com/use-beforedestroy-model-paperclip/" target="_blank" rel="external">use-beforedestroy-model-paperclip</a></li>
-<li><a href="https://github.com/thoughtbot/paperclip/issues/2088" target="_blank" rel="external">Github - paperclip_issue_2088</a></li>
-<li><a href="https://stackoverflow.com/questions/6578302/unable-to-access-attached-file-data-in-before-destroy-while-using-paperclip" target="_blank" rel="external">Stackoverflow - unable-to-access-attached-file-data-in-before-destroy-while-using-paperclip</a></li>
+	  <blockquote>
+<p>此处介绍如何将万网的域名绑定到github pages</p>
+</blockquote>
+<h3 id="万网设置"><a href="#万网设置" class="headerlink" title="万网设置"></a>万网设置</h3><p>进入aliyun控制的云解析DNS控制台，选中所要解析的域名，此处是jibing57.com, 点击右侧解析按钮。</p>
+<ul>
+<li>记录类型选择 CNAME</li>
+<li>主机记录填写 www</li>
+<li>记录值填入github pages的域名，此处是jibing57.github.io<a id="more"></a>
+</li>
 </ul>
+<p><img src="/images/Hexo/add_dns_record_on_wanwang.jpg" alt="add_dns_record_on_wanwang"></p>
+<h3 id="Hexo-设置"><a href="#Hexo-设置" class="headerlink" title="Hexo 设置"></a>Hexo 设置</h3><p>在source目录下添加CNAME文件，输入所要绑定的域名, 此处是<code>jibing57.com</code>, 注意不需要http,也不需要www。提交CNAME到git。</p>
+<p>使用<code>hexo deploy</code>发布到github pages，访问<a href="http://www.jibing57.com" target="_blank" rel="external">www.jibing57.com</a>就可以访问到github pages的内容了。</p>
 	  
 	</div>
 
@@ -149,14 +149,14 @@ var _hmt = _hmt || [];
 	<div class="pagination">
 <ul class="pagination">
 	 
-				
-    	<li class="prev"><a href="/2017/10/30/how-to-use-post-link-on-hexo/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>Prev</a></li>
-  		
+		
+          <li class="prev disabled"><a><i class="fa fa-arrow-circle-o-left"></i>Prev</a></li>
+        
 
         <li><a href="/archives"><i class="fa fa-archive"></i>Archive</a></li>
 
 		
-		   <li class="next"><a href="/2017/10/24/how-to-use-aws-cli-with-multi-user/" class="alignright next">Next<i class="fa fa-arrow-circle-o-right"></i></a></li>         
+		   <li class="next"><a href="/2017/10/30/how-to-use-post-link-on-hexo/" class="alignright next">Next<i class="fa fa-arrow-circle-o-right"></i></a></li>         
         
 	
 </ul>
@@ -207,7 +207,7 @@ var _hmt = _hmt || [];
 	
 	<div class="meta-widget">
 	<i class="fa fa-clock-o"></i>
-	2017-10-29 20:36:00
+	2017-10-31 21:17:50
 	</div>
 	
 
@@ -216,7 +216,7 @@ var _hmt = _hmt || [];
 	
 	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
 	   <div id="toc" class="toc collapse in">
-			<ol class="toc-article"><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#问题点"><span class="toc-article-text">问题点</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#解决办法"><span class="toc-article-text">解决办法</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#方法一"><span class="toc-article-text">方法一:</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#方法二"><span class="toc-article-text">方法二:</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#适用情况"><span class="toc-article-text">适用情况</span></a></li></ol></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#Reference"><span class="toc-article-text">Reference</span></a></li></ol>
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#万网设置"><span class="toc-article-text">万网设置</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#Hexo-设置"><span class="toc-article-text">Hexo 设置</span></a></li></ol>
 		</div>
 	
 	</div>
@@ -228,7 +228,7 @@ var _hmt = _hmt || [];
     <ul id="categorys" class="tag_box list-unstyled collapse in">
           
   <li>
-    <li><a href="/categories/Ruby/">Ruby<span>1</span></a></li>
+    <li><a href="/categories/Blog/">Blog<span>3</span></a></li>
   </li>
 
     </ul>
@@ -236,6 +236,14 @@ var _hmt = _hmt || [];
 	
 
 	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>
+    <ul id="tags" class="tag_box list-unstyled collapse in">
+	    
+  <li><a href="/tags/Hexo/">Hexo<span>3</span></a></li> <li><a href="/tags/Github/">Github<span>2</span></a></li>
+    </ul>
+	</div>
 	
 
     <hr>

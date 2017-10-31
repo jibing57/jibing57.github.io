@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Paperclip destroy的callback中attachment的各个attribute为nil的问题调查 | Recording</title>
+  <title>Hexo引用站内文章 | Recording</title>
   <meta name="author" content="jibing57">
   
   <meta name="description" content="AWS, 阅读, Architecture, PostgreSQL">
@@ -11,7 +11,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="Paperclip destroy的callback中attachment的各个attribute为nil的问题调查"/>
+  <meta property="og:title" content="Hexo引用站内文章"/>
   <meta property="og:site_name" content="Recording"/>
 
   
@@ -108,7 +108,7 @@ var _hmt = _hmt || [];
 
 	
 		<div class="page-header ">		
-			<h1 class="title "> Paperclip destroy的callback中attachment的各个attribute为nil的问题调查</h1>
+			<h1 class="title "> Hexo引用站内文章</h1>
 		</div>		
 	
 
@@ -128,18 +128,19 @@ var _hmt = _hmt || [];
 	<div class="mypage">		
 	  		
 
-	  <h3 id="问题点"><a href="#问题点" class="headerlink" title="问题点"></a>问题点</h3><p>Rails的Image的models中，使用了paperclip这个Gem来处理图片。近期需要添加一个功能，删除image后，需要向某个email地址发送一封邮件，告之某个图片已经被删除了。</p>
-<p>实际操作中，发现在无论函数是定义在before_destroy或after_destroy的callback中，attachment_file_name,attachment_file_size, attachment_content_type, attachment_updated_at的属性，取出来都是nil。</p>
-<p>调查了一下，现将结果汇总如下:<br><a id="more"></a></p>
-<h3 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h3><p>有两个办法可以解决这个问题:</p>
-<h4 id="方法一"><a href="#方法一" class="headerlink" title="方法一:"></a>方法一:</h4><p>将自己的before_destroy置于 has_attached_file 之前，这样就能够在执行Paperclip的 before_destroy之前执行你的before_destroy的方法，此时相关字段还没有设置为nil，还能访问到.</p>
-<h4 id="方法二"><a href="#方法二" class="headerlink" title="方法二:"></a>方法二:</h4><p>将自己的before_destory置于 has_attached_file 之后，此时Paperclip的before_destroy会先于自己写的before_destroy之前调用，会将相关字段设置为nil。<br>此时，只能依靠activerecord的_was方法来获取修改前的值, 比如获取attachment_file_name的话，就调用attachment_file_name_was</p>
-<h4 id="适用情况"><a href="#适用情况" class="headerlink" title="适用情况"></a>适用情况</h4><p>如果要before_destroy中callback中获取以上字段的值，上述两个方法都可行</p>
-<p>如果是after_destroy的话，就只能依靠上述的方法二来获取attachment_file_name之类的值</p>
-<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
-<li><a href="http://www.tikalk.com/use-beforedestroy-model-paperclip/" target="_blank" rel="external">use-beforedestroy-model-paperclip</a></li>
-<li><a href="https://github.com/thoughtbot/paperclip/issues/2088" target="_blank" rel="external">Github - paperclip_issue_2088</a></li>
-<li><a href="https://stackoverflow.com/questions/6578302/unable-to-access-attached-file-data-in-before-destroy-while-using-paperclip" target="_blank" rel="external">Stackoverflow - unable-to-access-attached-file-data-in-before-destroy-while-using-paperclip</a></li>
+	  <p>写文章的时候，经常需要引用站内的其他文章，此时可以使用Hexo内置的<a href="https://hexo.io/zh-cn/docs/tag-plugins.html" target="_blank" rel="external">标签插件</a>（Tag Plugins）中的<code>post_link</code>来实现。</p>
+<a id="more"></a>
+<p>用法:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;% post_link slug [title] %&#125;</div></pre></td></tr></table></figure>
+<p>其中slug就是_posts文件夹下需要引用的文章的markdown文件的名字，title可以指定引用的文章需要显示的名字。</p>
+<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><p>例如，<a href="/2017/07/17/hexo-github-blog/" title="使用Hexo搭建Blog">使用Hexo搭建Blog</a>这篇文章的markdown名字为hexo-github-blog.md</p>
+<p>那么在需要引用的markown源文件中，输入如下标记的时候</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">- &#123;% post_link hexo-github-blog %&#125;</div><div class="line">- &#123;% post_link hexo-github-blog 显示的名字 %&#125;</div></pre></td></tr></table></figure>
+<p>页面显示效果如下:</p>
+<ul>
+<li><a href="/2017/07/17/hexo-github-blog/" title="使用Hexo搭建Blog">使用Hexo搭建Blog</a></li>
+<li><a href="/2017/07/17/hexo-github-blog/" title="显示的名字">显示的名字</a>
+</li>
 </ul>
 	  
 	</div>
@@ -150,13 +151,13 @@ var _hmt = _hmt || [];
 <ul class="pagination">
 	 
 				
-    	<li class="prev"><a href="/2017/10/30/how-to-use-post-link-on-hexo/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>Prev</a></li>
+    	<li class="prev"><a href="/2017/10/31/hexo-bind-domain-to-github-pages/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>Prev</a></li>
   		
 
         <li><a href="/archives"><i class="fa fa-archive"></i>Archive</a></li>
 
 		
-		   <li class="next"><a href="/2017/10/24/how-to-use-aws-cli-with-multi-user/" class="alignright next">Next<i class="fa fa-arrow-circle-o-right"></i></a></li>         
+		   <li class="next"><a href="/2017/10/29/ruby-paperclip-destroy-callback-nil/" class="alignright next">Next<i class="fa fa-arrow-circle-o-right"></i></a></li>         
         
 	
 </ul>
@@ -207,7 +208,7 @@ var _hmt = _hmt || [];
 	
 	<div class="meta-widget">
 	<i class="fa fa-clock-o"></i>
-	2017-10-29 20:36:00
+	2017-10-30 19:32:52
 	</div>
 	
 
@@ -216,7 +217,7 @@ var _hmt = _hmt || [];
 	
 	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
 	   <div id="toc" class="toc collapse in">
-			<ol class="toc-article"><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#问题点"><span class="toc-article-text">问题点</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#解决办法"><span class="toc-article-text">解决办法</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#方法一"><span class="toc-article-text">方法一:</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#方法二"><span class="toc-article-text">方法二:</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#适用情况"><span class="toc-article-text">适用情况</span></a></li></ol></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#Reference"><span class="toc-article-text">Reference</span></a></li></ol>
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#例子"><span class="toc-article-text">例子</span></a></li></ol>
 		</div>
 	
 	</div>
@@ -228,7 +229,7 @@ var _hmt = _hmt || [];
     <ul id="categorys" class="tag_box list-unstyled collapse in">
           
   <li>
-    <li><a href="/categories/Ruby/">Ruby<span>1</span></a></li>
+    <li><a href="/categories/Blog/">Blog<span>3</span></a></li>
   </li>
 
     </ul>
@@ -236,6 +237,14 @@ var _hmt = _hmt || [];
 	
 
 	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>
+    <ul id="tags" class="tag_box list-unstyled collapse in">
+	    
+  <li><a href="/tags/Hexo/">Hexo<span>3</span></a></li>
+    </ul>
+	</div>
 	
 
     <hr>

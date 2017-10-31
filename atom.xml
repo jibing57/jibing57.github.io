@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://jibing57.com/"/>
-  <updated>2017-10-29T12:40:17.000Z</updated>
+  <updated>2017-10-31T06:56:47.000Z</updated>
   <id>http://jibing57.com/</id>
   
   <author>
@@ -17,11 +17,60 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>绑定万网域名到github pages</title>
+    <link href="http://jibing57.com/2017/10/31/hexo-bind-domain-to-github-pages/"/>
+    <id>http://jibing57.com/2017/10/31/hexo-bind-domain-to-github-pages/</id>
+    <published>2017-10-31T13:17:50.000Z</published>
+    <updated>2017-10-31T06:56:47.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;此处介绍如何将万网的域名绑定到github pages&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&quot;万网设置&quot;&gt;&lt;a href=&quot;#万网设置&quot; class=&quot;headerlink&quot; title=&quot;万网设置&quot;&gt;&lt;/a&gt;万网设置&lt;/h3&gt;&lt;p&gt;进入aliyun控制的云解析DNS控制台，选中所要解析的域名，此处是jibing57.com, 点击右侧解析按钮。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;记录类型选择 CNAME&lt;/li&gt;
+&lt;li&gt;主机记录填写 www&lt;/li&gt;
+&lt;li&gt;记录值填入github pages的域名，此处是jibing57.github.io
+    
+    </summary>
+    
+      <category term="Blog" scheme="http://jibing57.com/categories/Blog/"/>
+    
+    
+      <category term="Hexo" scheme="http://jibing57.com/tags/Hexo/"/>
+    
+      <category term="Github" scheme="http://jibing57.com/tags/Github/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Hexo引用站内文章</title>
+    <link href="http://jibing57.com/2017/10/30/how-to-use-post-link-on-hexo/"/>
+    <id>http://jibing57.com/2017/10/30/how-to-use-post-link-on-hexo/</id>
+    <published>2017-10-30T11:32:52.000Z</published>
+    <updated>2017-10-30T08:05:00.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;写文章的时候，经常需要引用站内的其他文章，此时可以使用Hexo内置的&lt;a href=&quot;https://hexo.io/zh-cn/docs/tag-plugins.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;标签插件&lt;/a&gt;（Tag Plugins）中的&lt;code&gt;post_link&lt;/code&gt;来实现。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Blog" scheme="http://jibing57.com/categories/Blog/"/>
+    
+    
+      <category term="Hexo" scheme="http://jibing57.com/tags/Hexo/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Paperclip destroy的callback中attachment的各个attribute为nil的问题调查</title>
     <link href="http://jibing57.com/2017/10/29/ruby-paperclip-destroy-callback-nil/"/>
     <id>http://jibing57.com/2017/10/29/ruby-paperclip-destroy-callback-nil/</id>
     <published>2017-10-29T12:36:00.000Z</published>
-    <updated>2017-10-29T12:40:17.000Z</updated>
+    <updated>2017-10-30T05:28:51.000Z</updated>
     
     <summary type="html">
     
@@ -161,7 +210,7 @@
     <link href="http://jibing57.com/2017/07/25/useful-website-of-aws/"/>
     <id>http://jibing57.com/2017/07/25/useful-website-of-aws/</id>
     <published>2017-07-25T02:49:10.000Z</published>
-    <updated>2017-10-28T15:21:19.000Z</updated>
+    <updated>2017-10-30T08:00:52.000Z</updated>
     
     <summary type="html">
     

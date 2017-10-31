@@ -2,9 +2,30 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://jibing57.com/2017/10/31/hexo-bind-domain-to-github-pages/</loc>
+    
+    <lastmod>2017-10-31T06:56:47.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://jibing57.com/2017/10/30/how-to-use-post-link-on-hexo/</loc>
+    
+    <lastmod>2017-10-30T08:05:00.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://jibing57.com/2017/07/25/useful-website-of-aws/</loc>
+    
+    <lastmod>2017-10-30T08:00:52.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://jibing57.com/2017/10/29/ruby-paperclip-destroy-callback-nil/</loc>
     
-    <lastmod>2017-10-29T12:40:17.000Z</lastmod>
+    <lastmod>2017-10-30T05:28:51.000Z</lastmod>
     
   </url>
   
@@ -40,13 +61,6 @@
     <loc>http://jibing57.com/2017/07/24/AWS-Certified-Developer/</loc>
     
     <lastmod>2017-10-28T15:21:43.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://jibing57.com/2017/07/25/useful-website-of-aws/</loc>
-    
-    <lastmod>2017-10-28T15:21:19.000Z</lastmod>
     
   </url>
   

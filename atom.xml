@@ -5,9 +5,9 @@
   <subtitle>Recording, Sharing, TimeSaving -- 一切成本皆时间</subtitle>
   <link href="/atom.xml" rel="self"/>
   
-  <link href="http://jibing57.com/"/>
-  <updated>2017-10-31T14:44:22.000Z</updated>
-  <id>http://jibing57.com/</id>
+  <link href="http://www.jibing57.com/"/>
+  <updated>2017-12-06T14:21:57.303Z</updated>
+  <id>http://www.jibing57.com/</id>
   
   <author>
     <name>jibing57</name>
@@ -17,9 +17,117 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>AWS Certified Sysops Administrator - Associate Road Map</title>
+    <link href="http://www.jibing57.com/2017/12/04/AWS-Certified-Sysops-Administrator-Associate/"/>
+    <id>http://www.jibing57.com/2017/12/04/AWS-Certified-Sysops-Administrator-Associate/</id>
+    <published>2017-12-04T13:27:17.000Z</published>
+    <updated>2017-12-06T14:21:57.303Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;Official-AWS-Certification-Page&quot;&gt;&lt;a href=&quot;#Official-AWS-Certification-Page&quot; class=&quot;headerlink&quot; title=&quot;Official AWS Certification Page&quot;&gt;&lt;/a&gt;Official AWS Certification Page&lt;/h2&gt;&lt;p&gt;访问官网&lt;a href=&quot;https://amazonaws-china.com/certification/certification-prep/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;AWS Certification&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;参加 AWS 培训课程&lt;/li&gt;
+&lt;li&gt;查看考试指南和样题&lt;ul&gt;
+&lt;li&gt;了解考试涉及的概念并整体了解需要学习哪些内容, &lt;a href=&quot;http://awstrainingandcertification.s3.amazonaws.com/production/AWS_certified_sysops_associate_blueprint.pdf&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;AWS Certified SysOps Administrator - Associate 考试指南&lt;/a&gt; 相当于考试大纲, 必看,而且需要反复的看。因为学习过一阵后再来看Guide，会有更深的体会。&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://awstrainingandcertification.s3.amazonaws.com/production/AWS_certified_sysops_associate_examsample.pdf&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;考试样题&lt;/a&gt;用于熟悉题目题型&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;完成自主进度动手实验和备考任务&lt;ul&gt;
+&lt;li&gt;官方&lt;a href=&quot;https://www.qwiklabs.com/learning_paths/20/lab_catalogue?locale=en&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;qwikLABS 任务&lt;/a&gt;提供了一系列动手实验, 提供部分免费实验，但大部分实验所需的积分都需要购买。高性价比的做法是， 注册一个AWS全球账号，使用一年的免费额度来对照着实验手册来进行试验。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;学习 AWS 白皮书&lt;ul&gt;
+&lt;li&gt;白皮书是纯英文的，而且每个白皮书篇幅都很长，读起来既费时又枯燥。但是有时间还是建议把推荐的几个都看一下。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;查看 AWS 常见问题&lt;/li&gt;
+&lt;li&gt;参加模拟考试&lt;ul&gt;
+&lt;li&gt;20美刀一次，主要目的是为了让人熟悉考试时上机的流程。是否需要因人而异, 特别想先熟悉下考试流程的可以考虑参加一次。我个人觉得没有必要, 因为真实考试时，操作界面一目了然，没有磕磕绊绊的机关，省下20美刀可以去买一份课程。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;报名考试并获得认证&lt;ul&gt;
+&lt;li&gt;登陆&lt;a href=&quot;https://www.aws.training/certification&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://www.aws.training/certification&lt;/a&gt;注册进行考试
+    
+    </summary>
+    
+      <category term="AWS Certified" scheme="http://www.jibing57.com/categories/AWS-Certified/"/>
+    
+    
+      <category term="Sysops" scheme="http://www.jibing57.com/tags/Sysops/"/>
+    
+      <category term="CloudWatch" scheme="http://www.jibing57.com/tags/CloudWatch/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>在AWS RDS中为Postgresql开启慢查询日志</title>
+    <link href="http://www.jibing57.com/2017/11/29/how-to-enable-slow-query-on-aws-rds-postgresql/"/>
+    <id>http://www.jibing57.com/2017/11/29/how-to-enable-slow-query-on-aws-rds-postgresql/</id>
+    <published>2017-11-29T13:38:12.000Z</published>
+    <updated>2017-12-05T03:14:50.359Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;sql遇到性能问题，就需要开启慢查询日志，将执行时间超过某个限定值的sql输出到日志，给后续开发人员分析。下面是AWS RDS中Postgresql开启慢查询日志的方法。包含&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;RDS设置&lt;/li&gt;
+&lt;li&gt;下载RDS log的方法&lt;/li&gt;
+&lt;li&gt;一些注意点&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;RDS设置步骤&quot;&gt;&lt;a href=&quot;#RDS设置步骤&quot; class=&quot;headerlink&quot; title=&quot;RDS设置步骤&quot;&gt;&lt;/a&gt;RDS设置步骤&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;登陆aws console，切换到RDS&lt;br&gt;&lt;img src=&quot;/images/AWS/RDSSlowQuery/switch_to_rds.png&quot; alt=&quot;switch_to_rds.png&quot;&gt;
+    
+    </summary>
+    
+      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
+    
+    
+      <category term="AWS SDK" scheme="http://www.jibing57.com/tags/AWS-SDK/"/>
+    
+      <category term="PostgreSQL" scheme="http://www.jibing57.com/tags/PostgreSQL/"/>
+    
+      <category term="Ruby" scheme="http://www.jibing57.com/tags/Ruby/"/>
+    
+      <category term="AWS CLI" scheme="http://www.jibing57.com/tags/AWS-CLI/"/>
+    
+      <category term="RDS" scheme="http://www.jibing57.com/tags/RDS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>创建AWS Account后的基本账号设置</title>
+    <link href="http://www.jibing57.com/2017/10/31/account-setting-by-aws/"/>
+    <id>http://www.jibing57.com/2017/10/31/account-setting-by-aws/</id>
+    <published>2017-10-31T15:10:46.000Z</published>
+    <updated>2017-12-05T02:59:40.647Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;记录创建好AWS账号后的几个基本设置, 大概介绍如下几点:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;查看是否满足Free Tier Usage&lt;/li&gt;
+&lt;li&gt;创建IAM账号&lt;/li&gt;
+&lt;li&gt;为IAM账号启用Billing&lt;/li&gt;
+&lt;li&gt;如何提交Case&lt;/li&gt;
+&lt;li&gt;切换Console语言&lt;/li&gt;
+&lt;/ul&gt;
+    
+    </summary>
+    
+      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
+    
+    
+      <category term="IAM" scheme="http://www.jibing57.com/tags/IAM/"/>
+    
+      <category term="AWS Free Tier" scheme="http://www.jibing57.com/tags/AWS-Free-Tier/"/>
+    
+  </entry>
+  
+  <entry>
     <title>绑定万网域名到github pages</title>
-    <link href="http://jibing57.com/2017/10/31/hexo-bind-domain-to-github-pages/"/>
-    <id>http://jibing57.com/2017/10/31/hexo-bind-domain-to-github-pages/</id>
+    <link href="http://www.jibing57.com/2017/10/31/hexo-bind-domain-to-github-pages/"/>
+    <id>http://www.jibing57.com/2017/10/31/hexo-bind-domain-to-github-pages/</id>
     <published>2017-10-31T13:17:50.000Z</published>
     <updated>2017-10-31T14:44:22.000Z</updated>
     
@@ -36,19 +144,19 @@
     
     </summary>
     
-      <category term="Blog" scheme="http://jibing57.com/categories/Blog/"/>
+      <category term="Blog" scheme="http://www.jibing57.com/categories/Blog/"/>
     
     
-      <category term="Hexo" scheme="http://jibing57.com/tags/Hexo/"/>
+      <category term="Hexo" scheme="http://www.jibing57.com/tags/Hexo/"/>
     
-      <category term="Github" scheme="http://jibing57.com/tags/Github/"/>
+      <category term="Github" scheme="http://www.jibing57.com/tags/Github/"/>
     
   </entry>
   
   <entry>
     <title>Hexo引用站内文章</title>
-    <link href="http://jibing57.com/2017/10/30/how-to-use-post-link-on-hexo/"/>
-    <id>http://jibing57.com/2017/10/30/how-to-use-post-link-on-hexo/</id>
+    <link href="http://www.jibing57.com/2017/10/30/how-to-use-post-link-on-hexo/"/>
+    <id>http://www.jibing57.com/2017/10/30/how-to-use-post-link-on-hexo/</id>
     <published>2017-10-30T11:32:52.000Z</published>
     <updated>2017-10-30T08:05:00.000Z</updated>
     
@@ -58,19 +166,19 @@
     
     </summary>
     
-      <category term="Blog" scheme="http://jibing57.com/categories/Blog/"/>
+      <category term="Blog" scheme="http://www.jibing57.com/categories/Blog/"/>
     
     
-      <category term="Hexo" scheme="http://jibing57.com/tags/Hexo/"/>
+      <category term="Hexo" scheme="http://www.jibing57.com/tags/Hexo/"/>
     
   </entry>
   
   <entry>
     <title>Paperclip destroy的callback中attachment的各个attribute为nil的问题调查</title>
-    <link href="http://jibing57.com/2017/10/29/ruby-paperclip-destroy-callback-nil/"/>
-    <id>http://jibing57.com/2017/10/29/ruby-paperclip-destroy-callback-nil/</id>
+    <link href="http://www.jibing57.com/2017/10/29/ruby-paperclip-destroy-callback-nil/"/>
+    <id>http://www.jibing57.com/2017/10/29/ruby-paperclip-destroy-callback-nil/</id>
     <published>2017-10-29T12:36:00.000Z</published>
-    <updated>2017-10-30T05:28:51.000Z</updated>
+    <updated>2017-12-05T03:03:51.783Z</updated>
     
     <summary type="html">
     
@@ -80,17 +188,19 @@
     
     </summary>
     
-      <category term="Ruby" scheme="http://jibing57.com/categories/Ruby/"/>
+      <category term="Code" scheme="http://www.jibing57.com/categories/Code/"/>
     
+    
+      <category term="Ruby" scheme="http://www.jibing57.com/tags/Ruby/"/>
     
   </entry>
   
   <entry>
     <title>如何在aws cli中使用多个配置文件</title>
-    <link href="http://jibing57.com/2017/10/24/how-to-use-aws-cli-with-multi-user/"/>
-    <id>http://jibing57.com/2017/10/24/how-to-use-aws-cli-with-multi-user/</id>
+    <link href="http://www.jibing57.com/2017/10/24/how-to-use-aws-cli-with-multi-user/"/>
+    <id>http://www.jibing57.com/2017/10/24/how-to-use-aws-cli-with-multi-user/</id>
     <published>2017-10-24T13:50:10.000Z</published>
-    <updated>2017-10-28T15:25:40.000Z</updated>
+    <updated>2017-12-05T03:15:32.997Z</updated>
     
     <summary type="html">
     
@@ -102,17 +212,17 @@
     
     </summary>
     
-      <category term="AWS" scheme="http://jibing57.com/categories/AWS/"/>
+      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
     
     
-      <category term="Aws CLI" scheme="http://jibing57.com/tags/Aws-CLI/"/>
+      <category term="AWS CLI" scheme="http://www.jibing57.com/tags/AWS-CLI/"/>
     
   </entry>
   
   <entry>
     <title>使用aws codecommit作为私有的git远程服务器</title>
-    <link href="http://jibing57.com/2017/10/24/how-to-use-aws-codecommit/"/>
-    <id>http://jibing57.com/2017/10/24/how-to-use-aws-codecommit/</id>
+    <link href="http://www.jibing57.com/2017/10/24/how-to-use-aws-codecommit/"/>
+    <id>http://www.jibing57.com/2017/10/24/how-to-use-aws-codecommit/</id>
     <published>2017-10-24T12:10:54.000Z</published>
     <updated>2017-10-28T15:31:20.000Z</updated>
     
@@ -140,21 +250,21 @@
     
     </summary>
     
-      <category term="AWS" scheme="http://jibing57.com/categories/AWS/"/>
+      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
     
     
-      <category term="Git" scheme="http://jibing57.com/tags/Git/"/>
+      <category term="Git" scheme="http://www.jibing57.com/tags/Git/"/>
     
-      <category term="CodeCommit" scheme="http://jibing57.com/tags/CodeCommit/"/>
+      <category term="CodeCommit" scheme="http://www.jibing57.com/tags/CodeCommit/"/>
     
   </entry>
   
   <entry>
     <title>Linux 和 Mac下date命令的基本用法</title>
-    <link href="http://jibing57.com/2017/08/03/date-command-on-Linux-and-Mac/"/>
-    <id>http://jibing57.com/2017/08/03/date-command-on-Linux-and-Mac/</id>
+    <link href="http://www.jibing57.com/2017/08/03/date-command-on-Linux-and-Mac/"/>
+    <id>http://www.jibing57.com/2017/08/03/date-command-on-Linux-and-Mac/</id>
     <published>2017-08-03T13:54:02.000Z</published>
-    <updated>2017-08-05T14:38:25.000Z</updated>
+    <updated>2017-12-05T03:11:25.076Z</updated>
     
     <summary type="html">
     
@@ -172,21 +282,21 @@
     
     </summary>
     
-      <category term="Shell" scheme="http://jibing57.com/categories/Shell/"/>
+      <category term="Shell" scheme="http://www.jibing57.com/categories/Shell/"/>
     
     
-      <category term="Macos" scheme="http://jibing57.com/tags/Macos/"/>
+      <category term="Linux" scheme="http://www.jibing57.com/tags/Linux/"/>
     
-      <category term="Linux" scheme="http://jibing57.com/tags/Linux/"/>
+      <category term="MacOS" scheme="http://www.jibing57.com/tags/MacOS/"/>
     
   </entry>
   
   <entry>
     <title>Macos中如何语音朗读文字</title>
-    <link href="http://jibing57.com/2017/07/25/how-to-read-text-on-macos/"/>
-    <id>http://jibing57.com/2017/07/25/how-to-read-text-on-macos/</id>
+    <link href="http://www.jibing57.com/2017/07/25/how-to-read-text-on-macos/"/>
+    <id>http://www.jibing57.com/2017/07/25/how-to-read-text-on-macos/</id>
     <published>2017-07-25T07:21:28.000Z</published>
-    <updated>2017-10-28T15:26:39.000Z</updated>
+    <updated>2017-12-05T03:11:45.370Z</updated>
     
     <summary type="html">
     
@@ -198,19 +308,19 @@
     
     </summary>
     
-      <category term="Tools" scheme="http://jibing57.com/categories/Tools/"/>
+      <category term="Tools" scheme="http://www.jibing57.com/categories/Tools/"/>
     
     
-      <category term="Macos" scheme="http://jibing57.com/tags/Macos/"/>
+      <category term="MacOS" scheme="http://www.jibing57.com/tags/MacOS/"/>
     
   </entry>
   
   <entry>
     <title>AWS相关的一些有用的网址</title>
-    <link href="http://jibing57.com/2017/07/25/useful-website-of-aws/"/>
-    <id>http://jibing57.com/2017/07/25/useful-website-of-aws/</id>
+    <link href="http://www.jibing57.com/2017/07/25/useful-website-of-aws/"/>
+    <id>http://www.jibing57.com/2017/07/25/useful-website-of-aws/</id>
     <published>2017-07-25T02:49:10.000Z</published>
-    <updated>2017-10-30T08:00:52.000Z</updated>
+    <updated>2017-12-05T03:05:46.611Z</updated>
     
     <summary type="html">
     
@@ -223,19 +333,19 @@
     
     </summary>
     
-      <category term="AWS" scheme="http://jibing57.com/categories/AWS/"/>
+      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
     
     
-      <category term="Tools" scheme="http://jibing57.com/tags/Tools/"/>
+      <category term="AWS Tools" scheme="http://www.jibing57.com/tags/AWS-Tools/"/>
     
   </entry>
   
   <entry>
     <title>AWS Certified Developer - Associate Road Map</title>
-    <link href="http://jibing57.com/2017/07/24/AWS-Certified-Developer/"/>
-    <id>http://jibing57.com/2017/07/24/AWS-Certified-Developer/</id>
+    <link href="http://www.jibing57.com/2017/07/24/AWS-Certified-Developer/"/>
+    <id>http://www.jibing57.com/2017/07/24/AWS-Certified-Developer/</id>
     <published>2017-07-24T07:27:17.000Z</published>
-    <updated>2017-10-28T15:21:43.000Z</updated>
+    <updated>2017-12-05T03:01:49.514Z</updated>
     
     <summary type="html">
     
@@ -271,19 +381,19 @@
     
     </summary>
     
-      <category term="AWS" scheme="http://jibing57.com/categories/AWS/"/>
-    
-      <category term="AWS Certified" scheme="http://jibing57.com/categories/AWS/AWS-Certified/"/>
+      <category term="AWS Certified" scheme="http://www.jibing57.com/categories/AWS-Certified/"/>
     
     
-      <category term="Developer" scheme="http://jibing57.com/tags/Developer/"/>
+      <category term="DynamoDB" scheme="http://www.jibing57.com/tags/DynamoDB/"/>
+    
+      <category term="AWS SDK" scheme="http://www.jibing57.com/tags/AWS-SDK/"/>
     
   </entry>
   
   <entry>
     <title>使用Hexo搭建Blog</title>
-    <link href="http://jibing57.com/2017/07/17/hexo-github-blog/"/>
-    <id>http://jibing57.com/2017/07/17/hexo-github-blog/</id>
+    <link href="http://www.jibing57.com/2017/07/17/hexo-github-blog/"/>
+    <id>http://www.jibing57.com/2017/07/17/hexo-github-blog/</id>
     <published>2017-07-17T08:19:32.000Z</published>
     <updated>2017-10-28T15:22:25.000Z</updated>
     
@@ -308,19 +418,19 @@
     
     </summary>
     
-      <category term="Blog" scheme="http://jibing57.com/categories/Blog/"/>
+      <category term="Blog" scheme="http://www.jibing57.com/categories/Blog/"/>
     
     
-      <category term="Hexo" scheme="http://jibing57.com/tags/Hexo/"/>
+      <category term="Hexo" scheme="http://www.jibing57.com/tags/Hexo/"/>
     
-      <category term="Github" scheme="http://jibing57.com/tags/Github/"/>
+      <category term="Github" scheme="http://www.jibing57.com/tags/Github/"/>
     
   </entry>
   
   <entry>
     <title>如何给本地视频生成字幕</title>
-    <link href="http://jibing57.com/2017/07/17/How-to-get-subtitle-of-local-video/"/>
-    <id>http://jibing57.com/2017/07/17/How-to-get-subtitle-of-local-video/</id>
+    <link href="http://www.jibing57.com/2017/07/17/How-to-get-subtitle-of-local-video/"/>
+    <id>http://www.jibing57.com/2017/07/17/How-to-get-subtitle-of-local-video/</id>
     <published>2017-07-17T06:54:03.000Z</published>
     <updated>2017-10-28T14:59:58.000Z</updated>
     
@@ -339,12 +449,12 @@
     
     </summary>
     
-      <category term="Tools" scheme="http://jibing57.com/categories/Tools/"/>
+      <category term="Tools" scheme="http://www.jibing57.com/categories/Tools/"/>
     
     
-      <category term="Video" scheme="http://jibing57.com/tags/Video/"/>
+      <category term="Video" scheme="http://www.jibing57.com/tags/Video/"/>
     
-      <category term="Tips" scheme="http://jibing57.com/tags/Tips/"/>
+      <category term="Tips" scheme="http://www.jibing57.com/tags/Tips/"/>
     
   </entry>
   

@@ -1,0 +1,333 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>在AWS RDS中为Postgresql开启慢查询日志 | Recording</title>
+  <meta name="author" content="jibing57">
+  
+  <meta name="description" content="AWS, 阅读, Architecture, PostgreSQL">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="在AWS RDS中为Postgresql开启慢查询日志"/>
+  <meta property="og:site_name" content="Recording"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/css/themes/bootstrap.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/comment.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+  
+  <!-- analytics -->
+  
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?a45bf9506f898d2215502df6cc64ff59";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+</head>
+
+ <body>  
+  <nav id="main-nav" class="navbar  navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+	<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+       <a class="navbar-brand" href="/">Recording</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class="fa fa-archive"></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class="fa fa-folder"></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class="fa fa-tags"></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/douban" title="Douban">
+			  <i class="fa fa-book"></i>Douban
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header ">		
+			<h1 class="title "> 在AWS RDS中为Postgresql开启慢查询日志</h1>
+		</div>		
+	
+
+
+
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
+
+	<!-- content -->
+	<div class="mypage">		
+	  		
+
+	  <p>sql遇到性能问题，就需要开启慢查询日志，将执行时间超过某个限定值的sql输出到日志，给后续开发人员分析。下面是AWS RDS中Postgresql开启慢查询日志的方法。包含</p>
+<ul>
+<li>RDS设置</li>
+<li>下载RDS log的方法</li>
+<li>一些注意点</li>
+</ul>
+<h3 id="RDS设置步骤"><a href="#RDS设置步骤" class="headerlink" title="RDS设置步骤"></a>RDS设置步骤</h3><ol>
+<li>登陆aws console，切换到RDS<br><img src="/images/AWS/RDSSlowQuery/switch_to_rds.png" alt="switch_to_rds.png"><a id="more"></a></li>
+<li>在左边菜单栏中，找到”Parameter Groups”<br><img src="/images/AWS/RDSSlowQuery/parameter_groups.png" alt="parameter_groups.png"></li>
+<li>选中要开启慢查询日志的PostgreSQL使用的参数组, 此处是myparametergroup, 点击”Edit Parameters”修改配置<br><img src="/images/AWS/RDSSlowQuery/select_parameter_group.png" alt="select_parameter_group.png"></li>
+<li>修改<code>log_min_duration_statement</code>为超限的毫秒数，超过这个数值，PostgreSQL就会记录下相关的log。日志格式参见后续说明。<br><img src="/images/AWS/RDSSlowQuery/set_log_min_duration_statement.png" alt="set_log_min_duration_statement.png"></li>
+<li>如果原来开启了<code>log_statement</code>和<code>log_duration</code>的，需要将<code>log_statement</code>设为默认的none，将<code>log_duration</code>设为0, 否则输出的慢查询日志的sql和执行时间就不在同一行，不便于观察。</li>
+<li>因为<code>log_min_duration_statement</code>是动态参数的(修改页面上的Apply Type属性是Dynamic)，因此修改设置后不需要重启，RDS会自动load新的设置。<br><img src="/images/AWS/RDSSlowQuery/load_parameter_group.png" alt="load_parameter_group.png"></li>
+<li><strong>注意:</strong> 如果RDS原先使用的是default的参数组，那么RDS换为自己定义的参数组的时候，RDS会重启</li>
+</ol>
+<h3 id="下载日志的方法"><a href="#下载日志的方法" class="headerlink" title="下载日志的方法"></a>下载日志的方法</h3><h4 id="设置IAM权限来允许下载RDS-logs"><a href="#设置IAM权限来允许下载RDS-logs" class="headerlink" title="设置IAM权限来允许下载RDS logs"></a>设置IAM权限来允许下载RDS logs</h4><p>将如下Policy 添加到IAM User或者Role中，就可以使用API或者CLI来下载RDS的log了</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    <span class="attr">"Version"</span>: <span class="string">"2012-10-17"</span>,</div><div class="line">    <span class="attr">"Statement"</span>: [</div><div class="line">        &#123;</div><div class="line">            <span class="attr">"Action"</span>: [</div><div class="line">                <span class="string">"rds:Describe*"</span>,</div><div class="line">                <span class="string">"rds:DownloadDBLogFilePortion"</span></div><div class="line">            ],</div><div class="line">            <span class="attr">"Effect"</span>: <span class="string">"Allow"</span>,</div><div class="line">            <span class="attr">"Resource"</span>: <span class="string">"*"</span></div><div class="line">        &#125;</div><div class="line">    ]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="aws-cli下载文件的命令"><a href="#aws-cli下载文件的命令" class="headerlink" title="aws cli下载文件的命令"></a>aws cli下载文件的命令</h4><p><code>aws rds download-db-log-file-portion help</code>中有下载完整log的用法</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">aws rds download-db-log-file-portion --db-instance-identifier myinstance --<span class="built_in">log</span>-file-name log.txt --starting-token 0 --output text &gt; full.txt</div></pre></td></tr></table></figure>
+<p>如下是下载名为mydb的Instance中某个指定日志的示例:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">[ec2-user@ip-172-31-13-115 rds_log]$ aws rds describe-db-log-files --db-instance-identifier=mydb</div><div class="line">&#123;</div><div class="line">    <span class="string">"DescribeDBLogFiles"</span>: [</div><div class="line">        &#123;</div><div class="line">            <span class="string">"LastWritten"</span>: 1511938537000,</div><div class="line">            <span class="string">"LogFileName"</span>: <span class="string">"error/postgres.log"</span>,</div><div class="line">            <span class="string">"Size"</span>: 307</div><div class="line">        &#125;,</div><div class="line">        &#123;</div><div class="line">            <span class="string">"LastWritten"</span>: 1511938540000,</div><div class="line">            <span class="string">"LogFileName"</span>: <span class="string">"error/postgresql.log.2017-11-29-06"</span>,</div><div class="line">            <span class="string">"Size"</span>: 1051</div><div class="line">        &#125;,</div><div class="line">        &#123;</div><div class="line">            <span class="string">"LastWritten"</span>: 1511942140000,</div><div class="line">            <span class="string">"LogFileName"</span>: <span class="string">"error/postgresql.log.2017-11-29-07"</span>,</div><div class="line">            <span class="string">"Size"</span>: 4032</div><div class="line">        &#125;,</div><div class="line">        &#123;</div><div class="line">            <span class="string">"LastWritten"</span>: 1511942441000,</div><div class="line">            <span class="string">"LogFileName"</span>: <span class="string">"error/postgresql.log.2017-11-29-08"</span>,</div><div class="line">            <span class="string">"Size"</span>: 336</div><div class="line">        &#125;</div><div class="line">    ]</div><div class="line">&#125;</div><div class="line">[ec2-user@ip-172-31-13-115 rds_log]$ aws rds download-db-log-file-portion --db-instance-identifier mydb --<span class="built_in">log</span>-file-name error/postgresql.log.2017-11-29-07 --starting-token 0 --output text &gt; postgresql.log.2017-11-29-07</div><div class="line">[ec2-user@ip-172-31-13-115 rds_log]$ ll</div><div class="line">总用量 4</div><div class="line">-rw-rw-r-- 1 ec2-user ec2-user 4033 11月 29 08:02 postgresql.log.2017-11-29-07</div><div class="line">[ec2-user@ip-172-31-13-115 rds_log]$</div></pre></td></tr></table></figure>
+<p>注意下载下来文件的大小，会比<code>describe-db-log-files</code>显示的文件大小大1 Byte, 因为下载下来的文件末尾会额外多一个空行</p>
+<h4 id="Ruby-SDK-下载log的一个例子"><a href="#Ruby-SDK-下载log的一个例子" class="headerlink" title="Ruby SDK 下载log的一个例子"></a>Ruby SDK 下载log的一个例子</h4><p>参见<a href="https://gist.github.com/ruckus/d30531c543d677eb3acb" target="_blank" rel="external">GithubGist</a></p>
+<p>摘录关键点如下:</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">additional_data_pending = <span class="literal">true</span></div><div class="line">File.open(out_log_file, <span class="string">"wb+"</span>) <span class="keyword">do</span> <span class="params">|file|</span></div><div class="line">  <span class="keyword">while</span> additional_data_pending <span class="keyword">do</span></div><div class="line">    out = rds.download_db_log_file_portion(opts)</div><div class="line">    file.write(out[<span class="symbol">:log_file_data</span>])</div><div class="line">    <span class="comment">#puts out[:marker]</span></div><div class="line">    opts[<span class="symbol">:marker</span>] = out[<span class="symbol">:marker</span>]</div><div class="line">    additional_data_pending = out[<span class="symbol">:additional_data_pending</span>]</div><div class="line">  <span class="keyword">end</span></div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure>
+<h3 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h3><h4 id="log-min-duration-statement和log-statement同时使用的格式"><a href="#log-min-duration-statement和log-statement同时使用的格式" class="headerlink" title="log_min_duration_statement和log_statement同时使用的格式"></a>log_min_duration_statement和log_statement同时使用的格式</h4><p>按照<a href="http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_LogAccess.Concepts.PostgreSQL.html" target="_blank" rel="external">官方文档</a>说明,开启了<code>log_statement</code>和<code>log_duration</code>后，error log中输出的日志格式如下.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">2013-11-05 16:51:10 UTC:[local]:master@postgres:[9193]:LOG:  statement: SELECT c2.relname, i.indisprimary, i.indisunique, i.indisclustered, i.indisvalid, pg_catalog.pg_get_indexdef(i.indexrelid, 0, true),</div><div class="line">	  pg_catalog.pg_get_constraintdef(con.oid, true), contype, condeferrable, condeferred, c2.reltablespace</div><div class="line">	FROM pg_catalog.pg_class c, pg_catalog.pg_class c2, pg_catalog.pg_index i</div><div class="line">	  LEFT JOIN pg_catalog.pg_constraint con ON (conrelid = i.indrelid AND conindid = i.indexrelid AND contype IN (&apos;p&apos;,&apos;u&apos;,&apos;x&apos;))</div><div class="line">	WHERE c.oid = &apos;1255&apos; AND c.oid = i.indrelid AND i.indexrelid = c2.oid</div><div class="line">	ORDER BY i.indisprimary DESC, i.indisunique DESC, c2.relname;</div><div class="line">2013-11-05 16:51:10 UTC:[local]:master@postgres:[9193]:LOG:  duration: 3.367 ms</div><div class="line">2013-11-05 16:51:10 UTC:[local]:master@postgres:[9193]:LOG:  statement: SELECT c.oid::pg_catalog.regclass FROM pg_catalog.pg_class c, pg_catalog.pg_inherits i WHERE c.oid=i.inhparent AND i.inhrelid = &apos;1255&apos; ORDER BY inhseqno;</div><div class="line">2013-11-05 16:51:10 UTC:[local]:master@postgres:[9193]:LOG:  duration: 1.002 ms</div><div class="line">2013-11-05 16:51:10 UTC:[local]:master@postgres:[9193]:LOG:  statement: SELECT c.oid::pg_catalog.regclass FROM pg_catalog.pg_class c, pg_catalog.pg_inherits i WHERE c.oid=i.inhrelid AND i.inhparent = &apos;1255&apos; ORDER BY c.oid::pg_catalog.regclass::pg_catalog.text;</div><div class="line">2013-11-05 16:51:18 UTC:[local]:master@postgres:[9193]:LOG:  statement: select proname from pg_proc;</div><div class="line">2013-11-05 16:51:18 UTC:[local]:master@postgres:[9193]:LOG:  duration: 3.469 ms</div></pre></td></tr></table></figure></p>
+<p>如果关闭了<code>log_statement</code>和<code>log_duration</code>, 只开启了<code>log_min_duration_statement</code>时，输出的日志格式中，duration和sql在同一行，比较便于阅读。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">2017-11-26 08:01:32 UTC:172.31.13.115(40782):user@mydb:[4234]:LOG: duration: 1326.449 ms execute &lt;unnamed&gt;: SELECT COUNT(&quot;location_properties&quot;.&quot;id&quot;) FROM &quot;location_properties&quot; WHERE (location_record_id = 175034)</div></pre></td></tr></table></figure>
+<h4 id="RDS-Parameter-Groups动态和静态参数的描述"><a href="#RDS-Parameter-Groups动态和静态参数的描述" class="headerlink" title="RDS Parameter Groups动态和静态参数的描述"></a>RDS Parameter Groups动态和静态参数的描述</h4><p>官方文档<a href="http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_WorkingWithParamGroups.html" target="_blank" rel="external">Working with DB Parameter Groups</a>中对修改RDS动态参数和静态参数的描述</p>
+<blockquote>
+<p>When you change a dynamic parameter and save the DB parameter group, the change is applied immediately regardless of the Apply Immediately setting. When you change a static parameter and save the DB parameter group, the parameter change will take effect after you manually reboot the DB instance.</p>
+</blockquote>
+<p>总结起来就是:</p>
+<ul>
+<li>修改动态参数, RDS会立即apply</li>
+<li>修改静态参数, 只能reboot后才能生效</li>
+</ul>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="http://www.getfareye.com/blog/amazon-rds-postgres-activate-slow-query-logs" target="_blank" rel="external">Amazon RDS + Postgres – Activate slow query logs</a></li>
+<li><a href="http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_LogAccess.Concepts.PostgreSQL.html" target="_blank" rel="external">PostgreSQL Database Log Files</a></li>
+<li><a href="https://gist.github.com/ruckus/d30531c543d677eb3acb" target="_blank" rel="external">rds_download_logfiles.rb</a></li>
+</ul>
+	  
+	</div>
+
+	<div>
+  	<center>
+	<div class="pagination">
+<ul class="pagination">
+	 
+				
+    	<li class="prev"><a href="/2017/12/04/AWS-Certified-Sysops-Administrator-Associate/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>Prev</a></li>
+  		
+
+        <li><a href="/archives"><i class="fa fa-archive"></i>Archive</a></li>
+
+		
+		   <li class="next"><a href="/2017/10/31/account-setting-by-aws/" class="alignright next">Next<i class="fa fa-arrow-circle-o-right"></i></a></li>         
+        
+	
+</ul>
+</div>
+
+    </center>
+	</div>
+
+    <!-- share -->
+    
+        
+    <div class="bdsharebuttonbox">
+        <a href="#" class="bds_more" data-cmd="more"></a>
+        <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+        <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+        <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+        <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+        <a href="#" class="bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+        <a href="#" class="bds_evernotecn" data-cmd="evernotecn" title="分享到印象笔记"></a>
+        <a href="#" class="bds_youdao" data-cmd="youdao" title="分享到有道云笔记"></a>
+        <a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+    </div>
+    <script>
+        window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"24"},"share":{}};
+        with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+    </script>
+
+
+        
+
+    
+	
+	<!-- comment -->
+	
+<section id="comment">
+  <h2 class="title">Comments</h2>
+  
+</section>
+
+
+	</div> <!-- col-md-9/col-md-12 -->
+		
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta">
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2017-11-29 21:38:12
+	</div>
+	
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
+	   <div id="toc" class="toc collapse in">
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#RDS设置步骤"><span class="toc-article-text">RDS设置步骤</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#下载日志的方法"><span class="toc-article-text">下载日志的方法</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#设置IAM权限来允许下载RDS-logs"><span class="toc-article-text">设置IAM权限来允许下载RDS logs</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#aws-cli下载文件的命令"><span class="toc-article-text">aws cli下载文件的命令</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#Ruby-SDK-下载log的一个例子"><span class="toc-article-text">Ruby SDK 下载log的一个例子</span></a></li></ol></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#注意点"><span class="toc-article-text">注意点</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#log-min-duration-statement和log-statement同时使用的格式"><span class="toc-article-text">log_min_duration_statement和log_statement同时使用的格式</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#RDS-Parameter-Groups动态和静态参数的描述"><span class="toc-article-text">RDS Parameter Groups动态和静态参数的描述</span></a></li></ol></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#Reference"><span class="toc-article-text">Reference</span></a></li></ol>
+		</div>
+	
+	</div>
+
+	<!-- categories -->
+    
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>
+    <ul id="categorys" class="tag_box list-unstyled collapse in">
+          
+  <li>
+    <li><a href="/categories/AWS/">AWS<span>5</span></a></li>
+  </li>
+
+    </ul>
+	</div>
+	
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>
+    <ul id="tags" class="tag_box list-unstyled collapse in">
+	    
+  <li><a href="/tags/AWS-SDK/">AWS SDK<span>2</span></a></li> <li><a href="/tags/PostgreSQL/">PostgreSQL<span>1</span></a></li> <li><a href="/tags/Ruby/">Ruby<span>2</span></a></li> <li><a href="/tags/AWS-CLI/">AWS CLI<span>2</span></a></li> <li><a href="/tags/RDS/">RDS<span>1</span></a></li>
+    </ul>
+	</div>
+	
+
+    <hr>
+
+</div><!-- col-md-3 -->
+
+	</div>
+		
+
+</div><!-- row -->
+
+
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  &copy; 2017 jibing57
+  
+      with help from <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>.    
+</p> </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>

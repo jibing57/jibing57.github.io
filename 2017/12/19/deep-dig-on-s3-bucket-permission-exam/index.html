@@ -1,0 +1,412 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>深挖AWS S3的权限管理(实验篇) | Recording</title>
+  <meta name="author" content="jibing57">
+  
+  <meta name="description" content="AWS, 阅读, Architecture, PostgreSQL">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="深挖AWS S3的权限管理(实验篇)"/>
+  <meta property="og:site_name" content="Recording"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/css/themes/bootstrap.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/comment.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+  
+  <!-- analytics -->
+  
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?a45bf9506f898d2215502df6cc64ff59";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+</head>
+
+ <body>  
+  <nav id="main-nav" class="navbar  navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+	<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+       <a class="navbar-brand" href="/">Recording</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class="fa fa-archive"></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class="fa fa-folder"></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class="fa fa-tags"></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/douban" title="Douban">
+			  <i class="fa fa-book"></i>Douban
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header ">		
+			<h1 class="title "> 深挖AWS S3的权限管理(实验篇)</h1>
+		</div>		
+	
+
+
+
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
+
+	<!-- content -->
+	<div class="mypage">		
+	  		
+
+	  <p>在<a href="/2017/12/14/deep-dig-on-s3-bucket-permission/" title="深挖AWS S3的权限管理">深挖AWS S3的权限管理</a> 一文中介绍了AWS S3权限管理的三种方法。此处再通过几个实验来看下三种方法的使用方法。</p>
+<hr>
+<h3 id="实验前准备"><a href="#实验前准备" class="headerlink" title="实验前准备"></a>实验前准备</h3><h4 id="实验用相关账号介绍"><a href="#实验用相关账号介绍" class="headerlink" title="实验用相关账号介绍"></a>实验用相关账号介绍</h4><ul>
+<li>IAM User carl.shen - carl.shen有AdministratorAccess权限，用来上传图片到S3</li>
+<li>IAM User carl - 测试IAM User一号，初始没有任何权限</li>
+<li>IAM User shen - 测试IAM User二号，初始没有任何权限</li>
+<li>IAM Group S3Exam - 用来给IAM User carl和shen统一赋权限</li>
+</ul>
+<p>建好三个IAM账号，下载各自的Access key ID和Secret Access Key, 并设置好AWS CLI。AWS CLI多profile的设置方法可以参照 <a href="/2017/10/24/how-to-use-aws-cli-with-multi-user/" title="如何在aws cli中使用多个配置文件">如何在aws cli中使用多个配置文件</a><br><a id="more"></a></p>
+<p>建立好IAM Group S3Exam，将carl和shen添加进S3Exam中。</p>
+<p><img src="/images/AWS/S3/s3_permission_exam_create_IAM.png" alt="s3_permission_exam_create_IAM"></p>
+<h4 id="实验用Bucket介绍"><a href="#实验用Bucket介绍" class="headerlink" title="实验用Bucket介绍"></a>实验用Bucket介绍</h4><ul>
+<li>carl-test-at-seoul - 测试Bucket 1，初始没有任何Bucket Policy</li>
+<li>carl-test-at-seoul-2 - 测试Bucket 2，初始没有任何Bucket Policy</li>
+</ul>
+<h4 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h4><ul>
+<li>AWS CLI</li>
+<li>Chrome浏览器 - 用来匿名访问S3 Object的url</li>
+</ul>
+<h4 id="测试图片"><a href="#测试图片" class="headerlink" title="测试图片"></a>测试图片</h4><p>两张测试图片:<br><img src="/images/AWS/S3/fox.jpg" alt="fox"><br><img src="/images/AWS/S3/steve.jpeg" alt="steve"></p>
+<h4 id="实验项目"><a href="#实验项目" class="headerlink" title="实验项目"></a>实验项目</h4><ol>
+<li>测试Default Deny</li>
+<li>测试Object ACL public-read</li>
+<li>测试Bucket Policy Explicit Allow override Default Deny</li>
+<li>测试Bucket Policy Explicit Deny override Explicit Allow</li>
+<li>测试Bucket Policy 禁止某个IAM访问</li>
+<li>测试IAM Policy</li>
+<li>测试Bucket Policy不能跨Bucket授权</li>
+<li>测试IAM Policy授权多个Bucket的操作</li>
+</ol>
+<h3 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h3><h4 id="实验1-–-测试Default-Deny"><a href="#实验1-–-测试Default-Deny" class="headerlink" title="实验1 – 测试Default Deny"></a>实验1 – 测试Default Deny</h4><p>步骤: Bucket carl-test-at-seoul没有Bucket Policy，carl.shen cli传图片进S3，测试chrome和IAM访问</p>
+<ol>
+<li><p>使用AWS CLI用carl.shen账号上传图片</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ aws --profile carlshen s3 cp photo_used_for_test/fox.jpg s3://carl-test-at-seoul/</div><div class="line">upload: photo_used_for_test/fox.jpg to s3://carl-test-at-seoul/fox.jpg</div><div class="line">$ aws --profile carlshen s3 ls s3://carl-test-at-seoul/</div><div class="line">2017-12-18 14:49:30      11432 fox.jpg</div><div class="line">$</div></pre></td></tr></table></figure>
+</li>
+<li><p>使用Chrome访问fox.jpg的public url, 会提示AccessDenied, 因为上传到S3的fox.jpg， 默认是access deny的。<br><img src="/images/AWS/S3/s3_permission_exam_access_deny_by_default.png" alt="s3_permission_exam_access_deny_by_default"></p>
+</li>
+<li><p>同样，IAM User carl和shen也都没有权限获取fox.jpg</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># IAM User carl没有访问fox.jpg的权限</div><div class="line">$ aws --profile carl s3 cp s3://carl-test-at-seoul/fox.jpg ./download_from_s3/</div><div class="line">fatal error: An error occurred (403) when calling the HeadObject operation: Forbidden</div><div class="line"></div><div class="line"># IAM User shen没有访问fox.jpg的权限</div><div class="line">$ aws --profile shen s3 cp s3://carl-test-at-seoul/fox.jpg ./download_from_s3/</div><div class="line">fatal error: An error occurred (403) when calling the HeadObject operation: Forbidden</div><div class="line">$</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="实验2-–-测试Object-ACL-public-read"><a href="#实验2-–-测试Object-ACL-public-read" class="headerlink" title="实验2 – 测试Object ACL public-read"></a>实验2 – 测试Object ACL public-read</h4><p>步骤: Bucket carl-test-at-seoul没有Bucket Policy，carl.shen cli传图片进S3, 设置public-read acl，测试chrome和IAM访问</p>
+<ol>
+<li><p>使用AWS CLI以carl.shen账号上传图片steve.jpeg，并设置图片的Object ACL为public-read</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ aws --profile carlshen s3 cp photo_used_for_test/steve.jpeg s3://carl-test-at-seoul/ --acl public-read</div><div class="line">upload: photo_used_for_test/steve.jpeg to s3://carl-test-at-seoul/steve.jpeg</div><div class="line">$ aws --profile carlshen s3 ls s3://carl-test-at-seoul/</div><div class="line">2017-12-18 14:49:30      11432 fox.jpg</div><div class="line">2017-12-18 15:02:02       9619 steve.jpeg</div><div class="line">$</div></pre></td></tr></table></figure>
+</li>
+<li><p>使用Chrome访问steve.jpeg的public url, steve.jpeg可以被Chrome访问到。因为此时steve.jpeg的Object ACL是public-read，而explicit allow will override the default deny<br><img src="/images/AWS/S3/s3_permission_exam_access_allow_by_acl_public_read.png" alt="s3_permission_exam_access_allow_by_acl_public_read"></p>
+</li>
+<li><p>使用IAM User carl和shen也都可以获取到steve.jpeg</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># IAM User carl有权限访问steve.jpeg</div><div class="line">$ aws --profile carl s3 cp s3://carl-test-at-seoul/steve.jpeg ./download_from_s3/</div><div class="line">download: s3://carl-test-at-seoul/steve.jpeg to download_from_s3/steve.jpeg</div><div class="line"></div><div class="line"># IAM User shen有权限访问steve.jpeg</div><div class="line">$ aws --profile shen s3 cp s3://carl-test-at-seoul/steve.jpeg ./download_from_s3/</div><div class="line">download: s3://carl-test-at-seoul/steve.jpeg to download_from_s3/steve.jpeg</div><div class="line">$</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="实验3-–-测试Bucket-Policy-Explicit-Allow-override-Default-Deny"><a href="#实验3-–-测试Bucket-Policy-Explicit-Allow-override-Default-Deny" class="headerlink" title="实验3 – 测试Bucket Policy Explicit Allow override Default Deny"></a>实验3 – 测试Bucket Policy Explicit Allow override Default Deny</h4><p>步骤: 设置Bucket carl-test-at-seoul的Policy, 设为public to read, 测试chrome和IAM访问</p>
+<ol>
+<li><p>设置Bucket carl-test-at-seoul的Policy，使得carl-test-at-seoul都public to read.</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    <span class="attr">"Version"</span>: <span class="string">"2012-10-17"</span>,</div><div class="line">    <span class="attr">"Id"</span>: <span class="string">"Policy1512465896017"</span>,</div><div class="line">    <span class="attr">"Statement"</span>: [</div><div class="line">        &#123;</div><div class="line">            <span class="attr">"Sid"</span>: <span class="string">"Stmt1512465891857"</span>,</div><div class="line">            <span class="attr">"Effect"</span>: <span class="string">"Allow"</span>,</div><div class="line">            <span class="attr">"Principal"</span>: <span class="string">"*"</span>,</div><div class="line">            <span class="attr">"Action"</span>: <span class="string">"s3:GetObject"</span>,</div><div class="line">            <span class="attr">"Resource"</span>: <span class="string">"arn:aws:s3:::carl-test-at-seoul/*"</span></div><div class="line">        &#125;</div><div class="line">    ]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>使用Chrome访问原先没权限的访问的fox.jpg的url, fox.jpg可以被访问到，因为Bucket Policy的explict allow会覆盖default deny.<br><img src="/images/AWS/S3/s3_permission_exam_access_allow_by_bucket_policy.png" alt="s3_permission_exam_access_allow_by_bucket_policy"></p>
+</li>
+<li><p>此时，carl和shen也可以访问到fox.jpg</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># IAM User carl有权限访问fox.jpg</div><div class="line">$ aws --profile carl s3 cp s3://carl-test-at-seoul/fox.jpg ./download_from_s3/</div><div class="line">download: s3://carl-test-at-seoul/fox.jpg to download_from_s3/fox.jpg</div><div class="line"></div><div class="line"># IAM User shen有权限访问fox.jpg</div><div class="line">$ aws --profile shen s3 cp s3://carl-test-at-seoul/fox.jpg ./download_from_s3/</div><div class="line">download: s3://carl-test-at-seoul/fox.jpg to download_from_s3/fox.jpg</div><div class="line">$</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="实验4-–-测试Bucket-Policy-Explicit-Deny-override-Explicit-Allow"><a href="#实验4-–-测试Bucket-Policy-Explicit-Deny-override-Explicit-Allow" class="headerlink" title="实验4 –  测试Bucket Policy Explicit Deny override Explicit Allow"></a>实验4 –  测试Bucket Policy Explicit Deny override Explicit Allow</h4><p>步骤: Bucket carl-test-at-seoul设置Policy to deny，再测试chrome和IAM访问</p>
+<ol>
+<li><p>修改Bucket carl-test-at-seoul的Policy, Deny s3:GetObject的访问。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    &quot;Version&quot;: &quot;2012-10-17&quot;,</div><div class="line">    &quot;Id&quot;: &quot;Policy1512465896017&quot;,</div><div class="line">    &quot;Statement&quot;: [</div><div class="line">        &#123;</div><div class="line">            &quot;Sid&quot;: &quot;Stmt1512465891857&quot;,</div><div class="line">            &quot;Effect&quot;: &quot;Deny&quot;,</div><div class="line">            &quot;Principal&quot;: &quot;*&quot;,</div><div class="line">            &quot;Action&quot;: &quot;s3:GetObject&quot;,</div><div class="line">            &quot;Resource&quot;: &quot;arn:aws:s3:::carl-test-at-seoul/*&quot;</div><div class="line">        &#125;</div><div class="line">    ]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>使用Chrome访问fox.jpg和steve.jpeg, fox.jpg和steve.jpeg都无法被访问。即使steve.jpeg是ACL public-read的，但因为Bucket Policy中显示声明了deny，而exclipit deny会override explicity allow, 所以steve.jpeg也被禁止访问。<br><img src="/images/AWS/S3/s3_permission_exam_access_deny_by_exclipit_deny_fox.png" alt="s3_permission_exam_access_deny_by_exclipit_deny_fox"><br><img src="/images/AWS/S3/s3_permission_exam_access_deny_by_exclipit_deny_steve.png" alt="s3_permission_exam_access_deny_by_exclipit_deny_steve"></p>
+</li>
+<li><p>IAM carl和shen也无法访问到fox.jpg和steve.jpeg</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># IAM User carl没权限访问fox.jpg和steve.jpeg</span></div><div class="line">$ aws --profile carl s3 cp s3://carl-test-at-seoul/fox.jpg ./download_from_s3/</div><div class="line">fatal error: An error occurred (403) when calling the HeadObject operation: Forbidden</div><div class="line">$ aws --profile carl s3 cp s3://carl-test-at-seoul/steve.jpeg ./download_from_s3/</div><div class="line">fatal error: An error occurred (403) when calling the HeadObject operation: Forbidden</div><div class="line"></div><div class="line"><span class="comment"># IAM User shen没权限访问fox.jpg和steve.jpeg</span></div><div class="line">$ aws --profile shen s3 cp s3://carl-test-at-seoul/fox.jpg ./download_from_s3/</div><div class="line">fatal error: An error occurred (403) when calling the HeadObject operation: Forbidden</div><div class="line">$ aws --profile shen s3 cp s3://carl-test-at-seoul/steve.jpeg ./download_from_s3/</div><div class="line">fatal error: An error occurred (403) when calling the HeadObject operation: Forbidden</div><div class="line">$</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="实验5-–-测试Bucket-Policy-禁止某个IAM访问"><a href="#实验5-–-测试Bucket-Policy-禁止某个IAM访问" class="headerlink" title="实验5 – 测试Bucket Policy 禁止某个IAM访问"></a>实验5 – 测试Bucket Policy 禁止某个IAM访问</h4><p>步骤: 修改Bucket Policy为禁止carl访问，此时chrome和shen还是可以访问的。</p>
+<ol>
+<li><p>修改Bucket carl-test-at-seoul的Policy, 禁止IAM User carl的s3:GetObject的操作。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    &quot;Version&quot;: &quot;2012-10-17&quot;,</div><div class="line">    &quot;Id&quot;: &quot;Policy1512465896017&quot;,</div><div class="line">    &quot;Statement&quot;: [</div><div class="line">        &#123;</div><div class="line">            &quot;Sid&quot;: &quot;Stmt1512465891857&quot;,</div><div class="line">            &quot;Effect&quot;: &quot;Deny&quot;,</div><div class="line">            &quot;Principal&quot;: &#123;</div><div class="line">                &quot;AWS&quot;: &quot;arn:aws:iam::XXXXXXXXXXXX:user/carl&quot;</div><div class="line">            &#125;,</div><div class="line">            &quot;Action&quot;: &quot;s3:GetObject&quot;,</div><div class="line">            &quot;Resource&quot;: &quot;arn:aws:s3:::carl-test-at-seoul/*&quot;</div><div class="line">        &#125;</div><div class="line">    ]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>使用Chrome访问fox.jpg和steve.jpeg。Buckt Policy被修改为禁止IAM carl访问Object，但该Policy的实施对象是IAM User carl，所以对Chrome的匿名访问不起作用，因此从Chrome上访问时，带有public-read的steve.jpeg可以访问到，没有public-read ACL的fox.jpg还是无法访问到。<br><img src="/images/AWS/S3/s3_permission_exam_access_allow_by_acl_public_read_without_deny.png" alt="s3_permission_exam_access_allow_by_acl_public_read_without_deny"><br><img src="/images/AWS/S3/s3_permission_exam_access_deny_by_default_without_exclipit_allow.png" alt="s3_permission_exam_access_deny_by_default_without_exclipit_allow"></p>
+</li>
+<li><p>IAM User carl被Bucket Policy禁止访问fox.jpg和steve.jpeg, 而IAM User shen不受Bucket Policy影响，从而可以访问steve.jpeg,但因为没有explicit allow的规则而无法访问fox.jpg</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"># IAM User carl被禁止get carl-test-at-seoul的Object</div><div class="line">$ aws --profile carl s3 cp s3://carl-test-at-seoul/fox.jpg ./download_from_s3/</div><div class="line">fatal error: An error occurred (403) when calling the HeadObject operation: Forbidden</div><div class="line">$ aws --profile carl s3 cp s3://carl-test-at-seoul/steve.jpeg ./download_from_s3/</div><div class="line">fatal error: An error occurred (403) when calling the HeadObject operation: Forbidden</div><div class="line"></div><div class="line"># IAM User carl不能访问fox.jpg,但能访问steve.jpeg</div><div class="line">$ aws --profile shen s3 cp s3://carl-test-at-seoul/fox.jpg ./download_from_s3/</div><div class="line">fatal error: An error occurred (403) when calling the HeadObject operation: Forbidden</div><div class="line">$ aws --profile shen s3 cp s3://carl-test-at-seoul/steve.jpeg ./download_from_s3/</div><div class="line">download: s3://carl-test-at-seoul/steve.jpeg to download_from_s3/steve.jpeg</div><div class="line">$</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="实验6-–-测试IAM-Policy"><a href="#实验6-–-测试IAM-Policy" class="headerlink" title="实验6 – 测试IAM Policy"></a>实验6 – 测试IAM Policy</h4><p>步骤: 修改IAM Group Policy为允许访问carl-test-at-seoul的全部资源，但因为Bucket Policy中是禁止carl访问资源的，因此carl还是无法访问bucket中的内容</p>
+<ol>
+<li><p>将carl和shen所在的Group S3Exam的Policy设为如下,即允许任意S3操作</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    &quot;Version&quot;: &quot;2012-10-17&quot;,</div><div class="line">    &quot;Statement&quot;: [</div><div class="line">        &#123;</div><div class="line">            &quot;Effect&quot;: &quot;Allow&quot;,</div><div class="line">            &quot;Action&quot;: &quot;s3:*&quot;,</div><div class="line">            &quot;Resource&quot;: [</div><div class="line">                &quot;arn:aws:s3:::carl-test-at-seoul&quot;,</div><div class="line">                &quot;arn:aws:s3:::carl-test-at-seoul/*&quot;</div><div class="line">            ]</div><div class="line">        &#125;</div><div class="line">    ]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>修改S3Exam的Policy后，carl和shen自动就继承了S3Exam的权限</p>
+</li>
+<li><p>shen可以访问carl-test-at-seoul的全部资源了，包括没有public-read ACL的fox.jpg。carl因为Bucket Policy中还是禁止他访问的，因此还是没有权限获取carl-test-at-seoul中的任意Object</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"># IAM User carl还是没有访问carl-test-at-seoul的权限</div><div class="line">$ aws --profile carl s3 cp s3://carl-test-at-seoul/fox.jpg ./download_from_s3/</div><div class="line">fatal error: An error occurred (403) when calling the HeadObject operation: Forbidden</div><div class="line">$ aws --profile carl s3 cp s3://carl-test-at-seoul/steve.jpeg ./download_from_s3/</div><div class="line">fatal error: An error occurred (403) when calling the HeadObject operation: Forbidden</div><div class="line"></div><div class="line"># IAM User shen获取了carl-test-at-seoul的全部权限，因此可以访问fox.jpg</div><div class="line">$ aws --profile shen s3 cp s3://carl-test-at-seoul/fox.jpg ./download_from_s3/</div><div class="line">download: s3://carl-test-at-seoul/fox.jpg to download_from_s3/fox.jpg</div><div class="line">$ aws --profile shen s3 cp s3://carl-test-at-seoul/steve.jpeg ./download_from_s3/</div><div class="line">download: s3://carl-test-at-seoul/steve.jpeg to download_from_s3/steve.jpeg</div><div class="line">$</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="实验7-–-测试Bucket-Policy不能跨Bucket授权"><a href="#实验7-–-测试Bucket-Policy不能跨Bucket授权" class="headerlink" title="实验7 – 测试Bucket Policy不能跨Bucket授权"></a>实验7 – 测试Bucket Policy不能跨Bucket授权</h4><p>步骤: Bucket carl-test-at-seoul添加对Bucket carl-test-at-seoul-2的访问，会报错</p>
+<ol>
+<li><p>修改Bucket carl-test-at-seoul的Policy为如下:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    <span class="string">"Version"</span>: <span class="string">"2012-10-17"</span>,</div><div class="line">    <span class="string">"Id"</span>: <span class="string">"Policy1512465896017"</span>,</div><div class="line">    <span class="string">"Statement"</span>: [</div><div class="line">        &#123;</div><div class="line">            <span class="string">"Sid"</span>: <span class="string">"Stmt1512465891857"</span>,</div><div class="line">            <span class="string">"Effect"</span>: <span class="string">"Deny"</span>,</div><div class="line">            <span class="string">"Principal"</span>: <span class="string">"*"</span>,</div><div class="line">            <span class="string">"Action"</span>: <span class="string">"s3:GetObject"</span>,</div><div class="line">            <span class="string">"Resource"</span>: <span class="string">"arn:aws:s3:::carl-test-at-seoul-2/*"</span></div><div class="line">        &#125;</div><div class="line">    ]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>会提示”Error Policy has invalid resource”, 因为无法在当前Bucket的Policy中添加对其他Bucket的访问权限。<br><img src="/images/AWS/S3/s3_permission_exam_cannot_create_policy_to_other_bucket.png" alt="s3_permission_exam_cannot_create_policy_to_other_bucket"></p>
+</li>
+</ol>
+<h4 id="实验8-–-测试IAM-Policy授权多个Bucket的操作"><a href="#实验8-–-测试IAM-Policy授权多个Bucket的操作" class="headerlink" title="实验8 –  测试IAM Policy授权多个Bucket的操作"></a>实验8 –  测试IAM Policy授权多个Bucket的操作</h4><p>步骤: Group Policy中添加对carl-test-at-seoul2的访问，通过carl.shen传文件到carl-test-at-seoul2后，carl和shen能够访问了，但是chrome无法访问，因为IAM Policy, 只能对IAM实体(IAM User, Group, Role)起作用，无法对匿名用户起作用</p>
+<ol>
+<li><p>S3Exam的Policy中只有Bucket carl-test-at-seoul时，carl和shen没有权限访问Bucket carl-test-at-seoul-2的资源。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"># 使用carl.shen上传图片到Bucket carl-test-at-seoul-2中</div><div class="line">$ aws --profile carlshen s3 cp photo_used_for_test/steve.jpeg s3://carl-test-at-seoul-2/</div><div class="line">upload: photo_used_for_test/steve.jpeg to s3://carl-test-at-seoul-2/steve.jpeg</div><div class="line">$ aws --profile carlshen s3 ls s3://carl-test-at-seoul-2/</div><div class="line">2017-12-19 14:15:26       9619 steve.jpeg</div><div class="line"></div><div class="line"># IAM User carl 没有权限访问Bucket carl-test-at-seoul-2的资源</div><div class="line">$ aws --profile carl s3 cp s3://carl-test-at-seoul-2/steve.jpeg ./download_from_s3/</div><div class="line">fatal error: An error occurred (403) when calling the HeadObject operation: Forbidden</div><div class="line"># IAM User shen 没有权限访问Bucket carl-test-at-seoul-2的资源</div><div class="line">$ aws --profile shen s3 cp s3://carl-test-at-seoul-2/steve.jpeg ./download_from_s3/</div><div class="line">fatal error: An error occurred (403) when calling the HeadObject operation: Forbidden</div><div class="line">$</div></pre></td></tr></table></figure>
+</li>
+<li><p>在S3Exam中添加对Bucket carl-test-at-seoul-2的访问权限, 修改后的Bucket Policy如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    &quot;Version&quot;: &quot;2012-10-17&quot;,</div><div class="line">    &quot;Statement&quot;: [</div><div class="line">        &#123;</div><div class="line">            &quot;Effect&quot;: &quot;Allow&quot;,</div><div class="line">            &quot;Action&quot;: &quot;s3:*&quot;,</div><div class="line">            &quot;Resource&quot;: [</div><div class="line">                &quot;arn:aws:s3:::carl-test-at-seoul&quot;,</div><div class="line">                &quot;arn:aws:s3:::carl-test-at-seoul/*&quot;,</div><div class="line">                &quot;arn:aws:s3:::carl-test-at-seoul-2&quot;,</div><div class="line">                &quot;arn:aws:s3:::carl-test-at-seoul-2/*&quot;</div><div class="line">            ]</div><div class="line">        &#125;</div><div class="line">    ]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>添加权限后，使用Chrome访问Bucket carl-test-at-seoul-2中的steve.jpeg时，无法访问。因为IAM Policy不对匿名访问生效<br><img src="/images/AWS/S3/s3_permission_exam_access_deny_on_bucket_2.png" alt="s3_permission_exam_access_deny_on_bucket_2"></p>
+</li>
+<li><p>添加权限后，carl和shen就可以访问Bucket carl-test-at-seoul-2的资源了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"># carl可以访问Bucket carl-test-at-seoul-2的资源</div><div class="line">$ aws --profile carl s3 cp s3://carl-test-at-seoul-2/steve.jpeg ./download_from_s3/</div><div class="line">download: s3://carl-test-at-seoul-2/steve.jpeg to download_from_s3/steve.jpeg</div><div class="line"></div><div class="line"># shen可以访问Bucket carl-test-at-seoul-2的资源</div><div class="line">$ aws --profile shen s3 cp s3://carl-test-at-seoul-2/steve.jpeg ./download_from_s3/</div><div class="line">download: s3://carl-test-at-seoul-2/steve.jpeg to download_from_s3/steve.jpeg</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<hr>
+<hr>
+<hr>
+	  
+	</div>
+
+	<div>
+  	<center>
+	<div class="pagination">
+<ul class="pagination">
+	 
+		
+          <li class="prev disabled"><a><i class="fa fa-arrow-circle-o-left"></i>Prev</a></li>
+        
+
+        <li><a href="/archives"><i class="fa fa-archive"></i>Archive</a></li>
+
+		
+		   <li class="next"><a href="/2017/12/14/deep-dig-on-s3-bucket-permission/" class="alignright next">Next<i class="fa fa-arrow-circle-o-right"></i></a></li>         
+        
+	
+</ul>
+</div>
+
+    </center>
+	</div>
+
+    <!-- share -->
+    
+        
+    <div class="bdsharebuttonbox">
+        <a href="#" class="bds_more" data-cmd="more"></a>
+        <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+        <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+        <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+        <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+        <a href="#" class="bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+        <a href="#" class="bds_evernotecn" data-cmd="evernotecn" title="分享到印象笔记"></a>
+        <a href="#" class="bds_youdao" data-cmd="youdao" title="分享到有道云笔记"></a>
+        <a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+    </div>
+    <script>
+        window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"24"},"share":{}};
+        with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+    </script>
+
+
+        
+
+    
+	
+	<!-- comment -->
+	
+<section id="comment">
+  <h2 class="title">Comments</h2>
+  
+</section>
+
+
+	</div> <!-- col-md-9/col-md-12 -->
+		
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta">
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2017-12-19 21:54:56
+	</div>
+	
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
+	   <div id="toc" class="toc collapse in">
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#实验前准备"><span class="toc-article-text">实验前准备</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#实验用相关账号介绍"><span class="toc-article-text">实验用相关账号介绍</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#实验用Bucket介绍"><span class="toc-article-text">实验用Bucket介绍</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#工具"><span class="toc-article-text">工具</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#测试图片"><span class="toc-article-text">测试图片</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#实验项目"><span class="toc-article-text">实验项目</span></a></li></ol></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#实验"><span class="toc-article-text">实验</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#实验1-–-测试Default-Deny"><span class="toc-article-text">实验1 – 测试Default Deny</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#实验2-–-测试Object-ACL-public-read"><span class="toc-article-text">实验2 – 测试Object ACL public-read</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#实验3-–-测试Bucket-Policy-Explicit-Allow-override-Default-Deny"><span class="toc-article-text">实验3 – 测试Bucket Policy Explicit Allow override Default Deny</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#实验4-–-测试Bucket-Policy-Explicit-Deny-override-Explicit-Allow"><span class="toc-article-text">实验4 –  测试Bucket Policy Explicit Deny override Explicit Allow</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#实验5-–-测试Bucket-Policy-禁止某个IAM访问"><span class="toc-article-text">实验5 – 测试Bucket Policy 禁止某个IAM访问</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#实验6-–-测试IAM-Policy"><span class="toc-article-text">实验6 – 测试IAM Policy</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#实验7-–-测试Bucket-Policy不能跨Bucket授权"><span class="toc-article-text">实验7 – 测试Bucket Policy不能跨Bucket授权</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#实验8-–-测试IAM-Policy授权多个Bucket的操作"><span class="toc-article-text">实验8 –  测试IAM Policy授权多个Bucket的操作</span></a></li></ol></li></ol>
+		</div>
+	
+	</div>
+
+	<!-- categories -->
+    
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>
+    <ul id="categorys" class="tag_box list-unstyled collapse in">
+          
+  <li>
+    <li><a href="/categories/AWS/">AWS<span>7</span></a></li>
+  </li>
+
+    </ul>
+	</div>
+	
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>
+    <ul id="tags" class="tag_box list-unstyled collapse in">
+	    
+  <li><a href="/tags/S3/">S3<span>2</span></a></li> <li><a href="/tags/AWS-Deep-Dive/">AWS Deep Dive<span>2</span></a></li> <li><a href="/tags/AWS-CLI/">AWS CLI<span>3</span></a></li>
+    </ul>
+	</div>
+	
+
+    <hr>
+
+</div><!-- col-md-3 -->
+
+	</div>
+		
+
+</div><!-- row -->
+
+
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  &copy; 2017 jibing57
+  
+      with help from <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>.    
+</p> </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>

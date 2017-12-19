@@ -152,9 +152,106 @@ var _hmt = _hmt || [];
 		
             
 		
+            
+		
+            
+		
+            
+		
         
         <!-- render other articles -->
         
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2017-12-19 </div>
+			<div class="article-title"><a href="/2017/12/19/deep-dig-on-s3-bucket-permission-exam/" >深挖AWS S3的权限管理(实验篇)</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>在<a href="/2017/12/14/deep-dig-on-s3-bucket-permission/" title="深挖AWS S3的权限管理">深挖AWS S3的权限管理</a> 一文中介绍了AWS S3权限管理的三种方法。此处再通过几个实验来看下三种方法的使用方法。</p>
+<hr>
+<h3 id="实验前准备"><a href="#实验前准备" class="headerlink" title="实验前准备"></a>实验前准备</h3><h4 id="实验用相关账号介绍"><a href="#实验用相关账号介绍" class="headerlink" title="实验用相关账号介绍"></a>实验用相关账号介绍</h4><ul>
+<li>IAM User carl.shen - carl.shen有AdministratorAccess权限，用来上传图片到S3</li>
+<li>IAM User carl - 测试IAM User一号，初始没有任何权限</li>
+<li>IAM User shen - 测试IAM User二号，初始没有任何权限</li>
+<li>IAM Group S3Exam - 用来给IAM User carl和shen统一赋权限</li>
+</ul>
+<p>建好三个IAM账号，下载各自的Access key ID和Secret Access Key, 并设置好AWS CLI。AWS CLI多profile的设置方法可以参照 <a href="/2017/10/24/how-to-use-aws-cli-with-multi-user/" title="如何在aws cli中使用多个配置文件">如何在aws cli中使用多个配置文件</a><br>
+	
+	</div>
+  <a type="button" href="/2017/12/19/deep-dig-on-s3-bucket-permission-exam/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2017-12-14 </div>
+			<div class="article-title"><a href="/2017/12/14/deep-dig-on-s3-bucket-permission/" >深挖AWS S3的权限管理</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>AWS共有三种方式用来管理S3的访问权限</p>
+<ul>
+<li>IAM policy</li>
+<li>Bucket Policy</li>
+<li>S3 ACL</li>
+</ul>
+<p>此处深挖一下这三种访问控制的用法和区别</p>
+<h3 id="三种访问控制的介绍"><a href="#三种访问控制的介绍" class="headerlink" title="三种访问控制的介绍"></a>三种访问控制的介绍</h3><p>S3的三种访问控制如下:</p>
+<ul>
+<li>IAM Policy, 是基于用户层面的控制，attach to IAM实体(User, Role或Group),规定了谁能对哪些S3做什么操作</li>
+<li>Bucket Policy, 是基于Bucket层面的控制, attach to Bucket, 规定了哪些人能对我这个Bucket中的resource做什么操作。</li>
+<li>S3 ACL, 是基于Bucket或单个对象的，规定了谁能对我这个Bucket或对象做什么操作。</li>
+</ul>
+	
+	</div>
+  <a type="button" href="/2017/12/14/deep-dig-on-s3-bucket-permission/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2017-12-12 </div>
+			<div class="article-title"><a href="/2017/12/12/how-to-write-multiline-to-file-by-shell/" >使用shell添加多行到文件的几个办法</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>使用shell添加多行到某个文件的几个办法, 启动EC2设置User Data时可能会用到。</p>
+<h4 id="方法一-逐行echo添加"><a href="#方法一-逐行echo添加" class="headerlink" title="方法一: 逐行echo添加"></a>方法一: 逐行echo添加</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">echo &apos;#!/bin/bash&apos; &gt; way1.sh</div><div class="line">echo &apos;export PATH=$PATH:~/bin/&apos; &gt;&gt; way1.sh</div></pre></td></tr></table></figure>
+<p>查看文件内容为:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ cat way1.sh</div><div class="line">#!/bin/bash</div><div class="line">export PATH=$PATH:~/bin/</div><div class="line">$</div></pre></td></tr></table></figure></p>
+	
+	</div>
+  <a type="button" href="/2017/12/12/how-to-write-multiline-to-file-by-shell/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
            
 			  
 	
@@ -365,114 +462,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2017-10-24 </div>
-			<div class="article-title"><a href="/2017/10/24/how-to-use-aws-codecommit/" >使用aws codecommit作为私有的git远程服务器</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>博客的hexo的代码，一直是保存在本地的。上次电脑花了一次屏后，感觉到保存在本地实在是不够安全。因此考虑寻觅一个远端的私密git库，存起来。</p>
-<p>开始寻寻觅觅合适的仓库.</p>
-<ul>
-<li>Github?,私有库是收费的。但为了这些哪条就不更新的markdown，每月7刀开个Developer的Plan，感觉不划算。</li>
-<li>自建Gitlab？嫌麻烦麻烦。</li>
-<li>oschina的私有库？不想用。</li>
-<li>。。。。。。</li>
-</ul>
-<p>好吧，我承认我就是想尝试用一下aws的codecommit。</p>
-<p>关于CodeCommit的免费额度，<a href="https://aws.amazon.com/cn/codecommit/pricing/" target="_blank" rel="external">官网</a>介绍:</p>
-<ul>
-<li>最初5位活动用户<ul>
-<li>无限存储库</li>
-<li>50GB的月存储量</li>
-<li>每月10000个git请求</li>
-</ul>
-</li>
-</ul>
-<p>托管我一个小博客，妥妥的够了。毕竟除了我，没人还会来关心这点markdown文件, 5位用户免费足够了。至于50GB的月存储量么，除非把看过的电影都commit进git来，要不然应该是足够了。</p>
-	
-	</div>
-  <a type="button" href="/2017/10/24/how-to-use-aws-codecommit/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2017-08-03 </div>
-			<div class="article-title"><a href="/2017/08/03/date-command-on-Linux-and-Mac/" >Linux 和 Mac下date命令的基本用法</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>Mac下的date命令是BDS系的, Linux下date命令是GNU系的，两者的用法有一些区别，罗列如下:</p>
-<h3 id="共同点"><a href="#共同点" class="headerlink" title="共同点"></a>共同点</h3><p>基本的时间格式的缩写是相同的，规则如下:</p>
-<ul>
-<li>%Y 表示四位数形式的年份, 比如2017</li>
-<li>%m 表示带前导0的月份，比如02,12</li>
-<li>%d 表示带前导0的日子， 比如 02，28</li>
-<li>%H 表示带前导0的24小时， 比如 01, 23</li>
-<li>%M 表示带前导0的分钟数， 比如 05, 22</li>
-<li>%S 表示带前导0的秒数， 比如 06，45</li>
-<li>%s 表示距离格林威治时间(1970年1月1日0点)的秒数</li>
-</ul>
-	
-	</div>
-  <a type="button" href="/2017/08/03/date-command-on-Linux-and-Mac/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2017-07-25 </div>
-			<div class="article-title"><a href="/2017/07/25/how-to-read-text-on-macos/" >Macos中如何语音朗读文字</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>Macos上看到大段大段的英文，有时候除了看以外，还想边听边看</p>
-<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><h3 id="Macos-自带speech"><a href="#Macos-自带speech" class="headerlink" title="Macos 自带speech"></a>Macos 自带speech</h3><p>Macos 自带了文本至语音的功能, 开启方法如下:</p>
-<ol>
-<li>打开[系统偏好设置] -&gt; [听写与语音] -&gt; 切换至[文本至语音]</li>
-<li>可以选择系统嗓音和朗读速率</li>
-<li>可以设置快捷键，默认为Option + Esc, 选择文字后按快捷键开启，再次按快捷键关闭</li>
-</ol>
-<p>或选中文字，右键菜单选择[语音]-&gt;[开始讲话]</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
-<li><a href="https://support.apple.com/kb/PH14230?locale=en_US" target="_blank" rel="external">OS X Mavericks: Hear your Mac speak text</a></li>
-</ul>
-
-	
-	</div>
-  <a type="button" href="/2017/07/25/how-to-read-text-on-macos/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -526,7 +515,7 @@ var _hmt = _hmt || [];
 		<h4>Categories</h4>
 		<ul class="tag_box inline list-unstyled">
 		
-			<li><a href="/categories/AWS/">AWS<span>5</span></a></li>
+			<li><a href="/categories/AWS/">AWS<span>7</span></a></li>
 		
 			<li><a href="/categories/AWS-Certified/">AWS Certified<span>2</span></a></li>
 		
@@ -534,7 +523,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/Code/">Code<span>1</span></a></li>
 		
-			<li><a href="/categories/Shell/">Shell<span>1</span></a></li>
+			<li><a href="/categories/Shell/">Shell<span>2</span></a></li>
 		
 			<li><a href="/categories/Tools/">Tools<span>2</span></a></li>
 		
@@ -547,44 +536,48 @@ var _hmt = _hmt || [];
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/IAM/">IAM<span>1</span></a></li>
-		
-			<li><a href="/tags/Git/">Git<span>1</span></a></li>
-		
-			<li><a href="/tags/RDS/">RDS<span>1</span></a></li>
-		
-			<li><a href="/tags/CloudWatch/">CloudWatch<span>1</span></a></li>
-		
-			<li><a href="/tags/AWS-Tools/">AWS Tools<span>1</span></a></li>
-		
-			<li><a href="/tags/CodeCommit/">CodeCommit<span>1</span></a></li>
-		
-			<li><a href="/tags/AWS-SDK/">AWS SDK<span>2</span></a></li>
+			<li><a href="/tags/EC2-User-Data/">EC2 User Data<span>1</span></a></li>
 		
 			<li><a href="/tags/Tips/">Tips<span>1</span></a></li>
 		
+			<li><a href="/tags/Github/">Github<span>2</span></a></li>
+		
+			<li><a href="/tags/AWS-Deep-Dive/">AWS Deep Dive<span>2</span></a></li>
+		
 			<li><a href="/tags/AWS-Free-Tier/">AWS Free Tier<span>1</span></a></li>
+		
+			<li><a href="/tags/IAM/">IAM<span>1</span></a></li>
+		
+			<li><a href="/tags/AWS-CLI/">AWS CLI<span>3</span></a></li>
 		
 			<li><a href="/tags/PostgreSQL/">PostgreSQL<span>1</span></a></li>
 		
-			<li><a href="/tags/Sysops/">Sysops<span>1</span></a></li>
-		
-			<li><a href="/tags/AWS-CLI/">AWS CLI<span>2</span></a></li>
-		
-			<li><a href="/tags/Linux/">Linux<span>1</span></a></li>
-		
-			<li><a href="/tags/Hexo/">Hexo<span>3</span></a></li>
-		
-			<li><a href="/tags/MacOS/">MacOS<span>2</span></a></li>
-		
 			<li><a href="/tags/DynamoDB/">DynamoDB<span>1</span></a></li>
 		
-			<li><a href="/tags/Ruby/">Ruby<span>2</span></a></li>
+			<li><a href="/tags/CloudWatch/">CloudWatch<span>1</span></a></li>
+		
+			<li><a href="/tags/AWS-SDK/">AWS SDK<span>2</span></a></li>
+		
+			<li><a href="/tags/Sysops/">Sysops<span>1</span></a></li>
+		
+			<li><a href="/tags/S3/">S3<span>2</span></a></li>
 		
 			<li><a href="/tags/Video/">Video<span>1</span></a></li>
 		
-			<li><a href="/tags/Github/">Github<span>2</span></a></li>
+			<li><a href="/tags/Linux/">Linux<span>1</span></a></li>
 		
+			<li><a href="/tags/Git/">Git<span>1</span></a></li>
+		
+			<li><a href="/tags/MacOS/">MacOS<span>2</span></a></li>
+		
+			<li><a href="/tags/RDS/">RDS<span>1</span></a></li>
+		
+			<li><a href="/tags/Ruby/">Ruby<span>2</span></a></li>
+		
+			<li><a href="/tags/AWS-Tools/">AWS Tools<span>1</span></a></li>
+		
+		
+		   <li><a href="/tags">...<span>22</span></a></li>
 		 
 		</ul>
 	</div>
@@ -597,23 +590,23 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2017/12/19/deep-dig-on-s3-bucket-permission-exam/" ><i class="fa fa-file-o"></i>深挖AWS S3的权限管理(实验篇)</a>
+      </li>
+    
+      <li>
+        <a href="/2017/12/14/deep-dig-on-s3-bucket-permission/" ><i class="fa fa-file-o"></i>深挖AWS S3的权限管理</a>
+      </li>
+    
+      <li>
+        <a href="/2017/12/12/how-to-write-multiline-to-file-by-shell/" ><i class="fa fa-file-o"></i>使用shell添加多行到文件的几个办法</a>
+      </li>
+    
+      <li>
         <a href="/2017/12/04/AWS-Certified-Sysops-Administrator-Associate/" ><i class="fa fa-file-o"></i>AWS Certified Sysops Admini...</a>
       </li>
     
       <li>
         <a href="/2017/11/29/how-to-enable-slow-query-on-aws-rds-postgresql/" ><i class="fa fa-file-o"></i>在AWS RDS中为Postgresql开启慢查询日志</a>
-      </li>
-    
-      <li>
-        <a href="/2017/10/31/account-setting-by-aws/" ><i class="fa fa-file-o"></i>创建AWS Account后的基本账号设置</a>
-      </li>
-    
-      <li>
-        <a href="/2017/10/31/hexo-bind-domain-to-github-pages/" ><i class="fa fa-file-o"></i>绑定万网域名到github pages</a>
-      </li>
-    
-      <li>
-        <a href="/2017/10/30/how-to-use-post-link-on-hexo/" ><i class="fa fa-file-o"></i>Hexo引用站内文章</a>
       </li>
     
   </ul>

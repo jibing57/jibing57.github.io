@@ -1,0 +1,382 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>深挖AWS S3的权限管理 | Recording</title>
+  <meta name="author" content="jibing57">
+  
+  <meta name="description" content="AWS, 阅读, Architecture, PostgreSQL">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="深挖AWS S3的权限管理"/>
+  <meta property="og:site_name" content="Recording"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/css/themes/bootstrap.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/comment.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+  
+  <!-- analytics -->
+  
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?a45bf9506f898d2215502df6cc64ff59";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+</head>
+
+ <body>  
+  <nav id="main-nav" class="navbar  navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+	<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+       <a class="navbar-brand" href="/">Recording</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class="fa fa-archive"></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class="fa fa-folder"></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class="fa fa-tags"></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/douban" title="Douban">
+			  <i class="fa fa-book"></i>Douban
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header ">		
+			<h1 class="title "> 深挖AWS S3的权限管理</h1>
+		</div>		
+	
+
+
+
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
+
+	<!-- content -->
+	<div class="mypage">		
+	  		
+
+	  <p>AWS共有三种方式用来管理S3的访问权限</p>
+<ul>
+<li>IAM policy</li>
+<li>Bucket Policy</li>
+<li>S3 ACL</li>
+</ul>
+<p>此处深挖一下这三种访问控制的用法和区别</p>
+<h3 id="三种访问控制的介绍"><a href="#三种访问控制的介绍" class="headerlink" title="三种访问控制的介绍"></a>三种访问控制的介绍</h3><p>S3的三种访问控制如下:</p>
+<ul>
+<li>IAM Policy, 是基于用户层面的控制，attach to IAM实体(User, Role或Group),规定了谁能对哪些S3做什么操作</li>
+<li>Bucket Policy, 是基于Bucket层面的控制, attach to Bucket, 规定了哪些人能对我这个Bucket中的resource做什么操作。</li>
+<li>S3 ACL, 是基于Bucket或单个对象的，规定了谁能对我这个Bucket或对象做什么操作。</li>
+</ul>
+<a id="more"></a>
+<h4 id="IAM-Policy"><a href="#IAM-Policy" class="headerlink" title="IAM Policy"></a>IAM Policy</h4><p>IAM Policy 是实施在IAM层面的，规定了某个AWS IAM实体(User, Group或者Role)可以对S3所能做的操作。</p>
+<p>IAM Policy由多个Statement组成，每个Statement都规定了<strong><code>谁</code>被<code>允许/禁止</code>对<code>某个AWS资源(包括但不限于S3)</code>进行<code>哪些操作</code></strong>这样的一组策略。</p>
+<p>如下是一个IAM Policy的例子，在这个Policy中，允许对名为my_bucket的S3的bucket做任何s3的操作。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="attr">"Version"</span>: <span class="string">"2012-10-17"</span>,</div><div class="line">  <span class="attr">"Statement"</span>:[&#123;</div><div class="line">    <span class="attr">"Effect"</span>: <span class="string">"Allow"</span>,</div><div class="line">    <span class="attr">"Action"</span>: <span class="string">"s3:*"</span>,</div><div class="line">    <span class="attr">"Resource"</span>: [<span class="string">"arn:aws:s3:::my_bucket"</span>,</div><div class="line">                 <span class="string">"arn:aws:s3:::my_bucket/*"</span>]</div><div class="line">    &#125;</div><div class="line">  ]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>其中,</p>
+<ul>
+<li><code>Effect</code>定义了<code>允许/禁止</code>，</li>
+<li><code>Resource</code>定义了<code>AWS资源(包括但不限于S3)</code></li>
+<li><code>Action</code>定义了<code>哪些操作</code>。</li>
+</ul>
+<p>IAM Policy中没有代表<code>谁</code>的<code>Principal</code>,因为IAM Policy是需要Attach给某个实体的，被Attach的实体(可以是User，Group或者Role)就承担了<code>谁</code>的这个属性，所以IAM Policy中是没有<code>Principal</code>的。</p>
+<p>IAM Policy可以定义某个User，Group或者Role对所有AWS Resource的访问控制。针对S3的控制只是IAM Policy的子集而已</p>
+<p>IAM Policy可以定义对多个S3 Bucket的控制,这是Bucket Policy无法做到的。</p>
+<h4 id="Bucket-Policy"><a href="#Bucket-Policy" class="headerlink" title="Bucket Policy"></a>Bucket Policy</h4><p>Bucket Policy是实施在S3 Bucket层面的，只能定义本Bucket中资源的访问权限，无法定义对其他Bucket的访问权限。如果定义了其他Bucket的访问权限，保存Policy的时候会报错。</p>
+<p>Bucket Policy定义了<code>谁</code>可以被<code>允许/禁止</code>对<code>本bucket</code>进行<code>哪些操作</code>.</p>
+<p>如下是一个经典的Bucket Policy, 意思是允许任何人对bucket carl-test-at-seoul中的任意Object执行s3:GetObject的操作, 也就是将Bucket中的Object设置为Public Read。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    <span class="attr">"Version"</span>: <span class="string">"2012-10-17"</span>,</div><div class="line">    <span class="attr">"Id"</span>: <span class="string">"Policy1512465896017"</span>,</div><div class="line">    <span class="attr">"Statement"</span>: [</div><div class="line">        &#123;</div><div class="line">            <span class="attr">"Sid"</span>: <span class="string">"Stmt1512465891857"</span>,</div><div class="line">            <span class="attr">"Effect"</span>: <span class="string">"Allow"</span>,</div><div class="line">            <span class="attr">"Principal"</span>: <span class="string">"*"</span>,</div><div class="line">            <span class="attr">"Action"</span>: <span class="string">"s3:GetObject"</span>,</div><div class="line">            <span class="attr">"Resource"</span>: <span class="string">"arn:aws:s3:::carl-test-at-seoul/*"</span></div><div class="line">        &#125;</div><div class="line">    ]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Effect,Principal,Action,Resource的含义同IAM Policy中的意思相同。</p>
+<h4 id="S3-ACL"><a href="#S3-ACL" class="headerlink" title="S3 ACL"></a>S3 ACL</h4><p>S3 ACL可以实施在Bucket层面,也可以实施在Object层面。</p>
+<p>AWS为ACL设置了一些预定义的组</p>
+<ul>
+<li>AWS account Access - 代表的是账户级别的设置，可以设置本账户和授权某个账户来访问S3的资源</li>
+<li>Authenticated Users group - 代表的是AWS中任意验证过的账户，对这个组授权后，是世界上任何经过身份验证的AWS用户都可以访问你的Bucket</li>
+<li>All Users group - 代表世界上的任何人</li>
+<li>Log Delivery group - 针对服务器访问日志记录，用来允许AWS将某个S3的访问请求写入本Bucket</li>
+</ul>
+<p>针对每个组，在Bucket或者Object层面上，有如下四种访问权限可以设置</p>
+<ul>
+<li>List objects</li>
+<li>Write objects</li>
+<li>Read bucket permissions</li>
+<li>Write bucket permissions</li>
+</ul>
+<p>使用ACL来实施权限控制已经不被推荐, 有些设计例如Authenticated Users group, 设置后就会公开给所有AWS account，现在看来是很奇怪的设计。但系统都是逐渐完善的，S3是最早的一批服务，在没有IAM的当年，可能确实是有这类的需求。现在可以使用IAM Policy和Bucket Policy来设置更细粒度的控制。</p>
+<p>关于ACL的使用，有一个常用的用法，当你要设置部分Object为Public-Read的时候，通过设置基于Object的All Users group的List objects权限，会很方便。而不需要在Bucket Policy中对每个Object 进行显式的配置。在AWS SDK中，表现为设置Object的s3_permissions为public_read</p>
+<h3 id="多个访问控制之间的判断规则"><a href="#多个访问控制之间的判断规则" class="headerlink" title="多个访问控制之间的判断规则"></a>多个访问控制之间的判断规则</h3><p>当用户访问或操作S3的资源时，S3会综合考虑IAM policy, S3 Bucket Policy和S3 ACL三者的设置,从而得出是否允许用户的操作。</p>
+<p>总共有三种类型的Effect</p>
+<ul>
+<li>default Deny - 基于最小权限原则，所有的Object默认都是私有的，也就是拒绝访问的</li>
+<li>explicit Deny - 显式拒绝, IAM Policy或S3 Bucket Policy中<code>Effect</code>字段中显式声明为”Deny”,注意ACL中没有显示拒绝</li>
+<li>explicit Allow - 显式允许, IAM Policy或S3 Bucket policy中<code>Effect</code>字段中显式生命为”Allow”的，ACL中设置的允许权限也是显式允许。</li>
+</ul>
+<p>整体判定规则为:</p>
+<ul>
+<li>当有显式拒绝时，会被判定为拒绝访问。</li>
+<li>没有显式拒绝，有显示允许时，会被判定为允许访问。</li>
+<li>没有显式拒绝也没有显示允许时，就适用默认拒绝规则，会被判定为拒绝访问。<br><img src="/images/AWS/S3/s3_authz_diagram.png" alt="s3_authz_diagram"></li>
+</ul>
+<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><p>下面通过一个故事来大概讲解下IAM Policy，Bucket Policy和S3 ACL的使用和互相之间的作用。</p>
+<p>有一位土豪(AWS Account), 拥有数不尽的家产，旗下产业不计其数，拥有万千工厂(EC2),仓库(S3)以及其他资产。为了便于管理仓库，每个仓库都是独立的房子，并且有着不同的名字和编号(S3 Bucket), 每个仓库有独立的管理员(Bucket Policy)管理。仓库里各个房间里存放着不计其数的物品(Object), 物品都是私有的(private object by default deny)。但是有些物品有对外展示的需要，因此就在仓库在第一层开了一些玻璃橱窗，用来展示一些公开的物品(ACL public-read object)。</p>
+<h4 id="情形1-单独设置Object-ACL"><a href="#情形1-单独设置Object-ACL" class="headerlink" title="情形1 - 单独设置Object ACL"></a>情形1 - 单独设置Object ACL</h4><blockquote>
+<p>没有IAM Policy，没有Bucket Policy, Object有部分被设置为Public-read ACL时</p>
+</blockquote>
+<p>一天，来了个叫小明(anonymous user)的家伙，闯进了仓库(S3), 叫嚣乎说要进入仓库A(Bucket A)来查看其中的物品(Object), 仓库A的管理员老王(Bucket Policy)一看，压根不认识小明这哥们(Bucket Policy中没有匹配的规则)，立马就把他挡在了仓库大门外(access deny),小明(anonymous user)在仓库周围晃悠了一圈，只看见了在玻璃橱窗里展示的一些物品(ACL public-read object), 其他什么也没看到，只能灰溜溜的走了。</p>
+<h4 id="情形2-设置Bucket-Policy允许访问"><a href="#情形2-设置Bucket-Policy允许访问" class="headerlink" title="情形2 - 设置Bucket Policy允许访问"></a>情形2 - 设置Bucket Policy允许访问</h4><blockquote>
+<p>没有IAM Policy，Bucket Policy设置为explicit allow，Object有部分被设置为Public-read ACL时</p>
+</blockquote>
+<p>第二天，员工小毛(IAM User)来参观仓库A, 仓库A管理员老王(Bucket Policy)一看小毛在允许访问的名单内(匹配到Bucket Policy中explicit allow的规则)，就打开大门放了小毛进仓库, 小毛进来把各个房间的物品(private object)和橱窗里的物品(ACL public-read object)都看了个遍, 临走还说没看够，明天还要再来参观。</p>
+<h4 id="情形3-设置Bucket-Policy禁止访问某些资源"><a href="#情形3-设置Bucket-Policy禁止访问某些资源" class="headerlink" title="情形3 - 设置Bucket Policy禁止访问某些资源"></a>情形3 - 设置Bucket Policy禁止访问某些资源</h4><blockquote>
+<p>没有IAM Policy，Bucket Policy设置部分资源为explicit allow,部分资源为explicit deny, Object有部分被设置为Public-read ACL时</p>
+</blockquote>
+<p>小毛参观仓库的事情被分管仓库的副总知道了，叮嘱仓库A管理员老王说，6号房间和6号橱窗的东西是贵重物品，不能给小毛参观(update Bucket Policy to add explicit deny)。</p>
+<p>第三天小毛(IAM User)来仓库A参观，仓库A管理员老王(Bucket Policy)帮小毛开了门，但吩咐小毛说，从今天起，6号房间划归为贵重物品存放室了，不对你开放了(explict deny), 而且公开展示的6号橱窗里面的东西暂时也不能对你开放了，已经用布挡起来了(explict deny), 小毛进来参观了一天，除了不能参观的的6号房间(explicit deny)和被挡起来的6号橱窗(explicit deny override explicit allow)，把其他物品都参观了一遍。</p>
+<h4 id="情形4-无法设置Bucket-Policy来允许-禁止访问其他Bucket"><a href="#情形4-无法设置Bucket-Policy来允许-禁止访问其他Bucket" class="headerlink" title="情形4 - 无法设置Bucket Policy来允许/禁止访问其他Bucket"></a>情形4 - 无法设置Bucket Policy来允许/禁止访问其他Bucket</h4><blockquote>
+<p>Bucket Policy 无法设置其它Bucket的访问控制</p>
+</blockquote>
+<p>第四天，小毛(IAM User)找到仓库A管理员老王说他想参观仓库B的物品，老王说自己只管理仓库A， 仓库B的东西归老张管。小毛只能悻悻地回家，没参观成仓库B。</p>
+<h4 id="情形5-设置IAM-Policy来访问多个Bucket"><a href="#情形5-设置IAM-Policy来访问多个Bucket" class="headerlink" title="情形5 - 设置IAM Policy来访问多个Bucket"></a>情形5 - 设置IAM Policy来访问多个Bucket</h4><blockquote>
+<p>设置IAM Policy来允许访问多个Bucket Policy</p>
+</blockquote>
+<p>第五天，小毛(IAM User)发现，好朋友小强(IAM User)是土豪家(AWS Account)亲戚，便和小强找到董事长土豪，想要土豪批个通行证(IAM Policy)来参观仓库A和仓库B, 土豪二话不收就写了个允许参观仓库A和仓库B的批条(IAM Policy), 并在上面添加上了小毛和小强的名字(attach IAM Policy to IAM User), 小毛和小强拿着批条顺利的进入了仓库A和仓库B。</p>
+<p>有了批条，小强就可以参观仓库A和仓库B的所有物品啦。至于小毛，因为分管仓库的副总嘱咐过，所以他还是没有权利参观仓库A的6号房间和6号橱柜(explicit deny override explicit allow)的物品，但可以被允许参观仓库B的物品了。</p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://aws.amazon.com/cn/blogs/security/iam-policies-and-bucket-policies-and-acls-oh-my-controlling-access-to-s3-resources/" target="_blank" rel="external">IAM Policies and Bucket Policies and ACLs! Oh, My! (Controlling Access to S3 Resources)</a></li>
+<li><a href="https://docs.aws.amazon.com/AmazonS3/latest/dev/using-iam-policies.html" target="_blank" rel="external">Using Bucket Policies and User Policies</a></li>
+<li><a href="https://docs.aws.amazon.com/AmazonS3/latest/dev/S3_ACLs_UsingACLs.html" target="_blank" rel="external">Managing Access with ACLs</a></li>
+</ul>
+	  
+	</div>
+
+	<div>
+  	<center>
+	<div class="pagination">
+<ul class="pagination">
+	 
+				
+    	<li class="prev"><a href="/2017/12/19/deep-dig-on-s3-bucket-permission-exam/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>Prev</a></li>
+  		
+
+        <li><a href="/archives"><i class="fa fa-archive"></i>Archive</a></li>
+
+		
+		   <li class="next"><a href="/2017/12/12/how-to-write-multiline-to-file-by-shell/" class="alignright next">Next<i class="fa fa-arrow-circle-o-right"></i></a></li>         
+        
+	
+</ul>
+</div>
+
+    </center>
+	</div>
+
+    <!-- share -->
+    
+        
+    <div class="bdsharebuttonbox">
+        <a href="#" class="bds_more" data-cmd="more"></a>
+        <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+        <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+        <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+        <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+        <a href="#" class="bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+        <a href="#" class="bds_evernotecn" data-cmd="evernotecn" title="分享到印象笔记"></a>
+        <a href="#" class="bds_youdao" data-cmd="youdao" title="分享到有道云笔记"></a>
+        <a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+    </div>
+    <script>
+        window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"24"},"share":{}};
+        with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+    </script>
+
+
+        
+
+    
+	
+	<!-- comment -->
+	
+<section id="comment">
+  <h2 class="title">Comments</h2>
+  
+</section>
+
+
+	</div> <!-- col-md-9/col-md-12 -->
+		
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta">
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2017-12-14 20:48:26
+	</div>
+	
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
+	   <div id="toc" class="toc collapse in">
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#三种访问控制的介绍"><span class="toc-article-text">三种访问控制的介绍</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#IAM-Policy"><span class="toc-article-text">IAM Policy</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#Bucket-Policy"><span class="toc-article-text">Bucket Policy</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#S3-ACL"><span class="toc-article-text">S3 ACL</span></a></li></ol></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#多个访问控制之间的判断规则"><span class="toc-article-text">多个访问控制之间的判断规则</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#例子"><span class="toc-article-text">例子</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#情形1-单独设置Object-ACL"><span class="toc-article-text">情形1 - 单独设置Object ACL</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#情形2-设置Bucket-Policy允许访问"><span class="toc-article-text">情形2 - 设置Bucket Policy允许访问</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#情形3-设置Bucket-Policy禁止访问某些资源"><span class="toc-article-text">情形3 - 设置Bucket Policy禁止访问某些资源</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#情形4-无法设置Bucket-Policy来允许-禁止访问其他Bucket"><span class="toc-article-text">情形4 - 无法设置Bucket Policy来允许/禁止访问其他Bucket</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#情形5-设置IAM-Policy来访问多个Bucket"><span class="toc-article-text">情形5 - 设置IAM Policy来访问多个Bucket</span></a></li></ol></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#Reference"><span class="toc-article-text">Reference</span></a></li></ol>
+		</div>
+	
+	</div>
+
+	<!-- categories -->
+    
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>
+    <ul id="categorys" class="tag_box list-unstyled collapse in">
+          
+  <li>
+    <li><a href="/categories/AWS/">AWS<span>7</span></a></li>
+  </li>
+
+    </ul>
+	</div>
+	
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>
+    <ul id="tags" class="tag_box list-unstyled collapse in">
+	    
+  <li><a href="/tags/S3/">S3<span>2</span></a></li> <li><a href="/tags/AWS-Deep-Dive/">AWS Deep Dive<span>2</span></a></li>
+    </ul>
+	</div>
+	
+
+    <hr>
+
+</div><!-- col-md-3 -->
+
+	</div>
+		
+
+</div><!-- row -->
+
+
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  &copy; 2017 jibing57
+  
+      with help from <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>.    
+</p> </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>

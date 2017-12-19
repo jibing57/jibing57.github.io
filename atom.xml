@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.jibing57.com/"/>
-  <updated>2017-12-06T14:21:57.303Z</updated>
+  <updated>2017-12-19T08:17:35.078Z</updated>
   <id>http://www.jibing57.com/</id>
   
   <author>
@@ -15,6 +15,94 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>深挖AWS S3的权限管理(实验篇)</title>
+    <link href="http://www.jibing57.com/2017/12/19/deep-dig-on-s3-bucket-permission-exam/"/>
+    <id>http://www.jibing57.com/2017/12/19/deep-dig-on-s3-bucket-permission-exam/</id>
+    <published>2017-12-19T13:54:56.000Z</published>
+    <updated>2017-12-19T08:17:35.078Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在&lt;a href=&quot;/2017/12/14/deep-dig-on-s3-bucket-permission/&quot; title=&quot;深挖AWS S3的权限管理&quot;&gt;深挖AWS S3的权限管理&lt;/a&gt; 一文中介绍了AWS S3权限管理的三种方法。此处再通过几个实验来看下三种方法的使用方法。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id=&quot;实验前准备&quot;&gt;&lt;a href=&quot;#实验前准备&quot; class=&quot;headerlink&quot; title=&quot;实验前准备&quot;&gt;&lt;/a&gt;实验前准备&lt;/h3&gt;&lt;h4 id=&quot;实验用相关账号介绍&quot;&gt;&lt;a href=&quot;#实验用相关账号介绍&quot; class=&quot;headerlink&quot; title=&quot;实验用相关账号介绍&quot;&gt;&lt;/a&gt;实验用相关账号介绍&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;IAM User carl.shen - carl.shen有AdministratorAccess权限，用来上传图片到S3&lt;/li&gt;
+&lt;li&gt;IAM User carl - 测试IAM User一号，初始没有任何权限&lt;/li&gt;
+&lt;li&gt;IAM User shen - 测试IAM User二号，初始没有任何权限&lt;/li&gt;
+&lt;li&gt;IAM Group S3Exam - 用来给IAM User carl和shen统一赋权限&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;建好三个IAM账号，下载各自的Access key ID和Secret Access Key, 并设置好AWS CLI。AWS CLI多profile的设置方法可以参照 &lt;a href=&quot;/2017/10/24/how-to-use-aws-cli-with-multi-user/&quot; title=&quot;如何在aws cli中使用多个配置文件&quot;&gt;如何在aws cli中使用多个配置文件&lt;/a&gt;&lt;br&gt;
+    
+    </summary>
+    
+      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
+    
+    
+      <category term="S3" scheme="http://www.jibing57.com/tags/S3/"/>
+    
+      <category term="AWS Deep Dive" scheme="http://www.jibing57.com/tags/AWS-Deep-Dive/"/>
+    
+      <category term="AWS CLI" scheme="http://www.jibing57.com/tags/AWS-CLI/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>深挖AWS S3的权限管理</title>
+    <link href="http://www.jibing57.com/2017/12/14/deep-dig-on-s3-bucket-permission/"/>
+    <id>http://www.jibing57.com/2017/12/14/deep-dig-on-s3-bucket-permission/</id>
+    <published>2017-12-14T12:48:26.000Z</published>
+    <updated>2017-12-19T06:58:01.573Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;AWS共有三种方式用来管理S3的访问权限&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;IAM policy&lt;/li&gt;
+&lt;li&gt;Bucket Policy&lt;/li&gt;
+&lt;li&gt;S3 ACL&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;此处深挖一下这三种访问控制的用法和区别&lt;/p&gt;
+&lt;h3 id=&quot;三种访问控制的介绍&quot;&gt;&lt;a href=&quot;#三种访问控制的介绍&quot; class=&quot;headerlink&quot; title=&quot;三种访问控制的介绍&quot;&gt;&lt;/a&gt;三种访问控制的介绍&lt;/h3&gt;&lt;p&gt;S3的三种访问控制如下:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;IAM Policy, 是基于用户层面的控制，attach to IAM实体(User, Role或Group),规定了谁能对哪些S3做什么操作&lt;/li&gt;
+&lt;li&gt;Bucket Policy, 是基于Bucket层面的控制, attach to Bucket, 规定了哪些人能对我这个Bucket中的resource做什么操作。&lt;/li&gt;
+&lt;li&gt;S3 ACL, 是基于Bucket或单个对象的，规定了谁能对我这个Bucket或对象做什么操作。&lt;/li&gt;
+&lt;/ul&gt;
+    
+    </summary>
+    
+      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
+    
+    
+      <category term="S3" scheme="http://www.jibing57.com/tags/S3/"/>
+    
+      <category term="AWS Deep Dive" scheme="http://www.jibing57.com/tags/AWS-Deep-Dive/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>使用shell添加多行到文件的几个办法</title>
+    <link href="http://www.jibing57.com/2017/12/12/how-to-write-multiline-to-file-by-shell/"/>
+    <id>http://www.jibing57.com/2017/12/12/how-to-write-multiline-to-file-by-shell/</id>
+    <published>2017-12-12T13:51:21.000Z</published>
+    <updated>2017-12-12T07:38:31.413Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;使用shell添加多行到某个文件的几个办法, 启动EC2设置User Data时可能会用到。&lt;/p&gt;
+&lt;h4 id=&quot;方法一-逐行echo添加&quot;&gt;&lt;a href=&quot;#方法一-逐行echo添加&quot; class=&quot;headerlink&quot; title=&quot;方法一: 逐行echo添加&quot;&gt;&lt;/a&gt;方法一: 逐行echo添加&lt;/h4&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;echo &amp;apos;#!/bin/bash&amp;apos; &amp;gt; way1.sh&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;echo &amp;apos;export PATH=$PATH:~/bin/&amp;apos; &amp;gt;&amp;gt; way1.sh&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;查看文件内容为:&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ cat way1.sh&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;#!/bin/bash&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;export PATH=$PATH:~/bin/&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;$&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Shell" scheme="http://www.jibing57.com/categories/Shell/"/>
+    
+    
+      <category term="EC2 User Data" scheme="http://www.jibing57.com/tags/EC2-User-Data/"/>
+    
+  </entry>
   
   <entry>
     <title>AWS Certified Sysops Administrator - Associate Road Map</title>
@@ -85,11 +173,11 @@
     
       <category term="AWS SDK" scheme="http://www.jibing57.com/tags/AWS-SDK/"/>
     
+      <category term="AWS CLI" scheme="http://www.jibing57.com/tags/AWS-CLI/"/>
+    
       <category term="PostgreSQL" scheme="http://www.jibing57.com/tags/PostgreSQL/"/>
     
       <category term="Ruby" scheme="http://www.jibing57.com/tags/Ruby/"/>
-    
-      <category term="AWS CLI" scheme="http://www.jibing57.com/tags/AWS-CLI/"/>
     
       <category term="RDS" scheme="http://www.jibing57.com/tags/RDS/"/>
     
@@ -285,9 +373,9 @@
       <category term="Shell" scheme="http://www.jibing57.com/categories/Shell/"/>
     
     
-      <category term="MacOS" scheme="http://www.jibing57.com/tags/MacOS/"/>
-    
       <category term="Linux" scheme="http://www.jibing57.com/tags/Linux/"/>
+    
+      <category term="MacOS" scheme="http://www.jibing57.com/tags/MacOS/"/>
     
   </entry>
   

@@ -3,6 +3,48 @@
   
     
     <entry>
+      <title><![CDATA[S3 RRS价格注意点]]></title>
+      <url>/2017/12/20/expired-of-S3-RRS/</url>
+      <content type="html"><![CDATA[<h3 id="S3-存储类型"><a href="#S3-存储类型" class="headerlink" title="S3 存储类型"></a>S3 存储类型</h3><p>S3 总共提供三种存储类型</p>
+<ul>
+<li>标准(Standard)</li>
+<li>标准-低频率访问(Standard - Infrequent Access)</li>
+<li>低冗余存储(Reduced Redundancy Storage)<a id="more"></a>
+</li>
+</ul>
+<h3 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h3><p>S3 RSS只提供99.99%的持久性，并且只能容灾一个存储设备出错。而Standard的持久性是11个9,并且允许坏两个存储设备还是正常工作。<br><img src="/images/AWS/S3/s3_difference_between_storage_type.png" alt="s3_difference_between_storage_type"></p>
+<h3 id="用途"><a href="#用途" class="headerlink" title="用途"></a>用途</h3><p>三者之间的基本用途:</p>
+<ul>
+<li>标准类型是通用的类型，是S3的默认存储类型。</li>
+<li>标准-低频率访问的存储费用比标准类型的要便宜不少,但是请求S3 Object的请求价格要比标准的高不少。根据2017-12-20全球区的价格，标准-低频率访问类型的存储价格是标准类型的存储价格的一半多一点，但是请求价格比标准类型的要贵上一倍。</li>
+<li>低冗余存储的设计初衷是用来存储一些可以再生成的对象。比如可以通过原始图片生成的各种尺寸的缩略图等。RRS的存储费用比Standard的要便宜，但是降低了持久性(只提供99.99%的持久性)。</li>
+</ul>
+<h3 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h3><p>在初始设计中，S3 RRS的价格是低于S3 Standard的，但在2016-12-01全球区的S3 Standard类型降价后，在<a href="https://aws.amazon.com/cn/s3/pricing/" target="_blank" rel="external">S3官网</a>上可以查看到，一些Region中,S3 Standard的价格比RRS的价格反而要便宜,比如N.Viginia, S3 Standard价格为$0.023/GB, S3 RRS的价格反而是$0.0240/GB, 出现了倒挂的情况。 在一些老的文章中，还会按照以前的价格体系来推荐使用RRS类型来节省费用，但在新的价格体系下，在很多Region中，这种Best Practise已经不成立了, 直接单纯使用S3 Standard反而会更省钱。</p>
+<p>出现这种价格上的倒挂，个人猜测AWS在用价格的手段在事实上渐渐地废弃S3 RRS。而且在<a href="https://amazonaws-china.com/s3/storage-classes/" target="_blank" rel="external">最新的S3存储类型的页面</a>上，已经没有RRS相关的介绍了。可能S3的价格已经降的足够便宜了，而且维护的存储类型越多,增加S3新Feature的时候复杂度就越高, 所以AWS在打算废弃S3 RRS了。</p>
+<p>不过在AWS北京区中, S3 RRS的价格还是比S3 Standard便宜不少的, 宁夏区就便宜的不明显了。<br><img src="/images/AWS/S3/s3_price_in_cn.png" alt="s3_price_in_cn"></p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="AWS Storage Update – S3 &amp; Glacier Price Reductions + Additional Retrieval Options for Glacier">AWS Storage Update – S3 &amp; Glacier Price Reductions + Additional Retrieval Options for Glacier</a></li>
+<li><a href="https://aws.amazon.com/cn/s3/pricing/" target="_blank" rel="external">Amazon S3 定价</a></li>
+<li><a href="https://aws.amazon.com/cn/s3/reduced-redundancy/?nc1=h_ls" target="_blank" rel="external">Amazon S3 低冗余存储</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> AWS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> S3 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[深挖AWS S3的权限管理(实验篇)]]></title>
       <url>/2017/12/19/deep-dig-on-s3-bucket-permission-exam/</url>
       <content type="html"><![CDATA[<p>在<a href="/2017/12/14/deep-dig-on-s3-bucket-permission/" title="深挖AWS S3的权限管理">深挖AWS S3的权限管理</a> 一文中介绍了AWS S3权限管理的三种方法。此处再通过几个实验来看下三种方法的使用方法。</p>

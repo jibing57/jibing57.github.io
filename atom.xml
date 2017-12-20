@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.jibing57.com/"/>
-  <updated>2017-12-19T08:17:35.078Z</updated>
+  <updated>2017-12-20T10:02:46.836Z</updated>
   <id>http://www.jibing57.com/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>S3 RRS价格注意点</title>
+    <link href="http://www.jibing57.com/2017/12/20/expired-of-S3-RRS/"/>
+    <id>http://www.jibing57.com/2017/12/20/expired-of-S3-RRS/</id>
+    <published>2017-12-20T13:33:58.000Z</published>
+    <updated>2017-12-20T10:02:46.836Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;S3-存储类型&quot;&gt;&lt;a href=&quot;#S3-存储类型&quot; class=&quot;headerlink&quot; title=&quot;S3 存储类型&quot;&gt;&lt;/a&gt;S3 存储类型&lt;/h3&gt;&lt;p&gt;S3 总共提供三种存储类型&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;标准(Standard)&lt;/li&gt;
+&lt;li&gt;标准-低频率访问(Standard - Infrequent Access)&lt;/li&gt;
+&lt;li&gt;低冗余存储(Reduced Redundancy Storage)
+    
+    </summary>
+    
+      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
+    
+    
+      <category term="S3" scheme="http://www.jibing57.com/tags/S3/"/>
+    
+  </entry>
   
   <entry>
     <title>深挖AWS S3的权限管理(实验篇)</title>
@@ -433,7 +457,7 @@
     <link href="http://www.jibing57.com/2017/07/24/AWS-Certified-Developer/"/>
     <id>http://www.jibing57.com/2017/07/24/AWS-Certified-Developer/</id>
     <published>2017-07-24T07:27:17.000Z</published>
-    <updated>2017-12-05T03:01:49.514Z</updated>
+    <updated>2017-12-20T07:28:23.134Z</updated>
     
     <summary type="html">
     

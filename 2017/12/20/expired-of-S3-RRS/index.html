@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>AWS相关的一些有用的网址 | Recording</title>
+  <title>S3 RRS价格注意点 | Recording</title>
   <meta name="author" content="jibing57">
   
   <meta name="description" content="AWS, 阅读, Architecture, PostgreSQL">
@@ -11,7 +11,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="AWS相关的一些有用的网址"/>
+  <meta property="og:title" content="S3 RRS价格注意点"/>
   <meta property="og:site_name" content="Recording"/>
 
   
@@ -108,7 +108,7 @@ var _hmt = _hmt || [];
 
 	
 		<div class="page-header ">		
-			<h1 class="title "> AWS相关的一些有用的网址</h1>
+			<h1 class="title "> S3 RRS价格注意点</h1>
 		</div>		
 	
 
@@ -128,25 +128,28 @@ var _hmt = _hmt || [];
 	<div class="mypage">		
 	  		
 
-	  <h3 id="cloudping-info"><a href="#cloudping-info" class="headerlink" title="cloudping.info"></a>cloudping.info</h3><p><a href="http://www.cloudping.info/" target="_blank" rel="external">clougping.info</a>是一个可以检测当前浏览器到AWS各个Region的延迟的网站, 可以用来评估访问哪个Region更快一点。在建立测试服务的时候十分有用。</p>
-<p>单次的测试结果不一定准确，建议多试几次后再选取平均延迟低的结果。</p>
+	  <h3 id="S3-存储类型"><a href="#S3-存储类型" class="headerlink" title="S3 存储类型"></a>S3 存储类型</h3><p>S3 总共提供三种存储类型</p>
 <ul>
-<li>国内测试的结果:<br><img src="/images/AWS/Tools/cloudping_on_cn.jpg" alt="cloudping_on_cn"></li>
+<li>标准(Standard)</li>
+<li>标准-低频率访问(Standard - Infrequent Access)</li>
+<li>低冗余存储(Reduced Redundancy Storage)<a id="more"></a>
+</li>
 </ul>
-<p>在国内使用AWS全球账号时，在韩国首尔Region建测试服务延迟会小一点。</p>
-<a id="more"></a>
-<h3 id="open-guides-og-aws"><a href="#open-guides-og-aws" class="headerlink" title="open-guides og-aws"></a>open-guides og-aws</h3><p>AWS拥有非常多的Service，每个Service都有着厚厚的UserGuide, <a href="https://github.com/open-guides/og-aws" target="_blank" rel="external">og-aws</a> 所做的，就是从AWS文档中提炼出各个Service的一些要点，再结合实际使用中各个工程师的经验, 汇总成了一份Guide。通读一遍就可以对整个AWS的服务有个整体的了解，可以结合实际操作经验隔段时间就来读一遍。</p>
-<p>内容包含如下:</p>
+<h3 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h3><p>S3 RSS只提供99.99%的持久性，并且只能容灾一个存储设备出错。而Standard的持久性是11个9,并且允许坏两个存储设备还是正常工作。<br><img src="/images/AWS/S3/s3_difference_between_storage_type.png" alt="s3_difference_between_storage_type"></p>
+<h3 id="用途"><a href="#用途" class="headerlink" title="用途"></a>用途</h3><p>三者之间的基本用途:</p>
 <ul>
-<li>AWS以及其拥有的所有Service的简介</li>
-<li>和其他云服务的比较</li>
-<li>各个AWS Service的Basics, Tips, 还有Gotchas and Limitations</li>
+<li>标准类型是通用的类型，是S3的默认存储类型。</li>
+<li>标准-低频率访问的存储费用比标准类型的要便宜不少,但是请求S3 Object的请求价格要比标准的高不少。根据2017-12-20全球区的价格，标准-低频率访问类型的存储价格是标准类型的存储价格的一半多一点，但是请求价格比标准类型的要贵上一倍。</li>
+<li>低冗余存储的设计初衷是用来存储一些可以再生成的对象。比如可以通过原始图片生成的各种尺寸的缩略图等。RRS的存储费用比Standard的要便宜，但是降低了持久性(只提供99.99%的持久性)。</li>
 </ul>
-<h3 id="AWS-词汇表"><a href="#AWS-词汇表" class="headerlink" title="AWS 词汇表"></a>AWS 词汇表</h3><ul>
-<li>中文版 <a href="https://docs.aws.amazon.com/zh_cn/general/latest/gr/glos-chap.html" target="_blank" rel="external">https://docs.aws.amazon.com/zh_cn/general/latest/gr/glos-chap.html</a></li>
-<li>英文版 <a href="https://docs.aws.amazon.com/general/latest/gr/glos-chap.html" target="_blank" rel="external">https://docs.aws.amazon.com/general/latest/gr/glos-chap.html</a></li>
+<h3 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h3><p>在初始设计中，S3 RRS的价格是低于S3 Standard的，但在2016-12-01全球区的S3 Standard类型降价后，在<a href="https://aws.amazon.com/cn/s3/pricing/" target="_blank" rel="external">S3官网</a>上可以查看到，一些Region中,S3 Standard的价格比RRS的价格反而要便宜,比如N.Viginia, S3 Standard价格为$0.023/GB, S3 RRS的价格反而是$0.0240/GB, 出现了倒挂的情况。 在一些老的文章中，还会按照以前的价格体系来推荐使用RRS类型来节省费用，但在新的价格体系下，在很多Region中，这种Best Practise已经不成立了, 直接单纯使用S3 Standard反而会更省钱。</p>
+<p>出现这种价格上的倒挂，个人猜测AWS在用价格的手段在事实上渐渐地废弃S3 RRS。而且在<a href="https://amazonaws-china.com/s3/storage-classes/" target="_blank" rel="external">最新的S3存储类型的页面</a>上，已经没有RRS相关的介绍了。可能S3的价格已经降的足够便宜了，而且维护的存储类型越多,增加S3新Feature的时候复杂度就越高, 所以AWS在打算废弃S3 RRS了。</p>
+<p>不过在AWS北京区中, S3 RRS的价格还是比S3 Standard便宜不少的, 宁夏区就便宜的不明显了。<br><img src="/images/AWS/S3/s3_price_in_cn.png" alt="s3_price_in_cn"></p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="AWS Storage Update – S3 &amp; Glacier Price Reductions + Additional Retrieval Options for Glacier">AWS Storage Update – S3 &amp; Glacier Price Reductions + Additional Retrieval Options for Glacier</a></li>
+<li><a href="https://aws.amazon.com/cn/s3/pricing/" target="_blank" rel="external">Amazon S3 定价</a></li>
+<li><a href="https://aws.amazon.com/cn/s3/reduced-redundancy/?nc1=h_ls" target="_blank" rel="external">Amazon S3 低冗余存储</a></li>
 </ul>
-<h2 id="还没调查的"><a href="#还没调查的" class="headerlink" title="还没调查的"></a>还没调查的</h2><p><a href="https://gist.github.com/leonardofed/bbf6459ad154ad5215d354f3825435dc" target="_blank" rel="external">https://gist.github.com/leonardofed/bbf6459ad154ad5215d354f3825435dc</a></p>
 	  
 	</div>
 
@@ -155,14 +158,14 @@ var _hmt = _hmt || [];
 	<div class="pagination">
 <ul class="pagination">
 	 
-				
-    	<li class="prev"><a href="/2017/07/25/how-to-read-text-on-macos/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>Prev</a></li>
-  		
+		
+          <li class="prev disabled"><a><i class="fa fa-arrow-circle-o-left"></i>Prev</a></li>
+        
 
         <li><a href="/archives"><i class="fa fa-archive"></i>Archive</a></li>
 
 		
-		   <li class="next"><a href="/2017/07/24/AWS-Certified-Developer/" class="alignright next">Next<i class="fa fa-arrow-circle-o-right"></i></a></li>         
+		   <li class="next"><a href="/2017/12/19/deep-dig-on-s3-bucket-permission-exam/" class="alignright next">Next<i class="fa fa-arrow-circle-o-right"></i></a></li>         
         
 	
 </ul>
@@ -213,7 +216,7 @@ var _hmt = _hmt || [];
 	
 	<div class="meta-widget">
 	<i class="fa fa-clock-o"></i>
-	2017-07-25 10:49:10
+	2017-12-20 21:33:58
 	</div>
 	
 
@@ -222,7 +225,7 @@ var _hmt = _hmt || [];
 	
 	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
 	   <div id="toc" class="toc collapse in">
-			<ol class="toc-article"><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#cloudping-info"><span class="toc-article-text">cloudping.info</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#open-guides-og-aws"><span class="toc-article-text">open-guides og-aws</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#AWS-词汇表"><span class="toc-article-text">AWS 词汇表</span></a></li></ol></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#还没调查的"><span class="toc-article-text">还没调查的</span></a>
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#S3-存储类型"><span class="toc-article-text">S3 存储类型</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#区别"><span class="toc-article-text">区别</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#用途"><span class="toc-article-text">用途</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#注意点"><span class="toc-article-text">注意点</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#Reference"><span class="toc-article-text">Reference</span></a></li></ol>
 		</div>
 	
 	</div>
@@ -247,7 +250,7 @@ var _hmt = _hmt || [];
 	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>
     <ul id="tags" class="tag_box list-unstyled collapse in">
 	    
-  <li><a href="/tags/AWS-Tools/">AWS Tools<span>1</span></a></li>
+  <li><a href="/tags/S3/">S3<span>3</span></a></li>
     </ul>
 	</div>
 	

@@ -3,6 +3,209 @@
   
     
     <entry>
+      <title><![CDATA[shell gist to get http 5XX code from ELB access log]]></title>
+      <url>/2017/12/25/shell-gist-to-get-http-5XX-code-from-ELB-access-log/</url>
+      <content type="html"><![CDATA[<p>一个简陋的只是够用的shell小脚本，用来从S3中下载前一天的ELB access log，筛选出http code为5XX的日志，然后发送给某个指定的email地址。</p>
+<h3 id="变量设置"><a href="#变量设置" class="headerlink" title="变量设置"></a>变量设置</h3><p>设置下MAIL_TO和S3_BASE_PREFIX这两个变量，然后在有AWS CLI访问环境的机器上执行即可。</p>
+<ul>
+<li>MAIL_TO 如果有多个地址，可用空格隔开</li>
+<li>S3_BASE_PREFIX设置到Access log日志格式之前的prefix就行。</li>
+</ul>
+<p>比如完整的access log地址是: <code>s3://carl-elb-logs/AWSLogs/888888888888/elasticloadbalancing/ap-northeast-2/2017/12/24/704017765382_elasticloadbalancing_ap-northeast-2_ELB-carl_20171224T0120Z_13.125.86.136_5s9i5ef2.log</code></p>
+<p>那么S3_BASE_PREFIX设置为<code>s3://carl-elb-logs/AWSLogs/888888888888/elasticloadbalancing/ap-northeast-2</code>即可<br><a id="more"></a></p>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><p>Gist地址: <a href="https://gist.github.com/jibing57/fd241ab78d0243252a4b19ba19f69fe8" target="_blank" rel="external">https://gist.github.com/jibing57/fd241ab78d0243252a4b19ba19f69fe8</a></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"></div><div class="line"><span class="comment">#############################################</span></div><div class="line"><span class="comment">###### Global Variable  #########</span></div><div class="line"><span class="comment">#############################################</span></div><div class="line"></div><div class="line">MAIL_TO=<span class="string">""</span></div><div class="line">S3_BASE_PREFIX=<span class="string">""</span></div><div class="line"></div><div class="line">BASE_WORK_DIR=`<span class="built_in">cd</span> $(dirname <span class="variable">$0</span>); <span class="built_in">pwd</span> `</div><div class="line"></div><div class="line"><span class="comment">#############################################</span></div><div class="line"><span class="comment">###### Common Function #########</span></div><div class="line"><span class="comment">#############################################</span></div><div class="line"></div><div class="line"><span class="keyword">function</span> <span class="built_in">log</span>()</div><div class="line">&#123;</div><div class="line">    timer=`date <span class="string">"+%Y-%m-%d %H:%M:%S"</span>`</div><div class="line">    <span class="built_in">echo</span> <span class="string">"<span class="variable">$timer</span> -- <span class="variable">$1</span>"</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">function</span> err_log()</div><div class="line">&#123;</div><div class="line">    <span class="built_in">log</span> <span class="string">"[Error]: <span class="variable">$1</span>"</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">function</span> create_dir()</div><div class="line">&#123;</div><div class="line">    dir_name=<span class="variable">$1</span></div><div class="line"></div><div class="line">    <span class="keyword">if</span> [ ! -d <span class="variable">$dir_name</span> ]; <span class="keyword">then</span></div><div class="line">        <span class="built_in">log</span> <span class="string">"dir [<span class="variable">$dir_name</span>] is not existed, should create it"</span></div><div class="line">        mkdir -p <span class="variable">$dir_name</span></div><div class="line">    <span class="keyword">fi</span></div><div class="line"></div><div class="line">    <span class="keyword">if</span> [ ! -d <span class="variable">$dir_name</span> ]; <span class="keyword">then</span></div><div class="line">        err_log <span class="string">"dir [<span class="variable">$dir_name</span>] is not existed, and can't create it"</span></div><div class="line">        <span class="built_in">exit</span> -1</div><div class="line">    <span class="keyword">fi</span></div><div class="line"></div><div class="line">    <span class="built_in">return</span> 0</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">#############################################</span></div><div class="line"><span class="comment">###### Main Process #########</span></div><div class="line"><span class="comment">#############################################</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> [ <span class="string">"<span class="variable">$MAIL_TO</span>"</span> == <span class="string">""</span> ]; <span class="keyword">then</span></div><div class="line">    <span class="built_in">log</span> <span class="string">"Error: MAIL_TO is empty"</span></div><div class="line">    <span class="built_in">exit</span> 1</div><div class="line"><span class="keyword">fi</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> [ <span class="string">"<span class="variable">$S3_BASE_PREFIX</span>"</span> == <span class="string">""</span> ]; <span class="keyword">then</span></div><div class="line">    <span class="built_in">log</span> <span class="string">"Error: S3_BASE_PREFIX is empty"</span></div><div class="line">    <span class="built_in">exit</span> 1</div><div class="line"><span class="keyword">fi</span></div><div class="line"></div><div class="line">is_mac=<span class="literal">false</span></div><div class="line">os_name=$(uname -s)</div><div class="line"></div><div class="line"><span class="keyword">if</span> [[ <span class="string">"<span class="variable">$os_name</span>"</span> == <span class="string">"Linux"</span> ]]; <span class="keyword">then</span></div><div class="line">    <span class="comment">#statements</span></div><div class="line">    is_mac=<span class="literal">false</span></div><div class="line"><span class="keyword">elif</span> [[ <span class="string">"<span class="variable">$os_name</span>"</span> == <span class="string">"Darwin"</span> ]]; <span class="keyword">then</span></div><div class="line">    is_mac=<span class="literal">true</span></div><div class="line"><span class="keyword">fi</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> [[ <span class="variable">$is_mac</span> == <span class="literal">true</span> ]]; <span class="keyword">then</span></div><div class="line">    YEAR=`date -v -1d +%Y`</div><div class="line">    MONTH=`date -v -1d +%m`</div><div class="line">    DAY=`date -v -1d +%d`</div><div class="line"><span class="keyword">else</span></div><div class="line">    YEAR=`date +<span class="string">"%Y"</span> -d <span class="string">"1 day ago"</span>`</div><div class="line">    MONTH=`date +<span class="string">"%m"</span> -d <span class="string">"1 day ago"</span>`</div><div class="line">    DAY=`date +<span class="string">"%d"</span> -d <span class="string">"1 day ago"</span>`</div><div class="line"><span class="keyword">fi</span></div><div class="line"></div><div class="line"><span class="built_in">log</span> <span class="string">"=== Try to process access log of ELB on YEAR=<span class="variable">$YEAR</span>, MONTH=<span class="variable">$MONTH</span>, DAY=<span class="variable">$DAY</span>"</span></div><div class="line"></div><div class="line">DATE_PATH=<span class="string">"<span class="variable">$YEAR</span>/<span class="variable">$MONTH</span>/<span class="variable">$DAY</span>"</span></div><div class="line"></div><div class="line"><span class="built_in">cd</span> <span class="variable">$BASE_WORK_DIR</span></div><div class="line">RESULT_DIR=<span class="variable">$BASE_WORK_DIR</span>/result/</div><div class="line">WORK_DIR=<span class="string">"<span class="variable">$BASE_WORK_DIR</span>/<span class="variable">$DATE_PATH</span>/"</span></div><div class="line"><span class="built_in">log</span> <span class="string">"=== try to create dir <span class="variable">$WORK_DIR</span>"</span></div><div class="line">create_dir <span class="variable">$WORK_DIR</span></div><div class="line"><span class="built_in">log</span> <span class="string">"=== try to create dir <span class="variable">$RESULT_DIR</span>"</span></div><div class="line">create_dir <span class="variable">$RESULT_DIR</span></div><div class="line"><span class="built_in">cd</span> <span class="variable">$WORK_DIR</span></div><div class="line"><span class="built_in">log</span> <span class="string">"=== process work dir is <span class="variable">$WORK_DIR</span>, current dir is `pwd`"</span></div><div class="line"></div><div class="line"><span class="built_in">log</span> <span class="string">"===== Download s3 file start ======="</span></div><div class="line"><span class="comment"># download s3 file to local dir</span></div><div class="line"><span class="built_in">log</span> <span class="string">"aws s3 sync <span class="variable">$S3_BASE_PREFIX</span>/<span class="variable">$DATE_PATH</span>/ ./"</span></div><div class="line">aws s3 sync <span class="variable">$S3_BASE_PREFIX</span>/<span class="variable">$DATE_PATH</span>/ ./</div><div class="line"><span class="built_in">log</span> <span class="string">"===== Download s3 file end ======="</span></div><div class="line"></div><div class="line"><span class="built_in">log</span> <span class="string">"===== grep 5XX start ======="</span></div><div class="line">DATE_LOG_NAME=<span class="string">"<span class="variable">$&#123;YEAR&#125;</span>_<span class="variable">$&#123;MONTH&#125;</span>_<span class="variable">$&#123;DAY&#125;</span>.log"</span></div><div class="line">RESULT_FILE=<span class="string">"<span class="variable">$RESULT_DIR</span>/<span class="variable">$&#123;DATE_LOG_NAME&#125;</span>"</span></div><div class="line">grep <span class="string">"5[0-9]\&#123;2\&#125; 5[0-9]\&#123;2\&#125;"</span> *.<span class="built_in">log</span> &gt; <span class="variable">$RESULT_FILE</span></div><div class="line"><span class="built_in">cd</span> <span class="variable">$BASE_WORK_DIR</span></div><div class="line">rm -r <span class="variable">$WORK_DIR</span>/*.<span class="built_in">log</span></div><div class="line"><span class="built_in">log</span> <span class="string">"===== grep 5XX end ======="</span></div><div class="line"></div><div class="line"><span class="built_in">log</span> <span class="string">"=== File on result_dir[<span class="variable">$&#123;RESULT_DIR&#125;</span>] is <span class="variable">$(ls $&#123;RESULT_DIR&#125;/*$&#123;DATE_LOG_NAME&#125;)</span>"</span></div><div class="line"></div><div class="line"><span class="comment">#############################################</span></div><div class="line"><span class="comment">###### Send Mail #########</span></div><div class="line"><span class="comment">#############################################</span></div><div class="line"></div><div class="line">subject=<span class="string">"Report of Http 5XX in ELB Access log on <span class="variable">$&#123;YEAR&#125;</span>/<span class="variable">$&#123;MONTH&#125;</span>/<span class="variable">$&#123;DAY&#125;</span>"</span></div><div class="line">MAIL_ATTACHED_OPTIONS=<span class="string">""</span></div><div class="line"></div><div class="line"><span class="keyword">for</span> result_file <span class="keyword">in</span> `ls <span class="variable">$&#123;RESULT_DIR&#125;</span>/<span class="variable">$&#123;DATE_LOG_NAME&#125;</span>`</div><div class="line"><span class="keyword">do</span></div><div class="line">    MAIL_ATTACHED_OPTIONS=<span class="string">" <span class="variable">$&#123;MAIL_ATTACHED_OPTIONS&#125;</span> -a <span class="variable">$&#123;result_file&#125;</span>"</span></div><div class="line"><span class="keyword">done</span></div><div class="line"></div><div class="line"><span class="built_in">log</span> <span class="string">"MAIL_ATTACHED_OPTIONS is [<span class="variable">$&#123;MAIL_ATTACHED_OPTIONS&#125;</span>]"</span></div><div class="line"></div><div class="line"><span class="built_in">log</span> <span class="string">"=== send report to email <span class="variable">$MAIL_TO</span>"</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> [[ <span class="variable">$is_mac</span> == <span class="literal">true</span> ]]; <span class="keyword">then</span></div><div class="line">    <span class="built_in">echo</span> -e <span class="string">"Attached is the http 5XX log on <span class="variable">$&#123;YEAR&#125;</span>/<span class="variable">$&#123;MONTH&#125;</span>/<span class="variable">$&#123;DAY&#125;</span>"</span> | mail -s <span class="string">"<span class="variable">$&#123;subject&#125;</span>"</span> <span class="variable">$MAIL_TO</span></div><div class="line"><span class="keyword">else</span></div><div class="line">    <span class="built_in">echo</span> -e <span class="string">"Attached is the http 5XX log on <span class="variable">$&#123;YEAR&#125;</span>/<span class="variable">$&#123;MONTH&#125;</span>/<span class="variable">$&#123;DAY&#125;</span>"</span> | mail -s <span class="string">"<span class="variable">$&#123;subject&#125;</span>"</span> <span class="variable">$MAIL_ATTACHED_OPTIONS</span> <span class="variable">$MAIL_TO</span></div><div class="line"><span class="keyword">fi</span></div></pre></td></tr></table></figure>
+<h3 id="延伸阅读"><a href="#延伸阅读" class="headerlink" title="延伸阅读"></a>延伸阅读</h3><ul>
+<li><a href="/2017/12/22/what-is-Access-Logs-of-Classic-Load-Balancer/" title="什么是传统负载均衡器的访问日志">什么是传统负载均衡器的访问日志</a>
+</li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> Shell </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Elastic Load Balancing </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[在Freemind主题中开启图片阴影]]></title>
+      <url>/2017/12/25/how-to-add-shadow-of-images-in-freemind/</url>
+      <content type="html"><![CDATA[<h3 id="添加图片阴影"><a href="#添加图片阴影" class="headerlink" title="添加图片阴影"></a>添加图片阴影</h3><p><a href="https://github.com/wzpan/hexo-theme-freemind" target="_blank" rel="external">hexo-theme-freemind</a>主题中，默认没有开启图片阴影。当图片的背景和文章的背景是同色的时候，有时会造成混淆，看不清楚哪部分是图片，哪部分是文章。</p>
+<p>打开源码看了一下，发现其实<a href="https://github.com/wzpan/hexo-theme-freemind" target="_blank" rel="external">hexo-theme-freemind</a>本身就已经支持图片shadow了。只是默认没有开启，而且也没有在README.md中提及。</p>
+<p>在<code>hexo-theme-freemind/layout/_partial/article.ejs</code>文件中有如下代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;% if (item.shadow ) &#123; %&gt;</div><div class="line">   &lt;style type=&quot;text/css&quot;&gt;</div><div class="line">           img, video &#123;</div><div class="line">                -webkit-box-shadow:0 0 10px rgba(0, 0, 0, .5);</div><div class="line">                -moz-box-shadow:0 0 10px rgba(0, 0, 0, .5);</div><div class="line">                box-shadow:0 0 10px rgba(0, 0, 0, .5);</div><div class="line">           &#125;</div><div class="line">   &lt;/style&gt;</div><div class="line">&lt;% &#125; %&gt;</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>因此，只要在每个Post的front-matter中，添加<code>shadow: true</code>,就可以开启图片阴影了, 如果觉得默认的阴影不明显，也可以修改上面的数值，使得阴影看上去更明显一点。</p>
+<h3 id="修改post和draft脚手架"><a href="#修改post和draft脚手架" class="headerlink" title="修改post和draft脚手架"></a>修改post和draft脚手架</h3><p>最后添加<code>shadow: true</code>到hexo的<code>scaffolds/post.md</code>和<code>scaffolds/draft.md</code>中，这样在生成post或者draft的时候就可以自动添加上图片阴影了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">---</div><div class="line">title: &#123;&#123; title &#125;&#125;</div><div class="line">date: &#123;&#123; date &#125;&#125;</div><div class="line">categories:</div><div class="line">tags:</div><div class="line">description:</div><div class="line">feature:</div><div class="line">toc: true</div><div class="line">shadow: true</div><div class="line">---</div></pre></td></tr></table></figure>
+]]></content>
+      
+        <categories>
+            
+            <category> Blog </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Hexo </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[什么是传统负载均衡器的访问日志]]></title>
+      <url>/2017/12/22/what-is-Access-Logs-of-Classic-Load-Balancer/</url>
+      <content type="html"><![CDATA[<h3 id="什么是传统负载均衡器的Access-Logs"><a href="#什么是传统负载均衡器的Access-Logs" class="headerlink" title="什么是传统负载均衡器的Access Logs"></a>什么是传统负载均衡器的Access Logs</h3><p>Elastic Load Balancing 提供了Access Logs(访问日志)，Access Logs可记录下发送到负载均衡器的请求的详细信息。每个日志都包含固定格式的信息 (例如，收到请求的时间、客户端的 IP 地址、延迟、请求路径和服务器响应)。可以使用这些日志分析流量模式和进行Debug。</p>
+<p>Access Logs是ELB的一项可选功能，默认情况下是Disable的。启用后，ELB会将logs存储到指定的某个S3 Bucket中。</p>
+<h3 id="收费"><a href="#收费" class="headerlink" title="收费"></a>收费</h3><p>ELB的Access Logs本身是不需要额外的费用的，从ELB传输到S3的流量是免费的，但是S3的存储费用是需要支付的。<br><a id="more"></a></p>
+<h3 id="可靠性"><a href="#可靠性" class="headerlink" title="可靠性"></a>可靠性</h3><p>关于可靠性，官网文档中原话是”Elastic Load Balancing 将尽力记录请求。我们建议您使用访问日志来了解请求性质，而不是作为所有请求的完整描述”。</p>
+<p>说明Access Logs不保证记录全部的请求，只能是作为流量分析的一个参考数据。</p>
+<h3 id="如何设置"><a href="#如何设置" class="headerlink" title="如何设置"></a>如何设置</h3><p>首先需要一个S3 Bucket，并且配置为允许Elastic Load Balancing 的账户ID对Bucket进行写操作。其次配置ELB开启Access Logs并写入设置好的S3 Bucket中</p>
+<h4 id="设置S3"><a href="#设置S3" class="headerlink" title="设置S3"></a>设置S3</h4><ol>
+<li><p>选择或创建一个S3 Bucket，切换到”Permission”的tab，选择”Bucket Policy”<br><img src="/images/AWS/ELB/elb_access_log_s3_bucket_setting.png" alt="elb_access_log_s3_bucket_setting.png"></p>
+</li>
+<li><p>添加Bucket Policy，此处测试用的Bucket carl-elb-logs是ap-northease-2(首尔)的Region，因此对应的ELB账户ID应该设置为600734575887</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    <span class="attr">"Version"</span>: <span class="string">"2012-10-17"</span>,</div><div class="line">    <span class="attr">"Statement"</span>: [</div><div class="line">        &#123;</div><div class="line">            <span class="attr">"Action"</span>: [</div><div class="line">                <span class="string">"s3:PutObject"</span></div><div class="line">            ],</div><div class="line">            <span class="attr">"Effect"</span>: <span class="string">"Allow"</span>,</div><div class="line">            <span class="attr">"Resource"</span>: <span class="string">"arn:aws:s3:::carl-elb-logs/*"</span>,</div><div class="line">            <span class="attr">"Principal"</span>: &#123;</div><div class="line">                <span class="attr">"AWS"</span>: [</div><div class="line">                    <span class="string">"600734575887"</span></div><div class="line">                ]</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    ]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>每个Region的ELB账户ID是不一样的,如果是中国北京区，那就应该是638102146993，每个Region的ELB账户ID如下:<br><img src="/images/AWS/ELB/elb_access_log_elb_account_id_per_region.png" alt="elb_access_log_elb_account_id_per_region.png"></p>
+</li>
+</ol>
+<h4 id="设置ELB-Access-Logs"><a href="#设置ELB-Access-Logs" class="headerlink" title="设置ELB Access Logs"></a>设置ELB Access Logs</h4><ol>
+<li><p>在EC2 Console中，在左侧栏中找到Load Balancer, 然后选中要设置的ELB名字，此处为ELB-carl,切换到Description Tab。<br><img src="/images/AWS/ELB/elb_access_log_description_tab.png" alt="elb_access_log_description_tab.png"></p>
+</li>
+<li><p>在Attributes的Access logs下，点击Configure Access Logs<br><img src="/images/AWS/ELB/elb_access_log_elb_attributes_access_logs.png" alt="elb_access_log_elb_attributes_access_logs.png"></p>
+</li>
+<li><p>在弹出的Configure Access Logs页面中</p>
+<ul>
+<li>选中Enable access logs</li>
+<li>Interval可选60 minutes或5 minutes<ul>
+<li>一般生产环境中选择60 minutes，减少S3中Access log文件的数量。</li>
+<li>测试的时候选择5 minutes, 可以更快的查看到最新的access日志。</li>
+</ul>
+</li>
+<li>S3 location中选择需要保存的S3 Bucket和prefix路径，此处因为是测试，就直接保存在S3 carl-elb-logs的根目录下。</li>
+<li>如果prefix还没有创建，可以选择”Create this location for me”来自动让ELB创建对应的prefix<br><img src="/images/AWS/ELB/elb_access_log_elb_configure_access_logs.png" alt="elb_access_log_elb_configure_access_logs.png"></li>
+</ul>
+</li>
+<li><p>如果设置正确，就可以在步骤3中设置的S3 Bucket和prefix下看到一个名为AWSLogs/account_id/ELBAccessLogTestFile的测试文件，如果有这个文件，说明ELB和S3的设置正确了。<br><img src="/images/AWS/ELB/elb_access_log_s3_test_file.png" alt="elb_access_log_s3_test_file.png"></p>
+</li>
+<li><p>请求ELB的DNS，5分钟后，就可以在S3中看到access log了。</p>
+</li>
+<li><p>ELB的access log在S3中的文件名采用以下的格式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">bucket[/prefix]/AWSLogs/aws-account-id/elasticloadbalancing/region/yyyy/mm/dd/aws-account-id_elasticloadbalancing_region_load-balancer-name_end-time_ip-address_random-string.log</div></pre></td></tr></table></figure>
+</li>
+<li><p>access logs的文件内容采用如下的格式,包含了用户访问的数据和服务端响应的数据，可以根据某些字段来制作自己想要的数据报告。比如可以统计各个链接的访问数量，每个时间段内的访问数，统计各个HTTP Code的相应百分比，筛选5XX错误等</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">timestamp elb client:port backend:port request_processing_time backend_processing_time response_processing_time elb_status_code backend_status_code received_bytes sent_bytes &quot;request&quot; &quot;user_agent&quot; ssl_cipher ssl_protocol</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="access-log日志格式解析"><a href="#access-log日志格式解析" class="headerlink" title="access log日志格式解析"></a>access log日志格式解析</h3><p>Access log有TCP和HTTP，此处详细说明一下HTTP类别的日志格式</p>
+<p>某条日志内容如下:</p>
+<p><strong>2017-12-24T09:13:07.059734Z ELB-carl 117.81.114.77:7169 172.31.13.115:80 0.000045 0.01808 0.000028 200 200 0 71015 “GET <a href="http://elb-carl-861166859.ap-northeast-2.elb.amazonaws.com:80/test.php" target="_blank" rel="external">http://elb-carl-861166859.ap-northeast-2.elb.amazonaws.com:80/test.php</a> HTTP/1.10” “Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36” - -</strong></p>
+<p>按照<a href="http://docs.aws.amazon.com/zh_cn/elasticloadbalancing/latest/classic/access-log-collection.html" target="_blank" rel="external">官网</a>中文件格式的解析说明，每个字段分别的意思如下:</p>
+<ul>
+<li>2017-12-24T09:13:07.059734Z 代表的是timestamp</li>
+<li>ELB-carl 代表的是elb，就是elb的名字</li>
+<li>117.81.114.77代表的是client，就是客户端IP</li>
+<li>7169代表的是client的port，就是客户端源端口</li>
+<li>172.31.13.115代表的是backend，就是后端EC2的内网IP</li>
+<li>80代表的是backend的port，就是后端EC2的端口</li>
+<li>0.000045代表的是request_processing_time， 代表的是从ELB收到请求一直到将请求发送到后端EC2所用的总时间</li>
+<li>0.01808代表的是backend_processing_time，代表的是从ELB将请求发送到后端EC2到该EC2开始发送响应标头所用的总时间</li>
+<li>0.000028代表的是response_processing_time， 代表的是从ELB收到来自后端EC2的响应标头到开始向client发送响应所用的总时间。此时间包括在ELB上的排队时间以及从ELB到client的连接获取时间</li>
+<li>第一个200代表的是elb_status_code, 表示来自ELB的响应的状态代码</li>
+<li>第二个200代表的是backend_status_code， 表示来自后端EC2的响应的状态代码</li>
+<li>0 代表的是received_bytes，表示从client (申请方) 接收的请求大小 (以字节为单位), 对于HTTP来说，包含请求正文，但不包括Header</li>
+<li>71015 代表的是sent_bytes， 表示发送到client (申请方) 的响应的大小 (以字节为单位), 对于HTTP来说，包含响应正文，但不包括Header。</li>
+<li>“GET <a href="http://elb-carl-861166859.ap-northeast-2.elb.amazonaws.com:80/test.php" target="_blank" rel="external">http://elb-carl-861166859.ap-northeast-2.elb.amazonaws.com:80/test.php</a> HTTP/1.10”代表的是request，表示来自client的请求</li>
+<li>“Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36”代表的是user_agent,就是浏览器的agent信息。</li>
+<li>第一个“-”代表的是ssl_cipher，是ssl的cipher，如果是HTTP请求，就是“-”，如果是HTTPS的，那可能就是ECDHE-RSA-AES128-SHA</li>
+<li>第二个“-”代表的是ssl_protocol，是ssl的协议。如果是HTTP请求，就是“-”，如果是HTTPS的，那可能是TLSv1或者TLSv1.2等。</li>
+</ul>
+<h3 id="延伸阅读"><a href="#延伸阅读" class="headerlink" title="延伸阅读"></a>延伸阅读</h3><ul>
+<li><a href="/2017/12/25/shell-gist-to-get-http-5XX-code-from-ELB-access-log/" title="shell gist to get http 5XX code from ELB access log">shell gist to get http 5XX code from ELB access log</a>
+</li>
+</ul>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://docs.aws.amazon.com/elasticloadbalancing/latest/classic/access-log-collection.html" target="_blank" rel="external">Access Logs for Your Classic Load Balancer</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> AWS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> S3 </tag>
+            
+            <tag> Elastic Load Balancing </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[如何在Elastic Beanstalk的Rails环境中配置staging.log为可下载]]></title>
+      <url>/2017/12/20/How-to-add-staging-log-to-EB-logs/</url>
+      <content type="html"><![CDATA[<p>新建了一个EB环境，来跑一个staging模式的rails。EB环境变量设置好后，部署成功。一系列测试都没问题，结果却在一个不起眼的地方出了点幺蛾子。</p>
+<p>Rails代码中，没有特殊配置config.logger,因此staging模式时，默认的输出日志为logs/staging.log, 但是在EB的Web console中尝试获取Full Logs后，在BundleLogs中发现没有staging.log。</p>
+<p>赶紧调查试验了一下，并将调查结果记录如下。</p>
+<a id="more"></a>
+<h4 id="调查EB-logs日志"><a href="#调查EB-logs日志" class="headerlink" title="调查EB logs日志"></a>调查EB logs日志</h4><ol>
+<li>登陆EB中的EC2 Instance，试图寻找到为何staging.log没有在BundleLogs中。</li>
+<li><p>切换到BundleLogs打包下载的源目录/var/app/support/logs/, 发现只有development.log和production.log的软连接, 而没有staging.log</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">[ec2-user@ip-172-31-14-22 logs]$ ll</div><div class="line">总用量 8</div><div class="line">-rw-r--r-- 1 root   root      0 12月 20 10:01 access.log</div><div class="line">lrwxrwxrwx 1 root   root     36 12月 20 06:21 development.log -&gt; /var/app/current/<span class="built_in">log</span>/development.log</div><div class="line">drwxr-xr-x 2 webapp webapp 4096 12月 20 10:01 healthd</div><div class="line">-rw-r--r-- 1 webapp webapp    0 12月 20 10:01 passenger.log</div><div class="line">lrwxrwxrwx 1 root   root     35 12月 20 06:21 production.log -&gt; /var/app/current/<span class="built_in">log</span>/production.log</div><div class="line">drwxr-xr-x 2 root   root   4096 12月 20 10:01 rotated</div><div class="line">[ec2-user@ip-172-31-14-22 logs]$</div></pre></td></tr></table></figure>
+</li>
+<li><p>在/opt/elasticbeanstalk/目录下遍寻生成development.log和production.log的脚本。最终寻得是在/opt/elasticbeanstalk/hooks/preinit/24_rails_support.sh中设置了development.log和production.log的软连接。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">[ec2-user@ip-172-31-14-22 elasticbeanstalk]$ cat hooks/preinit/24_rails_support.sh</div><div class="line"><span class="meta">#!/usr/bin/env bash</span></div><div class="line"><span class="comment">#==============================================================================</span></div><div class="line"><span class="comment"># Copyright 2014 Amazon.com, Inc. or its affiliates. All Rights Reserved.</span></div><div class="line"><span class="comment">#</span></div><div class="line"><span class="comment"># Licensed under the Amazon Software License (the "License"). You may not use</span></div><div class="line"><span class="comment"># this file except in compliance with the License. A copy of the License is</span></div><div class="line"><span class="comment"># located at</span></div><div class="line"><span class="comment">#</span></div><div class="line"><span class="comment">#       https://aws.amazon.com/asl/</span></div><div class="line"><span class="comment">#</span></div><div class="line"><span class="comment"># or in the "license" file accompanying this file. This file is distributed on</span></div><div class="line"><span class="comment"># an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, express or</span></div><div class="line"><span class="comment"># implied. See the License for the specific language governing permissions</span></div><div class="line"><span class="comment"># and limitations under the License.</span></div><div class="line"><span class="comment">#==============================================================================</span></div><div class="line"></div><div class="line"><span class="built_in">set</span> -xe</div><div class="line"></div><div class="line">EB_APP_DEPLOY_DIR=$(/opt/elasticbeanstalk/bin/get-config container -k app_deploy_dir)</div><div class="line">EB_APP_LOG_DIR=$(/opt/elasticbeanstalk/bin/get-config container -k app_log_dir)</div><div class="line">EB_APP_USER=$(/opt/elasticbeanstalk/bin/get-config container -k app_user)</div><div class="line"></div><div class="line"><span class="comment"># For builtin Rails logging support</span></div><div class="line">ln -sf <span class="variable">$EB_APP_DEPLOY_DIR</span>/<span class="built_in">log</span>/production.log <span class="variable">$EB_APP_LOG_DIR</span>/production.log</div><div class="line">ln -sf <span class="variable">$EB_APP_DEPLOY_DIR</span>/<span class="built_in">log</span>/development.log <span class="variable">$EB_APP_LOG_DIR</span>/development.log</div><div class="line">[ec2-user@ip-172-31-14-22 elasticbeanstalk]$</div></pre></td></tr></table></figure>
+</li>
+<li><p>既然EB默认没有建立staging.log的软连接，那就自己动手建一个。在代码根目录的.ebextensions下添加名为10-add-staging-log-link.config的文件，写入如下内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">commands:</div><div class="line"></div><div class="line">  01_link_staging_log:</div><div class="line">    command: &apos;EB_APP_DEPLOY_DIR=$(/opt/elasticbeanstalk/bin/get-config container -k app_deploy_dir); EB_APP_LOG_DIR=$(/opt/elasticbeanstalk/bin/get-config container -k app_log_dir);  sudo ln -sf $EB_APP_DEPLOY_DIR/log/staging.log $EB_APP_LOG_DIR/staging.log&apos;</div></pre></td></tr></table></figure>
+</li>
+<li><p>重新发布代码到EB, 发布完成后，可以看到在目录目录/var/app/support/logs/下，staging.log已经建立了对应的软连接了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">[ec2-user@ip-172-31-47-16 logs]$ ll</div><div class="line">总用量 16</div><div class="line">-rw-r--r-- 1 root   root    150 12月 21 06:32 access.log</div><div class="line">lrwxrwxrwx 1 root   root     36 12月 21 06:16 development.log -&gt; /var/app/current/<span class="built_in">log</span>/development.log</div><div class="line">drwxr-xr-x 2 webapp webapp 4096 12月 21 06:32 healthd</div><div class="line">-rw-r--r-- 1 webapp webapp 3499 12月 21 06:32 passenger.log</div><div class="line">lrwxrwxrwx 1 root   root     35 12月 21 06:16 production.log -&gt; /var/app/current/<span class="built_in">log</span>/production.log</div><div class="line">drwxr-xr-x 2 root   root   4096 12月 21 06:16 rotated</div><div class="line">lrwxrwxrwx 1 root   root     32 12月 21 06:17 staging.log -&gt; /var/app/current/<span class="built_in">log</span>/staging.log</div><div class="line">[ec2-user@ip-172-31-47-16 logs]$</div></pre></td></tr></table></figure>
+</li>
+<li><p>在EB的Web Console中点击Full Logs下载BundleLogs,解压后可以看到/var/app/support/logs/下有staging.log了，rotated目录下也有rotate的staging的log</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">[carlshen@carl var]$ tree</div><div class="line">.</div><div class="line">├── app</div><div class="line">│   └── support</div><div class="line">│       └── logs</div><div class="line">│           ├── access.log</div><div class="line">│           ├── passenger.log</div><div class="line">│           ├── rotated</div><div class="line">│           │   ├── access.log1513753261.gz</div><div class="line">│           │   ├── access.log1513756861.gz</div><div class="line">│           │   ├── access.log1513760461.gz</div><div class="line">│           │   ├── access.log1513764061.gz</div><div class="line">│           │   ├── passenger.log1513753261.gz</div><div class="line">│           │   ├── passenger.log1513764061.gz</div><div class="line">│           │   ├── staging.log1513753261.gz</div><div class="line">│           │   ├── staging.log1513756861.gz</div><div class="line">│           │   ├── staging.log1513760461.gz</div><div class="line">│           │   └── staging.log1513764061.gz</div><div class="line">│           └── staging.log</div><div class="line">└── log</div><div class="line">    ├── cfn-hup.log</div><div class="line">    ├── cfn-init-cmd.log</div><div class="line">    ├── cfn-init.log</div><div class="line">    ├── cloud-init-output.log</div><div class="line">    ├── cloud-init.log</div><div class="line">    ├── cron</div><div class="line">    ├── eb-activity.log</div><div class="line">    ├── eb-cfn-init-call.log</div><div class="line">    ├── eb-cfn-init.log</div><div class="line">    ├── eb-commandprocessor.log</div><div class="line">    ├── eb-publish-logs.log</div><div class="line">    ├── eb-tools.log</div><div class="line">    ├── healthd</div><div class="line">    │   └── daemon.log</div><div class="line">    ├── messages</div><div class="line">    └── yum.log</div><div class="line"></div><div class="line">6 directories, 28 files</div><div class="line">[carlshen@carl var]$</div></pre></td></tr></table></figure>
+</li>
+</ol>
+]]></content>
+      
+        <categories>
+            
+            <category> AWS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Elastic Beanstalk </tag>
+            
+            <tag> Ruby </tag>
+            
+            <tag> Rails </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[S3 RRS价格注意点]]></title>
       <url>/2017/12/20/expired-of-S3-RRS/</url>
       <content type="html"><![CDATA[<h3 id="S3-存储类型"><a href="#S3-存储类型" class="headerlink" title="S3 存储类型"></a>S3 存储类型</h3><p>S3 总共提供三种存储类型</p>
@@ -2158,13 +2361,13 @@
         
         <tags>
             
-            <tag> AWS SDK </tag>
+            <tag> Ruby </tag>
             
             <tag> AWS CLI </tag>
             
-            <tag> PostgreSQL </tag>
+            <tag> AWS SDK </tag>
             
-            <tag> Ruby </tag>
+            <tag> PostgreSQL </tag>
             
             <tag> RDS </tag>
             

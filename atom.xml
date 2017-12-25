@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.jibing57.com/"/>
-  <updated>2017-12-20T10:02:46.836Z</updated>
+  <updated>2017-12-25T10:19:29.301Z</updated>
   <id>http://www.jibing57.com/</id>
   
   <author>
@@ -17,11 +17,111 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>shell gist to get http 5XX code from ELB access log</title>
+    <link href="http://www.jibing57.com/2017/12/25/shell-gist-to-get-http-5XX-code-from-ELB-access-log/"/>
+    <id>http://www.jibing57.com/2017/12/25/shell-gist-to-get-http-5XX-code-from-ELB-access-log/</id>
+    <published>2017-12-25T14:09:24.000Z</published>
+    <updated>2017-12-25T10:19:29.301Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;一个简陋的只是够用的shell小脚本，用来从S3中下载前一天的ELB access log，筛选出http code为5XX的日志，然后发送给某个指定的email地址。&lt;/p&gt;
+&lt;h3 id=&quot;变量设置&quot;&gt;&lt;a href=&quot;#变量设置&quot; class=&quot;headerlink&quot; title=&quot;变量设置&quot;&gt;&lt;/a&gt;变量设置&lt;/h3&gt;&lt;p&gt;设置下MAIL_TO和S3_BASE_PREFIX这两个变量，然后在有AWS CLI访问环境的机器上执行即可。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;MAIL_TO 如果有多个地址，可用空格隔开&lt;/li&gt;
+&lt;li&gt;S3_BASE_PREFIX设置到Access log日志格式之前的prefix就行。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;比如完整的access log地址是: &lt;code&gt;s3://carl-elb-logs/AWSLogs/888888888888/elasticloadbalancing/ap-northeast-2/2017/12/24/704017765382_elasticloadbalancing_ap-northeast-2_ELB-carl_20171224T0120Z_13.125.86.136_5s9i5ef2.log&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;那么S3_BASE_PREFIX设置为&lt;code&gt;s3://carl-elb-logs/AWSLogs/888888888888/elasticloadbalancing/ap-northeast-2&lt;/code&gt;即可&lt;br&gt;
+    
+    </summary>
+    
+      <category term="Shell" scheme="http://www.jibing57.com/categories/Shell/"/>
+    
+    
+      <category term="Elastic Load Balancing" scheme="http://www.jibing57.com/tags/Elastic-Load-Balancing/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>在Freemind主题中开启图片阴影</title>
+    <link href="http://www.jibing57.com/2017/12/25/how-to-add-shadow-of-images-in-freemind/"/>
+    <id>http://www.jibing57.com/2017/12/25/how-to-add-shadow-of-images-in-freemind/</id>
+    <published>2017-12-25T13:40:37.000Z</published>
+    <updated>2017-12-25T07:03:34.076Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;添加图片阴影&quot;&gt;&lt;a href=&quot;#添加图片阴影&quot; class=&quot;headerlink&quot; title=&quot;添加图片阴影&quot;&gt;&lt;/a&gt;添加图片阴影&lt;/h3&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/wzpan/hexo-theme-freemind&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;hexo-theme-freemind&lt;/a&gt;主题中，默认没有开启图片阴影。当图片的背景和文章的背景是同色的时候，有时会造成混淆，看不清楚哪部分是图片，哪部分是文章。&lt;/p&gt;
+&lt;p&gt;打开源码看了一下，发现其实&lt;a href=&quot;https://github.com/wzpan/hexo-theme-freemind&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;hexo-theme-freemind&lt;/a&gt;本身就已经支持图片shadow了。只是默认没有开启，而且也没有在README.md中提及。&lt;/p&gt;
+&lt;p&gt;在&lt;code&gt;hexo-theme-freemind/layout/_partial/article.ejs&lt;/code&gt;文件中有如下代码&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&amp;lt;% if (item.shadow ) &amp;#123; %&amp;gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;   &amp;lt;style type=&amp;quot;text/css&amp;quot;&amp;gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;           img, video &amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;                -webkit-box-shadow:0 0 10px rgba(0, 0, 0, .5);&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;                -moz-box-shadow:0 0 10px rgba(0, 0, 0, .5);&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;                box-shadow:0 0 10px rgba(0, 0, 0, .5);&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;           &amp;#125;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;   &amp;lt;/style&amp;gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;lt;% &amp;#125; %&amp;gt;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+    
+    </summary>
+    
+      <category term="Blog" scheme="http://www.jibing57.com/categories/Blog/"/>
+    
+    
+      <category term="Hexo" scheme="http://www.jibing57.com/tags/Hexo/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>什么是传统负载均衡器的访问日志</title>
+    <link href="http://www.jibing57.com/2017/12/22/what-is-Access-Logs-of-Classic-Load-Balancer/"/>
+    <id>http://www.jibing57.com/2017/12/22/what-is-Access-Logs-of-Classic-Load-Balancer/</id>
+    <published>2017-12-22T07:26:12.000Z</published>
+    <updated>2017-12-25T10:21:36.074Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;什么是传统负载均衡器的Access-Logs&quot;&gt;&lt;a href=&quot;#什么是传统负载均衡器的Access-Logs&quot; class=&quot;headerlink&quot; title=&quot;什么是传统负载均衡器的Access Logs&quot;&gt;&lt;/a&gt;什么是传统负载均衡器的Access Logs&lt;/h3&gt;&lt;p&gt;Elastic Load Balancing 提供了Access Logs(访问日志)，Access Logs可记录下发送到负载均衡器的请求的详细信息。每个日志都包含固定格式的信息 (例如，收到请求的时间、客户端的 IP 地址、延迟、请求路径和服务器响应)。可以使用这些日志分析流量模式和进行Debug。&lt;/p&gt;
+&lt;p&gt;Access Logs是ELB的一项可选功能，默认情况下是Disable的。启用后，ELB会将logs存储到指定的某个S3 Bucket中。&lt;/p&gt;
+&lt;h3 id=&quot;收费&quot;&gt;&lt;a href=&quot;#收费&quot; class=&quot;headerlink&quot; title=&quot;收费&quot;&gt;&lt;/a&gt;收费&lt;/h3&gt;&lt;p&gt;ELB的Access Logs本身是不需要额外的费用的，从ELB传输到S3的流量是免费的，但是S3的存储费用是需要支付的。&lt;br&gt;
+    
+    </summary>
+    
+      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
+    
+    
+      <category term="S3" scheme="http://www.jibing57.com/tags/S3/"/>
+    
+      <category term="Elastic Load Balancing" scheme="http://www.jibing57.com/tags/Elastic-Load-Balancing/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>如何在Elastic Beanstalk的Rails环境中配置staging.log为可下载</title>
+    <link href="http://www.jibing57.com/2017/12/20/How-to-add-staging-log-to-EB-logs/"/>
+    <id>http://www.jibing57.com/2017/12/20/How-to-add-staging-log-to-EB-logs/</id>
+    <published>2017-12-20T15:32:43.000Z</published>
+    <updated>2017-12-25T07:08:09.553Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;新建了一个EB环境，来跑一个staging模式的rails。EB环境变量设置好后，部署成功。一系列测试都没问题，结果却在一个不起眼的地方出了点幺蛾子。&lt;/p&gt;
+&lt;p&gt;Rails代码中，没有特殊配置config.logger,因此staging模式时，默认的输出日志为logs/staging.log, 但是在EB的Web console中尝试获取Full Logs后，在BundleLogs中发现没有staging.log。&lt;/p&gt;
+&lt;p&gt;赶紧调查试验了一下，并将调查结果记录如下。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
+    
+    
+      <category term="Elastic Beanstalk" scheme="http://www.jibing57.com/tags/Elastic-Beanstalk/"/>
+    
+      <category term="Ruby" scheme="http://www.jibing57.com/tags/Ruby/"/>
+    
+      <category term="Rails" scheme="http://www.jibing57.com/tags/Rails/"/>
+    
+  </entry>
+  
+  <entry>
     <title>S3 RRS价格注意点</title>
     <link href="http://www.jibing57.com/2017/12/20/expired-of-S3-RRS/"/>
     <id>http://www.jibing57.com/2017/12/20/expired-of-S3-RRS/</id>
     <published>2017-12-20T13:33:58.000Z</published>
-    <updated>2017-12-20T10:02:46.836Z</updated>
+    <updated>2017-12-25T07:08:09.491Z</updated>
     
     <summary type="html">
     
@@ -45,7 +145,7 @@
     <link href="http://www.jibing57.com/2017/12/19/deep-dig-on-s3-bucket-permission-exam/"/>
     <id>http://www.jibing57.com/2017/12/19/deep-dig-on-s3-bucket-permission-exam/</id>
     <published>2017-12-19T13:54:56.000Z</published>
-    <updated>2017-12-19T08:17:35.078Z</updated>
+    <updated>2017-12-25T07:08:09.451Z</updated>
     
     <summary type="html">
     
@@ -77,7 +177,7 @@
     <link href="http://www.jibing57.com/2017/12/14/deep-dig-on-s3-bucket-permission/"/>
     <id>http://www.jibing57.com/2017/12/14/deep-dig-on-s3-bucket-permission/</id>
     <published>2017-12-14T12:48:26.000Z</published>
-    <updated>2017-12-19T06:58:01.573Z</updated>
+    <updated>2017-12-25T07:08:09.473Z</updated>
     
     <summary type="html">
     
@@ -111,7 +211,7 @@
     <link href="http://www.jibing57.com/2017/12/12/how-to-write-multiline-to-file-by-shell/"/>
     <id>http://www.jibing57.com/2017/12/12/how-to-write-multiline-to-file-by-shell/</id>
     <published>2017-12-12T13:51:21.000Z</published>
-    <updated>2017-12-12T07:38:31.413Z</updated>
+    <updated>2017-12-25T07:09:02.985Z</updated>
     
     <summary type="html">
     
@@ -133,7 +233,7 @@
     <link href="http://www.jibing57.com/2017/12/04/AWS-Certified-Sysops-Administrator-Associate/"/>
     <id>http://www.jibing57.com/2017/12/04/AWS-Certified-Sysops-Administrator-Associate/</id>
     <published>2017-12-04T13:27:17.000Z</published>
-    <updated>2017-12-06T14:21:57.303Z</updated>
+    <updated>2017-12-25T07:05:45.526Z</updated>
     
     <summary type="html">
     
@@ -177,7 +277,7 @@
     <link href="http://www.jibing57.com/2017/11/29/how-to-enable-slow-query-on-aws-rds-postgresql/"/>
     <id>http://www.jibing57.com/2017/11/29/how-to-enable-slow-query-on-aws-rds-postgresql/</id>
     <published>2017-11-29T13:38:12.000Z</published>
-    <updated>2017-12-05T03:14:50.359Z</updated>
+    <updated>2017-12-25T07:09:02.871Z</updated>
     
     <summary type="html">
     
@@ -195,13 +295,13 @@
       <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
     
     
-      <category term="AWS SDK" scheme="http://www.jibing57.com/tags/AWS-SDK/"/>
+      <category term="Ruby" scheme="http://www.jibing57.com/tags/Ruby/"/>
     
       <category term="AWS CLI" scheme="http://www.jibing57.com/tags/AWS-CLI/"/>
     
-      <category term="PostgreSQL" scheme="http://www.jibing57.com/tags/PostgreSQL/"/>
+      <category term="AWS SDK" scheme="http://www.jibing57.com/tags/AWS-SDK/"/>
     
-      <category term="Ruby" scheme="http://www.jibing57.com/tags/Ruby/"/>
+      <category term="PostgreSQL" scheme="http://www.jibing57.com/tags/PostgreSQL/"/>
     
       <category term="RDS" scheme="http://www.jibing57.com/tags/RDS/"/>
     
@@ -212,7 +312,7 @@
     <link href="http://www.jibing57.com/2017/10/31/account-setting-by-aws/"/>
     <id>http://www.jibing57.com/2017/10/31/account-setting-by-aws/</id>
     <published>2017-10-31T15:10:46.000Z</published>
-    <updated>2017-12-05T02:59:40.647Z</updated>
+    <updated>2017-12-25T07:08:09.329Z</updated>
     
     <summary type="html">
     
@@ -241,7 +341,7 @@
     <link href="http://www.jibing57.com/2017/10/31/hexo-bind-domain-to-github-pages/"/>
     <id>http://www.jibing57.com/2017/10/31/hexo-bind-domain-to-github-pages/</id>
     <published>2017-10-31T13:17:50.000Z</published>
-    <updated>2017-10-31T14:44:22.000Z</updated>
+    <updated>2017-12-25T07:08:09.505Z</updated>
     
     <summary type="html">
     
@@ -270,7 +370,7 @@
     <link href="http://www.jibing57.com/2017/10/30/how-to-use-post-link-on-hexo/"/>
     <id>http://www.jibing57.com/2017/10/30/how-to-use-post-link-on-hexo/</id>
     <published>2017-10-30T11:32:52.000Z</published>
-    <updated>2017-10-30T08:05:00.000Z</updated>
+    <updated>2017-12-25T07:09:02.968Z</updated>
     
     <summary type="html">
     
@@ -290,7 +390,7 @@
     <link href="http://www.jibing57.com/2017/10/29/ruby-paperclip-destroy-callback-nil/"/>
     <id>http://www.jibing57.com/2017/10/29/ruby-paperclip-destroy-callback-nil/</id>
     <published>2017-10-29T12:36:00.000Z</published>
-    <updated>2017-12-05T03:03:51.783Z</updated>
+    <updated>2017-12-25T07:09:03.008Z</updated>
     
     <summary type="html">
     
@@ -312,7 +412,7 @@
     <link href="http://www.jibing57.com/2017/10/24/how-to-use-aws-cli-with-multi-user/"/>
     <id>http://www.jibing57.com/2017/10/24/how-to-use-aws-cli-with-multi-user/</id>
     <published>2017-10-24T13:50:10.000Z</published>
-    <updated>2017-12-05T03:15:32.997Z</updated>
+    <updated>2017-12-25T07:09:02.930Z</updated>
     
     <summary type="html">
     
@@ -336,7 +436,7 @@
     <link href="http://www.jibing57.com/2017/10/24/how-to-use-aws-codecommit/"/>
     <id>http://www.jibing57.com/2017/10/24/how-to-use-aws-codecommit/</id>
     <published>2017-10-24T12:10:54.000Z</published>
-    <updated>2017-10-28T15:31:20.000Z</updated>
+    <updated>2017-12-25T07:09:02.951Z</updated>
     
     <summary type="html">
     
@@ -376,7 +476,7 @@
     <link href="http://www.jibing57.com/2017/08/03/date-command-on-Linux-and-Mac/"/>
     <id>http://www.jibing57.com/2017/08/03/date-command-on-Linux-and-Mac/</id>
     <published>2017-08-03T13:54:02.000Z</published>
-    <updated>2017-12-05T03:11:25.076Z</updated>
+    <updated>2017-12-25T07:08:09.429Z</updated>
     
     <summary type="html">
     
@@ -408,7 +508,7 @@
     <link href="http://www.jibing57.com/2017/07/25/how-to-read-text-on-macos/"/>
     <id>http://www.jibing57.com/2017/07/25/how-to-read-text-on-macos/</id>
     <published>2017-07-25T07:21:28.000Z</published>
-    <updated>2017-12-05T03:11:45.370Z</updated>
+    <updated>2017-12-25T07:09:02.911Z</updated>
     
     <summary type="html">
     
@@ -432,7 +532,7 @@
     <link href="http://www.jibing57.com/2017/07/25/useful-website-of-aws/"/>
     <id>http://www.jibing57.com/2017/07/25/useful-website-of-aws/</id>
     <published>2017-07-25T02:49:10.000Z</published>
-    <updated>2017-12-05T03:05:46.611Z</updated>
+    <updated>2017-12-25T07:09:03.025Z</updated>
     
     <summary type="html">
     
@@ -457,7 +557,7 @@
     <link href="http://www.jibing57.com/2017/07/24/AWS-Certified-Developer/"/>
     <id>http://www.jibing57.com/2017/07/24/AWS-Certified-Developer/</id>
     <published>2017-07-24T07:27:17.000Z</published>
-    <updated>2017-12-20T07:28:23.134Z</updated>
+    <updated>2017-12-25T07:08:09.388Z</updated>
     
     <summary type="html">
     
@@ -499,74 +599,6 @@
       <category term="DynamoDB" scheme="http://www.jibing57.com/tags/DynamoDB/"/>
     
       <category term="AWS SDK" scheme="http://www.jibing57.com/tags/AWS-SDK/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>使用Hexo搭建Blog</title>
-    <link href="http://www.jibing57.com/2017/07/17/hexo-github-blog/"/>
-    <id>http://www.jibing57.com/2017/07/17/hexo-github-blog/</id>
-    <published>2017-07-17T08:19:32.000Z</published>
-    <updated>2017-10-28T15:22:25.000Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;Hexo-安装&quot;&gt;&lt;a href=&quot;#Hexo-安装&quot; class=&quot;headerlink&quot; title=&quot;Hexo 安装&quot;&gt;&lt;/a&gt;Hexo 安装&lt;/h2&gt;&lt;h3 id=&quot;安装前提&quot;&gt;&lt;a href=&quot;#安装前提&quot; class=&quot;headerlink&quot; title=&quot;安装前提&quot;&gt;&lt;/a&gt;安装前提&lt;/h3&gt;&lt;p&gt;安装Hexo需要依赖如下两个程序, 需要提前安装&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Node.js&lt;/li&gt;
-&lt;li&gt;git&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&quot;安装Hexo&quot;&gt;&lt;a href=&quot;#安装Hexo&quot; class=&quot;headerlink&quot; title=&quot;安装Hexo&quot;&gt;&lt;/a&gt;安装Hexo&lt;/h3&gt;&lt;p&gt;Node.js和git都安装完毕后，执行如下命令安装Hexo&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ npm install -g hexo-cli&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;h3 id=&quot;初始化Blog&quot;&gt;&lt;a href=&quot;#初始化Blog&quot; class=&quot;headerlink&quot; title=&quot;初始化Blog&quot;&gt;&lt;/a&gt;初始化Blog&lt;/h3&gt;&lt;p&gt;cd到存放博客的目标目录，执行&lt;code&gt;hexo init&lt;/code&gt;命令&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ hexo init my_blog&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;其中&lt;code&gt;my_blog&lt;/code&gt;就是博客所在的文件夹名字。&lt;/p&gt;
-&lt;p&gt;注意: 最新版的&lt;code&gt;hexo&lt;/code&gt;不需要切换到文件夹下敲击&lt;code&gt;npm install&lt;/code&gt;了，&lt;code&gt;init&lt;/code&gt;的时候会一并安装所需的npm packet。&lt;/p&gt;
-&lt;p&gt;进入目录，目录结构类似如下.&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;10&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;11&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;12&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;13&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;14&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ cd my_blog/&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;$ tree -I &amp;quot;node_modules&amp;quot; ./&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;./&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;├── _config.yml&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;├── db.json&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;├── package.json&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;├── scaffolds&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;│   ├── draft.md&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;│   ├── page.md&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;│   └── post.md&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;├── source&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;│   └── _posts&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;│       └── hello-world.md&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;└── themes&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;执行下面的命令开启&lt;code&gt;hexo&lt;/code&gt;服务&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ hexo -s --debug&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;访问 &lt;code&gt;http://0.0.0.0:4000&lt;/code&gt;应该就能看到默认的页面了。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="Blog" scheme="http://www.jibing57.com/categories/Blog/"/>
-    
-    
-      <category term="Hexo" scheme="http://www.jibing57.com/tags/Hexo/"/>
-    
-      <category term="Github" scheme="http://www.jibing57.com/tags/Github/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>如何给本地视频生成字幕</title>
-    <link href="http://www.jibing57.com/2017/07/17/How-to-get-subtitle-of-local-video/"/>
-    <id>http://www.jibing57.com/2017/07/17/How-to-get-subtitle-of-local-video/</id>
-    <published>2017-07-17T06:54:03.000Z</published>
-    <updated>2017-10-28T14:59:58.000Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;场景&quot;&gt;&lt;a href=&quot;#场景&quot; class=&quot;headerlink&quot; title=&quot;场景&quot;&gt;&lt;/a&gt;场景&lt;/h2&gt;&lt;p&gt;适合如下场景:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;视频本身不带字幕&lt;/li&gt;
-&lt;li&gt;直接看英文视频比较吃力&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;此时可以使用&lt;code&gt;autosub&lt;/code&gt;这个工具来根据视频中的声音来生成对应的字幕，虽然生成的字幕并不总是那么正确，但当做参考还是不错的。&lt;/p&gt;
-&lt;h2 id=&quot;autosub简介&quot;&gt;&lt;a href=&quot;#autosub简介&quot; class=&quot;headerlink&quot; title=&quot;autosub简介&quot;&gt;&lt;/a&gt;autosub简介&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/agermanidis/autosub&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;autosub&lt;/a&gt;是一款由python 2编写的通过Google Web Speech API和FFmpeg来获取视频subtitle的软件&lt;/p&gt;
-&lt;p&gt;Github地址: &lt;a href=&quot;https://github.com/agermanidis/autosub&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/agermanidis/autosub&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Github上的Usage:&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;10&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;11&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;12&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;13&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;14&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;15&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;16&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;17&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;18&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;19&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;20&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;21&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;22&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;23&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;24&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;25&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;26&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;27&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;28&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ autosub -h&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;usage: autosub [-h] [-C CONCURRENCY] [-o OUTPUT] [-F FORMAT] [-S SRC_LANGUAGE]&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;               [-D DST_LANGUAGE] [-K API_KEY] [--list-formats]&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;               [--list-languages]&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;               [source_path]&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;positional arguments:&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  source_path           Path to the video or audio file to subtitle&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;optional arguments:&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  -h, --help            show this help message and exit&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  -C CONCURRENCY, --concurrency CONCURRENCY&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;                        Number of concurrent API requests to make&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  -o OUTPUT, --output OUTPUT&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;                        Output path for subtitles (by default, subtitles are&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;                        saved in the same directory and name as the source&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;                        path)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  -F FORMAT, --format FORMAT&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;                        Destination subtitle format&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  -S SRC_LANGUAGE, --src-language SRC_LANGUAGE&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;                        Language spoken in source file&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  -D DST_LANGUAGE, --dst-language DST_LANGUAGE&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;                        Desired language for the subtitles&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  -K API_KEY, --api-key API_KEY&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;                        The Google Translate API key to be used. (Required for&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;                        subtitle translation)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  --list-formats        List all available subtitle formats&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  --list-languages      List all available source/destination languages&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-    
-    </summary>
-    
-      <category term="Tools" scheme="http://www.jibing57.com/categories/Tools/"/>
-    
-    
-      <category term="Video" scheme="http://www.jibing57.com/tags/Video/"/>
-    
-      <category term="Tips" scheme="http://www.jibing57.com/tags/Tips/"/>
     
   </entry>
   

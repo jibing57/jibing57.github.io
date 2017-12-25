@@ -1,0 +1,372 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>什么是传统负载均衡器的访问日志 | Recording</title>
+  <meta name="author" content="jibing57">
+  
+  <meta name="description" content="AWS, 阅读, Architecture, PostgreSQL">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="什么是传统负载均衡器的访问日志"/>
+  <meta property="og:site_name" content="Recording"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/css/themes/bootstrap.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/comment.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+  
+  <!-- analytics -->
+  
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?a45bf9506f898d2215502df6cc64ff59";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+</head>
+
+ <body>  
+  <nav id="main-nav" class="navbar  navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+	<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+       <a class="navbar-brand" href="/">Recording</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class="fa fa-archive"></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class="fa fa-folder"></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class="fa fa-tags"></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/douban" title="Douban">
+			  <i class="fa fa-book"></i>Douban
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header ">		
+			<h1 class="title "> 什么是传统负载均衡器的访问日志</h1>
+		</div>		
+	
+
+
+
+
+   <style type="text/css">
+           img, video {
+                -webkit-box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+                -moz-box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+                box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+           }
+   </style>
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
+
+	<!-- content -->
+	<div class="mypage">		
+	  		
+
+	  <h3 id="什么是传统负载均衡器的Access-Logs"><a href="#什么是传统负载均衡器的Access-Logs" class="headerlink" title="什么是传统负载均衡器的Access Logs"></a>什么是传统负载均衡器的Access Logs</h3><p>Elastic Load Balancing 提供了Access Logs(访问日志)，Access Logs可记录下发送到负载均衡器的请求的详细信息。每个日志都包含固定格式的信息 (例如，收到请求的时间、客户端的 IP 地址、延迟、请求路径和服务器响应)。可以使用这些日志分析流量模式和进行Debug。</p>
+<p>Access Logs是ELB的一项可选功能，默认情况下是Disable的。启用后，ELB会将logs存储到指定的某个S3 Bucket中。</p>
+<h3 id="收费"><a href="#收费" class="headerlink" title="收费"></a>收费</h3><p>ELB的Access Logs本身是不需要额外的费用的，从ELB传输到S3的流量是免费的，但是S3的存储费用是需要支付的。<br><a id="more"></a></p>
+<h3 id="可靠性"><a href="#可靠性" class="headerlink" title="可靠性"></a>可靠性</h3><p>关于可靠性，官网文档中原话是”Elastic Load Balancing 将尽力记录请求。我们建议您使用访问日志来了解请求性质，而不是作为所有请求的完整描述”。</p>
+<p>说明Access Logs不保证记录全部的请求，只能是作为流量分析的一个参考数据。</p>
+<h3 id="如何设置"><a href="#如何设置" class="headerlink" title="如何设置"></a>如何设置</h3><p>首先需要一个S3 Bucket，并且配置为允许Elastic Load Balancing 的账户ID对Bucket进行写操作。其次配置ELB开启Access Logs并写入设置好的S3 Bucket中</p>
+<h4 id="设置S3"><a href="#设置S3" class="headerlink" title="设置S3"></a>设置S3</h4><ol>
+<li><p>选择或创建一个S3 Bucket，切换到”Permission”的tab，选择”Bucket Policy”<br><img src="/images/AWS/ELB/elb_access_log_s3_bucket_setting.png" alt="elb_access_log_s3_bucket_setting.png"></p>
+</li>
+<li><p>添加Bucket Policy，此处测试用的Bucket carl-elb-logs是ap-northease-2(首尔)的Region，因此对应的ELB账户ID应该设置为600734575887</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    <span class="attr">"Version"</span>: <span class="string">"2012-10-17"</span>,</div><div class="line">    <span class="attr">"Statement"</span>: [</div><div class="line">        &#123;</div><div class="line">            <span class="attr">"Action"</span>: [</div><div class="line">                <span class="string">"s3:PutObject"</span></div><div class="line">            ],</div><div class="line">            <span class="attr">"Effect"</span>: <span class="string">"Allow"</span>,</div><div class="line">            <span class="attr">"Resource"</span>: <span class="string">"arn:aws:s3:::carl-elb-logs/*"</span>,</div><div class="line">            <span class="attr">"Principal"</span>: &#123;</div><div class="line">                <span class="attr">"AWS"</span>: [</div><div class="line">                    <span class="string">"600734575887"</span></div><div class="line">                ]</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    ]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>每个Region的ELB账户ID是不一样的,如果是中国北京区，那就应该是638102146993，每个Region的ELB账户ID如下:<br><img src="/images/AWS/ELB/elb_access_log_elb_account_id_per_region.png" alt="elb_access_log_elb_account_id_per_region.png"></p>
+</li>
+</ol>
+<h4 id="设置ELB-Access-Logs"><a href="#设置ELB-Access-Logs" class="headerlink" title="设置ELB Access Logs"></a>设置ELB Access Logs</h4><ol>
+<li><p>在EC2 Console中，在左侧栏中找到Load Balancer, 然后选中要设置的ELB名字，此处为ELB-carl,切换到Description Tab。<br><img src="/images/AWS/ELB/elb_access_log_description_tab.png" alt="elb_access_log_description_tab.png"></p>
+</li>
+<li><p>在Attributes的Access logs下，点击Configure Access Logs<br><img src="/images/AWS/ELB/elb_access_log_elb_attributes_access_logs.png" alt="elb_access_log_elb_attributes_access_logs.png"></p>
+</li>
+<li><p>在弹出的Configure Access Logs页面中</p>
+<ul>
+<li>选中Enable access logs</li>
+<li>Interval可选60 minutes或5 minutes<ul>
+<li>一般生产环境中选择60 minutes，减少S3中Access log文件的数量。</li>
+<li>测试的时候选择5 minutes, 可以更快的查看到最新的access日志。</li>
+</ul>
+</li>
+<li>S3 location中选择需要保存的S3 Bucket和prefix路径，此处因为是测试，就直接保存在S3 carl-elb-logs的根目录下。</li>
+<li>如果prefix还没有创建，可以选择”Create this location for me”来自动让ELB创建对应的prefix<br><img src="/images/AWS/ELB/elb_access_log_elb_configure_access_logs.png" alt="elb_access_log_elb_configure_access_logs.png"></li>
+</ul>
+</li>
+<li><p>如果设置正确，就可以在步骤3中设置的S3 Bucket和prefix下看到一个名为AWSLogs/account_id/ELBAccessLogTestFile的测试文件，如果有这个文件，说明ELB和S3的设置正确了。<br><img src="/images/AWS/ELB/elb_access_log_s3_test_file.png" alt="elb_access_log_s3_test_file.png"></p>
+</li>
+<li><p>请求ELB的DNS，5分钟后，就可以在S3中看到access log了。</p>
+</li>
+<li><p>ELB的access log在S3中的文件名采用以下的格式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">bucket[/prefix]/AWSLogs/aws-account-id/elasticloadbalancing/region/yyyy/mm/dd/aws-account-id_elasticloadbalancing_region_load-balancer-name_end-time_ip-address_random-string.log</div></pre></td></tr></table></figure>
+</li>
+<li><p>access logs的文件内容采用如下的格式,包含了用户访问的数据和服务端响应的数据，可以根据某些字段来制作自己想要的数据报告。比如可以统计各个链接的访问数量，每个时间段内的访问数，统计各个HTTP Code的相应百分比，筛选5XX错误等</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">timestamp elb client:port backend:port request_processing_time backend_processing_time response_processing_time elb_status_code backend_status_code received_bytes sent_bytes &quot;request&quot; &quot;user_agent&quot; ssl_cipher ssl_protocol</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="access-log日志格式解析"><a href="#access-log日志格式解析" class="headerlink" title="access log日志格式解析"></a>access log日志格式解析</h3><p>Access log有TCP和HTTP，此处详细说明一下HTTP类别的日志格式</p>
+<p>某条日志内容如下:</p>
+<p><strong>2017-12-24T09:13:07.059734Z ELB-carl 117.81.114.77:7169 172.31.13.115:80 0.000045 0.01808 0.000028 200 200 0 71015 “GET <a href="http://elb-carl-861166859.ap-northeast-2.elb.amazonaws.com:80/test.php" target="_blank" rel="external">http://elb-carl-861166859.ap-northeast-2.elb.amazonaws.com:80/test.php</a> HTTP/1.10” “Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36” - -</strong></p>
+<p>按照<a href="http://docs.aws.amazon.com/zh_cn/elasticloadbalancing/latest/classic/access-log-collection.html" target="_blank" rel="external">官网</a>中文件格式的解析说明，每个字段分别的意思如下:</p>
+<ul>
+<li>2017-12-24T09:13:07.059734Z 代表的是timestamp</li>
+<li>ELB-carl 代表的是elb，就是elb的名字</li>
+<li>117.81.114.77代表的是client，就是客户端IP</li>
+<li>7169代表的是client的port，就是客户端源端口</li>
+<li>172.31.13.115代表的是backend，就是后端EC2的内网IP</li>
+<li>80代表的是backend的port，就是后端EC2的端口</li>
+<li>0.000045代表的是request_processing_time， 代表的是从ELB收到请求一直到将请求发送到后端EC2所用的总时间</li>
+<li>0.01808代表的是backend_processing_time，代表的是从ELB将请求发送到后端EC2到该EC2开始发送响应标头所用的总时间</li>
+<li>0.000028代表的是response_processing_time， 代表的是从ELB收到来自后端EC2的响应标头到开始向client发送响应所用的总时间。此时间包括在ELB上的排队时间以及从ELB到client的连接获取时间</li>
+<li>第一个200代表的是elb_status_code, 表示来自ELB的响应的状态代码</li>
+<li>第二个200代表的是backend_status_code， 表示来自后端EC2的响应的状态代码</li>
+<li>0 代表的是received_bytes，表示从client (申请方) 接收的请求大小 (以字节为单位), 对于HTTP来说，包含请求正文，但不包括Header</li>
+<li>71015 代表的是sent_bytes， 表示发送到client (申请方) 的响应的大小 (以字节为单位), 对于HTTP来说，包含响应正文，但不包括Header。</li>
+<li>“GET <a href="http://elb-carl-861166859.ap-northeast-2.elb.amazonaws.com:80/test.php" target="_blank" rel="external">http://elb-carl-861166859.ap-northeast-2.elb.amazonaws.com:80/test.php</a> HTTP/1.10”代表的是request，表示来自client的请求</li>
+<li>“Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36”代表的是user_agent,就是浏览器的agent信息。</li>
+<li>第一个“-”代表的是ssl_cipher，是ssl的cipher，如果是HTTP请求，就是“-”，如果是HTTPS的，那可能就是ECDHE-RSA-AES128-SHA</li>
+<li>第二个“-”代表的是ssl_protocol，是ssl的协议。如果是HTTP请求，就是“-”，如果是HTTPS的，那可能是TLSv1或者TLSv1.2等。</li>
+</ul>
+<h3 id="延伸阅读"><a href="#延伸阅读" class="headerlink" title="延伸阅读"></a>延伸阅读</h3><ul>
+<li><a href="/2017/12/25/shell-gist-to-get-http-5XX-code-from-ELB-access-log/" title="shell gist to get http 5XX code from ELB access log">shell gist to get http 5XX code from ELB access log</a>
+</li>
+</ul>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://docs.aws.amazon.com/elasticloadbalancing/latest/classic/access-log-collection.html" target="_blank" rel="external">Access Logs for Your Classic Load Balancer</a></li>
+</ul>
+	  
+	</div>
+
+	<div>
+  	<center>
+	<div class="pagination">
+<ul class="pagination">
+	 
+				
+    	<li class="prev"><a href="/2017/12/25/how-to-add-shadow-of-images-in-freemind/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>Prev</a></li>
+  		
+
+        <li><a href="/archives"><i class="fa fa-archive"></i>Archive</a></li>
+
+		
+		   <li class="next"><a href="/2017/12/20/How-to-add-staging-log-to-EB-logs/" class="alignright next">Next<i class="fa fa-arrow-circle-o-right"></i></a></li>         
+        
+	
+</ul>
+</div>
+
+    </center>
+	</div>
+
+    <!-- share -->
+    
+        
+    <div class="bdsharebuttonbox">
+        <a href="#" class="bds_more" data-cmd="more"></a>
+        <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+        <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+        <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+        <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+        <a href="#" class="bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+        <a href="#" class="bds_evernotecn" data-cmd="evernotecn" title="分享到印象笔记"></a>
+        <a href="#" class="bds_youdao" data-cmd="youdao" title="分享到有道云笔记"></a>
+        <a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+    </div>
+    <script>
+        window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"24"},"share":{}};
+        with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+    </script>
+
+
+        
+
+    
+	
+	<!-- comment -->
+	
+<section id="comment">
+  <h2 class="title">Comments</h2>
+  
+</section>
+
+
+	</div> <!-- col-md-9/col-md-12 -->
+		
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta">
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2017-12-22 15:26:12
+	</div>
+	
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
+	   <div id="toc" class="toc collapse in">
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#什么是传统负载均衡器的Access-Logs"><span class="toc-article-text">什么是传统负载均衡器的Access Logs</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#收费"><span class="toc-article-text">收费</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#可靠性"><span class="toc-article-text">可靠性</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#如何设置"><span class="toc-article-text">如何设置</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#设置S3"><span class="toc-article-text">设置S3</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#设置ELB-Access-Logs"><span class="toc-article-text">设置ELB Access Logs</span></a></li></ol></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#access-log日志格式解析"><span class="toc-article-text">access log日志格式解析</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#延伸阅读"><span class="toc-article-text">延伸阅读</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#Reference"><span class="toc-article-text">Reference</span></a></li></ol>
+		</div>
+	
+	</div>
+
+	<!-- categories -->
+    
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>
+    <ul id="categorys" class="tag_box list-unstyled collapse in">
+          
+  <li>
+    <li><a href="/categories/AWS/">AWS<span>10</span></a></li>
+  </li>
+
+    </ul>
+	</div>
+	
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>
+    <ul id="tags" class="tag_box list-unstyled collapse in">
+	    
+  <li><a href="/tags/S3/">S3<span>4</span></a></li> <li><a href="/tags/Elastic-Load-Balancing/">Elastic Load Balancing<span>2</span></a></li>
+    </ul>
+	</div>
+	
+
+    <hr>
+
+</div><!-- col-md-3 -->
+
+	</div>
+		
+
+</div><!-- row -->
+
+
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  &copy; 2017 jibing57
+  
+      with help from <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>.    
+</p> </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>

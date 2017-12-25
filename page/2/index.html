@@ -130,6 +130,114 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
+			<div class="date"> 2017-10-31 </div>
+			<div class="article-title"><a href="/2017/10/31/account-setting-by-aws/" >创建AWS Account后的基本账号设置</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>记录创建好AWS账号后的几个基本设置, 大概介绍如下几点:</p>
+<ul>
+<li>查看是否满足Free Tier Usage</li>
+<li>创建IAM账号</li>
+<li>为IAM账号启用Billing</li>
+<li>如何提交Case</li>
+<li>切换Console语言</li>
+</ul>
+	
+	</div>
+  <a type="button" href="/2017/10/31/account-setting-by-aws/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2017-10-31 </div>
+			<div class="article-title"><a href="/2017/10/31/hexo-bind-domain-to-github-pages/" >绑定万网域名到github pages</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<blockquote>
+<p>此处介绍如何将万网的域名绑定到github pages</p>
+</blockquote>
+<h3 id="万网设置"><a href="#万网设置" class="headerlink" title="万网设置"></a>万网设置</h3><p>进入aliyun控制的云解析DNS控制台，选中所要解析的域名，此处是jibing57.com, 点击右侧解析按钮。</p>
+<ul>
+<li>记录类型选择 CNAME</li>
+<li>主机记录填写 www</li>
+<li>记录值填入github pages的域名，此处是jibing57.github.io
+	
+	</div>
+  <a type="button" href="/2017/10/31/hexo-bind-domain-to-github-pages/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2017-10-30 </div>
+			<div class="article-title"><a href="/2017/10/30/how-to-use-post-link-on-hexo/" >Hexo引用站内文章</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>写文章的时候，经常需要引用站内的其他文章，此时可以使用Hexo内置的<a href="https://hexo.io/zh-cn/docs/tag-plugins.html" target="_blank" rel="external">标签插件</a>（Tag Plugins）中的<code>post_link</code>来实现。</p>
+	
+	</div>
+  <a type="button" href="/2017/10/30/how-to-use-post-link-on-hexo/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2017-10-29 </div>
+			<div class="article-title"><a href="/2017/10/29/ruby-paperclip-destroy-callback-nil/" >Paperclip destroy的callback中attachment的各个attribute为nil的问题调查</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="问题点"><a href="#问题点" class="headerlink" title="问题点"></a>问题点</h3><p>Rails的Image的models中，使用了paperclip这个Gem来处理图片。近期需要添加一个功能，删除image后，需要向某个email地址发送一封邮件，告之某个图片已经被删除了。</p>
+<p>实际操作中，发现在无论函数是定义在before_destroy或after_destroy的callback中，attachment_file_name,attachment_file_size, attachment_content_type, attachment_updated_at的属性，取出来都是nil。</p>
+<p>调查了一下，现将结果汇总如下:<br>
+	
+	</div>
+  <a type="button" href="/2017/10/29/ruby-paperclip-destroy-callback-nil/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
 			<div class="date"> 2017-10-24 </div>
 			<div class="article-title"><a href="/2017/10/24/how-to-use-aws-cli-with-multi-user/" >如何在aws cli中使用多个配置文件</a></div>						
 		</h3>
@@ -339,76 +447,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2017-07-17 </div>
-			<div class="article-title"><a href="/2017/07/17/hexo-github-blog/" >使用Hexo搭建Blog</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h2 id="Hexo-安装"><a href="#Hexo-安装" class="headerlink" title="Hexo 安装"></a>Hexo 安装</h2><h3 id="安装前提"><a href="#安装前提" class="headerlink" title="安装前提"></a>安装前提</h3><p>安装Hexo需要依赖如下两个程序, 需要提前安装</p>
-<ul>
-<li>Node.js</li>
-<li>git</li>
-</ul>
-<h3 id="安装Hexo"><a href="#安装Hexo" class="headerlink" title="安装Hexo"></a>安装Hexo</h3><p>Node.js和git都安装完毕后，执行如下命令安装Hexo</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ npm install -g hexo-cli</div></pre></td></tr></table></figure>
-<h3 id="初始化Blog"><a href="#初始化Blog" class="headerlink" title="初始化Blog"></a>初始化Blog</h3><p>cd到存放博客的目标目录，执行<code>hexo init</code>命令</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo init my_blog</div></pre></td></tr></table></figure>
-<p>其中<code>my_blog</code>就是博客所在的文件夹名字。</p>
-<p>注意: 最新版的<code>hexo</code>不需要切换到文件夹下敲击<code>npm install</code>了，<code>init</code>的时候会一并安装所需的npm packet。</p>
-<p>进入目录，目录结构类似如下.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">$ cd my_blog/</div><div class="line">$ tree -I &quot;node_modules&quot; ./</div><div class="line">./</div><div class="line">├── _config.yml</div><div class="line">├── db.json</div><div class="line">├── package.json</div><div class="line">├── scaffolds</div><div class="line">│   ├── draft.md</div><div class="line">│   ├── page.md</div><div class="line">│   └── post.md</div><div class="line">├── source</div><div class="line">│   └── _posts</div><div class="line">│       └── hello-world.md</div><div class="line">└── themes</div></pre></td></tr></table></figure>
-<p>执行下面的命令开启<code>hexo</code>服务</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo -s --debug</div></pre></td></tr></table></figure>
-<p>访问 <code>http://0.0.0.0:4000</code>应该就能看到默认的页面了。</p>
-	
-	</div>
-  <a type="button" href="/2017/07/17/hexo-github-blog/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2017-07-17 </div>
-			<div class="article-title"><a href="/2017/07/17/How-to-get-subtitle-of-local-video/" >如何给本地视频生成字幕</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>适合如下场景:</p>
-<ul>
-<li>视频本身不带字幕</li>
-<li>直接看英文视频比较吃力</li>
-</ul>
-<p>此时可以使用<code>autosub</code>这个工具来根据视频中的声音来生成对应的字幕，虽然生成的字幕并不总是那么正确，但当做参考还是不错的。</p>
-<h2 id="autosub简介"><a href="#autosub简介" class="headerlink" title="autosub简介"></a>autosub简介</h2><p><a href="https://github.com/agermanidis/autosub" target="_blank" rel="external">autosub</a>是一款由python 2编写的通过Google Web Speech API和FFmpeg来获取视频subtitle的软件</p>
-<p>Github地址: <a href="https://github.com/agermanidis/autosub" target="_blank" rel="external">https://github.com/agermanidis/autosub</a></p>
-<p>Github上的Usage:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">$ autosub -h</div><div class="line">usage: autosub [-h] [-C CONCURRENCY] [-o OUTPUT] [-F FORMAT] [-S SRC_LANGUAGE]</div><div class="line">               [-D DST_LANGUAGE] [-K API_KEY] [--list-formats]</div><div class="line">               [--list-languages]</div><div class="line">               [source_path]</div><div class="line"></div><div class="line">positional arguments:</div><div class="line">  source_path           Path to the video or audio file to subtitle</div><div class="line"></div><div class="line">optional arguments:</div><div class="line">  -h, --help            show this help message and exit</div><div class="line">  -C CONCURRENCY, --concurrency CONCURRENCY</div><div class="line">                        Number of concurrent API requests to make</div><div class="line">  -o OUTPUT, --output OUTPUT</div><div class="line">                        Output path for subtitles (by default, subtitles are</div><div class="line">                        saved in the same directory and name as the source</div><div class="line">                        path)</div><div class="line">  -F FORMAT, --format FORMAT</div><div class="line">                        Destination subtitle format</div><div class="line">  -S SRC_LANGUAGE, --src-language SRC_LANGUAGE</div><div class="line">                        Language spoken in source file</div><div class="line">  -D DST_LANGUAGE, --dst-language DST_LANGUAGE</div><div class="line">                        Desired language for the subtitles</div><div class="line">  -K API_KEY, --api-key API_KEY</div><div class="line">                        The Google Translate API key to be used. (Required for</div><div class="line">                        subtitle translation)</div><div class="line">  --list-formats        List all available subtitle formats</div><div class="line">  --list-languages      List all available source/destination languages</div></pre></td></tr></table></figure>
-	
-	</div>
-  <a type="button" href="/2017/07/17/How-to-get-subtitle-of-local-video/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -425,7 +463,7 @@ var _hmt = _hmt || [];
         <li><a href="/"><i class="fa fa-home"></i>Home</a></li>
 
 		
-          <li class="next disabled"><a>Next<i class="fa fa-arrow-circle-o-right"></i></a></li>
+		   <li class="next"> <a href="/page/3/" class="alignright next">Next<i class="fa fa-arrow-circle-o-right"></i></a> </li>          
         
 	
 </ul>
@@ -462,15 +500,15 @@ var _hmt = _hmt || [];
 		<h4>Categories</h4>
 		<ul class="tag_box inline list-unstyled">
 		
-			<li><a href="/categories/AWS/">AWS<span>8</span></a></li>
+			<li><a href="/categories/AWS/">AWS<span>10</span></a></li>
 		
 			<li><a href="/categories/AWS-Certified/">AWS Certified<span>2</span></a></li>
 		
-			<li><a href="/categories/Blog/">Blog<span>3</span></a></li>
+			<li><a href="/categories/Blog/">Blog<span>4</span></a></li>
 		
 			<li><a href="/categories/Code/">Code<span>1</span></a></li>
 		
-			<li><a href="/categories/Shell/">Shell<span>2</span></a></li>
+			<li><a href="/categories/Shell/">Shell<span>3</span></a></li>
 		
 			<li><a href="/categories/Tools/">Tools<span>2</span></a></li>
 		
@@ -483,48 +521,48 @@ var _hmt = _hmt || [];
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
+			<li><a href="/tags/EC2-User-Data/">EC2 User Data<span>1</span></a></li>
+		
+			<li><a href="/tags/AWS-Tools/">AWS Tools<span>1</span></a></li>
+		
+			<li><a href="/tags/AWS-Deep-Dive/">AWS Deep Dive<span>2</span></a></li>
+		
+			<li><a href="/tags/Git/">Git<span>1</span></a></li>
+		
+			<li><a href="/tags/Github/">Github<span>2</span></a></li>
+		
+			<li><a href="/tags/Hexo/">Hexo<span>4</span></a></li>
+		
+			<li><a href="/tags/Ruby/">Ruby<span>3</span></a></li>
+		
+			<li><a href="/tags/CodeCommit/">CodeCommit<span>1</span></a></li>
+		
 			<li><a href="/tags/AWS-SDK/">AWS SDK<span>2</span></a></li>
 		
 			<li><a href="/tags/AWS-Free-Tier/">AWS Free Tier<span>1</span></a></li>
 		
-			<li><a href="/tags/AWS-Tools/">AWS Tools<span>1</span></a></li>
-		
-			<li><a href="/tags/PostgreSQL/">PostgreSQL<span>1</span></a></li>
-		
-			<li><a href="/tags/Git/">Git<span>1</span></a></li>
-		
-			<li><a href="/tags/Tips/">Tips<span>1</span></a></li>
-		
-			<li><a href="/tags/Linux/">Linux<span>1</span></a></li>
-		
-			<li><a href="/tags/Ruby/">Ruby<span>2</span></a></li>
-		
-			<li><a href="/tags/Sysops/">Sysops<span>1</span></a></li>
-		
-			<li><a href="/tags/EC2-User-Data/">EC2 User Data<span>1</span></a></li>
-		
-			<li><a href="/tags/AWS-Deep-Dive/">AWS Deep Dive<span>2</span></a></li>
-		
-			<li><a href="/tags/IAM/">IAM<span>1</span></a></li>
-		
-			<li><a href="/tags/Hexo/">Hexo<span>3</span></a></li>
-		
-			<li><a href="/tags/Github/">Github<span>2</span></a></li>
-		
-			<li><a href="/tags/CloudWatch/">CloudWatch<span>1</span></a></li>
-		
 			<li><a href="/tags/Video/">Video<span>1</span></a></li>
-		
-			<li><a href="/tags/AWS-CLI/">AWS CLI<span>3</span></a></li>
-		
-			<li><a href="/tags/RDS/">RDS<span>1</span></a></li>
 		
 			<li><a href="/tags/DynamoDB/">DynamoDB<span>1</span></a></li>
 		
-			<li><a href="/tags/S3/">S3<span>3</span></a></li>
+			<li><a href="/tags/Rails/">Rails<span>1</span></a></li>
+		
+			<li><a href="/tags/Tips/">Tips<span>1</span></a></li>
+		
+			<li><a href="/tags/AWS-CLI/">AWS CLI<span>3</span></a></li>
+		
+			<li><a href="/tags/MacOS/">MacOS<span>2</span></a></li>
+		
+			<li><a href="/tags/Sysops/">Sysops<span>1</span></a></li>
+		
+			<li><a href="/tags/Linux/">Linux<span>1</span></a></li>
+		
+			<li><a href="/tags/RDS/">RDS<span>1</span></a></li>
+		
+			<li><a href="/tags/S3/">S3<span>4</span></a></li>
 		
 		
-		   <li><a href="/tags">...<span>22</span></a></li>
+		   <li><a href="/tags">...<span>25</span></a></li>
 		 
 		</ul>
 	</div>
@@ -537,23 +575,23 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2017/12/25/shell-gist-to-get-http-5XX-code-from-ELB-access-log/" ><i class="fa fa-file-o"></i>shell gist to get http 5XX ...</a>
+      </li>
+    
+      <li>
+        <a href="/2017/12/25/how-to-add-shadow-of-images-in-freemind/" ><i class="fa fa-file-o"></i>在Freemind主题中开启图片阴影</a>
+      </li>
+    
+      <li>
+        <a href="/2017/12/22/what-is-Access-Logs-of-Classic-Load-Balancer/" ><i class="fa fa-file-o"></i>什么是传统负载均衡器的访问日志</a>
+      </li>
+    
+      <li>
+        <a href="/2017/12/20/How-to-add-staging-log-to-EB-logs/" ><i class="fa fa-file-o"></i>如何在Elastic Beanstalk的Rails环...</a>
+      </li>
+    
+      <li>
         <a href="/2017/12/20/expired-of-S3-RRS/" ><i class="fa fa-file-o"></i>S3 RRS价格注意点</a>
-      </li>
-    
-      <li>
-        <a href="/2017/12/19/deep-dig-on-s3-bucket-permission-exam/" ><i class="fa fa-file-o"></i>深挖AWS S3的权限管理(实验篇)</a>
-      </li>
-    
-      <li>
-        <a href="/2017/12/14/deep-dig-on-s3-bucket-permission/" ><i class="fa fa-file-o"></i>深挖AWS S3的权限管理</a>
-      </li>
-    
-      <li>
-        <a href="/2017/12/12/how-to-write-multiline-to-file-by-shell/" ><i class="fa fa-file-o"></i>使用shell添加多行到文件的几个办法</a>
-      </li>
-    
-      <li>
-        <a href="/2017/12/04/AWS-Certified-Sysops-Administrator-Associate/" ><i class="fa fa-file-o"></i>AWS Certified Sysops Admini...</a>
       </li>
     
   </ul>

@@ -160,9 +160,123 @@ var _hmt = _hmt || [];
 		
             
 		
+            
+		
+            
+		
+            
+		
+            
+		
         
         <!-- render other articles -->
         
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2017-12-25 </div>
+			<div class="article-title"><a href="/2017/12/25/shell-gist-to-get-http-5XX-code-from-ELB-access-log/" >shell gist to get http 5XX code from ELB access log</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>一个简陋的只是够用的shell小脚本，用来从S3中下载前一天的ELB access log，筛选出http code为5XX的日志，然后发送给某个指定的email地址。</p>
+<h3 id="变量设置"><a href="#变量设置" class="headerlink" title="变量设置"></a>变量设置</h3><p>设置下MAIL_TO和S3_BASE_PREFIX这两个变量，然后在有AWS CLI访问环境的机器上执行即可。</p>
+<ul>
+<li>MAIL_TO 如果有多个地址，可用空格隔开</li>
+<li>S3_BASE_PREFIX设置到Access log日志格式之前的prefix就行。</li>
+</ul>
+<p>比如完整的access log地址是: <code>s3://carl-elb-logs/AWSLogs/888888888888/elasticloadbalancing/ap-northeast-2/2017/12/24/704017765382_elasticloadbalancing_ap-northeast-2_ELB-carl_20171224T0120Z_13.125.86.136_5s9i5ef2.log</code></p>
+<p>那么S3_BASE_PREFIX设置为<code>s3://carl-elb-logs/AWSLogs/888888888888/elasticloadbalancing/ap-northeast-2</code>即可<br>
+	
+	</div>
+  <a type="button" href="/2017/12/25/shell-gist-to-get-http-5XX-code-from-ELB-access-log/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2017-12-25 </div>
+			<div class="article-title"><a href="/2017/12/25/how-to-add-shadow-of-images-in-freemind/" >在Freemind主题中开启图片阴影</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="添加图片阴影"><a href="#添加图片阴影" class="headerlink" title="添加图片阴影"></a>添加图片阴影</h3><p><a href="https://github.com/wzpan/hexo-theme-freemind" target="_blank" rel="external">hexo-theme-freemind</a>主题中，默认没有开启图片阴影。当图片的背景和文章的背景是同色的时候，有时会造成混淆，看不清楚哪部分是图片，哪部分是文章。</p>
+<p>打开源码看了一下，发现其实<a href="https://github.com/wzpan/hexo-theme-freemind" target="_blank" rel="external">hexo-theme-freemind</a>本身就已经支持图片shadow了。只是默认没有开启，而且也没有在README.md中提及。</p>
+<p>在<code>hexo-theme-freemind/layout/_partial/article.ejs</code>文件中有如下代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;% if (item.shadow ) &#123; %&gt;</div><div class="line">   &lt;style type=&quot;text/css&quot;&gt;</div><div class="line">           img, video &#123;</div><div class="line">                -webkit-box-shadow:0 0 10px rgba(0, 0, 0, .5);</div><div class="line">                -moz-box-shadow:0 0 10px rgba(0, 0, 0, .5);</div><div class="line">                box-shadow:0 0 10px rgba(0, 0, 0, .5);</div><div class="line">           &#125;</div><div class="line">   &lt;/style&gt;</div><div class="line">&lt;% &#125; %&gt;</div></pre></td></tr></table></figure>
+	
+	</div>
+  <a type="button" href="/2017/12/25/how-to-add-shadow-of-images-in-freemind/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2017-12-22 </div>
+			<div class="article-title"><a href="/2017/12/22/what-is-Access-Logs-of-Classic-Load-Balancer/" >什么是传统负载均衡器的访问日志</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="什么是传统负载均衡器的Access-Logs"><a href="#什么是传统负载均衡器的Access-Logs" class="headerlink" title="什么是传统负载均衡器的Access Logs"></a>什么是传统负载均衡器的Access Logs</h3><p>Elastic Load Balancing 提供了Access Logs(访问日志)，Access Logs可记录下发送到负载均衡器的请求的详细信息。每个日志都包含固定格式的信息 (例如，收到请求的时间、客户端的 IP 地址、延迟、请求路径和服务器响应)。可以使用这些日志分析流量模式和进行Debug。</p>
+<p>Access Logs是ELB的一项可选功能，默认情况下是Disable的。启用后，ELB会将logs存储到指定的某个S3 Bucket中。</p>
+<h3 id="收费"><a href="#收费" class="headerlink" title="收费"></a>收费</h3><p>ELB的Access Logs本身是不需要额外的费用的，从ELB传输到S3的流量是免费的，但是S3的存储费用是需要支付的。<br>
+	
+	</div>
+  <a type="button" href="/2017/12/22/what-is-Access-Logs-of-Classic-Load-Balancer/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2017-12-20 </div>
+			<div class="article-title"><a href="/2017/12/20/How-to-add-staging-log-to-EB-logs/" >如何在Elastic Beanstalk的Rails环境中配置staging.log为可下载</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>新建了一个EB环境，来跑一个staging模式的rails。EB环境变量设置好后，部署成功。一系列测试都没问题，结果却在一个不起眼的地方出了点幺蛾子。</p>
+<p>Rails代码中，没有特殊配置config.logger,因此staging模式时，默认的输出日志为logs/staging.log, 但是在EB的Web console中尝试获取Full Logs后，在BundleLogs中发现没有staging.log。</p>
+<p>赶紧调查试验了一下，并将调查结果记录如下。</p>
+	
+	</div>
+  <a type="button" href="/2017/12/20/How-to-add-staging-log-to-EB-logs/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
            
 			  
 	
@@ -356,114 +470,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2017-10-31 </div>
-			<div class="article-title"><a href="/2017/10/31/account-setting-by-aws/" >创建AWS Account后的基本账号设置</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>记录创建好AWS账号后的几个基本设置, 大概介绍如下几点:</p>
-<ul>
-<li>查看是否满足Free Tier Usage</li>
-<li>创建IAM账号</li>
-<li>为IAM账号启用Billing</li>
-<li>如何提交Case</li>
-<li>切换Console语言</li>
-</ul>
-	
-	</div>
-  <a type="button" href="/2017/10/31/account-setting-by-aws/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2017-10-31 </div>
-			<div class="article-title"><a href="/2017/10/31/hexo-bind-domain-to-github-pages/" >绑定万网域名到github pages</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<blockquote>
-<p>此处介绍如何将万网的域名绑定到github pages</p>
-</blockquote>
-<h3 id="万网设置"><a href="#万网设置" class="headerlink" title="万网设置"></a>万网设置</h3><p>进入aliyun控制的云解析DNS控制台，选中所要解析的域名，此处是jibing57.com, 点击右侧解析按钮。</p>
-<ul>
-<li>记录类型选择 CNAME</li>
-<li>主机记录填写 www</li>
-<li>记录值填入github pages的域名，此处是jibing57.github.io
-	
-	</div>
-  <a type="button" href="/2017/10/31/hexo-bind-domain-to-github-pages/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2017-10-30 </div>
-			<div class="article-title"><a href="/2017/10/30/how-to-use-post-link-on-hexo/" >Hexo引用站内文章</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>写文章的时候，经常需要引用站内的其他文章，此时可以使用Hexo内置的<a href="https://hexo.io/zh-cn/docs/tag-plugins.html" target="_blank" rel="external">标签插件</a>（Tag Plugins）中的<code>post_link</code>来实现。</p>
-	
-	</div>
-  <a type="button" href="/2017/10/30/how-to-use-post-link-on-hexo/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2017-10-29 </div>
-			<div class="article-title"><a href="/2017/10/29/ruby-paperclip-destroy-callback-nil/" >Paperclip destroy的callback中attachment的各个attribute为nil的问题调查</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="问题点"><a href="#问题点" class="headerlink" title="问题点"></a>问题点</h3><p>Rails的Image的models中，使用了paperclip这个Gem来处理图片。近期需要添加一个功能，删除image后，需要向某个email地址发送一封邮件，告之某个图片已经被删除了。</p>
-<p>实际操作中，发现在无论函数是定义在before_destroy或after_destroy的callback中，attachment_file_name,attachment_file_size, attachment_content_type, attachment_updated_at的属性，取出来都是nil。</p>
-<p>调查了一下，现将结果汇总如下:<br>
-	
-	</div>
-  <a type="button" href="/2017/10/29/ruby-paperclip-destroy-callback-nil/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -517,15 +523,15 @@ var _hmt = _hmt || [];
 		<h4>Categories</h4>
 		<ul class="tag_box inline list-unstyled">
 		
-			<li><a href="/categories/AWS/">AWS<span>8</span></a></li>
+			<li><a href="/categories/AWS/">AWS<span>10</span></a></li>
 		
 			<li><a href="/categories/AWS-Certified/">AWS Certified<span>2</span></a></li>
 		
-			<li><a href="/categories/Blog/">Blog<span>3</span></a></li>
+			<li><a href="/categories/Blog/">Blog<span>4</span></a></li>
 		
 			<li><a href="/categories/Code/">Code<span>1</span></a></li>
 		
-			<li><a href="/categories/Shell/">Shell<span>2</span></a></li>
+			<li><a href="/categories/Shell/">Shell<span>3</span></a></li>
 		
 			<li><a href="/categories/Tools/">Tools<span>2</span></a></li>
 		
@@ -538,48 +544,48 @@ var _hmt = _hmt || [];
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/RDS/">RDS<span>1</span></a></li>
-		
-			<li><a href="/tags/Github/">Github<span>2</span></a></li>
-		
-			<li><a href="/tags/AWS-SDK/">AWS SDK<span>2</span></a></li>
-		
-			<li><a href="/tags/Tips/">Tips<span>1</span></a></li>
-		
-			<li><a href="/tags/AWS-Deep-Dive/">AWS Deep Dive<span>2</span></a></li>
-		
-			<li><a href="/tags/S3/">S3<span>3</span></a></li>
-		
-			<li><a href="/tags/MacOS/">MacOS<span>2</span></a></li>
-		
-			<li><a href="/tags/PostgreSQL/">PostgreSQL<span>1</span></a></li>
-		
-			<li><a href="/tags/Linux/">Linux<span>1</span></a></li>
-		
-			<li><a href="/tags/EC2-User-Data/">EC2 User Data<span>1</span></a></li>
-		
-			<li><a href="/tags/Hexo/">Hexo<span>3</span></a></li>
-		
-			<li><a href="/tags/Git/">Git<span>1</span></a></li>
-		
-			<li><a href="/tags/CloudWatch/">CloudWatch<span>1</span></a></li>
-		
-			<li><a href="/tags/AWS-CLI/">AWS CLI<span>3</span></a></li>
-		
-			<li><a href="/tags/AWS-Tools/">AWS Tools<span>1</span></a></li>
-		
-			<li><a href="/tags/Video/">Video<span>1</span></a></li>
+			<li><a href="/tags/AWS-Free-Tier/">AWS Free Tier<span>1</span></a></li>
 		
 			<li><a href="/tags/Sysops/">Sysops<span>1</span></a></li>
 		
-			<li><a href="/tags/AWS-Free-Tier/">AWS Free Tier<span>1</span></a></li>
+			<li><a href="/tags/IAM/">IAM<span>1</span></a></li>
+		
+			<li><a href="/tags/Rails/">Rails<span>1</span></a></li>
+		
+			<li><a href="/tags/Elastic-Load-Balancing/">Elastic Load Balancing<span>2</span></a></li>
+		
+			<li><a href="/tags/S3/">S3<span>4</span></a></li>
+		
+			<li><a href="/tags/MacOS/">MacOS<span>2</span></a></li>
+		
+			<li><a href="/tags/AWS-SDK/">AWS SDK<span>2</span></a></li>
+		
+			<li><a href="/tags/EC2-User-Data/">EC2 User Data<span>1</span></a></li>
+		
+			<li><a href="/tags/RDS/">RDS<span>1</span></a></li>
+		
+			<li><a href="/tags/Git/">Git<span>1</span></a></li>
+		
+			<li><a href="/tags/PostgreSQL/">PostgreSQL<span>1</span></a></li>
+		
+			<li><a href="/tags/Video/">Video<span>1</span></a></li>
+		
+			<li><a href="/tags/CloudWatch/">CloudWatch<span>1</span></a></li>
+		
+			<li><a href="/tags/Hexo/">Hexo<span>4</span></a></li>
 		
 			<li><a href="/tags/DynamoDB/">DynamoDB<span>1</span></a></li>
 		
-			<li><a href="/tags/IAM/">IAM<span>1</span></a></li>
+			<li><a href="/tags/Elastic-Beanstalk/">Elastic Beanstalk<span>1</span></a></li>
+		
+			<li><a href="/tags/CodeCommit/">CodeCommit<span>1</span></a></li>
+		
+			<li><a href="/tags/AWS-Deep-Dive/">AWS Deep Dive<span>2</span></a></li>
+		
+			<li><a href="/tags/AWS-CLI/">AWS CLI<span>3</span></a></li>
 		
 		
-		   <li><a href="/tags">...<span>22</span></a></li>
+		   <li><a href="/tags">...<span>25</span></a></li>
 		 
 		</ul>
 	</div>
@@ -592,23 +598,23 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2017/12/25/shell-gist-to-get-http-5XX-code-from-ELB-access-log/" ><i class="fa fa-file-o"></i>shell gist to get http 5XX ...</a>
+      </li>
+    
+      <li>
+        <a href="/2017/12/25/how-to-add-shadow-of-images-in-freemind/" ><i class="fa fa-file-o"></i>在Freemind主题中开启图片阴影</a>
+      </li>
+    
+      <li>
+        <a href="/2017/12/22/what-is-Access-Logs-of-Classic-Load-Balancer/" ><i class="fa fa-file-o"></i>什么是传统负载均衡器的访问日志</a>
+      </li>
+    
+      <li>
+        <a href="/2017/12/20/How-to-add-staging-log-to-EB-logs/" ><i class="fa fa-file-o"></i>如何在Elastic Beanstalk的Rails环...</a>
+      </li>
+    
+      <li>
         <a href="/2017/12/20/expired-of-S3-RRS/" ><i class="fa fa-file-o"></i>S3 RRS价格注意点</a>
-      </li>
-    
-      <li>
-        <a href="/2017/12/19/deep-dig-on-s3-bucket-permission-exam/" ><i class="fa fa-file-o"></i>深挖AWS S3的权限管理(实验篇)</a>
-      </li>
-    
-      <li>
-        <a href="/2017/12/14/deep-dig-on-s3-bucket-permission/" ><i class="fa fa-file-o"></i>深挖AWS S3的权限管理</a>
-      </li>
-    
-      <li>
-        <a href="/2017/12/12/how-to-write-multiline-to-file-by-shell/" ><i class="fa fa-file-o"></i>使用shell添加多行到文件的几个办法</a>
-      </li>
-    
-      <li>
-        <a href="/2017/12/04/AWS-Certified-Sysops-Administrator-Associate/" ><i class="fa fa-file-o"></i>AWS Certified Sysops Admini...</a>
       </li>
     
   </ul>

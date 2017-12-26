@@ -168,9 +168,37 @@ var _hmt = _hmt || [];
 		
             
 		
+            
+		
         
         <!-- render other articles -->
         
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2017-12-26 </div>
+			<div class="article-title"><a href="/2017/12/26/a-simple-elb-access-log-parser-by-ruby/" >A Simple ELB Access Log Parser By Ruby</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>工作时候，偶尔会有手动检查ELB Access Log的时候，下载下来的access log是空格隔开的，人眼将数值对应到字段名非常累。</p>
+<p>就顺手写了个Ruby的小程序来解析access log的内容，转换到csv格式。再使用Excel打开csv文件来进行查看。</p>
+<h3 id="用途"><a href="#用途" class="headerlink" title="用途"></a>用途</h3><p>读取access log日志，转换为csv。</p>
+<p>主要用于临时检查小数据量access log来定位问题。如果是基于access log来进行数据分析，还是需要结合RedShift来进行。</p>
+	
+	</div>
+  <a type="button" href="/2017/12/26/a-simple-elb-access-log-parser-by-ruby/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
            
 			  
 	
@@ -440,36 +468,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2017-11-29 </div>
-			<div class="article-title"><a href="/2017/11/29/how-to-enable-slow-query-on-aws-rds-postgresql/" >在AWS RDS中为Postgresql开启慢查询日志</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>sql遇到性能问题，就需要开启慢查询日志，将执行时间超过某个限定值的sql输出到日志，给后续开发人员分析。下面是AWS RDS中Postgresql开启慢查询日志的方法。包含</p>
-<ul>
-<li>RDS设置</li>
-<li>下载RDS log的方法</li>
-<li>一些注意点</li>
-</ul>
-<h3 id="RDS设置步骤"><a href="#RDS设置步骤" class="headerlink" title="RDS设置步骤"></a>RDS设置步骤</h3><ol>
-<li>登陆aws console，切换到RDS<br><img src="/images/AWS/RDSSlowQuery/switch_to_rds.png" alt="switch_to_rds.png">
-	
-	</div>
-  <a type="button" href="/2017/11/29/how-to-enable-slow-query-on-aws-rds-postgresql/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -523,7 +521,7 @@ var _hmt = _hmt || [];
 		<h4>Categories</h4>
 		<ul class="tag_box inline list-unstyled">
 		
-			<li><a href="/categories/AWS/">AWS<span>10</span></a></li>
+			<li><a href="/categories/AWS/">AWS<span>11</span></a></li>
 		
 			<li><a href="/categories/AWS-Certified/">AWS Certified<span>2</span></a></li>
 		
@@ -544,45 +542,45 @@ var _hmt = _hmt || [];
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/AWS-Free-Tier/">AWS Free Tier<span>1</span></a></li>
-		
-			<li><a href="/tags/Sysops/">Sysops<span>1</span></a></li>
+			<li><a href="/tags/Elastic-Beanstalk/">Elastic Beanstalk<span>1</span></a></li>
 		
 			<li><a href="/tags/IAM/">IAM<span>1</span></a></li>
 		
-			<li><a href="/tags/Rails/">Rails<span>1</span></a></li>
-		
-			<li><a href="/tags/Elastic-Load-Balancing/">Elastic Load Balancing<span>2</span></a></li>
-		
-			<li><a href="/tags/S3/">S3<span>4</span></a></li>
-		
-			<li><a href="/tags/MacOS/">MacOS<span>2</span></a></li>
-		
-			<li><a href="/tags/AWS-SDK/">AWS SDK<span>2</span></a></li>
-		
 			<li><a href="/tags/EC2-User-Data/">EC2 User Data<span>1</span></a></li>
-		
-			<li><a href="/tags/RDS/">RDS<span>1</span></a></li>
-		
-			<li><a href="/tags/Git/">Git<span>1</span></a></li>
 		
 			<li><a href="/tags/PostgreSQL/">PostgreSQL<span>1</span></a></li>
 		
 			<li><a href="/tags/Video/">Video<span>1</span></a></li>
 		
-			<li><a href="/tags/CloudWatch/">CloudWatch<span>1</span></a></li>
+			<li><a href="/tags/AWS-Free-Tier/">AWS Free Tier<span>1</span></a></li>
 		
-			<li><a href="/tags/Hexo/">Hexo<span>4</span></a></li>
+			<li><a href="/tags/Elastic-Load-Balancing/">Elastic Load Balancing<span>3</span></a></li>
 		
-			<li><a href="/tags/DynamoDB/">DynamoDB<span>1</span></a></li>
+			<li><a href="/tags/Sysops/">Sysops<span>1</span></a></li>
 		
-			<li><a href="/tags/Elastic-Beanstalk/">Elastic Beanstalk<span>1</span></a></li>
+			<li><a href="/tags/AWS-CLI/">AWS CLI<span>3</span></a></li>
 		
-			<li><a href="/tags/CodeCommit/">CodeCommit<span>1</span></a></li>
+			<li><a href="/tags/AWS-SDK/">AWS SDK<span>2</span></a></li>
 		
 			<li><a href="/tags/AWS-Deep-Dive/">AWS Deep Dive<span>2</span></a></li>
 		
-			<li><a href="/tags/AWS-CLI/">AWS CLI<span>3</span></a></li>
+			<li><a href="/tags/Github/">Github<span>2</span></a></li>
+		
+			<li><a href="/tags/Git/">Git<span>1</span></a></li>
+		
+			<li><a href="/tags/Hexo/">Hexo<span>4</span></a></li>
+		
+			<li><a href="/tags/CodeCommit/">CodeCommit<span>1</span></a></li>
+		
+			<li><a href="/tags/MacOS/">MacOS<span>2</span></a></li>
+		
+			<li><a href="/tags/Ruby/">Ruby<span>4</span></a></li>
+		
+			<li><a href="/tags/Tips/">Tips<span>1</span></a></li>
+		
+			<li><a href="/tags/S3/">S3<span>4</span></a></li>
+		
+			<li><a href="/tags/Rails/">Rails<span>1</span></a></li>
 		
 		
 		   <li><a href="/tags">...<span>25</span></a></li>
@@ -598,6 +596,10 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2017/12/26/a-simple-elb-access-log-parser-by-ruby/" ><i class="fa fa-file-o"></i>A Simple ELB Access Log Par...</a>
+      </li>
+    
+      <li>
         <a href="/2017/12/25/shell-gist-to-get-http-5XX-code-from-ELB-access-log/" ><i class="fa fa-file-o"></i>shell gist to get http 5XX ...</a>
       </li>
     
@@ -611,10 +613,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2017/12/20/How-to-add-staging-log-to-EB-logs/" ><i class="fa fa-file-o"></i>如何在Elastic Beanstalk的Rails环...</a>
-      </li>
-    
-      <li>
-        <a href="/2017/12/20/expired-of-S3-RRS/" ><i class="fa fa-file-o"></i>S3 RRS价格注意点</a>
       </li>
     
   </ul>

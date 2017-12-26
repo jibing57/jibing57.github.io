@@ -4,14 +4,21 @@
   <url>
     <loc>http://www.jibing57.com/2017/12/22/what-is-Access-Logs-of-Classic-Load-Balancer/</loc>
     
-    <lastmod>2017-12-25T10:21:36.074Z</lastmod>
+    <lastmod>2017-12-26T02:57:19.342Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://www.jibing57.com/2017/12/25/shell-gist-to-get-http-5XX-code-from-ELB-access-log/</loc>
     
-    <lastmod>2017-12-25T10:19:29.301Z</lastmod>
+    <lastmod>2017-12-26T02:56:44.892Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.jibing57.com/2017/12/26/a-simple-elb-access-log-parser-by-ruby/</loc>
+    
+    <lastmod>2017-12-26T02:56:15.319Z</lastmod>
     
   </url>
   

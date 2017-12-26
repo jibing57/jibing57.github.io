@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.jibing57.com/"/>
-  <updated>2017-12-25T10:19:29.301Z</updated>
+  <updated>2017-12-26T02:56:15.319Z</updated>
   <id>http://www.jibing57.com/</id>
   
   <author>
@@ -17,11 +17,36 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>A Simple ELB Access Log Parser By Ruby</title>
+    <link href="http://www.jibing57.com/2017/12/26/a-simple-elb-access-log-parser-by-ruby/"/>
+    <id>http://www.jibing57.com/2017/12/26/a-simple-elb-access-log-parser-by-ruby/</id>
+    <published>2017-12-26T12:35:29.000Z</published>
+    <updated>2017-12-26T02:56:15.319Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;工作时候，偶尔会有手动检查ELB Access Log的时候，下载下来的access log是空格隔开的，人眼将数值对应到字段名非常累。&lt;/p&gt;
+&lt;p&gt;就顺手写了个Ruby的小程序来解析access log的内容，转换到csv格式。再使用Excel打开csv文件来进行查看。&lt;/p&gt;
+&lt;h3 id=&quot;用途&quot;&gt;&lt;a href=&quot;#用途&quot; class=&quot;headerlink&quot; title=&quot;用途&quot;&gt;&lt;/a&gt;用途&lt;/h3&gt;&lt;p&gt;读取access log日志，转换为csv。&lt;/p&gt;
+&lt;p&gt;主要用于临时检查小数据量access log来定位问题。如果是基于access log来进行数据分析，还是需要结合RedShift来进行。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
+    
+    
+      <category term="Ruby" scheme="http://www.jibing57.com/tags/Ruby/"/>
+    
+      <category term="Elastic Load Balancing" scheme="http://www.jibing57.com/tags/Elastic-Load-Balancing/"/>
+    
+  </entry>
+  
+  <entry>
     <title>shell gist to get http 5XX code from ELB access log</title>
     <link href="http://www.jibing57.com/2017/12/25/shell-gist-to-get-http-5XX-code-from-ELB-access-log/"/>
     <id>http://www.jibing57.com/2017/12/25/shell-gist-to-get-http-5XX-code-from-ELB-access-log/</id>
     <published>2017-12-25T14:09:24.000Z</published>
-    <updated>2017-12-25T10:19:29.301Z</updated>
+    <updated>2017-12-26T02:56:44.892Z</updated>
     
     <summary type="html">
     
@@ -71,7 +96,7 @@
     <link href="http://www.jibing57.com/2017/12/22/what-is-Access-Logs-of-Classic-Load-Balancer/"/>
     <id>http://www.jibing57.com/2017/12/22/what-is-Access-Logs-of-Classic-Load-Balancer/</id>
     <published>2017-12-22T07:26:12.000Z</published>
-    <updated>2017-12-25T10:21:36.074Z</updated>
+    <updated>2017-12-26T02:57:19.342Z</updated>
     
     <summary type="html">
     
@@ -84,9 +109,9 @@
       <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
     
     
-      <category term="S3" scheme="http://www.jibing57.com/tags/S3/"/>
-    
       <category term="Elastic Load Balancing" scheme="http://www.jibing57.com/tags/Elastic-Load-Balancing/"/>
+    
+      <category term="S3" scheme="http://www.jibing57.com/tags/S3/"/>
     
   </entry>
   
@@ -297,9 +322,9 @@
     
       <category term="Ruby" scheme="http://www.jibing57.com/tags/Ruby/"/>
     
-      <category term="AWS CLI" scheme="http://www.jibing57.com/tags/AWS-CLI/"/>
-    
       <category term="AWS SDK" scheme="http://www.jibing57.com/tags/AWS-SDK/"/>
+    
+      <category term="AWS CLI" scheme="http://www.jibing57.com/tags/AWS-CLI/"/>
     
       <category term="PostgreSQL" scheme="http://www.jibing57.com/tags/PostgreSQL/"/>
     
@@ -549,56 +574,6 @@
     
     
       <category term="AWS Tools" scheme="http://www.jibing57.com/tags/AWS-Tools/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>AWS Certified Developer - Associate Road Map</title>
-    <link href="http://www.jibing57.com/2017/07/24/AWS-Certified-Developer/"/>
-    <id>http://www.jibing57.com/2017/07/24/AWS-Certified-Developer/</id>
-    <published>2017-07-24T07:27:17.000Z</published>
-    <updated>2017-12-25T07:08:09.388Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;Official-AWS-Centification-Page&quot;&gt;&lt;a href=&quot;#Official-AWS-Centification-Page&quot; class=&quot;headerlink&quot; title=&quot;Official AWS Centification Page&quot;&gt;&lt;/a&gt;Official AWS Centification Page&lt;/h2&gt;&lt;p&gt;访问官网&lt;a href=&quot;https://amazonaws-china.com/certification/certification-prep/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;AWS Centification&lt;/a&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;参加 AWS 培训课程&lt;/li&gt;
-&lt;li&gt;查看考试指南和样题&lt;ul&gt;
-&lt;li&gt;了解考试涉及的概念并整体了解需要学习哪些内容, &lt;a href=&quot;http://awstrainingandcertification.s3.amazonaws.com/production/AWS_certified_developer_associate_blueprint.pdf&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;AWS Certified Developer – Associate 考试指南&lt;/a&gt; 相当于考试大纲, 必看,而且需要反复的看。因为学习过一阵后再来看Guide，会有更深的体会。&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://d0.awsstatic-china.com/training-and-certification/docs/AWS_certified_developer_associate_examsample.pdf&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;考试样题&lt;/a&gt;用于熟悉题目题型&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;完成自主进度动手实验和备考任务&lt;ul&gt;
-&lt;li&gt;官方&lt;a href=&quot;https://www.qwiklabs.com/learning_paths/20/lab_catalogue?locale=en&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;qwikLABS 任务&lt;/a&gt;提供了一系列动手实验, 提供部分免费实验，但大部分实验所需的积分都需要购买。高性价比的做法是， 注册一个AWS全球账号，使用一年的免费额度来对照着实验手册来进行试验。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;学习 AWS 白皮书&lt;ul&gt;
-&lt;li&gt;白皮书是纯英文的，而且每个白皮书篇幅都很长，读起来既费时又枯燥。但是有时间还是建议把推荐的几个都看一下。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;查看 AWS 常见问题&lt;ul&gt;
-&lt;li&gt;官网推荐的FAQ都建议看完，另外&lt;a href=&quot;https://amazonaws-china.com/cn/dynamodb/faqs/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;DynamoDB FAQ&lt;/a&gt;这个必须要看。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;参加模拟考试&lt;ul&gt;
-&lt;li&gt;20美刀一次，主要目的是为了让人熟悉考试时上机的流程。是否需要因人而异, 特别想先熟悉下考试流程的可以考虑参加一次。我个人觉得没有必要, 因为真实考试时，操作界面一目了然，没有磕磕绊绊的机关，省下20美刀可以去买一份课程。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;报名考试并获得认证&lt;ul&gt;
-&lt;li&gt;登陆&lt;a href=&quot;https://www.aws.training/certification&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://www.aws.training/certification&lt;/a&gt;注册进行考试&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-    
-    </summary>
-    
-      <category term="AWS Certified" scheme="http://www.jibing57.com/categories/AWS-Certified/"/>
-    
-    
-      <category term="DynamoDB" scheme="http://www.jibing57.com/tags/DynamoDB/"/>
-    
-      <category term="AWS SDK" scheme="http://www.jibing57.com/tags/AWS-SDK/"/>
     
   </entry>
   

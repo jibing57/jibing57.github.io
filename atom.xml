@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.jibing57.com/"/>
-  <updated>2017-12-26T02:56:15.319Z</updated>
+  <updated>2018-02-11T10:05:51.406Z</updated>
   <id>http://www.jibing57.com/</id>
   
   <author>
@@ -15,6 +15,131 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>使用seed将csv格式的db文件导入DB</title>
+    <link href="http://www.jibing57.com/2018/02/11/a-way-to-use-csv-file-to-populate-the-database-by-rake-db-seed-on-rails/"/>
+    <id>http://www.jibing57.com/2018/02/11/a-way-to-use-csv-file-to-populate-the-database-by-rake-db-seed-on-rails/</id>
+    <published>2018-02-11T14:00:33.000Z</published>
+    <updated>2018-02-11T10:05:51.406Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;一段将csv格式的db文件导入对应表结构的代码。&lt;/p&gt;
+&lt;h3 id=&quot;前提要求&quot;&gt;&lt;a href=&quot;#前提要求&quot; class=&quot;headerlink&quot; title=&quot;前提要求&quot;&gt;&lt;/a&gt;前提要求&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;csv文件名字和Model Class需要一一对应， 比如用户表users, Model中定义是&lt;code&gt;class User &amp;lt; ActiveRecord::Base&lt;/code&gt;, 那么csv文件名字得是user.csv&lt;/li&gt;
+&lt;li&gt;csv文件需要有header,并且header名字需要同数据库中对应表的字段名相同&lt;/li&gt;
+&lt;/ol&gt;
+    
+    </summary>
+    
+      <category term="Code" scheme="http://www.jibing57.com/categories/Code/"/>
+    
+    
+      <category term="Ruby" scheme="http://www.jibing57.com/tags/Ruby/"/>
+    
+      <category term="Rails" scheme="http://www.jibing57.com/tags/Rails/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>使用AWS CLI来备份和恢复S3 Bucket的ACL</title>
+    <link href="http://www.jibing57.com/2018/02/11/aws-s3-cli-to-backup-and-restore-bucket-acl/"/>
+    <id>http://www.jibing57.com/2018/02/11/aws-s3-cli-to-backup-and-restore-bucket-acl/</id>
+    <published>2018-02-11T12:43:43.000Z</published>
+    <updated>2018-02-11T10:08:02.977Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;S3 Bucket层面的权限管理，推荐使用Bucket Policy来管理，但可能会有一些遗留的S3 Bucket, 还使用着Bucket ACL来进行权限管理。&lt;/p&gt;
+&lt;p&gt;在将Bucket ACl升级为Bucket Policy或者是更新Bucket ACL的时候，会有备份Bucket ACL的需求。此处介绍一下如何使用AWS CLI来备份和恢复Bucket的Bucket ACL。&lt;/p&gt;
+&lt;h3 id=&quot;备份-Bucket-ACL&quot;&gt;&lt;a href=&quot;#备份-Bucket-ACL&quot; class=&quot;headerlink&quot; title=&quot;备份 Bucket ACL&quot;&gt;&lt;/a&gt;备份 Bucket ACL&lt;/h3&gt;&lt;p&gt;使用CLI中s3api中的&lt;a href=&quot;https://docs.aws.amazon.com/cli/latest/reference/s3api/get-bucket-acl.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;get-bucket-acl&lt;/a&gt;命令来保存bucket acl。&lt;/p&gt;
+&lt;h4 id=&quot;用法&quot;&gt;&lt;a href=&quot;#用法&quot; class=&quot;headerlink&quot; title=&quot;用法&quot;&gt;&lt;/a&gt;用法&lt;/h4&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;  get-bucket-acl&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;--bucket &amp;lt;value&amp;gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;[--cli-input-json &amp;lt;value&amp;gt;]&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;[--generate-cli-skeleton &amp;lt;value&amp;gt;]&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+    
+    </summary>
+    
+      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
+    
+    
+      <category term="S3" scheme="http://www.jibing57.com/tags/S3/"/>
+    
+      <category term="AWS CLI" scheme="http://www.jibing57.com/tags/AWS-CLI/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Macos下如何实现grep的非贪婪模式</title>
+    <link href="http://www.jibing57.com/2018/02/09/non-greedy-match-in-grep-on-macos/"/>
+    <id>http://www.jibing57.com/2018/02/09/non-greedy-match-in-grep-on-macos/</id>
+    <published>2018-02-09T13:10:43.000Z</published>
+    <updated>2018-02-09T09:16:23.889Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;有时候需要使用正则的&lt;code&gt;非贪婪模式(non-greedy或者叫lazy模式)&lt;/code&gt;来搜一些内容，但Macos系统自带的&lt;code&gt;grep&lt;/code&gt;无法胜任。&lt;br&gt;Mac下的&lt;code&gt;grep&lt;/code&gt;是BSD系的，不能使用-P参数来使用perl模式。Linux下的&lt;code&gt;GNU grep&lt;/code&gt;就可以使用-P参数来支持非贪婪模式。&lt;/p&gt;
+&lt;p&gt;MacOS自带的&lt;code&gt;grep&lt;/code&gt;的示例:&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;10&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ cat grep_on_macos.txt&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;carl has a nice car. the car has four wheels.&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;$&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;# 支持普通正则&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;$ grep -o &amp;quot;car.*has&amp;quot; grep_on_macos.txt&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;carl has a nice car. the car has&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;$&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;# 不支持带?的非贪婪模式&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;$ grep -o &amp;quot;car.*?has&amp;quot; grep_on_macos.txt&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;$&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;此处记录两个可行的方法来解决该问题&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Shell" scheme="http://www.jibing57.com/categories/Shell/"/>
+    
+    
+      <category term="Linux" scheme="http://www.jibing57.com/tags/Linux/"/>
+    
+      <category term="MacOS" scheme="http://www.jibing57.com/tags/MacOS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>AWS Certified Solutions Architect - Professional Road Map</title>
+    <link href="http://www.jibing57.com/2018/02/07/AWS-Certified-Solutions-Architect-Professional/"/>
+    <id>http://www.jibing57.com/2018/02/07/AWS-Certified-Solutions-Architect-Professional/</id>
+    <published>2018-02-07T07:27:17.000Z</published>
+    <updated>2018-02-11T17:18:12.338Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;Official-AWS-Certification-Page&quot;&gt;&lt;a href=&quot;#Official-AWS-Certification-Page&quot; class=&quot;headerlink&quot; title=&quot;Official AWS Certification Page&quot;&gt;&lt;/a&gt;Official AWS Certification Page&lt;/h2&gt;&lt;p&gt;访问官网&lt;a href=&quot;https://amazonaws-china.com/certification/certification-prep/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;AWS Certification&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;参加 AWS 培训课程&lt;/li&gt;
+&lt;li&gt;查看考试指南和样题&lt;ul&gt;
+&lt;li&gt;了解考试涉及的概念并整体了解需要学习哪些内容, &lt;a href=&quot;http://d0.awsstatic-china.com/Train%20&amp;amp;%20Cert/docs/AWS_certified_solutions_architect_professional_blueprint.pdf&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;AWS Certified Solutions Architect – Professional 考试指南&lt;/a&gt; 相当于考试大纲, 必看,而且需要反复的看。因为学习过一阵后再来看Guide，会有更深的体会。&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://d0.awsstatic-china.com/training-and-certification/docs/AWS_certified_solutions_architect_professional_examsample.pdf&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;考试样题&lt;/a&gt;用于熟悉题目题型。几个样题都是大段大段的文字，实际考试题目中也有字数少的题目。但题目的阅读量绝对是比Asoocaiated的大得多。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;练习试验&lt;ul&gt;
+&lt;li&gt;注册一个AWS全球账号，使用一年的免费额度结合Blueprint中的各个内容进行试验。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;学习 AWS 白皮书&lt;ul&gt;
+&lt;li&gt;白皮书是纯英文的，每个白皮书篇幅都很长。&lt;/li&gt;
+&lt;li&gt;在BluePrint的描述中，和AWS Certified Solutions Architect - Associate的白皮书列表相比，多了&lt;strong&gt;Defining Fault Tolerant Applications in the AWS Cloud&lt;/strong&gt;这一份白皮书，官网找了一下，只有一个名字类似的名为&lt;a href=&quot;https://d1.awsstatic.com/whitepapers/aws-building-fault-tolerant-applications.pdf&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Building Fault-Tolerant Applications on AWS&lt;/a&gt;的白皮书，时间还是October 2011的。不管怎样，但愿好理念永不过时，还是整个念一遍吧。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;查看 AWS 常见问题&lt;ul&gt;
+&lt;li&gt;官网推荐的FAQ都建议看完。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;参加模拟考试&lt;ul&gt;
+&lt;li&gt;40美刀一次。是否值得因人而异。参加Professional的考试，肯定都已经经历过AWS Certified Solutions Architect – Associate的洗礼了, 因此熟悉考试界面肯定不是决定要参加模拟考试的目的。一个合理的理由是，可以提前熟悉一下Professional考题阅读难度, 为正式考试的时候做好心理准备。网上都说AWS Certified Solutions Architect – Professional这个考试最大的难度就是要在170分钟内阅读，理解77~80道字数不算少的题，然后选出最优的答案。网上一些母语是英语的老外都感慨阅读量比较大，何况是我们这种非英语系的国家的考生了。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;报名考试并获得认证&lt;ul&gt;
+&lt;li&gt;登陆&lt;a href=&quot;https://www.aws.training/certification&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://www.aws.training/certification&lt;/a&gt;注册进行考试&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+    
+    </summary>
+    
+      <category term="AWS Certified" scheme="http://www.jibing57.com/categories/AWS-Certified/"/>
+    
+    
+      <category term="Solutions Architect" scheme="http://www.jibing57.com/tags/Solutions-Architect/"/>
+    
+  </entry>
   
   <entry>
     <title>A Simple ELB Access Log Parser By Ruby</title>
@@ -191,9 +316,9 @@
     
       <category term="S3" scheme="http://www.jibing57.com/tags/S3/"/>
     
-      <category term="AWS Deep Dive" scheme="http://www.jibing57.com/tags/AWS-Deep-Dive/"/>
-    
       <category term="AWS CLI" scheme="http://www.jibing57.com/tags/AWS-CLI/"/>
+    
+      <category term="AWS Deep Dive" scheme="http://www.jibing57.com/tags/AWS-Deep-Dive/"/>
     
   </entry>
   
@@ -453,127 +578,6 @@
     
     
       <category term="AWS CLI" scheme="http://www.jibing57.com/tags/AWS-CLI/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>使用aws codecommit作为私有的git远程服务器</title>
-    <link href="http://www.jibing57.com/2017/10/24/how-to-use-aws-codecommit/"/>
-    <id>http://www.jibing57.com/2017/10/24/how-to-use-aws-codecommit/</id>
-    <published>2017-10-24T12:10:54.000Z</published>
-    <updated>2017-12-25T07:09:02.951Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;博客的hexo的代码，一直是保存在本地的。上次电脑花了一次屏后，感觉到保存在本地实在是不够安全。因此考虑寻觅一个远端的私密git库，存起来。&lt;/p&gt;
-&lt;p&gt;开始寻寻觅觅合适的仓库.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Github?,私有库是收费的。但为了这些哪条就不更新的markdown，每月7刀开个Developer的Plan，感觉不划算。&lt;/li&gt;
-&lt;li&gt;自建Gitlab？嫌麻烦麻烦。&lt;/li&gt;
-&lt;li&gt;oschina的私有库？不想用。&lt;/li&gt;
-&lt;li&gt;。。。。。。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;好吧，我承认我就是想尝试用一下aws的codecommit。&lt;/p&gt;
-&lt;p&gt;关于CodeCommit的免费额度，&lt;a href=&quot;https://aws.amazon.com/cn/codecommit/pricing/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;官网&lt;/a&gt;介绍:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;最初5位活动用户&lt;ul&gt;
-&lt;li&gt;无限存储库&lt;/li&gt;
-&lt;li&gt;50GB的月存储量&lt;/li&gt;
-&lt;li&gt;每月10000个git请求&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;托管我一个小博客，妥妥的够了。毕竟除了我，没人还会来关心这点markdown文件, 5位用户免费足够了。至于50GB的月存储量么，除非把看过的电影都commit进git来，要不然应该是足够了。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
-    
-    
-      <category term="Git" scheme="http://www.jibing57.com/tags/Git/"/>
-    
-      <category term="CodeCommit" scheme="http://www.jibing57.com/tags/CodeCommit/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Linux 和 Mac下date命令的基本用法</title>
-    <link href="http://www.jibing57.com/2017/08/03/date-command-on-Linux-and-Mac/"/>
-    <id>http://www.jibing57.com/2017/08/03/date-command-on-Linux-and-Mac/</id>
-    <published>2017-08-03T13:54:02.000Z</published>
-    <updated>2017-12-25T07:08:09.429Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;Mac下的date命令是BDS系的, Linux下date命令是GNU系的，两者的用法有一些区别，罗列如下:&lt;/p&gt;
-&lt;h3 id=&quot;共同点&quot;&gt;&lt;a href=&quot;#共同点&quot; class=&quot;headerlink&quot; title=&quot;共同点&quot;&gt;&lt;/a&gt;共同点&lt;/h3&gt;&lt;p&gt;基本的时间格式的缩写是相同的，规则如下:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;%Y 表示四位数形式的年份, 比如2017&lt;/li&gt;
-&lt;li&gt;%m 表示带前导0的月份，比如02,12&lt;/li&gt;
-&lt;li&gt;%d 表示带前导0的日子， 比如 02，28&lt;/li&gt;
-&lt;li&gt;%H 表示带前导0的24小时， 比如 01, 23&lt;/li&gt;
-&lt;li&gt;%M 表示带前导0的分钟数， 比如 05, 22&lt;/li&gt;
-&lt;li&gt;%S 表示带前导0的秒数， 比如 06，45&lt;/li&gt;
-&lt;li&gt;%s 表示距离格林威治时间(1970年1月1日0点)的秒数&lt;/li&gt;
-&lt;/ul&gt;
-    
-    </summary>
-    
-      <category term="Shell" scheme="http://www.jibing57.com/categories/Shell/"/>
-    
-    
-      <category term="Linux" scheme="http://www.jibing57.com/tags/Linux/"/>
-    
-      <category term="MacOS" scheme="http://www.jibing57.com/tags/MacOS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Macos中如何语音朗读文字</title>
-    <link href="http://www.jibing57.com/2017/07/25/how-to-read-text-on-macos/"/>
-    <id>http://www.jibing57.com/2017/07/25/how-to-read-text-on-macos/</id>
-    <published>2017-07-25T07:21:28.000Z</published>
-    <updated>2017-12-25T07:09:02.911Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h2 id=&quot;场景&quot;&gt;&lt;a href=&quot;#场景&quot; class=&quot;headerlink&quot; title=&quot;场景&quot;&gt;&lt;/a&gt;场景&lt;/h2&gt;&lt;p&gt;Macos上看到大段大段的英文，有时候除了看以外，还想边听边看&lt;/p&gt;
-&lt;h2 id=&quot;解决方法&quot;&gt;&lt;a href=&quot;#解决方法&quot; clas
-      
-    
-    </summary>
-    
-      <category term="Tools" scheme="http://www.jibing57.com/categories/Tools/"/>
-    
-    
-      <category term="MacOS" scheme="http://www.jibing57.com/tags/MacOS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>AWS相关的一些有用的网址</title>
-    <link href="http://www.jibing57.com/2017/07/25/useful-website-of-aws/"/>
-    <id>http://www.jibing57.com/2017/07/25/useful-website-of-aws/</id>
-    <published>2017-07-25T02:49:10.000Z</published>
-    <updated>2017-12-25T07:09:03.025Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;cloudping-info&quot;&gt;&lt;a href=&quot;#cloudping-info&quot; class=&quot;headerlink&quot; title=&quot;cloudping.info&quot;&gt;&lt;/a&gt;cloudping.info&lt;/h3&gt;&lt;p&gt;&lt;a href=&quot;http://www.cloudping.info/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;clougping.info&lt;/a&gt;是一个可以检测当前浏览器到AWS各个Region的延迟的网站, 可以用来评估访问哪个Region更快一点。在建立测试服务的时候十分有用。&lt;/p&gt;
-&lt;p&gt;单次的测试结果不一定准确，建议多试几次后再选取平均延迟低的结果。&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;国内测试的结果:&lt;br&gt;&lt;img src=&quot;/images/AWS/Tools/cloudping_on_cn.jpg&quot; alt=&quot;cloudping_on_cn&quot;&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;在国内使用AWS全球账号时，在韩国首尔Region建测试服务延迟会小一点。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
-    
-    
-      <category term="AWS Tools" scheme="http://www.jibing57.com/tags/AWS-Tools/"/>
     
   </entry>
   

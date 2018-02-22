@@ -445,11 +445,11 @@
       <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
     
     
-      <category term="AWS SDK" scheme="http://www.jibing57.com/tags/AWS-SDK/"/>
-    
       <category term="Ruby" scheme="http://www.jibing57.com/tags/Ruby/"/>
     
       <category term="AWS CLI" scheme="http://www.jibing57.com/tags/AWS-CLI/"/>
+    
+      <category term="AWS SDK" scheme="http://www.jibing57.com/tags/AWS-SDK/"/>
     
       <category term="PostgreSQL" scheme="http://www.jibing57.com/tags/PostgreSQL/"/>
     

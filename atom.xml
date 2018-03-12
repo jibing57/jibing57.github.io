@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.jibing57.com/"/>
-  <updated>2018-02-11T10:05:51.406Z</updated>
+  <updated>2018-03-12T14:10:54.801Z</updated>
   <id>http://www.jibing57.com/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>EC2底层硬件Retirement的处理方法</title>
+    <link href="http://www.jibing57.com/2018/03/12/how-to-handle-Retirement-Notification-Amazon-EC2-Instance-scheduled-for-retirement/"/>
+    <id>http://www.jibing57.com/2018/03/12/how-to-handle-Retirement-Notification-Amazon-EC2-Instance-scheduled-for-retirement/</id>
+    <published>2018-03-12T14:10:54.000Z</published>
+    <updated>2018-03-12T14:10:54.801Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;AWS的EC2的实例是在物理机上虚拟化出来的，当承载EC2的物理机出现问题或者要退役时，AWS会发送一封主题为&lt;strong&gt;[Retirement Notification] Amazon EC2 Instance scheduled for retirement&lt;/st
+      
+    
+    </summary>
+    
+      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
+    
+    
+      <category term="EC2" scheme="http://www.jibing57.com/tags/EC2/"/>
+    
+  </entry>
   
   <entry>
     <title>使用seed将csv格式的db文件导入DB</title>
@@ -445,11 +468,11 @@
       <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
     
     
+      <category term="AWS SDK" scheme="http://www.jibing57.com/tags/AWS-SDK/"/>
+    
       <category term="Ruby" scheme="http://www.jibing57.com/tags/Ruby/"/>
     
       <category term="AWS CLI" scheme="http://www.jibing57.com/tags/AWS-CLI/"/>
-    
-      <category term="AWS SDK" scheme="http://www.jibing57.com/tags/AWS-SDK/"/>
     
       <category term="PostgreSQL" scheme="http://www.jibing57.com/tags/PostgreSQL/"/>
     
@@ -554,30 +577,6 @@
     
     
       <category term="Ruby" scheme="http://www.jibing57.com/tags/Ruby/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>如何在aws cli中使用多个配置文件</title>
-    <link href="http://www.jibing57.com/2017/10/24/how-to-use-aws-cli-with-multi-user/"/>
-    <id>http://www.jibing57.com/2017/10/24/how-to-use-aws-cli-with-multi-user/</id>
-    <published>2017-10-24T13:50:10.000Z</published>
-    <updated>2017-12-25T07:09:02.930Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;&lt;code&gt;aws cli&lt;/code&gt;使用中，可能会有在多个IAM账户中进行切换的需求，手动切换&lt;code&gt;~/.aws/&lt;/code&gt;目录下的&lt;code&gt;config&lt;/code&gt;和&lt;code&gt;credentials&lt;/code&gt;是十分费力的事情。还好&lt;code&gt;aws cli&lt;/code&gt;本身就可以支持多个aws credentials&lt;/p&gt;
-&lt;h3 id=&quot;配置多个profile&quot;&gt;&lt;a href=&quot;#配置多个profile&quot; class=&quot;headerlink&quot; title=&quot;配置多个profile&quot;&gt;&lt;/a&gt;配置多个profile&lt;/h3&gt;&lt;p&gt;&lt;code&gt;aws configure&lt;/code&gt;时，加上&lt;code&gt;--profile&lt;/code&gt;参数来命名不同的账户, 依次输入access id, access key, region和output format。&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ aws configure --profile user1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;$ aws configure --profile user2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;此时生成的&lt;code&gt;config&lt;/code&gt;和&lt;code&gt;credentials&lt;/code&gt;文件中，会使用账户名来分割不同的配置&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;10&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;11&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;12&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;13&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;14&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;15&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;16&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;[carlshen@carl-macpro-lan ~]$ cat ~/.aws/config&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;[profile user1]&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;output = json&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;region = us-west-2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;[profile user2]&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;output = json&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;region = ap-northeast-2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;[carlshen@carl-macpro-lan ~]$&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;[carlshen@carl-macpro-lan ~]$ cat ~/.aws/credentials&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;[user1]&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;aws_access_key_id = AKIAXXXXXXXXXXXXXXXX&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;aws_secret_access_key = XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;[user2]&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;aws_access_key_id = AKIAXXXXXXXXXXXXXXXX&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;aws_secret_access_key = XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;[carlshen@carl-macpro-lan ~]$&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-    
-    </summary>
-    
-      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
-    
-    
-      <category term="AWS CLI" scheme="http://www.jibing57.com/tags/AWS-CLI/"/>
     
   </entry>
   

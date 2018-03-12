@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.jibing57.com/"/>
-  <updated>2018-03-12T14:10:54.801Z</updated>
+  <updated>2018-03-12T14:19:11.395Z</updated>
   <id>http://www.jibing57.com/</id>
   
   <author>
@@ -21,14 +21,13 @@
     <link href="http://www.jibing57.com/2018/03/12/how-to-handle-Retirement-Notification-Amazon-EC2-Instance-scheduled-for-retirement/"/>
     <id>http://www.jibing57.com/2018/03/12/how-to-handle-Retirement-Notification-Amazon-EC2-Instance-scheduled-for-retirement/</id>
     <published>2018-03-12T14:10:54.000Z</published>
-    <updated>2018-03-12T14:10:54.801Z</updated>
+    <updated>2018-03-12T14:19:11.395Z</updated>
     
     <summary type="html">
     
-      
-      
-        &lt;p&gt;AWS的EC2的实例是在物理机上虚拟化出来的，当承载EC2的物理机出现问题或者要退役时，AWS会发送一封主题为&lt;strong&gt;[Retirement Notification] Amazon EC2 Instance scheduled for retirement&lt;/st
-      
+      &lt;p&gt;AWS的EC2的实例是在物理机上虚拟化出来的，当承载EC2的物理机出现问题或者要退役时，AWS会发送一封主题为&lt;strong&gt;[Retirement Notification] Amazon EC2 Instance scheduled for retirement&lt;/strong&gt;的email到AWS Account的注册邮箱中。&lt;/p&gt;
+&lt;p&gt;以前多次收到过这类邮件，但提示的目标instance-ID都是AutoScaling中运行的EC2，而AutoScaling中的Instance自动伸缩不会影响业务，因此也从没有主动去处理过。&lt;/p&gt;
+&lt;p&gt;这次突然收到通知邮件，说一台运行后台任务的Instance的underlying hardware hosting出问题了。在此记录一下相关的现象和解决方法。&lt;/p&gt;
     
     </summary>
     
@@ -468,9 +467,9 @@
       <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
     
     
-      <category term="AWS SDK" scheme="http://www.jibing57.com/tags/AWS-SDK/"/>
-    
       <category term="Ruby" scheme="http://www.jibing57.com/tags/Ruby/"/>
+    
+      <category term="AWS SDK" scheme="http://www.jibing57.com/tags/AWS-SDK/"/>
     
       <category term="AWS CLI" scheme="http://www.jibing57.com/tags/AWS-CLI/"/>
     

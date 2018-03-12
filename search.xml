@@ -8,6 +8,7 @@
       <content type="html"><![CDATA[<p>AWS的EC2的实例是在物理机上虚拟化出来的，当承载EC2的物理机出现问题或者要退役时，AWS会发送一封主题为<strong>[Retirement Notification] Amazon EC2 Instance scheduled for retirement</strong>的email到AWS Account的注册邮箱中。</p>
 <p>以前多次收到过这类邮件，但提示的目标instance-ID都是AutoScaling中运行的EC2，而AutoScaling中的Instance自动伸缩不会影响业务，因此也从没有主动去处理过。</p>
 <p>这次突然收到通知邮件，说一台运行后台任务的Instance的underlying hardware hosting出问题了。在此记录一下相关的现象和解决方法。</p>
+<a id="more"></a>
 <h3 id="现象"><a href="#现象" class="headerlink" title="现象:"></a>现象:</h3><ol>
 <li><p>注册邮箱中，收到主题为<strong>[Retirement Notification] Amazon EC2 Instance scheduled for retirement</strong>的邮件, 提示某个Instnace的底层硬件要退役了，提醒做好对应的处理:</p>
 </li>
@@ -5704,9 +5705,9 @@ You can wait for the scheduled retirement date - when the instance is stopped - 
         
         <tags>
             
-            <tag> AWS SDK </tag>
-            
             <tag> Ruby </tag>
+            
+            <tag> AWS SDK </tag>
             
             <tag> AWS CLI </tag>
             

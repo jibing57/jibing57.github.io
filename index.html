@@ -210,56 +210,6 @@ var _hmt = _hmt || [];
 		<p>AWS的EC2的实例是在物理机上虚拟化出来的，当承载EC2的物理机出现问题或者要退役时，AWS会发送一封主题为<strong>[Retirement Notification] Amazon EC2 Instance scheduled for retirement</strong>的email到AWS Account的注册邮箱中。</p>
 <p>以前多次收到过这类邮件，但提示的目标instance-ID都是AutoScaling中运行的EC2，而AutoScaling中的Instance自动伸缩不会影响业务，因此也从没有主动去处理过。</p>
 <p>这次突然收到通知邮件，说一台运行后台任务的Instance的underlying hardware hosting出问题了。在此记录一下相关的现象和解决方法。</p>
-<h3 id="现象"><a href="#现象" class="headerlink" title="现象:"></a>现象:</h3><ol>
-<li><p>注册邮箱中，收到主题为<strong>[Retirement Notification] Amazon EC2 Instance scheduled for retirement</strong>的邮件, 提示某个Instnace的底层硬件要退役了，提醒做好对应的处理:</p>
-</li>
-<li><p>点击邮件中Events页面的链接登陆EC2 Console，类似为<a href="https://console.aws.amazon.com/ec2/v2/home?region=us-west-2#Events" target="_blank" rel="external">https://console.aws.amazon.com/ec2/v2/home?region=us-west-2#Events</a></p>
-</li>
-<li><p>此时，对应的EC2可能有两种情况: 一是还在正常工作，二是已经不在正常工作了。不幸的是，在这次事件中，虽然Instance State还是处于running, 但是已经无法登陆出错的Instance了。Console中提示如下的信息, 提示Instance已经不可使用了。<br><img src="/images/AWS/EC2/ec2_retirement_event_description.jpeg" alt="ec2_retirement_event_description.jpeg"></p>
-</li>
-<li><p>而且Instance的System Status Checks和Instnace Status Checks都处于Failed状态。</p>
-</li>
-</ol>
-<h3 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h3><h4 id="Instance的root-device是EBS时"><a href="#Instance的root-device是EBS时" class="headerlink" title="Instance的root device是EBS时"></a>Instance的root device是EBS时</h4><p>如果Instance的root device是EBS, 可行的步骤如下:</p>
-<ol>
-<li><p>直接Stop Instance，然后再Start即可。此时在大多数情况下，instance会迁移到一个新的承载物理机上。<a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/Stop_Start.html" target="_blank" rel="external">官方文档</a>的描述如下:</p>
-<blockquote>
-<p>In most cases, the instance is migrated to a new underlying host computer when it’s started.</p>
-</blockquote>
-</li>
-<li><p>如果Instance使用了Elastic IP，那么就不需要做任何操作。如果是自动分配的Public IP,则需要注意，stop后再start，Public IP会发生改变。如果原先脚本或者程序中有直接用到原Public IP的地方，需要做对应的修改。</p>
-</li>
-<li><p>在实际操作中，先stop 对应的instance，然后再start，instance就可用了。只是期间发现stop instance操作比平时会长很多。可能和正常的stop操作相比，会有额外的数据同步操作。但或许也只是我这边的个例。</p>
-</li>
-</ol>
-<h4 id="Instance的root-device是Instance-store时"><a href="#Instance的root-device是Instance-store时" class="headerlink" title="Instance的root device是Instance store时"></a>Instance的root device是Instance store时</h4><p>如果Instnace的root device是Instance store的，可行的操作步骤如下:</p>
-<ol>
-<li>先基于现有的Instance建立一个AMI。</li>
-<li>从AMI创建一个新的Instance。</li>
-<li>private IP，Public IP地址都会发生改变，如果有用到的地方，需要对应修改。</li>
-</ol>
-<h4 id="建议"><a href="#建议" class="headerlink" title="建议"></a>建议</h4><p>如果恢复Instance的事情，不是异常紧急的话，建议即使root device是EBS，也先做一个AMI后再执行stop，start操作。这样更靠谱,更保险一点。</p>
-<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><h4 id="邮件示例"><a href="#邮件示例" class="headerlink" title="邮件示例"></a>邮件示例</h4><p>主题为<strong>[Retirement Notification] Amazon EC2 Instance scheduled for retirement</strong>的邮件大致内容如下:</p>
-<pre><code>Dear Amazon EC2 Customer,
-
-We have important news about your account (AWS Account ID: 888888888888). EC2 has detected degradation of the underlying hardware hosting your Amazon EC2 instance (instance-ID: i-aaaaaaaaaaaaaaaaa) in the us-west-2 region. Due to this degradation, your instance could already be unreachable. After 2018-03-26 14:00 UTC your instance, which has an EBS volume as the root device, will be stopped.
-
-You can see more information on your instances that are scheduled for retirement in the AWS Management Console (https://console.aws.amazon.com/ec2/v2/home?region=us-west-2#Events)
-
-* How does this affect you?
-
-Your instance will be stopped after the specified retirement date, but you can start it again at any time. Note that if you have EC2 instance store volumes attached to the instance, any data on these volumes will be lost when the instance is stopped or terminated as these volumes are physically attached to the host computer
-
-* What do you need to do?
-
-You can wait for the scheduled retirement date - when the instance is stopped - or stop the instance yourself any time before then. Once the instances has been stopped, you can start the instance again at any time. For more information about stopping and starting your instance, and what to expect when your instance is stopped, such as the effect on public, private and Elastic IP addresses associated with your instance, see Stop and Start Your Instance in the EC2 User Guide (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/Stop_Start.html).
-</code></pre><h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ol>
-<li><a href="https://forums.aws.amazon.com/thread.jspa?threadID=167250" target="_blank" rel="external">AWS forums - Degraded hardware, EC2 instance scheduled for retirement - options</a></li>
-<li><a href="https://forums.aws.amazon.com/thread.jspa?threadID=255981" target="_blank" rel="external">AWS forums - [Retirement Notification] Amazon EC2 Instance scheduled for retirement.</a></li>
-<li><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-retirement.html#instance-retirement-actions" target="_blank" rel="external">AWS Doc - Instance Retirement</a></li>
-<li><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/Stop_Start.html" target="_blank" rel="external">AWS Doc - Stop and Start Your Instance</a></li>
-</ol>
-
 	
 	</div>
   <a type="button" href="/2018/03/12/how-to-handle-Retirement-Notification-Amazon-EC2-Instance-scheduled-for-retirement/#more" class="btn btn-default more">Read More</a>
@@ -614,45 +564,45 @@ You can wait for the scheduled retirement date - when the instance is stopped - 
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/Elastic-Load-Balancing/">Elastic Load Balancing<span>3</span></a></li>
+			<li><a href="/tags/AWS-Tools/">AWS Tools<span>1</span></a></li>
 		
-			<li><a href="/tags/Video/">Video<span>1</span></a></li>
+			<li><a href="/tags/Github/">Github<span>2</span></a></li>
 		
-			<li><a href="/tags/AWS-Deep-Dive/">AWS Deep Dive<span>2</span></a></li>
+			<li><a href="/tags/S3/">S3<span>5</span></a></li>
 		
-			<li><a href="/tags/MacOS/">MacOS<span>3</span></a></li>
+			<li><a href="/tags/Git/">Git<span>1</span></a></li>
 		
-			<li><a href="/tags/AWS-Free-Tier/">AWS Free Tier<span>1</span></a></li>
+			<li><a href="/tags/PostgreSQL/">PostgreSQL<span>1</span></a></li>
 		
 			<li><a href="/tags/Sysops/">Sysops<span>1</span></a></li>
 		
-			<li><a href="/tags/EC2-User-Data/">EC2 User Data<span>1</span></a></li>
+			<li><a href="/tags/Elastic-Beanstalk/">Elastic Beanstalk<span>1</span></a></li>
 		
-			<li><a href="/tags/Rails/">Rails<span>2</span></a></li>
+			<li><a href="/tags/Hexo/">Hexo<span>4</span></a></li>
 		
-			<li><a href="/tags/PostgreSQL/">PostgreSQL<span>1</span></a></li>
+			<li><a href="/tags/Linux/">Linux<span>2</span></a></li>
+		
+			<li><a href="/tags/Tips/">Tips<span>1</span></a></li>
+		
+			<li><a href="/tags/CloudWatch/">CloudWatch<span>1</span></a></li>
+		
+			<li><a href="/tags/DynamoDB/">DynamoDB<span>1</span></a></li>
 		
 			<li><a href="/tags/AWS-CLI/">AWS CLI<span>4</span></a></li>
 		
 			<li><a href="/tags/Ruby/">Ruby<span>5</span></a></li>
 		
-			<li><a href="/tags/EC2/">EC2<span>1</span></a></li>
-		
-			<li><a href="/tags/Github/">Github<span>2</span></a></li>
-		
 			<li><a href="/tags/Solutions-Architect/">Solutions Architect<span>1</span></a></li>
 		
-			<li><a href="/tags/Hexo/">Hexo<span>4</span></a></li>
+			<li><a href="/tags/AWS-Deep-Dive/">AWS Deep Dive<span>2</span></a></li>
 		
-			<li><a href="/tags/S3/">S3<span>5</span></a></li>
+			<li><a href="/tags/AWS-SDK/">AWS SDK<span>2</span></a></li>
 		
-			<li><a href="/tags/IAM/">IAM<span>1</span></a></li>
+			<li><a href="/tags/EC2-User-Data/">EC2 User Data<span>1</span></a></li>
 		
-			<li><a href="/tags/Git/">Git<span>1</span></a></li>
+			<li><a href="/tags/EC2/">EC2<span>1</span></a></li>
 		
-			<li><a href="/tags/DynamoDB/">DynamoDB<span>1</span></a></li>
-		
-			<li><a href="/tags/Elastic-Beanstalk/">Elastic Beanstalk<span>1</span></a></li>
+			<li><a href="/tags/RDS/">RDS<span>1</span></a></li>
 		
 		
 		   <li><a href="/tags">...<span>27</span></a></li>

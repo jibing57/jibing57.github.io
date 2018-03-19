@@ -189,9 +189,97 @@ var _hmt = _hmt || [];
 		
             
 		
+            
+		
+            
+		
+            
+		
         
         <!-- render other articles -->
         
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2018-03-16 </div>
+			<div class="article-title"><a href="/2018/03/16/how-to-subscribe-RDS-event/" >订阅RDS事件</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>关于RDS状态的监控，除了常规的CloudWatch Metric以外。RDS还有一个事件机制，能够将RDS的事件通知到SNS。</p>
+<h3 id="RDS-Event简介"><a href="#RDS-Event简介" class="headerlink" title="RDS Event简介"></a>RDS Event简介</h3><h4 id="RDS-Event-Source-type"><a href="#RDS-Event-Source-type" class="headerlink" title="RDS Event - Source type"></a>RDS Event - Source type</h4><p>RDS的事件类型分为如下六大类:</p>
+<ul>
+<li>数据库实例(DB instance)</li>
+<li>数据库集群(DB cluster)</li>
+<li>数据库快照(DB snapshot)</li>
+<li>数据库集群快照(DB cluster snapshot)</li>
+<li>数据库安全组(DB security group)</li>
+<li>数据库参数组(DB parameter group)</li>
+</ul>
+	
+	</div>
+  <a type="button" href="/2018/03/16/how-to-subscribe-RDS-event/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2018-03-15 </div>
+			<div class="article-title"><a href="/2018/03/15/how-to-set-chrome-to-use-google-with-NoCountryRedirect/" >在Chrome中设置Google搜索为NoCountryRedirect</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>添加代理来科学上网时，使用Google进行搜索，Chrome浏览器默认会重定向到代理国所在的Google域名。比如<code>https://www.google.co.kr/</code>,<code>https://www.google.co.jp/</code>等, 已经在<code>www.google.com</code>登录的Google账号就还得重登, 极度烦躁。</p>
+<p>下面是几个固定使用<code>www.google.com</code>来进行搜索的方法</p>
+	
+	</div>
+  <a type="button" href="/2018/03/15/how-to-set-chrome-to-use-google-with-NoCountryRedirect/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2018-03-14 </div>
+			<div class="article-title"><a href="/2018/03/14/AWS-RDS-recovery-due-to-issue-with-underlying-hardware/" >AWS RDS recovery due to issue with underlying hardware</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>早上刚上班就收到一封主题为”RDS Notification Message”的订阅邮件，message内容为”Recovery of the DB instance has started. Recovery time will vary with the amount of data to be recovered”。</p>
+<p>上Web Console查看发生了什么事，发现RDS已经自我恢复完毕了。最新的Event消息提示为”Recovery of the DB instance is complete.”</p>
+<p><img src="/images/AWS/RDS/rds_recovery_event.png" alt="rds_recovery_event"></p>
+<p>提了Case询问了下，也在网上搜了一下，基本搞清楚了是怎么个回事，记录如下。</p>
+	
+	</div>
+  <a type="button" href="/2018/03/14/AWS-RDS-recovery-due-to-issue-with-underlying-hardware/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
            
 			  
 	
@@ -404,82 +492,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2017-12-25 </div>
-			<div class="article-title"><a href="/2017/12/25/how-to-add-shadow-of-images-in-freemind/" >在Freemind主题中开启图片阴影</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="添加图片阴影"><a href="#添加图片阴影" class="headerlink" title="添加图片阴影"></a>添加图片阴影</h3><p><a href="https://github.com/wzpan/hexo-theme-freemind" target="_blank" rel="external">hexo-theme-freemind</a>主题中，默认没有开启图片阴影。当图片的背景和文章的背景是同色的时候，有时会造成混淆，看不清楚哪部分是图片，哪部分是文章。</p>
-<p>打开源码看了一下，发现其实<a href="https://github.com/wzpan/hexo-theme-freemind" target="_blank" rel="external">hexo-theme-freemind</a>本身就已经支持图片shadow了。只是默认没有开启，而且也没有在README.md中提及。</p>
-<p>在<code>hexo-theme-freemind/layout/_partial/article.ejs</code>文件中有如下代码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;% if (item.shadow ) &#123; %&gt;</div><div class="line">   &lt;style type=&quot;text/css&quot;&gt;</div><div class="line">           img, video &#123;</div><div class="line">                -webkit-box-shadow:0 0 10px rgba(0, 0, 0, .5);</div><div class="line">                -moz-box-shadow:0 0 10px rgba(0, 0, 0, .5);</div><div class="line">                box-shadow:0 0 10px rgba(0, 0, 0, .5);</div><div class="line">           &#125;</div><div class="line">   &lt;/style&gt;</div><div class="line">&lt;% &#125; %&gt;</div></pre></td></tr></table></figure>
-	
-	</div>
-  <a type="button" href="/2017/12/25/how-to-add-shadow-of-images-in-freemind/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2017-12-22 </div>
-			<div class="article-title"><a href="/2017/12/22/what-is-Access-Logs-of-Classic-Load-Balancer/" >什么是传统负载均衡器的访问日志</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="什么是传统负载均衡器的Access-Logs"><a href="#什么是传统负载均衡器的Access-Logs" class="headerlink" title="什么是传统负载均衡器的Access Logs"></a>什么是传统负载均衡器的Access Logs</h3><p>Elastic Load Balancing 提供了Access Logs(访问日志)，Access Logs可记录下发送到负载均衡器的请求的详细信息。每个日志都包含固定格式的信息 (例如，收到请求的时间、客户端的 IP 地址、延迟、请求路径和服务器响应)。可以使用这些日志分析流量模式和进行Debug。</p>
-<p>Access Logs是ELB的一项可选功能，默认情况下是Disable的。启用后，ELB会将logs存储到指定的某个S3 Bucket中。</p>
-<h3 id="收费"><a href="#收费" class="headerlink" title="收费"></a>收费</h3><p>ELB的Access Logs本身是不需要额外的费用的，从ELB传输到S3的流量是免费的，但是S3的存储费用是需要支付的。<br>
-	
-	</div>
-  <a type="button" href="/2017/12/22/what-is-Access-Logs-of-Classic-Load-Balancer/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2017-12-20 </div>
-			<div class="article-title"><a href="/2017/12/20/How-to-add-staging-log-to-EB-logs/" >如何在Elastic Beanstalk的Rails环境中配置staging.log为可下载</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>新建了一个EB环境，来跑一个staging模式的rails。EB环境变量设置好后，部署成功。一系列测试都没问题，结果却在一个不起眼的地方出了点幺蛾子。</p>
-<p>Rails代码中，没有特殊配置config.logger,因此staging模式时，默认的输出日志为logs/staging.log, 但是在EB的Web console中尝试获取Full Logs后，在BundleLogs中发现没有staging.log。</p>
-<p>赶紧调查试验了一下，并将调查结果记录如下。</p>
-	
-	</div>
-  <a type="button" href="/2017/12/20/How-to-add-staging-log-to-EB-logs/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -543,7 +555,7 @@ var _hmt = _hmt || [];
 		<h4>Categories</h4>
 		<ul class="tag_box inline list-unstyled">
 		
-			<li><a href="/categories/AWS/">AWS<span>13</span></a></li>
+			<li><a href="/categories/AWS/">AWS<span>15</span></a></li>
 		
 			<li><a href="/categories/AWS-Certified/">AWS Certified<span>3</span></a></li>
 		
@@ -553,7 +565,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/Shell/">Shell<span>4</span></a></li>
 		
-			<li><a href="/categories/Tools/">Tools<span>2</span></a></li>
+			<li><a href="/categories/Tools/">Tools<span>3</span></a></li>
 		
 		</ul>
 	</div>
@@ -564,48 +576,48 @@ var _hmt = _hmt || [];
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/AWS-Tools/">AWS Tools<span>1</span></a></li>
+			<li><a href="/tags/Elastic-Beanstalk/">Elastic Beanstalk<span>1</span></a></li>
 		
-			<li><a href="/tags/Github/">Github<span>2</span></a></li>
+			<li><a href="/tags/RDS/">RDS<span>3</span></a></li>
 		
-			<li><a href="/tags/S3/">S3<span>5</span></a></li>
+			<li><a href="/tags/Rails/">Rails<span>2</span></a></li>
+		
+			<li><a href="/tags/Failover/">Failover<span>1</span></a></li>
 		
 			<li><a href="/tags/Git/">Git<span>1</span></a></li>
 		
-			<li><a href="/tags/PostgreSQL/">PostgreSQL<span>1</span></a></li>
+			<li><a href="/tags/MacOS/">MacOS<span>3</span></a></li>
 		
-			<li><a href="/tags/Sysops/">Sysops<span>1</span></a></li>
-		
-			<li><a href="/tags/Elastic-Beanstalk/">Elastic Beanstalk<span>1</span></a></li>
-		
-			<li><a href="/tags/Hexo/">Hexo<span>4</span></a></li>
-		
-			<li><a href="/tags/Linux/">Linux<span>2</span></a></li>
-		
-			<li><a href="/tags/Tips/">Tips<span>1</span></a></li>
-		
-			<li><a href="/tags/CloudWatch/">CloudWatch<span>1</span></a></li>
-		
-			<li><a href="/tags/DynamoDB/">DynamoDB<span>1</span></a></li>
-		
-			<li><a href="/tags/AWS-CLI/">AWS CLI<span>4</span></a></li>
-		
-			<li><a href="/tags/Ruby/">Ruby<span>5</span></a></li>
+			<li><a href="/tags/Github/">Github<span>2</span></a></li>
 		
 			<li><a href="/tags/Solutions-Architect/">Solutions Architect<span>1</span></a></li>
 		
-			<li><a href="/tags/AWS-Deep-Dive/">AWS Deep Dive<span>2</span></a></li>
+			<li><a href="/tags/Sysops/">Sysops<span>1</span></a></li>
+		
+			<li><a href="/tags/DynamoDB/">DynamoDB<span>1</span></a></li>
+		
+			<li><a href="/tags/Video/">Video<span>1</span></a></li>
 		
 			<li><a href="/tags/AWS-SDK/">AWS SDK<span>2</span></a></li>
 		
+			<li><a href="/tags/Tips/">Tips<span>1</span></a></li>
+		
+			<li><a href="/tags/Ruby/">Ruby<span>5</span></a></li>
+		
 			<li><a href="/tags/EC2-User-Data/">EC2 User Data<span>1</span></a></li>
 		
-			<li><a href="/tags/EC2/">EC2<span>1</span></a></li>
+			<li><a href="/tags/AWS-CLI/">AWS CLI<span>4</span></a></li>
 		
-			<li><a href="/tags/RDS/">RDS<span>1</span></a></li>
+			<li><a href="/tags/S3/">S3<span>5</span></a></li>
+		
+			<li><a href="/tags/Hexo/">Hexo<span>4</span></a></li>
+		
+			<li><a href="/tags/CodeCommit/">CodeCommit<span>1</span></a></li>
+		
+			<li><a href="/tags/CloudWatch/">CloudWatch<span>1</span></a></li>
 		
 		
-		   <li><a href="/tags">...<span>27</span></a></li>
+		   <li><a href="/tags">...<span>29</span></a></li>
 		 
 		</ul>
 	</div>
@@ -618,23 +630,23 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2018/03/16/how-to-subscribe-RDS-event/" ><i class="fa fa-file-o"></i>订阅RDS事件</a>
+      </li>
+    
+      <li>
+        <a href="/2018/03/15/how-to-set-chrome-to-use-google-with-NoCountryRedirect/" ><i class="fa fa-file-o"></i>在Chrome中设置Google搜索为NoCountr...</a>
+      </li>
+    
+      <li>
+        <a href="/2018/03/14/AWS-RDS-recovery-due-to-issue-with-underlying-hardware/" ><i class="fa fa-file-o"></i>AWS RDS recovery due to iss...</a>
+      </li>
+    
+      <li>
         <a href="/2018/03/12/how-to-handle-Retirement-Notification-Amazon-EC2-Instance-scheduled-for-retirement/" ><i class="fa fa-file-o"></i>EC2底层硬件Retirement的处理方法</a>
       </li>
     
       <li>
         <a href="/2018/02/11/a-way-to-use-csv-file-to-populate-the-database-by-rake-db-seed-on-rails/" ><i class="fa fa-file-o"></i>使用seed将csv格式的db文件导入DB</a>
-      </li>
-    
-      <li>
-        <a href="/2018/02/11/aws-s3-cli-to-backup-and-restore-bucket-acl/" ><i class="fa fa-file-o"></i>使用AWS CLI来备份和恢复S3 Bucket的ACL</a>
-      </li>
-    
-      <li>
-        <a href="/2018/02/09/non-greedy-match-in-grep-on-macos/" ><i class="fa fa-file-o"></i>Macos下如何实现grep的非贪婪模式</a>
-      </li>
-    
-      <li>
-        <a href="/2018/02/07/AWS-Certified-Solutions-Architect-Professional/" ><i class="fa fa-file-o"></i>AWS Certified Solutions Arc...</a>
       </li>
     
   </ul>

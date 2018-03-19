@@ -3,6 +3,202 @@
   
     
     <entry>
+      <title><![CDATA[订阅RDS事件]]></title>
+      <url>/2018/03/16/how-to-subscribe-RDS-event/</url>
+      <content type="html"><![CDATA[<p>关于RDS状态的监控，除了常规的CloudWatch Metric以外。RDS还有一个事件机制，能够将RDS的事件通知到SNS。</p>
+<h3 id="RDS-Event简介"><a href="#RDS-Event简介" class="headerlink" title="RDS Event简介"></a>RDS Event简介</h3><h4 id="RDS-Event-Source-type"><a href="#RDS-Event-Source-type" class="headerlink" title="RDS Event - Source type"></a>RDS Event - Source type</h4><p>RDS的事件类型分为如下六大类:</p>
+<ul>
+<li>数据库实例(DB instance)</li>
+<li>数据库集群(DB cluster)</li>
+<li>数据库快照(DB snapshot)</li>
+<li>数据库集群快照(DB cluster snapshot)</li>
+<li>数据库安全组(DB security group)</li>
+<li>数据库参数组(DB parameter group)</li>
+</ul>
+<a id="more"></a>
+<h4 id="RDS-Event-Event-Categories"><a href="#RDS-Event-Event-Categories" class="headerlink" title="RDS Event - Event Categories"></a>RDS Event - Event Categories</h4><p>每个事件大类下还有不同类别的事件类型，各个事件类型下的类别如下:</p>
+<ul>
+<li>数据库实例(DB instance)的Event Categories<br><img src="/images/AWS/RDS/rds_event_source_type_instance.png" alt="rds_event_source_type_instance"></li>
+<li>数据库集群(DB cluster)的Event Categories<br><img src="/images/AWS/RDS/rds_event_source_type_db_cluster.png" alt="rds_event_source_type_db_cluster"></li>
+<li>数据库快照(DB snapshot)的Event Categories<br><img src="/images/AWS/RDS/rds_event_source_type_snapshots.png" alt="rds_event_source_type_snapshots"></li>
+<li>数据库集群快照(DB cluster snapshot)的Event Categories<br><img src="/images/AWS/RDS/rds_event_source_type_db_cluster_snapshots.png" alt="rds_event_source_type_db_cluster_snapshots"></li>
+<li>数据库安全组(DB security group)的Event Categories<br><img src="/images/AWS/RDS/rds_event_source_type_security_group.png" alt="rds_event_source_type_security_group"></li>
+<li>数据库参数组(DB parameter group)的Event Categories<br><img src="/images/AWS/RDS/rds_event_source_type_parameter_group.png" alt="rds_event_source_type_parameter_group"></li>
+</ul>
+<h4 id="RDS-Event-Event-ID"><a href="#RDS-Event-Event-ID" class="headerlink" title="RDS Event - Event ID"></a>RDS Event - Event ID</h4><p>每个Event Category下还有多个Event，太多了，没法一一罗列了。详情可以参见<a href="https://docs.aws.amazon.com/zh_cn/AmazonRDS/latest/UserGuide/USER_Events.html" target="_blank" rel="external">AWS官网文档</a></p>
+<h3 id="RDS-Event和CloudWatch-Metric比较"><a href="#RDS-Event和CloudWatch-Metric比较" class="headerlink" title="RDS Event和CloudWatch Metric比较"></a>RDS Event和CloudWatch Metric比较</h3><p>RDS的CloudWatch Metric主要针对的是RDS实例内在运行情况的监控，比如CPU利用率，DB连接，剩余磁盘空间，剩余内存，写和读的IOPS等。</p>
+<p>而RDS的Event是对RDS的配置组以及Instance实例的状态变更的监控。比如Instance的创建，删除，备份和是否可用等；参数组是否修改了；快照的创建，删除等。</p>
+<h3 id="创建RDS-Event"><a href="#创建RDS-Event" class="headerlink" title="创建RDS Event"></a>创建RDS Event</h3><p>RDS的Console正在改版，虽然设置原理都是一样的，但是在界面和操作的交互上，新Console和老Console还是有所区别的。</p>
+<h4 id="老Console中设置RDS-Event"><a href="#老Console中设置RDS-Event" class="headerlink" title="老Console中设置RDS Event"></a>老Console中设置RDS Event</h4><ol>
+<li><p>进入RDS Console，左侧栏中选中“Event Subscriptions”,在展开的页面中点击“Create Event Subscription”来创建Event Subscription<br><img src="/images/AWS/RDS/rds_event_old_console_create_event_subscription.png" alt="rds_event_old_console_create_event_subscription"></p>
+</li>
+<li><p>在“Create Event Subscription”页面中，填入对应的内容</p>
+<ul>
+<li>Name一栏填入要设置的Event的名字，此处设为rds-mydb-instance-event</li>
+<li>Send notifications to一栏选择要发送的SNS Topic，如果没有，可以点击旁边的create topic按钮新建一个SNS Topic</li>
+<li>Source Type一栏，根据实际需要选择要监控的Event类型，此处选择Instances</li>
+<li>Enabled一栏，可以设置是否将这个Subscription设为开启状态</li>
+<li>Event Categories一栏，选上要监控的Event类别, 此处可以多选。在Mac下，按住Command键后再点击鼠标就能够选取多个。图中选择了availability，deletion，failover，failure，low storage和recovery这六个Event Categories。</li>
+<li>Instances一栏，可以选择只对某些RDS Instance监控,或者对全部RDS Instance进行监控<br><img src="/images/AWS/RDS/rds_event_old_console_create_event_subscription_detail.png" alt="rds_event_old_console_create_event_subscription_detail"></li>
+</ul>
+</li>
+<li><p>点击Create建立Subscription</p>
+</li>
+<li><p>在Console中就能够看到Subscription正在创建中，等待一小段时间后，就会显示Subscription创建成功了。<br><img src="/images/AWS/RDS/rds_event_old_console_create_event_subscription_list.png" alt="rds_event_old_console_create_event_subscription_list"></p>
+</li>
+<li><p>当有监控的事件发生时，AWS就会发送通知到设置的SNS Topic中。SNS再以Email，SMS或者HTTP Endpoint的形式发送给Topic的订阅者。设置完后，在SNS中订阅的邮件地址马上就收到了一封主题为“RDS Notification Message”的邮件。提示将会收到来自SNS的通知，如果不需要，可以退订。</p>
+</li>
+</ol>
+<h4 id="新Console中设置RDS-Event"><a href="#新Console中设置RDS-Event" class="headerlink" title="新Console中设置RDS Event"></a>新Console中设置RDS Event</h4><ol>
+<li><p>进入RDS Console，左侧栏中选中“Event Subscriptions”,在展开的页面中点击“Create Event Subscription”来创建Event Subscription<br><img src="/images/AWS/RDS/rds_event_new_console_create_event_subscription.png" alt="rds_event_new_console_create_event_subscription"></p>
+</li>
+<li><p>在“Create Event Subscription”页面中，填入对应的内容</p>
+<ul>
+<li>Name一栏填入要设置的Event的名字，此处设为rds-mydb-instance-event</li>
+<li>Enabled一栏，可以设置是否将这个Subscription设为开启状态</li>
+<li>Target一栏，选择已有的SNS Topic或者新建一个Topic<br><img src="/images/AWS/RDS/rds_event_new_console_create_event_subscription_detail_1.png" alt="rds_event_new_console_create_event_subscription_detail_1"></li>
+</ul>
+</li>
+<li><p>再往下翻,设置Event。<br> 3.1 初始画面，只有Source Type可选。<br> <img src="/images/AWS/RDS/rds_event_new_console_create_event_subscription_detail_source_type.png" alt="rds_event_new_console_create_event_subscription_detail_source_type"><br> 3.2 Source Type选择Instances，出现Instances to include和Event categories to include的页面。<br> <img src="/images/AWS/RDS/rds_event_new_console_create_event_subscription_detail_source_type_2.png" alt="rds_event_new_console_create_event_subscription_detail_source_type_2"><br> 3.3 在Instances to include中选择Select specific instances, 出现Specific instances的下拉菜单，在菜单中选择要监控的RDS<br> <img src="/images/AWS/RDS/rds_event_new_console_create_event_subscription_detail_source_type_3.png" alt="rds_event_new_console_create_event_subscription_detail_source_type_3"><br> 3.4 在Event categories to include中选择Select specific event categories, 出现Specific event下拉菜单，在菜单中选取availability，deletion，failover，failure，low storage和recovery这六个Event Categories。不得不吐槽的是，目前操作界面中每次只能选一个，要选六个Event category就需要打开下拉菜单六次，再点击对应的event category名字。<br> <img src="/images/AWS/RDS/rds_event_new_console_create_event_subscription_detail_source_type_4.png" alt="rds_event_new_console_create_event_subscription_detail_source_type_4"></p>
+</li>
+<li><p>点击Create建立Subscription</p>
+</li>
+<li><p>在Console中就能够看到Subscription正在创建中，等待一小段时间后，就会显示Subscription创建成功了。<br><img src="/images/AWS/RDS/rds_event_new_console_create_event_subscription_list.png" alt="rds_event_new_console_create_event_subscription_list"></p>
+</li>
+<li><p>当有监控的事件发生时，AWS就会发送通知到设置的SNS Topic中。SNS再以Email，SMS或者HTTP Endpoint的形式发送给Topic的订阅者。设置完后，在SNS中订阅的邮件地址马上就收到了一封主题为“RDS Notification Message”的邮件。提示将会收到来自SNS的通知，如果不需要，可以退订。</p>
+</li>
+</ol>
+<h4 id="接收通知"><a href="#接收通知" class="headerlink" title="接收通知"></a>接收通知</h4><p>设置好RDS Subscription后，一旦有对应的Event出现，RDS就会发送消息到设置的SNS Topic中，订阅此Topic的人员就可以立马收到通知，从而可以及时处理情况。</p>
+<h4 id="新老Console比较"><a href="#新老Console比较" class="headerlink" title="新老Console比较"></a>新老Console比较</h4><p>在RDS Event设置这个Feature上，新Console并没有添加新的功能，只是在UI界面和交互方式上做了调整。但个人感觉，新Console还不如老Console的交互来得人性化。</p>
+<p>先来一张旧版Console和新版Console的对比图。<br><img src="/images/AWS/RDS/rds_event_compare_with_old_and_new_console.png" alt="rds_event_compare_with_old_and_new_console"></p>
+<p>谈谈个人对新Console的看法:</p>
+<ol>
+<li>界面不太紧凑，新建一个Event Subscription，页面上需要滚动两屏才能设置完。设计风格应该是借鉴了新版的S3 Console。</li>
+<li>设置Event Source的界面时，交互太过于强调分层。以设置Instance的Event为例，必须先设置好Source type为Instance，才能看到”Instance to include”和”Event Categories to include”。个人还是比较喜欢旧版中，将所有可选的内容直观的显示在页面上给用户选取这样的交互方式。</li>
+<li>设置event categories时的下拉菜单的交互称不上是用户友好的。设置每一个event categories，都需要经历两步操作: 1.点开下拉菜单。2. 选择event category。如果要设置六个event category，那就需要12次点击操作，其中选取event category这6次点击是无法避免的，可是需要用户点开6次下拉菜单，这个设定不太友好。或许有办法可以点开下拉菜单一次，选取多个event category，只是我没试出来而已。</li>
+<li>还有“All instances”和“All event categories”的选项，选取后在界面上没有像旧版Console那样，显示“All instances”和“All event categories”都包含了哪些具体内容。新版console的设计者应该是认为选了这两个选项，就代表你已经明确知道目前系统中有哪几个Instance和这个Source type下的所有Event Categories是什么了。在这个操作上，潜在要求了Console的使用者需要和像使用AWS CLI那样,预先了解资源，这种设计对新手不够友好。</li>
+</ol>
+<h3 id="延伸阅读"><a href="#延伸阅读" class="headerlink" title="延伸阅读"></a>延伸阅读</h3><ul>
+<li><a href="/2018/03/14/AWS-RDS-recovery-due-to-issue-with-underlying-hardware/" title="AWS RDS recovery due to issue with underlying hardware">AWS RDS recovery due to issue with underlying hardware</a>
+</li>
+</ul>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_Events.html#USER_Events.Subscribing" target="_blank" rel="external">AWS Doc – Using Amazon RDS Event Notification</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> AWS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> RDS </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[在Chrome中设置Google搜索为NoCountryRedirect]]></title>
+      <url>/2018/03/15/how-to-set-chrome-to-use-google-with-NoCountryRedirect/</url>
+      <content type="html"><![CDATA[<p>添加代理来科学上网时，使用Google进行搜索，Chrome浏览器默认会重定向到代理国所在的Google域名。比如<code>https://www.google.co.kr/</code>,<code>https://www.google.co.jp/</code>等, 已经在<code>www.google.com</code>登录的Google账号就还得重登, 极度烦躁。</p>
+<p>下面是几个固定使用<code>www.google.com</code>来进行搜索的方法</p>
+<a id="more"></a>
+<h3 id="实现方式"><a href="#实现方式" class="headerlink" title="实现方式"></a>实现方式</h3><p>介绍三种方式来实现。</p>
+<h4 id="固定访问地址"><a href="#固定访问地址" class="headerlink" title="固定访问地址"></a>固定访问地址</h4><p>使用<code>google.com/ncr</code>来访问Google，ncr是NoCountryRedirect的缩写，此时Google会重定向请求到主站<code>https://www.google.com/</code>，而不会定向到访问IP所在的Google域名了</p>
+<h4 id="修改Chrome设置"><a href="#修改Chrome设置" class="headerlink" title="修改Chrome设置"></a>修改Chrome设置</h4><ol>
+<li><p>地址栏输入<code>chrome://settings/</code>进入Chrome设置页面</p>
+</li>
+<li><p>找到“搜索引擎”项，点击“管理搜索引擎”<br><img src="/images/Chrome/chrome_setting.png" alt="chrome_setting"></p>
+</li>
+<li><p>在“管理搜索引擎”页面，点击的“添加”按钮。</p>
+</li>
+<li><p>在“添加搜索引擎”页面中，搜索引擎和关键字一栏设定为自己能识别的名字，此处命名为“Google NCR”，在网址一栏中填入”<a href="https://www.google.com/search?q=%s”" target="_blank" rel="external">https://www.google.com/search?q=%s”</a><br><img src="/images/Chrome/chrome_add_search_engine.png" alt="chrome_add_search_engine"></p>
+</li>
+<li><p>再设置刚添加的“Google NCR”条目为默认搜索引擎<br><img src="/images/Chrome/chrome_set_default_search_engine.png" alt="chrome_set_default_search_engine"></p>
+</li>
+<li><p>之后在地址栏直接输入要搜索的内容时候，就会使用Google主站<code>https://www.google.com</code>来进行搜索了。</p>
+</li>
+</ol>
+<h4 id="使用Chrome扩展"><a href="#使用Chrome扩展" class="headerlink" title="使用Chrome扩展"></a>使用Chrome扩展</h4><p>有一个名为“NoCountryRedirect (NCR)”的Chrome extension是专门用来解决这个问题的。<a href="https://chrome.google.com/webstore/detail/nocountryredirect-ncr/ciboebddidackjicoeoiigdnbmchkdll" target="_blank" rel="external">插件传送门</a></p>
+<p>根据扩展的描述，其实就是在输入<code>www.google.com</code>时自动在URLS后面添加上<code>&#39;/ncr&#39;</code>来实现的。此插件只对google.com和blogspot.com有效。插件描述如下</p>
+<blockquote>
+<p>Makes sure you stay on google.com and blogspot.com by automatically adding ‘no country redirect’ (‘/ncr’) to those URLs<br>THIS EXTENSION ONLY WORKS FOR BLOGSPOT.COM AND GOOGLE.COM, NO OTHER DOMAINS!</p>
+</blockquote>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>本着能不加扩展就不加扩展和最小操作的原则，最终选择了修改Chrome设置的方法。</p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://productforums.google.com/forum/#!topic/chrome/zXRG7-AEgfw" target="_blank" rel="external">How do I change my default search country? Google thinks I am in a different country</a></li>
+<li><a href="https://www.v2ex.com/t/159920" target="_blank" rel="external">如何强制 chrome 地址栏使用 google.com 搜索？</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> Tools </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Chrome </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[AWS RDS recovery due to issue with underlying hardware]]></title>
+      <url>/2018/03/14/AWS-RDS-recovery-due-to-issue-with-underlying-hardware/</url>
+      <content type="html"><![CDATA[<p>早上刚上班就收到一封主题为”RDS Notification Message”的订阅邮件，message内容为”Recovery of the DB instance has started. Recovery time will vary with the amount of data to be recovered”。</p>
+<p>上Web Console查看发生了什么事，发现RDS已经自我恢复完毕了。最新的Event消息提示为”Recovery of the DB instance is complete.”</p>
+<p><img src="/images/AWS/RDS/rds_recovery_event.png" alt="rds_recovery_event"></p>
+<p>提了Case询问了下，也在网上搜了一下，基本搞清楚了是怎么个回事，记录如下。</p>
+<a id="more"></a>
+<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>根据<a href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_Events.html" target="_blank" rel="external">AWS 官方文档</a>的描述，”Recovery of the DB instance has started. Recovery time will vary with the amount of data to be recovered.”的消息的RDS Event ID为RDS-EVENT-0020，属于RDS中<code>recovery</code>类别下。</p>
+<p>但官方文档中没有提及，什么时候会导致发出这类Event。</p>
+<p>经过调查，大致明白了出现这种消息，是因为承载了RDS Instance的底层硬件出问题，监控程序连接不上RDS Instance，就触发执行了recovery操作，应该算是RDS的一个自我恢复的机制。</p>
+<p>像RDS这种PAAS服务，就能提供这种自我恢复的机制。而像EC2这种IAAS服务，当底层硬件down掉后，因为aws无法知道Instance里面运行了啥，所能做的就只能维护着现场的“尸体”，发送个通知给管理员，等管理员过来“收尸”了。不久前的”收尸”经历还历历在目。→_→ <a href="/2018/03/12/how-to-handle-Retirement-Notification-Amazon-EC2-Instance-scheduled-for-retirement/" title="EC2底层硬件Retirement的处理方法">EC2底层硬件Retirement的处理方法</a>。</p>
+<h3 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h3><p>AWS针对这种情况的解决方案是建议是开启RDS的Multi-AZ功能, 开启Multi-AZ后，会启动一个备用RDS。主机和备用机之间使用同步复制技术，来保证数据的一致性。当主机出问题后，会转而使用备用机。切换是AWS自动进行的，RDS对外的Endpoint不会改变。唯一的影响就是原来连接到RDS主机的DB connect会中断，当client重连Endpoint的时候，就会连接到备用机上。</p>
+<p>关于Multi-AZ的详细情况参见官网说明 –&gt; <a href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.MultiAZ.html" target="_blank" rel="external">High Availability (Multi-AZ)</a>和<a href="https://aws.amazon.com/rds/details/multi-az/" target="_blank" rel="external">Amazon RDS Multi-AZ Deployments</a></p>
+<h4 id="Multi-AZ的优点"><a href="#Multi-AZ的优点" class="headerlink" title="Multi-AZ的优点"></a>Multi-AZ的优点</h4><p>简单罗列使用Multi-AZ的优点如下:</p>
+<ul>
+<li>万一整个AZ都挂掉了，另一个AZ中还有一个同步的数据库可用</li>
+<li>Auto Backup的时候，在standby Instance上进行，不会造成primary Instance IO的下降和可能的短暂的不可用。</li>
+<li>RDS打patch的时候，不会有中断</li>
+<li>Primary Instance fail后，会自动切换为使用standby</li>
+</ul>
+<h4 id="Multi-AZ的缺点"><a href="#Multi-AZ的缺点" class="headerlink" title="Multi-AZ的缺点"></a>Multi-AZ的缺点</h4><p>唯一的缺点，那就是费用是Single-AZ的两倍，这个容易理解，因为实际上有两台Instance在运行。 PostgreSQL Multi-AZ的价格<a href="https://aws.amazon.com/rds/postgresql/pricing/" target="_blank" rel="external">在此</a></p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>是机器就有可能会坏，无论是在自建的数据中心还是AWS的机房里面。绝大多数情况下，成熟云厂商的解决方案，都要比自己来运维要更靠谱。</p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_Events.html#USER_Events.Messages" target="_blank" rel="external">Using Amazon RDS Event Notification</a></li>
+<li><a href="https://forums.aws.amazon.com/thread.jspa?messageID=415143" target="_blank" rel="external">AWS Forums – Unexplained: “Recovering DB Instance”</a></li>
+<li><a href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.MultiAZ.html" target="_blank" rel="external">AWS Doc – High Availability (Multi-AZ)</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> AWS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> RDS </tag>
+            
+            <tag> Failover </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[EC2底层硬件Retirement的处理方法]]></title>
       <url>/2018/03/12/how-to-handle-Retirement-Notification-Amazon-EC2-Instance-scheduled-for-retirement/</url>
       <content type="html"><![CDATA[<p>AWS的EC2的实例是在物理机上虚拟化出来的，当承载EC2的物理机出现问题或者要退役时，AWS会发送一封主题为<strong>[Retirement Notification] Amazon EC2 Instance scheduled for retirement</strong>的email到AWS Account的注册邮箱中。</p>
@@ -5705,6 +5901,8 @@ You can wait for the scheduled retirement date - when the instance is stopped - 
         
         <tags>
             
+            <tag> RDS </tag>
+            
             <tag> Ruby </tag>
             
             <tag> AWS SDK </tag>
@@ -5712,8 +5910,6 @@ You can wait for the scheduled retirement date - when the instance is stopped - 
             <tag> AWS CLI </tag>
             
             <tag> PostgreSQL </tag>
-            
-            <tag> RDS </tag>
             
         </tags>
         

@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.jibing57.com/"/>
-  <updated>2018-03-12T14:19:11.395Z</updated>
+  <updated>2018-03-19T02:40:03.535Z</updated>
   <id>http://www.jibing57.com/</id>
   
   <author>
@@ -15,6 +15,81 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>订阅RDS事件</title>
+    <link href="http://www.jibing57.com/2018/03/16/how-to-subscribe-RDS-event/"/>
+    <id>http://www.jibing57.com/2018/03/16/how-to-subscribe-RDS-event/</id>
+    <published>2018-03-16T12:22:54.000Z</published>
+    <updated>2018-03-19T02:40:03.535Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;关于RDS状态的监控，除了常规的CloudWatch Metric以外。RDS还有一个事件机制，能够将RDS的事件通知到SNS。&lt;/p&gt;
+&lt;h3 id=&quot;RDS-Event简介&quot;&gt;&lt;a href=&quot;#RDS-Event简介&quot; class=&quot;headerlink&quot; title=&quot;RDS Event简介&quot;&gt;&lt;/a&gt;RDS Event简介&lt;/h3&gt;&lt;h4 id=&quot;RDS-Event-Source-type&quot;&gt;&lt;a href=&quot;#RDS-Event-Source-type&quot; class=&quot;headerlink&quot; title=&quot;RDS Event - Source type&quot;&gt;&lt;/a&gt;RDS Event - Source type&lt;/h4&gt;&lt;p&gt;RDS的事件类型分为如下六大类:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;数据库实例(DB instance)&lt;/li&gt;
+&lt;li&gt;数据库集群(DB cluster)&lt;/li&gt;
+&lt;li&gt;数据库快照(DB snapshot)&lt;/li&gt;
+&lt;li&gt;数据库集群快照(DB cluster snapshot)&lt;/li&gt;
+&lt;li&gt;数据库安全组(DB security group)&lt;/li&gt;
+&lt;li&gt;数据库参数组(DB parameter group)&lt;/li&gt;
+&lt;/ul&gt;
+    
+    </summary>
+    
+      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
+    
+    
+      <category term="RDS" scheme="http://www.jibing57.com/tags/RDS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>在Chrome中设置Google搜索为NoCountryRedirect</title>
+    <link href="http://www.jibing57.com/2018/03/15/how-to-set-chrome-to-use-google-with-NoCountryRedirect/"/>
+    <id>http://www.jibing57.com/2018/03/15/how-to-set-chrome-to-use-google-with-NoCountryRedirect/</id>
+    <published>2018-03-15T12:01:18.000Z</published>
+    <updated>2018-03-15T06:48:36.135Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;添加代理来科学上网时，使用Google进行搜索，Chrome浏览器默认会重定向到代理国所在的Google域名。比如&lt;code&gt;https://www.google.co.kr/&lt;/code&gt;,&lt;code&gt;https://www.google.co.jp/&lt;/code&gt;等, 已经在&lt;code&gt;www.google.com&lt;/code&gt;登录的Google账号就还得重登, 极度烦躁。&lt;/p&gt;
+&lt;p&gt;下面是几个固定使用&lt;code&gt;www.google.com&lt;/code&gt;来进行搜索的方法&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Tools" scheme="http://www.jibing57.com/categories/Tools/"/>
+    
+    
+      <category term="Chrome" scheme="http://www.jibing57.com/tags/Chrome/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>AWS RDS recovery due to issue with underlying hardware</title>
+    <link href="http://www.jibing57.com/2018/03/14/AWS-RDS-recovery-due-to-issue-with-underlying-hardware/"/>
+    <id>http://www.jibing57.com/2018/03/14/AWS-RDS-recovery-due-to-issue-with-underlying-hardware/</id>
+    <published>2018-03-14T13:27:54.000Z</published>
+    <updated>2018-03-15T03:19:52.367Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;早上刚上班就收到一封主题为”RDS Notification Message”的订阅邮件，message内容为”Recovery of the DB instance has started. Recovery time will vary with the amount of data to be recovered”。&lt;/p&gt;
+&lt;p&gt;上Web Console查看发生了什么事，发现RDS已经自我恢复完毕了。最新的Event消息提示为”Recovery of the DB instance is complete.”&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/AWS/RDS/rds_recovery_event.png&quot; alt=&quot;rds_recovery_event&quot;&gt;&lt;/p&gt;
+&lt;p&gt;提了Case询问了下，也在网上搜了一下，基本搞清楚了是怎么个回事，记录如下。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
+    
+    
+      <category term="RDS" scheme="http://www.jibing57.com/tags/RDS/"/>
+    
+      <category term="Failover" scheme="http://www.jibing57.com/tags/Failover/"/>
+    
+  </entry>
   
   <entry>
     <title>EC2底层硬件Retirement的处理方法</title>
@@ -467,6 +542,8 @@
       <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
     
     
+      <category term="RDS" scheme="http://www.jibing57.com/tags/RDS/"/>
+    
       <category term="Ruby" scheme="http://www.jibing57.com/tags/Ruby/"/>
     
       <category term="AWS SDK" scheme="http://www.jibing57.com/tags/AWS-SDK/"/>
@@ -474,8 +551,6 @@
       <category term="AWS CLI" scheme="http://www.jibing57.com/tags/AWS-CLI/"/>
     
       <category term="PostgreSQL" scheme="http://www.jibing57.com/tags/PostgreSQL/"/>
-    
-      <category term="RDS" scheme="http://www.jibing57.com/tags/RDS/"/>
     
   </entry>
   
@@ -505,77 +580,6 @@
       <category term="IAM" scheme="http://www.jibing57.com/tags/IAM/"/>
     
       <category term="AWS Free Tier" scheme="http://www.jibing57.com/tags/AWS-Free-Tier/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>绑定万网域名到github pages</title>
-    <link href="http://www.jibing57.com/2017/10/31/hexo-bind-domain-to-github-pages/"/>
-    <id>http://www.jibing57.com/2017/10/31/hexo-bind-domain-to-github-pages/</id>
-    <published>2017-10-31T13:17:50.000Z</published>
-    <updated>2017-12-25T07:08:09.505Z</updated>
-    
-    <summary type="html">
-    
-      &lt;blockquote&gt;
-&lt;p&gt;此处介绍如何将万网的域名绑定到github pages&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h3 id=&quot;万网设置&quot;&gt;&lt;a href=&quot;#万网设置&quot; class=&quot;headerlink&quot; title=&quot;万网设置&quot;&gt;&lt;/a&gt;万网设置&lt;/h3&gt;&lt;p&gt;进入aliyun控制的云解析DNS控制台，选中所要解析的域名，此处是jibing57.com, 点击右侧解析按钮。&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;记录类型选择 CNAME&lt;/li&gt;
-&lt;li&gt;主机记录填写 www&lt;/li&gt;
-&lt;li&gt;记录值填入github pages的域名，此处是jibing57.github.io
-    
-    </summary>
-    
-      <category term="Blog" scheme="http://www.jibing57.com/categories/Blog/"/>
-    
-    
-      <category term="Hexo" scheme="http://www.jibing57.com/tags/Hexo/"/>
-    
-      <category term="Github" scheme="http://www.jibing57.com/tags/Github/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Hexo引用站内文章</title>
-    <link href="http://www.jibing57.com/2017/10/30/how-to-use-post-link-on-hexo/"/>
-    <id>http://www.jibing57.com/2017/10/30/how-to-use-post-link-on-hexo/</id>
-    <published>2017-10-30T11:32:52.000Z</published>
-    <updated>2017-12-25T07:09:02.968Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;写文章的时候，经常需要引用站内的其他文章，此时可以使用Hexo内置的&lt;a href=&quot;https://hexo.io/zh-cn/docs/tag-plugins.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;标签插件&lt;/a&gt;（Tag Plugins）中的&lt;code&gt;post_link&lt;/code&gt;来实现。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="Blog" scheme="http://www.jibing57.com/categories/Blog/"/>
-    
-    
-      <category term="Hexo" scheme="http://www.jibing57.com/tags/Hexo/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Paperclip destroy的callback中attachment的各个attribute为nil的问题调查</title>
-    <link href="http://www.jibing57.com/2017/10/29/ruby-paperclip-destroy-callback-nil/"/>
-    <id>http://www.jibing57.com/2017/10/29/ruby-paperclip-destroy-callback-nil/</id>
-    <published>2017-10-29T12:36:00.000Z</published>
-    <updated>2017-12-25T07:09:03.008Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;问题点&quot;&gt;&lt;a href=&quot;#问题点&quot; class=&quot;headerlink&quot; title=&quot;问题点&quot;&gt;&lt;/a&gt;问题点&lt;/h3&gt;&lt;p&gt;Rails的Image的models中，使用了paperclip这个Gem来处理图片。近期需要添加一个功能，删除image后，需要向某个email地址发送一封邮件，告之某个图片已经被删除了。&lt;/p&gt;
-&lt;p&gt;实际操作中，发现在无论函数是定义在before_destroy或after_destroy的callback中，attachment_file_name,attachment_file_size, attachment_content_type, attachment_updated_at的属性，取出来都是nil。&lt;/p&gt;
-&lt;p&gt;调查了一下，现将结果汇总如下:&lt;br&gt;
-    
-    </summary>
-    
-      <category term="Code" scheme="http://www.jibing57.com/categories/Code/"/>
-    
-    
-      <category term="Ruby" scheme="http://www.jibing57.com/tags/Ruby/"/>
     
   </entry>
   

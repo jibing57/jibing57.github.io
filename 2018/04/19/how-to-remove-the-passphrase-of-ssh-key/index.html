@@ -1,0 +1,340 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>如何去除SSH key中的passphrase | Recording</title>
+  <meta name="author" content="jibing57">
+  
+  <meta name="description" content="AWS, 阅读, Architecture, PostgreSQL">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="如何去除SSH key中的passphrase"/>
+  <meta property="og:site_name" content="Recording"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/css/themes/bootstrap.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/comment.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+  
+  <!-- analytics -->
+  
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-111771042-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?59d3e14cdc96877383afed646f44d216";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+</head>
+
+ <body>  
+  <nav id="main-nav" class="navbar  navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+	<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+       <a class="navbar-brand" href="/">Recording</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class="fa fa-archive"></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class="fa fa-folder"></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class="fa fa-tags"></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/douban" title="Douban">
+			  <i class="fa fa-book"></i>Douban
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header ">		
+			<h1 class="title "> 如何去除SSH key中的passphrase</h1>
+		</div>		
+	
+
+
+
+
+   <style type="text/css">
+           img, video {
+                -webkit-box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+                -moz-box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+                box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+           }
+   </style>
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
+
+	<!-- content -->
+	<div class="mypage">		
+	  		
+
+	  <h3 id="去除passphrase的方法"><a href="#去除passphrase的方法" class="headerlink" title="去除passphrase的方法"></a>去除passphrase的方法</h3><p>使用<code>ssh-keygen</code>来重新设置一个空的passphrase, 就相当于去除了原来的passphrase, 答案来自<a href="https://stackoverflow.com/a/112409" target="_blank" rel="external">stackoverflow</a>, 回答者还很贴心的提示，输入的passphrase会被记录在~/.bash_history中，别忘记处理这个情况。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ssh-keygen -p [-P old_passphrase] [-N new_passphrase] [-f keyfile]</div></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<h3 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h3><ol>
+<li><p>首先使用ssh-keygen生成一对带passphrase的key, 此处输入的passphrase为helloworld.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">$ ssh-keygen -f ./id_rsa_for_passphrase</div><div class="line">Generating public/private rsa key pair.</div><div class="line">Enter passphrase (empty <span class="keyword">for</span> no passphrase):</div><div class="line">Enter same passphrase again:</div><div class="line">Your identification has been saved <span class="keyword">in</span> ./id_rsa_for_passphrase.</div><div class="line">Your public key has been saved <span class="keyword">in</span> ./id_rsa_for_passphrase.pub.</div><div class="line">The key fingerprint is:</div><div class="line">SHA256:l40jWfZPFe7ItcUJvduSyx/CXVmI27T6y75i/yuAPxs carlshen@carl-186.local</div><div class="line">The key<span class="string">'s randomart image is:</span></div><div class="line"><span class="string">+---[RSA 2048]----+</span></div><div class="line"><span class="string">|             ... |</span></div><div class="line"><span class="string">|             .o+o|</span></div><div class="line"><span class="string">|          o . o+*|</span></div><div class="line"><span class="string">|         + =.+++=|</span></div><div class="line"><span class="string">|        S * +o+=+|</span></div><div class="line"><span class="string">|         + o.++.o|</span></div><div class="line"><span class="string">|          .Eo+.= |</span></div><div class="line"><span class="string">|           o+++ .|</span></div><div class="line"><span class="string">|           oo+O*+|</span></div><div class="line"><span class="string">+----[SHA256]-----+</span></div><div class="line"><span class="string">$</span></div><div class="line"><span class="string">$ ll</span></div><div class="line"><span class="string">total 16</span></div><div class="line"><span class="string">-rw-------  1 carlshen  staff  1766  4 19 16:05 id_rsa_for_passphrase</span></div><div class="line"><span class="string">-rw-r--r--  1 carlshen  staff   405  4 19 16:05 id_rsa_for_passphrase.pub</span></div><div class="line"><span class="string">$</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>去除private key的passphrase</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">$ ssh-keygen -p -P helloworld -N <span class="string">""</span> -f id_rsa_for_passphrase</div><div class="line">Your identification has been saved with the new passphrase.</div><div class="line">$</div><div class="line">$ ll</div><div class="line">total 16</div><div class="line">-rw-------  1 carlshen  staff  1679  4 19 16:07 id_rsa_for_passphrase</div><div class="line">-rw-r--r--  1 carlshen  staff   405  4 19 16:05 id_rsa_for_passphrase.pub</div><div class="line">$</div></pre></td></tr></table></figure>
+</li>
+<li><p>使用去除passphrase的private key来生成public key的内容，此时已经不需要输入passphrase。同原先的public key比较，可以看出内容是相同的。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ ssh-keygen -y -f id_rsa_for_passphrase</div><div class="line">ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCnIM/b01uMtYWlEyWN7RsIynhTPqodAaMkK5jhWqrLj29FUFHbSZwXaMlbxi1yxsp9VHX/YjFXQjesUv+wv+We2I9gNN/emd1zIrFDIU1sLZTwdPPsZ/nBA9e19tncVvUHk07wFmFGE1pH7mCpVHSjYgqhJYKZFn5RVcTn7lir4pIvjGl94+wNCtTueMsAiH8K+F3gcivwFQK9Gng7Fiv1PKwBVuJzlLabM90uaFuGcaVo7s+PE3E70TReXsRkUYCR5CtA4ja4JIVf1rMt0WwSb09KnmRFanEfEYPeZX7I44EPIYEAJWRccOTbWb/ywd5tbKJhgJBnTzcsxtvZHR/v</div><div class="line">$</div><div class="line">$ cat id_rsa_for_passphrase.pub</div><div class="line">ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCnIM/b01uMtYWlEyWN7RsIynhTPqodAaMkK5jhWqrLj29FUFHbSZwXaMlbxi1yxsp9VHX/YjFXQjesUv+wv+We2I9gNN/emd1zIrFDIU1sLZTwdPPsZ/nBA9e19tncVvUHk07wFmFGE1pH7mCpVHSjYgqhJYKZFn5RVcTn7lir4pIvjGl94+wNCtTueMsAiH8K+F3gcivwFQK9Gng7Fiv1PKwBVuJzlLabM90uaFuGcaVo7s+PE3E70TReXsRkUYCR5CtA4ja4JIVf1rMt0WwSb09KnmRFanEfEYPeZX7I44EPIYEAJWRccOTbWb/ywd5tbKJhgJBnTzcsxtvZHR/v carlshen@carl-186.local</div><div class="line">$</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://stackoverflow.com/questions/112396/how-do-i-remove-the-passphrase-for-the-ssh-key-without-having-to-create-a-new-ke" target="_blank" rel="external">How do I remove the passphrase for the SSH key without having to create a new key?</a></li>
+<li><a href="https://serverfault.com/questions/426394/how-to-check-if-a-rsa-public-private-key-pair-matched" target="_blank" rel="external">How to check if a RSA public / private key pair matched</a></li>
+</ul>
+	  
+	</div>
+
+	<div>
+  	<center>
+	<div class="pagination">
+<ul class="pagination">
+	 
+				
+    	<li class="prev"><a href="/2018/04/21/aws-s3-master-permission/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>Prev</a></li>
+  		
+
+        <li><a href="/archives"><i class="fa fa-archive"></i>Archive</a></li>
+
+		
+		   <li class="next"><a href="/2018/04/18/aws-s3-master-basic/" class="alignright next">Next<i class="fa fa-arrow-circle-o-right"></i></a></li>         
+        
+	
+</ul>
+</div>
+
+    </center>
+	</div>
+
+    <!-- share -->
+    
+        
+    <div class="bdsharebuttonbox">
+        <a href="#" class="bds_more" data-cmd="more"></a>
+        <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+        <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+        <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+        <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+        <a href="#" class="bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+        <a href="#" class="bds_evernotecn" data-cmd="evernotecn" title="分享到印象笔记"></a>
+        <a href="#" class="bds_youdao" data-cmd="youdao" title="分享到有道云笔记"></a>
+        <a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+    </div>
+    <script>
+        window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"24"},"share":{}};
+        with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+    </script>
+
+
+        
+
+    
+	
+	<!-- comment -->
+	
+<section id="comment">
+  <h2 class="title">Comments</h2>
+  
+  	 <div id="disqus_thread">
+     <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  	 </div>
+  
+</section>
+
+
+	</div> <!-- col-md-9/col-md-12 -->
+		
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta">
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2018-04-19 21:15:28
+	</div>
+	
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
+	   <div id="toc" class="toc collapse in">
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#去除passphrase的方法"><span class="toc-article-text">去除passphrase的方法</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#实验"><span class="toc-article-text">实验</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#Reference"><span class="toc-article-text">Reference</span></a></li></ol>
+		</div>
+	
+	</div>
+
+	<!-- categories -->
+    
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>
+    <ul id="categorys" class="tag_box list-unstyled collapse in">
+          
+  <li>
+    <li><a href="/categories/Shell/">Shell<span>5</span></a></li>
+  </li>
+
+    </ul>
+	</div>
+	
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>
+    <ul id="tags" class="tag_box list-unstyled collapse in">
+	    
+  <li><a href="/tags/Linux/">Linux<span>3</span></a></li> <li><a href="/tags/SSH/">SSH<span>1</span></a></li>
+    </ul>
+	</div>
+	
+
+    <hr>
+
+</div><!-- col-md-3 -->
+
+	</div>
+		
+
+</div><!-- row -->
+
+<script type="text/javascript">
+var disqus_shortname = 'jibing57-blog';
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  &copy; 2018 jibing57
+  
+      with help from <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>.    
+</p> </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>

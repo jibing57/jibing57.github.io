@@ -3,6 +3,668 @@
   
     
     <entry>
+      <title><![CDATA[S3进阶系列(二) ——权限管理]]></title>
+      <url>/2018/04/21/aws-s3-master-permission/</url>
+      <content type="html"><![CDATA[<h3 id="什么是S3的权限管理"><a href="#什么是S3的权限管理" class="headerlink" title="什么是S3的权限管理"></a>什么是S3的权限管理</h3><p>S3的权限管理是任何使用S3的人都无法绕开的功能,决定了S3中的Object是否能够被访问。</p>
+<p>权限管理本质上解决了这么一个问题: 谁(Principal)能够在何种条件(condition)下被允许或拒绝(Effect)对哪些资源(Resource)做何种操作(Action)</p>
+<a id="more"></a>
+<h3 id="S3权限管理概述"><a href="#S3权限管理概述" class="headerlink" title="S3权限管理概述"></a>S3权限管理概述</h3><p>S3权限管理，需要了解什么是S3的策略(Policy)，有哪些策略，有多个策略时S3是如何进行评估的，以及如何选取合适的策略。</p>
+<h4 id="策略-Policies"><a href="#策略-Policies" class="headerlink" title="策略(Policies)"></a>策略(Policies)</h4><ul>
+<li>默认所有S3的资源都是私有的<ul>
+<li>只有资源的拥有者（创建资源的账号）能访问资源</li>
+<li>拥有者可以通过policy来赋予其他人来访问资源</li>
+</ul>
+</li>
+<li>策略（policy）分为两类<ul>
+<li>直接应用于某个资源（一个Object或者一个Bucket）的策略称为资源策略(Resources Policies)</li>
+<li>直接应用于某个IAM用户的被称为用户策略（User Resources）</li>
+</ul>
+</li>
+<li>Resources Based Polices<ul>
+<li>总共有两类的资源策略<ul>
+<li>访问控制列表(Access Control Lists)<ul>
+<li>可以赋予简单的对object和bucket的读写权限给AWS账号和预定义组</li>
+<li>使用XML schema</li>
+<li>由一个权限条目的列表组成</li>
+</ul>
+</li>
+<li>桶策略（Bucket Policies）<ul>
+<li>用来赋予AWS账号或者IAM用户访问Bucket和object的权限</li>
+<li>使用JSON</li>
+<li>可以进行精细化控制</li>
+<li>大多数情况下，可以用来替换ACL</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>用户策略(User Policies)<ul>
+<li>使用AWS IAM添加到用户(users), 组(groups)或者角色(roles)</li>
+<li>可以进行精细化控制</li>
+<li>使用JSON</li>
+<li>因为是直接赋给IAM users/groups/role的，因此不支持给予匿名访问的权限</li>
+<li>不能被赋予root account</li>
+</ul>
+</li>
+<li>跨账户访问(Cross Account Access) <ul>
+<li>跨账户访问是一个账户授权另一个账户访问它的资源<ul>
+<li>比如Account A可以通过Bucket Policy授权Account B访问权限<ol>
+<li>Account A通过Bucket Policy授权了Account B可以访问某个Bucket</li>
+<li>Account B通过User Policy授权Account B的某个IAM User访问权限</li>
+<li>Account B中的IAM user就可以访问Account A中Bucket的资源了</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="S3怎么评估polices"><a href="#S3怎么评估polices" class="headerlink" title="S3怎么评估polices"></a>S3怎么评估polices</h4><ul>
+<li>整体规则:<ul>
+<li>当有显式拒绝时，会被判定为拒绝访问</li>
+<li>没有显式拒绝，有显示允许时，会被判定为允许访问。</li>
+<li>没有显式拒绝也没有显示允许时，就适用默认拒绝规则，会被判定为拒绝访问。</li>
+</ul>
+</li>
+<li>原理和例子可以参照这两篇文章 <a href="/2017/12/14/deep-dig-on-s3-bucket-permission/" title="深挖AWS S3的权限管理">深挖AWS S3的权限管理</a> 和 <a href="/2017/12/19/deep-dig-on-s3-bucket-permission-exam/" title="深挖AWS S3的权限管理(实验篇)">深挖AWS S3的权限管理(实验篇)</a></li>
+</ul>
+<h4 id="怎么选取使用哪个策略"><a href="#怎么选取使用哪个策略" class="headerlink" title="怎么选取使用哪个策略"></a>怎么选取使用哪个策略</h4><ul>
+<li>一般情况下，优先使用User Policy和Bucket Policy，而不是ACL，因为它们能提供细粒度的控制。</li>
+<li>如下情况下，需要使用ACL<ul>
+<li>需要控制不是Bucket拥有者的object的权限</li>
+<li>需要控制大量零碎的，不同prefix的object的权限</li>
+<li>赋予“S3 Log Delivery Group”权限到Bucket时</li>
+</ul>
+</li>
+<li>如下情况时，需要使用Bucket Policy<ul>
+<li>无法使用ACL授权跨账户访问时</li>
+</ul>
+</li>
+</ul>
+<h3 id="S3的访问控制列表-ACL"><a href="#S3的访问控制列表-ACL" class="headerlink" title="S3的访问控制列表(ACL)"></a>S3的访问控制列表(ACL)</h3><ul>
+<li>什么是ACL<ul>
+<li>ACL是基于XML的，可用于bucket和object</li>
+<li>每一个bucket和object都有一条ACL作为它的sub-resource来定义访问权限</li>
+<li>默认的ACL是给object的拥有者完全的访问权限</li>
+</ul>
+</li>
+<li>ACL 特性<ul>
+<li>只能被用来给AWS account和预定义的groups来赋予权限，不能管理IAM user的权限</li>
+<li>只能赋予基本的读写权限<ul>
+<li>不能基于条件来控制读写权限</li>
+<li>不能赋予显式拒绝的权限</li>
+</ul>
+</li>
+<li>ACL 可以拥有最多 100 个授权</li>
+</ul>
+</li>
+<li><p><a href="https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/dev/acl-overview.html" target="_blank" rel="external">ACL 例子</a>解析</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</div><div class="line">&lt;AccessControlPolicy xmlns=&quot;http://s3.amazonaws.com/doc/2006-03-01/&quot;&gt;</div><div class="line">  &lt;Owner&gt;</div><div class="line">    &lt;ID&gt;*** Owner-Canonical-User-ID ***&lt;/ID&gt;</div><div class="line">    &lt;DisplayName&gt;owner-display-name&lt;/DisplayName&gt;</div><div class="line">  &lt;/Owner&gt;</div><div class="line">  &lt;AccessControlList&gt;</div><div class="line">    &lt;Grant&gt;</div><div class="line">      &lt;Grantee xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; </div><div class="line">               xsi:type=&quot;Canonical User&quot;&gt;</div><div class="line">        &lt;ID&gt;*** Owner-Canonical-User-ID ***&lt;/ID&gt;</div><div class="line">        &lt;DisplayName&gt;display-name&lt;/DisplayName&gt;</div><div class="line">      &lt;/Grantee&gt;</div><div class="line">      &lt;Permission&gt;FULL_CONTROL&lt;/Permission&gt;</div><div class="line">    &lt;/Grant&gt;</div><div class="line">  &lt;/AccessControlList&gt;</div><div class="line">&lt;/AccessControlPolicy&gt;</div></pre></td></tr></table></figure>
+<ul>
+<li><p>注意<strong>Owner.ID</strong>一栏中，是拥有这个object的aws account的规范用户ID（canonical ID)，<strong>而不是12位的account ID</strong>, 关于如何查找规范用户ID，可以参阅<a href="https://docs.aws.amazon.com/zh_cn/general/latest/gr/acct-identifiers.html#FindingCanonicalId" target="_blank" rel="external">查找账户的规范用户ID</a></p>
+</li>
+<li><p>Grant的实体，分为好几类，可以是AWS account,也可以是S3预定义的组。</p>
+<ul>
+<li><p>当为AWS account时，则<strong>Grantee</strong>中xsi:type为CanonicalUser,Grant中以ID, DisplayName字段展示</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;Grant&gt;</div><div class="line">&lt;Grantee xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:type=&quot;CanonicalUser&quot;&gt;</div><div class="line">    &lt;ID&gt;user2-canonical-user-ID&lt;/ID&gt;</div><div class="line">    &lt;DisplayName&gt;display-name&lt;/DisplayName&gt;</div><div class="line">&lt;/Grantee&gt;</div><div class="line">&lt;Permission&gt;READ&lt;/Permission&gt;</div><div class="line">&lt;/Grant&gt;</div></pre></td></tr></table></figure>
+</li>
+<li><p>当为预定义组时，则<strong>Grantee</strong>中xsi:type为Group，Grant中以group的URI字段来展示。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;Grant&gt;</div><div class="line">&lt;Grantee xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:type=&quot;Group&quot;&gt;</div><div class="line">    &lt;URI&gt;http://acs.amazonaws.com/groups/s3/LogDelivery&lt;/URI&gt;</div><div class="line">&lt;/Grantee&gt;</div><div class="line">&lt;Permission&gt;WRITE&lt;/Permission&gt;</div><div class="line">&lt;/Grant&gt;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>ACL 权限</p>
+<ul>
+<li>ACL只能几个设定好的权限集，针对Object和Bucket的ACL权限集相同。<br><img src="/images/AWS/S3/Master/s3-acl-permissions.png" alt="s3-acl-permissions"></li>
+</ul>
+</li>
+<li><p><a href="https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/dev/acl-overview.html#specifying-grantee-predefined-groups" target="_blank" rel="external">ACL 预定义组(ACL Predefined Groups)</a></p>
+<ul>
+<li>ACL能授权给预定义组<ul>
+<li>授权预定义组时,在Grant中，使用Group URI，而不是Canonical ID</li>
+</ul>
+</li>
+<li>几个预定义组<ul>
+<li>经身份验证的用户组（Authenticated Users)<ul>
+<li>表明可以允许任何AWS账号访问资源</li>
+<li>Group URI=<a href="http://acs.amazonaws.com/groups/global/AuthenticatedUsers" target="_blank" rel="external">http://acs.amazonaws.com/groups/global/AuthenticatedUsers</a></li>
+</ul>
+</li>
+<li>所有的用户组（All Users）<ul>
+<li>表明可以允许世界上任何人进行访问，也就是Public</li>
+<li>Group URI=<a href="http://acs.amazonaws.com/groups/global/AllUsers" target="_blank" rel="external">http://acs.amazonaws.com/groups/global/AllUsers</a></li>
+</ul>
+</li>
+<li>日志传输组(Log Delivery Group)<ul>
+<li>允许将S3访问日志写入Bucket中，用于S3 Bucket logging功能</li>
+<li>Group URI=<a href="http://acs.amazonaws.com/groups/s3/LogDelivery" target="_blank" rel="external">http://acs.amazonaws.com/groups/s3/LogDelivery</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><a href="https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/dev/acl-overview.html#canned-acl" target="_blank" rel="external">标准ACL(Canned ACL)</a></p>
+<ul>
+<li>AWS定义了一系列预定义的ACL授权，称为标准ACL(Canned ACL)<br><img src="/images/AWS/S3/Master/s3-acl-canned-acl.png" alt="s3-acl-canned-acl"></li>
+<li>设置时只能使用其中的一个canned ACL</li>
+<li>最常用于AWS CLI, 如下命令拷贝xxx.jpg到S3中，并且设置为public可读<ul>
+<li><code>aws s3 cp xxx.jpg s3://bucket_name/public/ --acl public-read</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="Bucket-amp-User-Policies"><a href="#Bucket-amp-User-Policies" class="headerlink" title="Bucket &amp; User Policies"></a>Bucket &amp; User Policies</h3><ul>
+<li>什么是Bucket和User Policies<ul>
+<li>Bucket和User Polices都是策略，以JSON格式定义，用来规定bucket和object的访问权限<ul>
+<li>Bucket policies是attached在Bucket上的, 在S3中设置</li>
+<li>User Policies是基于用户的，在IAM中设置</li>
+</ul>
+</li>
+<li>Bucket或者IAM默认都是没有任何策略的</li>
+</ul>
+</li>
+<li>Bucket &amp; User Policy特性<ul>
+<li>都可以规定IAM User的访问权限。Bucket Policy还可以规定AWS root account的访问权限，而IAM Policy因为没法attach到root account，因此无法规定root account的权限</li>
+<li>可以定义非常精细的访问权限</li>
+<li>可以使用显式拒绝</li>
+<li>可以设置带条件的访问权限</li>
+<li>JSON格式</li>
+<li>大小限制在20KB</li>
+</ul>
+</li>
+<li>Policy的必备要素<ul>
+<li>一个Policy包含如下几个元素<ul>
+<li><a href="https://docs.aws.amazon.com/zh_cn/IAM/latest/UserGuide/reference_policies_elements_principal.html" target="_blank" rel="external">Principal</a>服务委托人 - 被允许对某个资源进行某种操作的主体，只在Bucket Policy中使用。分为以下几种:<ul>
+<li>特定AWS账户: <code>&quot;Principal&quot;: { &quot;AWS&quot;: &quot;arn:aws:iam::AWS-account-ID:root&quot; }</code></li>
+<li>IAM用户: <code>&quot;Principal&quot;: { &quot;AWS&quot;: &quot;arn:aws:iam::AWS-account-ID:user/user-name&quot; }</code></li>
+<li>联合身份用户(federated identity) - web identity federation<ul>
+<li><code>&quot;Principal&quot;: { &quot;Federated&quot;: &quot;cognito-identity.amazonaws.com&quot; }</code></li>
+<li><code>&quot;Principal&quot;: { &quot;Federated&quot;: &quot;www.amazon.com&quot; }</code></li>
+<li><code>&quot;Principal&quot;: { &quot;Federated&quot;: &quot;graph.facebook.com&quot; }</code></li>
+<li><code>&quot;Principal&quot;: { &quot;Federated&quot;: &quot;accounts.google.com&quot; }</code></li>
+</ul>
+</li>
+<li>联合身份用户(federated identity) - SAML identity provider <ul>
+<li><code>&quot;Principal&quot;: { &quot;Federated&quot;: &quot;arn:aws:iam::AWS-account-ID:saml-provider/provider-name&quot; }</code></li>
+</ul>
+</li>
+<li>IAM角色(IAM Role)<ul>
+<li><code>&quot;Principal&quot;: { &quot;AWS&quot;: &quot;arn:aws:iam::AWS-account-ID:role/role-name&quot; }</code></li>
+</ul>
+</li>
+<li>AWS 服务<ul>
+<li><code>&quot;Principal&quot;: { &quot;Service&quot;: &quot;elasticmapreduce.amazonaws.com&quot; }</code></li>
+</ul>
+</li>
+<li>Everyone（匿名用户）<ul>
+<li><code>&quot;Principal&quot;: &quot;*&quot;</code>或<code>&quot;Principal&quot; : { &quot;AWS&quot; : &quot;*&quot; }</code></li>
+</ul>
+</li>
+<li>规范用户ID<ul>
+<li><code>&quot;Principal&quot;: { &quot;CanonicalUser&quot;: &quot;79a59df900b949e55d96a1e698fbacedfd6e09d98eacf8f8d5218e7cd47ef2be&quot; }</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="https://docs.aws.amazon.com/zh_cn/IAM/latest/UserGuide/reference_policies_elements_effect.html" target="_blank" rel="external">Effect</a> - 规则的结果<ul>
+<li>有效值为Allow和Deny</li>
+</ul>
+</li>
+<li><a href="https://docs.aws.amazon.com/zh_cn/IAM/latest/UserGuide/reference_policies_elements_action.html" target="_blank" rel="external">Action</a> - 指定的策略权限，能进行何种操作<ul>
+<li>AWS S3相关的所有策略权限，参考官网<a href="https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/dev/using-with-s3-actions.html" target="_blank" rel="external">AWS S3 在策略中指定权限</a></li>
+<li>例子<ul>
+<li>Amazon SQS操作 - <code>&quot;Action&quot;: &quot;sqs:SendMessage&quot;</code></li>
+<li>Amazon EC2操作 - <code>&quot;Action&quot;: &quot;ec2:StartInstances&quot;</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="https://docs.aws.amazon.com/zh_cn/IAM/latest/UserGuide/reference_policies_elements_resource.html" target="_blank" rel="external">Resource</a> - 资源名<ul>
+<li>Resource就是ARN(aws resource name)的集合</li>
+<li><a href="https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html#genref-arns" target="_blank" rel="external">ARN</a>有三种格式<ul>
+<li>格式一: arn:partition:service:region:account-id:resource<ul>
+<li>例子 arn:aws:iam:us-west-2:123456789012:user/David</li>
+</ul>
+</li>
+<li>格式二: arn:partition:service:region:account-id:resourcetype/resource<ul>
+<li>例子 arn:aws:s3:::my_corporate_bucket/exampleobject.png</li>
+</ul>
+</li>
+<li>格式三: arn:partition:service:region:account-id:resourcetype:resource<ul>
+<li>例子 arn:aws:rds:eu-west-1:123456789012:db:mysql-db</li>
+</ul>
+</li>
+<li><strong>其中全球区的partition为aws，而中国区的partition为aws-cn</strong></li>
+</ul>
+</li>
+<li>Resource可以使用通配符*和?<ul>
+<li>某个bucket中所有的object arn:aws:s3:::mypublicbucket/*</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="https://docs.aws.amazon.com/zh_cn/IAM/latest/UserGuide/reference_policies_elements_sid.html" target="_blank" rel="external">SID</a> - 每份策略的标识符             <ul>
+<li>策略的名字，在整个Policy文件中需要唯一</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>注意: 在User Policy中没有Principal，执行User Policy的主体就是Principal</strong></li>
+</ul>
+</li>
+<li><p><a href="https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/dev/amazon-s3-policy-keys.html" target="_blank" rel="external">Policy中的可选元素 – Condition</a></p>
+<ul>
+<li>Condition是一个可选元素</li>
+<li>Condition元素可用来在Policy中授予条件时指定某些条件, 一条Policy可以有一条或者多条Condition</li>
+<li>类似于在policy中添加了一个”if”语句</li>
+<li>详细用法参见<a href="https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/dev/amazon-s3-policy-keys.html" target="_blank" rel="external">官网文档</a></li>
+<li><p>一个Condition包含如下要素</p>
+<ul>
+<li>一个条件运算符(Condition Operators),例如StringEquals，NumericEquals以及IpAddress等，所有的条件运算符参见官网文档<a href="https://docs.aws.amazon.com/zh_cn/IAM/latest/UserGuide/reference_policies_elements_condition_operators.html" target="_blank" rel="external">IAM JSON 策略元素：条件运算符</a></li>
+<li>Key/Value的键值对，包含条件键（Condition Key)和允许的值（Value)</li>
+<li>例子， 如下Condition的片段中，<code>StringEquals</code>就是条件运算符，<code>s3:x-amz-acl</code>就是条件键, <code>public-read</code>就是值。这个Condition会被解读为: s3:x-amz-acl的字符串等于(StringEquals) public-read的时候，Condition检查通过<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&quot;Condition&quot;: &#123;</div><div class="line">    &quot;StringEquals&quot;: &#123;</div><div class="line">        &quot;s3:x-amz-acl&quot;:[&quot;public-read&quot;]</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><a href="https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/dev/example-bucket-policies.html" target="_blank" rel="external">用途举例</a></p>
+<ul>
+<li><p>允许用户只有在设置”public-read” ACL的时候才能”put” object</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    &quot;Version&quot;:&quot;2012-10-17&quot;,</div><div class="line">    &quot;Statement&quot;:[</div><div class="line">        &#123;</div><div class="line">        &quot;Sid&quot;:&quot;AddCannedAcl&quot;,</div><div class="line">        &quot;Effect&quot;:&quot;Allow&quot;,</div><div class="line">        &quot;Principal&quot;: &#123;&quot;AWS&quot;: [&quot;arn:aws:iam::111122223333:root&quot;,&quot;arn:aws:iam::444455556666:root&quot;]&#125;,</div><div class="line">        &quot;Action&quot;:[&quot;s3:PutObject&quot;,&quot;s3:PutObjectAcl&quot;],</div><div class="line">        &quot;Resource&quot;:[&quot;arn:aws:s3:::examplebucket/*&quot;],</div><div class="line">        &quot;Condition&quot;:&#123;&quot;StringEquals&quot;:&#123;&quot;s3:x-amz-acl&quot;:[&quot;public-read&quot;]&#125;&#125;</div><div class="line">        &#125;</div><div class="line">    ]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>仅允许用户在开启加密的时候才允许”put” object, 例子参考官网博文<a href="https://aws.amazon.com/cn/blogs/security/how-to-prevent-uploads-of-unencrypted-objects-to-amazon-s3/" target="_blank" rel="external">How to Prevent Uploads of Unencrypted Objects to Amazon S3</a></p>
+</li>
+<li>仅允许用户在使用multi-factor验证的时候才能删除某个object<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    &quot;Version&quot;: &quot;2012-10-17&quot;,</div><div class="line">    &quot;Id&quot;: &quot;123&quot;,</div><div class="line">    &quot;Statement&quot;: [</div><div class="line">    &#123;</div><div class="line">        &quot;Sid&quot;: &quot;&quot;,</div><div class="line">        &quot;Effect&quot;: &quot;Deny&quot;,</div><div class="line">        &quot;Principal&quot;: &quot;*&quot;,</div><div class="line">        &quot;Action&quot;: &quot;s3:*&quot;,</div><div class="line">        &quot;Resource&quot;: &quot;arn:aws:s3:::examplebucket/taxdocuments/*&quot;,</div><div class="line">        &quot;Condition&quot;: &#123; &quot;Null&quot;: &#123; &quot;aws:MultiFactorAuthAge&quot;: true &#125;&#125;</div><div class="line">    &#125;</div><div class="line">    ]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>带有Condition的完整Policy例子</p>
+<ul>
+<li>允许来自源IP在192.168.143.0/24的任何人获取Bucket examplebucket中的任意object，但IP地址192.168.143.188除外。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    &quot;Version&quot;: &quot;2012-10-17&quot;,</div><div class="line">    &quot;Id&quot;: &quot;S3PolicyId1&quot;,</div><div class="line">    &quot;Statement&quot;: [</div><div class="line">        &#123;</div><div class="line">            &quot;Sid&quot;: &quot;statement1&quot;,</div><div class="line">            &quot;Effect&quot;: &quot;Allow&quot;,</div><div class="line">            &quot;Principal&quot;: &quot;*&quot;,</div><div class="line">            &quot;Action&quot;:[&quot;s3:GetObject&quot;]  ,</div><div class="line">            &quot;Resource&quot;: &quot;arn:aws:s3:::examplebucket/*&quot;,</div><div class="line">            &quot;Condition&quot; : &#123;</div><div class="line">                &quot;IpAddress&quot; : &#123;</div><div class="line">                    &quot;aws:SourceIp&quot;: &quot;192.168.143.0/24&quot; </div><div class="line">                &#125;,</div><div class="line">                &quot;NotIpAddress&quot; : &#123;</div><div class="line">                    &quot;aws:SourceIp&quot;: &quot;192.168.143.188/32&quot; </div><div class="line">                &#125; </div><div class="line">            &#125; </div><div class="line">        &#125; </div><div class="line">    ]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>记忆Policy元素的小技巧，<a href="https://acloud.guru/" target="_blank" rel="external">AcloudGuru</a>课程中有一个容易记忆的方法</p>
+<ul>
+<li>总共6个要素(Condition可选)<ul>
+<li><strong>C</strong>onditions</li>
+<li><strong>P</strong>rincipal</li>
+<li><strong>E</strong>ffect</li>
+<li><strong>A</strong>ction</li>
+<li><strong>R</strong>esource</li>
+<li><strong>S</strong>ID</li>
+</ul>
+</li>
+<li>对于Bucket policy来说<ul>
+<li>I “C PEARS” – 字母C读成成see，意为”我在Bucket Policy中看见了梨子”</li>
+</ul>
+</li>
+<li>对于IAM Policy来说<ul>
+<li>I “C EARS” – 字母C读成see，意为”我在IAM Policy中看见了耳朵”</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="跨账户策略注意点"><a href="#跨账户策略注意点" class="headerlink" title="跨账户策略注意点"></a>跨账户策略注意点</h3><ol>
+<li><p>跨账户访问时，假设账户A设置了允许账户B上传object到A的Bucket中, 当账户B上传object到A的Bucket中时，object的owner是B，A默认是没有权限访问该Object的。<br>可以通过设置Bucket Policy的方式，让账户B必须要授权A能够完全控制B上传的object。<br>官网文章 <a href="https://aws.amazon.com/cn/premiumsupport/knowledge-center/s3-bucket-owner-access/" target="_blank" rel="external">How can I make sure the bucket owner has access to resources that are copied or moved between Amazon S3 buckets owned by different AWS accounts?</a></p>
+</li>
+<li><p>跨账户授权时，如果通过Bucket Policy授权其他账户的IAM用户访问自己的Bucket，IAM用户还需要他自己的Root账户也同时授权权限访问该Bucket，否则IAM用户没有权限访问该Bucket。  被授权的其他账户的IAM账户，仍然需要自己的root账户添加授权permission才能访问源Bucket。<br>如果账户A使用Bucket Policy授权账户B的User C能够访问账户A的Bucket_A, 此时User C还会没法访问Bucket_A, 必须账户B在给User C的Policy中添加允许访问Bucket_A的策略后，User C才能访问Bucket_A。<br><strong>总结</strong>为: 如果一个Bucket要授权给其他账号的IAM User使用时，必须要两个Account都显式授权IAM User访问权限才行。</p>
+</li>
+</ol>
+<h3 id="使用签名-signed-的方式访问私有Object"><a href="#使用签名-signed-的方式访问私有Object" class="headerlink" title="使用签名(signed)的方式访问私有Object"></a>使用签名(signed)的方式访问私有Object</h3><h4 id="什么是签名"><a href="#什么是签名" class="headerlink" title="什么是签名"></a>什么是签名</h4><p>AWS提供了一个<a href="https://docs.aws.amazon.com/zh_cn/general/latest/gr/signing_aws_api_requests.html" target="_blank" rel="external">签署签名</a>的功能，在HTTP请求中附加签名信息后，AWS能够识别发送请求的用户,并验证请求是否是该用户授权签名的。</p>
+<p>AWS S3中可以使用该功能来短暂的让用户访问或操作某个私有Object。<br>Bucket的Owner通过指定如下信息来生成一个pre-signed的URL</p>
+<ul>
+<li>加密凭证(Security credentials)</li>
+<li>Bucket名字</li>
+<li>Object名字</li>
+<li>HTTP方法(GET, PUT, DELETE等)</li>
+<li>过期时间</li>
+</ul>
+<p>得到pre-signed URL的任何人，都能够在指定的过期时间之前，访问指定的object。</p>
+<h4 id="签名版本"><a href="#签名版本" class="headerlink" title="签名版本"></a>签名版本</h4><p>AWS提供了两种签名版本Signature Version 4 和Signature Version 2。<br>对于S3来说，所有的Region都支持Signature Version 4，而Signature Version 2的签名方式，只有在2014年1月30日之前的Region才支持，在此日期之后建立的Region，一律都只支持Signature Version 4的签名方式。此处是官方说明文档<a href="https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/API/sig-v4-authenticating-requests.html" target="_blank" rel="external">Authenticating Requests (AWS Signature Version 4)</a></p>
+<p>AWS CLI生成pre-signed的一个例子, 拿韩国首尔Region为例。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># 不指定Region的话，aws s3 cli会使用Signature Version 2方式签名</div><div class="line">$ aws s3 presign s3://carl-test-at-seoul/fox.jpg --expires-in 3600</div><div class="line">https://carl-test-at-seoul.s3.amazonaws.com/fox.jpg?AWSAccessKeyId=AKIAIJQFRFPQCLKRF5MA&amp;Signature=M1teYMCFbGKlfOBt0d%2BAgl8NvFs%3D&amp;Expires=1523590452</div><div class="line">$</div></pre></td></tr></table></figure></p>
+<p>但是首尔Region是不支持该签名方式的，因此使用生成的上述URL访问S3时，会报告如下错误<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;Error&gt;</div><div class="line">&lt;Code&gt;InvalidRequest&lt;/Code&gt;</div><div class="line">&lt;Message&gt;The authorization mechanism you have provided is not supported. Please use AWS4-HMAC-SHA256.&lt;/Message&gt;</div><div class="line">&lt;RequestId&gt;F7B09345800A56B8&lt;/RequestId&gt;</div><div class="line">&lt;HostId&gt;Fjr3JFqFxLI7Ar2HYyOJk/ZFuMfreIFa5CnFRBq8A1J8/g9/3XbaK3bkiY2gXtNFuZ6AcN/+8Is=&lt;/HostId&gt;</div><div class="line">&lt;head&gt;</div><div class="line">&lt;link/&gt;</div><div class="line">&lt;/head&gt;</div><div class="line">&lt;/Error&gt;</div></pre></td></tr></table></figure></p>
+<p>在AWS CLI中指定首尔Region后，CLI会判断Region，从而使用Signature Version 4的加密方式<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ aws s3 presign s3://carl-test-at-seoul/fox.jpg --expires-in 3600 --region ap-northeast-2</div><div class="line">https://carl-test-at-seoul.s3.amazonaws.com/fox.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=AKIAIJQFRFPQCLKRF5MA%2F20180413%2Fap-northeast-2%2Fs3%2Faws4_request&amp;X-Amz-Date=20180413T023641Z&amp;X-Amz-Expires=3600&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Signature=a97309f2de68d16afcc3f380dec5ec06d0de09f3b748081598107a0b3842c255</div><div class="line">$</div></pre></td></tr></table></figure></p>
+<p>使用上述生成的URL，就能够顺利访问到原本私有的Object了。</p>
+<h3 id="延伸阅读"><a href="#延伸阅读" class="headerlink" title="延伸阅读"></a>延伸阅读</h3><ul>
+<li><a href="/2018/04/18/aws-s3-master-basic/" title="S3进阶系列(一) —— S3基础知识">S3进阶系列(一) —— S3基础知识</a>
+</li>
+</ul>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/dev/Welcome.html" target="_blank" rel="external">S3官方文档</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> AWS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> IAM </tag>
+            
+            <tag> S3 </tag>
+            
+            <tag> AWS CLI </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[如何去除SSH key中的passphrase]]></title>
+      <url>/2018/04/19/how-to-remove-the-passphrase-of-ssh-key/</url>
+      <content type="html"><![CDATA[<h3 id="去除passphrase的方法"><a href="#去除passphrase的方法" class="headerlink" title="去除passphrase的方法"></a>去除passphrase的方法</h3><p>使用<code>ssh-keygen</code>来重新设置一个空的passphrase, 就相当于去除了原来的passphrase, 答案来自<a href="https://stackoverflow.com/a/112409" target="_blank" rel="external">stackoverflow</a>, 回答者还很贴心的提示，输入的passphrase会被记录在~/.bash_history中，别忘记处理这个情况。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ssh-keygen -p [-P old_passphrase] [-N new_passphrase] [-f keyfile]</div></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<h3 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h3><ol>
+<li><p>首先使用ssh-keygen生成一对带passphrase的key, 此处输入的passphrase为helloworld.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">$ ssh-keygen -f ./id_rsa_for_passphrase</div><div class="line">Generating public/private rsa key pair.</div><div class="line">Enter passphrase (empty <span class="keyword">for</span> no passphrase):</div><div class="line">Enter same passphrase again:</div><div class="line">Your identification has been saved <span class="keyword">in</span> ./id_rsa_for_passphrase.</div><div class="line">Your public key has been saved <span class="keyword">in</span> ./id_rsa_for_passphrase.pub.</div><div class="line">The key fingerprint is:</div><div class="line">SHA256:l40jWfZPFe7ItcUJvduSyx/CXVmI27T6y75i/yuAPxs carlshen@carl-186.local</div><div class="line">The key<span class="string">'s randomart image is:</span></div><div class="line"><span class="string">+---[RSA 2048]----+</span></div><div class="line"><span class="string">|             ... |</span></div><div class="line"><span class="string">|             .o+o|</span></div><div class="line"><span class="string">|          o . o+*|</span></div><div class="line"><span class="string">|         + =.+++=|</span></div><div class="line"><span class="string">|        S * +o+=+|</span></div><div class="line"><span class="string">|         + o.++.o|</span></div><div class="line"><span class="string">|          .Eo+.= |</span></div><div class="line"><span class="string">|           o+++ .|</span></div><div class="line"><span class="string">|           oo+O*+|</span></div><div class="line"><span class="string">+----[SHA256]-----+</span></div><div class="line"><span class="string">$</span></div><div class="line"><span class="string">$ ll</span></div><div class="line"><span class="string">total 16</span></div><div class="line"><span class="string">-rw-------  1 carlshen  staff  1766  4 19 16:05 id_rsa_for_passphrase</span></div><div class="line"><span class="string">-rw-r--r--  1 carlshen  staff   405  4 19 16:05 id_rsa_for_passphrase.pub</span></div><div class="line"><span class="string">$</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>去除private key的passphrase</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">$ ssh-keygen -p -P helloworld -N <span class="string">""</span> -f id_rsa_for_passphrase</div><div class="line">Your identification has been saved with the new passphrase.</div><div class="line">$</div><div class="line">$ ll</div><div class="line">total 16</div><div class="line">-rw-------  1 carlshen  staff  1679  4 19 16:07 id_rsa_for_passphrase</div><div class="line">-rw-r--r--  1 carlshen  staff   405  4 19 16:05 id_rsa_for_passphrase.pub</div><div class="line">$</div></pre></td></tr></table></figure>
+</li>
+<li><p>使用去除passphrase的private key来生成public key的内容，此时已经不需要输入passphrase。同原先的public key比较，可以看出内容是相同的。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ ssh-keygen -y -f id_rsa_for_passphrase</div><div class="line">ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCnIM/b01uMtYWlEyWN7RsIynhTPqodAaMkK5jhWqrLj29FUFHbSZwXaMlbxi1yxsp9VHX/YjFXQjesUv+wv+We2I9gNN/emd1zIrFDIU1sLZTwdPPsZ/nBA9e19tncVvUHk07wFmFGE1pH7mCpVHSjYgqhJYKZFn5RVcTn7lir4pIvjGl94+wNCtTueMsAiH8K+F3gcivwFQK9Gng7Fiv1PKwBVuJzlLabM90uaFuGcaVo7s+PE3E70TReXsRkUYCR5CtA4ja4JIVf1rMt0WwSb09KnmRFanEfEYPeZX7I44EPIYEAJWRccOTbWb/ywd5tbKJhgJBnTzcsxtvZHR/v</div><div class="line">$</div><div class="line">$ cat id_rsa_for_passphrase.pub</div><div class="line">ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCnIM/b01uMtYWlEyWN7RsIynhTPqodAaMkK5jhWqrLj29FUFHbSZwXaMlbxi1yxsp9VHX/YjFXQjesUv+wv+We2I9gNN/emd1zIrFDIU1sLZTwdPPsZ/nBA9e19tncVvUHk07wFmFGE1pH7mCpVHSjYgqhJYKZFn5RVcTn7lir4pIvjGl94+wNCtTueMsAiH8K+F3gcivwFQK9Gng7Fiv1PKwBVuJzlLabM90uaFuGcaVo7s+PE3E70TReXsRkUYCR5CtA4ja4JIVf1rMt0WwSb09KnmRFanEfEYPeZX7I44EPIYEAJWRccOTbWb/ywd5tbKJhgJBnTzcsxtvZHR/v carlshen@carl-186.local</div><div class="line">$</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://stackoverflow.com/questions/112396/how-do-i-remove-the-passphrase-for-the-ssh-key-without-having-to-create-a-new-ke" target="_blank" rel="external">How do I remove the passphrase for the SSH key without having to create a new key?</a></li>
+<li><a href="https://serverfault.com/questions/426394/how-to-check-if-a-rsa-public-private-key-pair-matched" target="_blank" rel="external">How to check if a RSA public / private key pair matched</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> Shell </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Linux </tag>
+            
+            <tag> SSH </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[S3进阶系列(一) —— S3基础知识]]></title>
+      <url>/2018/04/18/aws-s3-master-basic/</url>
+      <content type="html"><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>S3是AWS服务最早推出的几项服务之一，也是使用最为频繁的几个AWS服务之一。官网文档以及网上文章零零散散看了不少,实际使用中也用过S3的大多数功能，但“纸上得来终觉浅，绝知此事要躬行”，决定给自己挖个坑，结合已读资料和实际使用经验，系统地来梳理一下S3的已有功能。</p>
+<p>本篇是第一篇,介绍一下S3的一些基础知识。希望能够坚持把这个系列写完。</p>
+<a id="more"></a>
+<h3 id="S3-是什么"><a href="#S3-是什么" class="headerlink" title="S3 是什么"></a>S3 是什么</h3><ul>
+<li>Amazon Simple Storage Service(简称S3)，是亚马逊AWS服务在2006年第一个正式对外推出的云计算服务。</li>
+<li>Amazon S3 是互联网存储解决方案。该服务旨在降低开发人员进行网络规模级计算的难度。<br>  Amazon S3 提供了一个简单 Web 服务接口，可用于随时在 Web 上的任何位置存储和检索任何数量的数据。此服务让所有开发人员都能访问同一个具备高扩展性、可靠性、安全性和快速价廉的数据存储基础设施， Amazon 用它来运行其全球的网站网络。此服务旨在为开发人员带来最大化的规模效益。</li>
+<li>对象存储<ul>
+<li>数据(包括文件/视频/图片)以及相关的源数据都是以对象(objects)的方式来存储的</li>
+<li>不能以S3来当做操作系统的文件系统</li>
+<li>对象（object）最大支持5TB</li>
+</ul>
+</li>
+<li>高耐用<ul>
+<li>Object 提供11个9，99.999999999%的持久性<ul>
+<li>意味着每一亿个object才会丢失一个object</li>
+<li>S3存储的对象会在同一个Region的多个AZ中保存多份拷贝</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>高可用<ul>
+<li>提供99.99%的可用性</li>
+</ul>
+</li>
+<li>高扩展<ul>
+<li>提供无限的存储空间</li>
+</ul>
+</li>
+<li>基于WEB<ul>
+<li>上传和下载数据基于HTTP/HTTPS请求</li>
+</ul>
+</li>
+<li>安全性<ul>
+<li>可以选择多种方式来加密数据</li>
+</ul>
+</li>
+<li>计费模式<ul>
+<li>Pay as you go - Pay only for what you use</li>
+</ul>
+</li>
+</ul>
+<h3 id="S3-能用来做什么"><a href="#S3-能用来做什么" class="headerlink" title="S3 能用来做什么"></a>S3 能用来做什么</h3><ul>
+<li>备份</li>
+<li>存储内容</li>
+<li>大数据分析</li>
+<li>挂载静态网站</li>
+<li>灾难恢复</li>
+</ul>
+<h3 id="S3桶-Bucket"><a href="#S3桶-Bucket" class="headerlink" title="S3桶(Bucket)"></a><a href="https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/dev/UsingBucket.html" target="_blank" rel="external">S3桶(Bucket)</a></h3><ul>
+<li>Bucket就是用来存储对象（object）的一个集合<ul>
+<li>Bucket和Object都是资源(resources), 也就是aws能操作的一个实体(entity)</li>
+</ul>
+</li>
+<li>可以容纳无限的Object</li>
+<li>默认一个账户可以创建100个bucket，这个上限是软性限制，可以通过向AWS提交case来提高上限</li>
+<li>Bucket需要归属于某个Region，不是Global的。虽然S3的web console页面是Global的。</li>
+<li>Bucket由附属的子资源(subresources)来定义bucket的配置</li>
+</ul>
+<h3 id="S3-命名空间-Namespace"><a href="#S3-命名空间-Namespace" class="headerlink" title="S3 命名空间(Namespace)"></a>S3 命名空间(Namespace)</h3><ul>
+<li>S3需要唯一的命名空间<ul>
+<li>Bucket名字必须在AWS的整个S3生态中是唯一的,而不仅仅是只在Region中唯一。</li>
+<li>访问Bucket的方式<ul>
+<li>Virtual<ul>
+<li><a href="https://bucket.s3.amazonaws.com" target="_blank" rel="external">https://bucket.s3.amazonaws.com</a></li>
+<li><a href="https://bucket.s3-aws-region.amazonaws.com" target="_blank" rel="external">https://bucket.s3-aws-region.amazonaws.com</a></li>
+</ul>
+</li>
+<li>Path<ul>
+<li><a href="https://s3-aws-region.amazonaws.com/bucket" target="_blank" rel="external">https://s3-aws-region.amazonaws.com/bucket</a></li>
+</ul>
+</li>
+<li>Bucket名字必须要全局唯一的原因就是因为Bucket名字也会是域名的一部分</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="区域-Region"><a href="#区域-Region" class="headerlink" title="区域(Region)"></a>区域(Region)</h3><ul>
+<li>Region就是bucket实际存放的位置</li>
+<li>存放在某个Region的Object永远不会离开这个Region，除非你显式地将它传输出去</li>
+<li>选取Bucket的Region的时候，需要考虑延迟，费用等因素。因为建造和运营成本不同，AWS各个Region的S3费用并不相同。而一般来说，选择最近的Region，延迟就越小。</li>
+</ul>
+<h3 id="对象Object"><a href="#对象Object" class="headerlink" title="对象Object"></a><a href="https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/dev/UsingObjects.html" target="_blank" rel="external">对象Object</a></h3><ul>
+<li>S3是一个可以存储近似无限数量Object的Key-Value存储系统</li>
+<li>Object包括如下元素<ul>
+<li>Key - object的名字</li>
+<li>Value - 存储的数据，大小范围是0~5TB</li>
+<li>Version ID - 当versioning功能开启后，每个Object都会拥有一个Version ID，用来区分有相同Key的不同的Object<ul>
+<li>Bucket + Key + Version ID 三要素唯一定义了S3中的一个Object</li>
+</ul>
+</li>
+<li>Metadata - 用来存储Object其他相关信息的Name-value键值对</li>
+<li>Subresources - 定义了一个Object的额外的资源</li>
+<li>Access Control Information - 控制每个对象的访问策略</li>
+</ul>
+</li>
+</ul>
+<h3 id="Object名字"><a href="#Object名字" class="headerlink" title="Object名字"></a><a href="https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/dev/UsingMetadata.html" target="_blank" rel="external">Object名字</a></h3><ul>
+<li>S3是平面结构的<ul>
+<li>和文件系统不同，S3没有目录</li>
+<li>可以通过使用<strong>prefixed</strong>来模拟目录</li>
+<li>Object的键的名称是一序列的 Unicode 字符，它的 UTF-8 编码长度最大为 1024 个字节</li>
+<li>强烈建议Object的命名要符合DNS命名要求，采用如下字符集<ul>
+<li>字母数字字符 [0-9a-zA-Z]和特殊字符 !、-、_、.、*、’、( 以及 )</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="对象标签-Object-Tagging"><a href="#对象标签-Object-Tagging" class="headerlink" title="对象标签(Object Tagging)"></a><a href="https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/dev/object-tagging.html" target="_blank" rel="external">对象标签(Object Tagging)</a></h3><ul>
+<li>利用对象标签，您可以对存储进行分类。每个标签都是一个键-值对<ul>
+<li>例如<ul>
+<li>Department=Development</li>
+<li>DeployEnv=demo</li>
+</ul>
+</li>
+<li>好处<ul>
+<li>可以支持精细的访问控制</li>
+<li>可以支持精细的生命周期管理(Lifecycle management)</li>
+<li>使用S3 Analytics时，可以使用tag来配置筛选条件</li>
+<li>可以自定义Amazon CloudWatch和CloudTrail的筛选条件</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="子资源-Subresources"><a href="#子资源-Subresources" class="headerlink" title="子资源(Subresources)"></a>子资源(Subresources)</h3><ul>
+<li>子资源<ul>
+<li>S3子资源提供了存储和管理Bucket配置信息的支持</li>
+<li>S3子资源只能依附于某一个确定的bucket或者object</li>
+<li>bucket和object可以有一组关联的子资源</li>
+<li>S3子资源必须归属于某个Bucket或者Object，而不能独立存在</li>
+<li>Bucket和Object分别提供了不同的子资源</li>
+</ul>
+</li>
+<li><a href="https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/dev/UsingBucket.html" target="_blank" rel="external">Bucket提供的子资源</a><ul>
+<li>位置(Location)</li>
+<li>策略(Policy)和访问控制列表(ACL)</li>
+<li>跨资源共享(CORS)</li>
+<li>静态网站托管(Static Website Hosting)</li>
+<li>日志记录(Logging)</li>
+<li>时间通知(Event Notification)</li>
+<li>版本控制(Versioning)</li>
+<li>生命周期(Lifecycle)</li>
+<li>跨区域复制(Cross-Region Replication)</li>
+<li>标记(Tagging)</li>
+<li>下载人员付费(RequestPayment)</li>
+<li>传输加速(Transfer Acceleration)</li>
+</ul>
+</li>
+<li><a href="https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/dev/ObjectAndSoubResource.html" target="_blank" rel="external">Object提供的子资源</a><ul>
+<li>访问控制列表(ACL)</li>
+<li>torrent (用于支持BitTorrent协议)</li>
+</ul>
+</li>
+</ul>
+<h3 id="一致性模型-Consistency-Model"><a href="#一致性模型-Consistency-Model" class="headerlink" title="一致性模型(Consistency Model)"></a><a href="https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/dev/Introduction.html#ConsistencyModel" target="_blank" rel="external">一致性模型(Consistency Model)</a></h3><ul>
+<li>对put的新object，S3提供了read-after-write的一致性<ul>
+<li>read-after-write: 只有在对象成功写入所有的设备，返回成功的返回值后，对象才能被读取</li>
+</ul>
+</li>
+<li>对更新和删除操作，S3提供了最终一致性(eventual consistency)<ul>
+<li>正在更新时，此时请求对象，旧数据可能会被返回</li>
+<li>在删除旧数据时，此时请求对象，旧数据仍然可能会被返回</li>
+</ul>
+</li>
+<li>最终一致性（Eventual consistency）提供了低延迟和高吞吐的性能</li>
+<li>S3不提供锁的机制<ul>
+<li>如果两个写操作并发，结果最终会以最后一个为准</li>
+<li>如果需要类似锁的机制，那只能在使用S3的Application层进行控制</li>
+</ul>
+</li>
+</ul>
+<h3 id="存储类别-Storage-Classes-Tiers"><a href="#存储类别-Storage-Classes-Tiers" class="headerlink" title="存储类别(Storage Classes/Tiers)"></a><a href="https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/dev/storage-class-intro.html" target="_blank" rel="external">存储类别(Storage Classes/Tiers)</a></h3><ul>
+<li>S3提供了如下几种存储类型<ul>
+<li>S3 Standard: 默认的存储类型，提供99.99%可用性，99.999999999%持久性。数据文件会冗余地存储在多个设施的多个设备中。设计目的是可以支持同时两个设施损坏。适合性能敏感的使用案例和需要经常访问的数据。</li>
+<li>S3 Standard - Infrequent Access: 提供99.99%可用性，99.999999999%持久性。 针对需要长期储存且不常访问, 但是需要立即能够访问到的数据 (例如备份以及访问频率已减少的较旧数据) 进行了优化。存储费用比S3 Standard要低，但是每个访问请求的费用要远高于S3 Standard。</li>
+<li>Reduced Redundancy Storage(RRS): 提供99.99%可用性和99.99%的持久性。适用于能再次生成的数据，比如图片的缩略图等。</li>
+<li>Glacier: 最便宜的存储方案，但是没法实时访问数据，必须要先恢复数据后才能进行访问。不适用于需要经常访问的数据。</li>
+</ul>
+</li>
+<li>S3 提供了生命管理周期（Lifecycle Management）的机制，可以将Object从S3 Standard转换到S3 Standard-Infrequent Access，再到Glacier。也可以在设定的时间过后自动删除object。但需要注意的是，不是一到达设定的时间后就立马开始转换，设定Lifecycle Management后，S3会将需要转换的object标记上转换时间，实际转换时间一般会延后。</li>
+<li><a href="https://aws.amazon.com/cn/s3/storage-classes/" target="_blank" rel="external">存储类别之间额比较如下</a>:<br><img src="/images/AWS/S3/Master/s3-storage-class.png" alt="s3-storage-class"></li>
+</ul>
+<h3 id="安全性"><a href="#安全性" class="headerlink" title="安全性"></a>安全性</h3><ul>
+<li>S3提供了11个9的持久性和99.99%的可用性<ul>
+<li>提供数据的checksums机制，如果数据有损坏，可以使用冗余数据来修复</li>
+<li>跨域复制(Cross-Region replication)提供了更强的数据保护措施</li>
+</ul>
+</li>
+<li>版本控制(Versioning)，可以提供额外的保护。开启Versioning后，提供了存储在S3中每个Object的每个版本的恢复能力，即使Object已经被删除。</li>
+<li>S3的Object默认是私有的，只有Bucket和object的拥有者才能访问他们创建的资源<ul>
+<li>可以通过Policies和ACL来授予访问objects和buckets的权限</li>
+</ul>
+</li>
+<li>S3提供了服务端加密和传输加密的功能</li>
+<li>所有访问S3 resources的请求都可被记录，用于审计</li>
+</ul>
+<h3 id="发送请求的方式"><a href="#发送请求的方式" class="headerlink" title="发送请求的方式"></a>发送请求的方式</h3><ul>
+<li>S3是一个RESTful的web service<ul>
+<li>提供http&amp;https的交互方式</li>
+<li>通过REST API来发送请求</li>
+</ul>
+</li>
+<li>可以通过以下几种方式来操作S3<ul>
+<li>AWS Management console</li>
+<li>AWS CLI (Command Line Interface)</li>
+<li>AWS SDK’s (Software Development Kits)</li>
+</ul>
+</li>
+<li>操作方式<ul>
+<li>GET 对等于 Download/Read</li>
+<li>PUT 对等于 Upload/Write</li>
+<li>DELETE 对等于 Delete</li>
+</ul>
+</li>
+</ul>
+<h3 id="计费"><a href="#计费" class="headerlink" title="计费"></a>计费</h3><ul>
+<li>使用多少就计费多少的原则</li>
+<li>计费项目<ul>
+<li>存储（Storage）</li>
+<li>请求（Requests）</li>
+<li>数据传输费用（Data Transfer Pricing）</li>
+<li>数据传输加速（Transfer Acceleration）</li>
+<li>管理功能（Management Functions）<ul>
+<li>Metrics</li>
+<li>存储类别分析（Storage Class Analysis）</li>
+<li>S3存储清单(S3 Inventory)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="延伸阅读"><a href="#延伸阅读" class="headerlink" title="延伸阅读"></a>延伸阅读</h3><ul>
+<li><a href="/2017/12/20/expired-of-S3-RRS/" title="S3 RRS价格注意点">S3 RRS价格注意点</a></li>
+<li><a href="/2018/04/21/aws-s3-master-permission/" title="S3进阶系列(二) ——权限管理">S3进阶系列(二) ——权限管理</a>
+</li>
+</ul>
+<h3 id="小故事"><a href="#小故事" class="headerlink" title="小故事"></a>小故事</h3><p>2017-03-01当天，AWS的一个程序员在调试系统时，输错了一个字母，导致US-EAST-1 region的大量S3服务器被误删除，导致大半个互联网将近瘫痪了4个小时。</p>
+<p>问题发生后，AWS的<a href="http://status.aws.amazon.com/" target="_blank" rel="external">SERVICE HEALTH DASHBOARD</a>却显示Service一切正常。听说是因为Dashboard本身也是依赖于US-EAST-1的S3的, S3出了问题导致Dashboard也出问题了。</p>
+<p>从这个小事故中可以看出AWS S3服务应用的普遍程度。</p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/dev/Welcome.html" target="_blank" rel="external">S3官方文档</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> AWS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> S3 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[订阅RDS事件]]></title>
       <url>/2018/03/16/how-to-subscribe-RDS-event/</url>
       <content type="html"><![CDATA[<p>关于RDS状态的监控，除了常规的CloudWatch Metric以外。RDS还有一个事件机制，能够将RDS的事件通知到SNS。</p>
@@ -5901,11 +6563,11 @@ You can wait for the scheduled retirement date - when the instance is stopped - 
         
         <tags>
             
+            <tag> AWS SDK </tag>
+            
             <tag> RDS </tag>
             
             <tag> Ruby </tag>
-            
-            <tag> AWS SDK </tag>
             
             <tag> AWS CLI </tag>
             

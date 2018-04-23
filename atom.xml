@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.jibing57.com/"/>
-  <updated>2018-03-19T02:40:03.535Z</updated>
+  <updated>2018-04-23T02:59:55.711Z</updated>
   <id>http://www.jibing57.com/</id>
   
   <author>
@@ -15,6 +15,74 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>S3进阶系列(二) ——权限管理</title>
+    <link href="http://www.jibing57.com/2018/04/21/aws-s3-master-permission/"/>
+    <id>http://www.jibing57.com/2018/04/21/aws-s3-master-permission/</id>
+    <published>2018-04-21T09:59:59.000Z</published>
+    <updated>2018-04-23T02:59:55.711Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;什么是S3的权限管理&quot;&gt;&lt;a href=&quot;#什么是S3的权限管理&quot; class=&quot;headerlink&quot; title=&quot;什么是S3的权限管理&quot;&gt;&lt;/a&gt;什么是S3的权限管理&lt;/h3&gt;&lt;p&gt;S3的权限管理是任何使用S3的人都无法绕开的功能,决定了S3中的Object是否能够被访问。&lt;/p&gt;
+&lt;p&gt;权限管理本质上解决了这么一个问题: 谁(Principal)能够在何种条件(condition)下被允许或拒绝(Effect)对哪些资源(Resource)做何种操作(Action)&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
+    
+    
+      <category term="IAM" scheme="http://www.jibing57.com/tags/IAM/"/>
+    
+      <category term="S3" scheme="http://www.jibing57.com/tags/S3/"/>
+    
+      <category term="AWS CLI" scheme="http://www.jibing57.com/tags/AWS-CLI/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>如何去除SSH key中的passphrase</title>
+    <link href="http://www.jibing57.com/2018/04/19/how-to-remove-the-passphrase-of-ssh-key/"/>
+    <id>http://www.jibing57.com/2018/04/19/how-to-remove-the-passphrase-of-ssh-key/</id>
+    <published>2018-04-19T13:15:28.000Z</published>
+    <updated>2018-04-19T08:15:06.891Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;去除passphrase的方法&quot;&gt;&lt;a href=&quot;#去除passphrase的方法&quot; class=&quot;headerlink&quot; title=&quot;去除passphrase的方法&quot;&gt;&lt;/a&gt;去除passphrase的方法&lt;/h3&gt;&lt;p&gt;使用&lt;code&gt;ssh-keygen&lt;/code&gt;来重新设置一个空的passphrase, 就相当于去除了原来的passphrase, 答案来自&lt;a href=&quot;https://stackoverflow.com/a/112409&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;stackoverflow&lt;/a&gt;, 回答者还很贴心的提示，输入的passphrase会被记录在~/.bash_history中，别忘记处理这个情况。&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ ssh-keygen -p [-P old_passphrase] [-N new_passphrase] [-f keyfile]&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Shell" scheme="http://www.jibing57.com/categories/Shell/"/>
+    
+    
+      <category term="Linux" scheme="http://www.jibing57.com/tags/Linux/"/>
+    
+      <category term="SSH" scheme="http://www.jibing57.com/tags/SSH/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>S3进阶系列(一) —— S3基础知识</title>
+    <link href="http://www.jibing57.com/2018/04/18/aws-s3-master-basic/"/>
+    <id>http://www.jibing57.com/2018/04/18/aws-s3-master-basic/</id>
+    <published>2018-04-18T12:44:08.000Z</published>
+    <updated>2018-04-20T03:22:02.880Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;S3是AWS服务最早推出的几项服务之一，也是使用最为频繁的几个AWS服务之一。官网文档以及网上文章零零散散看了不少,实际使用中也用过S3的大多数功能，但“纸上得来终觉浅，绝知此事要躬行”，决定给自己挖个坑，结合已读资料和实际使用经验，系统地来梳理一下S3的已有功能。&lt;/p&gt;
+&lt;p&gt;本篇是第一篇,介绍一下S3的一些基础知识。希望能够坚持把这个系列写完。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
+    
+    
+      <category term="S3" scheme="http://www.jibing57.com/tags/S3/"/>
+    
+  </entry>
   
   <entry>
     <title>订阅RDS事件</title>
@@ -472,114 +540,6 @@
     
     
       <category term="EC2 User Data" scheme="http://www.jibing57.com/tags/EC2-User-Data/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>AWS Certified Sysops Administrator - Associate Road Map</title>
-    <link href="http://www.jibing57.com/2017/12/04/AWS-Certified-Sysops-Administrator-Associate/"/>
-    <id>http://www.jibing57.com/2017/12/04/AWS-Certified-Sysops-Administrator-Associate/</id>
-    <published>2017-12-04T13:27:17.000Z</published>
-    <updated>2017-12-25T07:05:45.526Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;Official-AWS-Certification-Page&quot;&gt;&lt;a href=&quot;#Official-AWS-Certification-Page&quot; class=&quot;headerlink&quot; title=&quot;Official AWS Certification Page&quot;&gt;&lt;/a&gt;Official AWS Certification Page&lt;/h2&gt;&lt;p&gt;访问官网&lt;a href=&quot;https://amazonaws-china.com/certification/certification-prep/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;AWS Certification&lt;/a&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;参加 AWS 培训课程&lt;/li&gt;
-&lt;li&gt;查看考试指南和样题&lt;ul&gt;
-&lt;li&gt;了解考试涉及的概念并整体了解需要学习哪些内容, &lt;a href=&quot;http://awstrainingandcertification.s3.amazonaws.com/production/AWS_certified_sysops_associate_blueprint.pdf&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;AWS Certified SysOps Administrator - Associate 考试指南&lt;/a&gt; 相当于考试大纲, 必看,而且需要反复的看。因为学习过一阵后再来看Guide，会有更深的体会。&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://awstrainingandcertification.s3.amazonaws.com/production/AWS_certified_sysops_associate_examsample.pdf&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;考试样题&lt;/a&gt;用于熟悉题目题型&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;完成自主进度动手实验和备考任务&lt;ul&gt;
-&lt;li&gt;官方&lt;a href=&quot;https://www.qwiklabs.com/learning_paths/20/lab_catalogue?locale=en&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;qwikLABS 任务&lt;/a&gt;提供了一系列动手实验, 提供部分免费实验，但大部分实验所需的积分都需要购买。高性价比的做法是， 注册一个AWS全球账号，使用一年的免费额度来对照着实验手册来进行试验。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;学习 AWS 白皮书&lt;ul&gt;
-&lt;li&gt;白皮书是纯英文的，而且每个白皮书篇幅都很长，读起来既费时又枯燥。但是有时间还是建议把推荐的几个都看一下。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;查看 AWS 常见问题&lt;/li&gt;
-&lt;li&gt;参加模拟考试&lt;ul&gt;
-&lt;li&gt;20美刀一次，主要目的是为了让人熟悉考试时上机的流程。是否需要因人而异, 特别想先熟悉下考试流程的可以考虑参加一次。我个人觉得没有必要, 因为真实考试时，操作界面一目了然，没有磕磕绊绊的机关，省下20美刀可以去买一份课程。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;报名考试并获得认证&lt;ul&gt;
-&lt;li&gt;登陆&lt;a href=&quot;https://www.aws.training/certification&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://www.aws.training/certification&lt;/a&gt;注册进行考试
-    
-    </summary>
-    
-      <category term="AWS Certified" scheme="http://www.jibing57.com/categories/AWS-Certified/"/>
-    
-    
-      <category term="Sysops" scheme="http://www.jibing57.com/tags/Sysops/"/>
-    
-      <category term="CloudWatch" scheme="http://www.jibing57.com/tags/CloudWatch/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>在AWS RDS中为Postgresql开启慢查询日志</title>
-    <link href="http://www.jibing57.com/2017/11/29/how-to-enable-slow-query-on-aws-rds-postgresql/"/>
-    <id>http://www.jibing57.com/2017/11/29/how-to-enable-slow-query-on-aws-rds-postgresql/</id>
-    <published>2017-11-29T13:38:12.000Z</published>
-    <updated>2017-12-25T07:09:02.871Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;sql遇到性能问题，就需要开启慢查询日志，将执行时间超过某个限定值的sql输出到日志，给后续开发人员分析。下面是AWS RDS中Postgresql开启慢查询日志的方法。包含&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;RDS设置&lt;/li&gt;
-&lt;li&gt;下载RDS log的方法&lt;/li&gt;
-&lt;li&gt;一些注意点&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&quot;RDS设置步骤&quot;&gt;&lt;a href=&quot;#RDS设置步骤&quot; class=&quot;headerlink&quot; title=&quot;RDS设置步骤&quot;&gt;&lt;/a&gt;RDS设置步骤&lt;/h3&gt;&lt;ol&gt;
-&lt;li&gt;登陆aws console，切换到RDS&lt;br&gt;&lt;img src=&quot;/images/AWS/RDSSlowQuery/switch_to_rds.png&quot; alt=&quot;switch_to_rds.png&quot;&gt;
-    
-    </summary>
-    
-      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
-    
-    
-      <category term="RDS" scheme="http://www.jibing57.com/tags/RDS/"/>
-    
-      <category term="Ruby" scheme="http://www.jibing57.com/tags/Ruby/"/>
-    
-      <category term="AWS SDK" scheme="http://www.jibing57.com/tags/AWS-SDK/"/>
-    
-      <category term="AWS CLI" scheme="http://www.jibing57.com/tags/AWS-CLI/"/>
-    
-      <category term="PostgreSQL" scheme="http://www.jibing57.com/tags/PostgreSQL/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>创建AWS Account后的基本账号设置</title>
-    <link href="http://www.jibing57.com/2017/10/31/account-setting-by-aws/"/>
-    <id>http://www.jibing57.com/2017/10/31/account-setting-by-aws/</id>
-    <published>2017-10-31T15:10:46.000Z</published>
-    <updated>2017-12-25T07:08:09.329Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;记录创建好AWS账号后的几个基本设置, 大概介绍如下几点:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;查看是否满足Free Tier Usage&lt;/li&gt;
-&lt;li&gt;创建IAM账号&lt;/li&gt;
-&lt;li&gt;为IAM账号启用Billing&lt;/li&gt;
-&lt;li&gt;如何提交Case&lt;/li&gt;
-&lt;li&gt;切换Console语言&lt;/li&gt;
-&lt;/ul&gt;
-    
-    </summary>
-    
-      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
-    
-    
-      <category term="IAM" scheme="http://www.jibing57.com/tags/IAM/"/>
-    
-      <category term="AWS Free Tier" scheme="http://www.jibing57.com/tags/AWS-Free-Tier/"/>
     
   </entry>
   

@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.jibing57.com/"/>
-  <updated>2018-04-23T02:59:55.711Z</updated>
+  <updated>2018-04-25T02:37:13.744Z</updated>
   <id>http://www.jibing57.com/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>豆瓣图片403问题</title>
+    <link href="http://www.jibing57.com/2018/04/24/douban-image-403/"/>
+    <id>http://www.jibing57.com/2018/04/24/douban-image-403/</id>
+    <published>2018-04-24T12:14:50.000Z</published>
+    <updated>2018-04-25T02:37:13.744Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;起由&quot;&gt;&lt;a href=&quot;#起由&quot; class=&quot;headerlink&quot; title=&quot;起由&quot;&gt;&lt;/a&gt;起由&lt;/h3&gt;&lt;p&gt;发布了一版blog到github上。偶然间发现&lt;a href=&quot;/douban&quot;&gt;豆瓣页面&lt;/a&gt;中书的图片都无法显示了。打开Inspector调查了下，发现请求豆瓣图片的链接返回的都是403 Forbidden。&lt;br&gt;&lt;img src=&quot;/images/Hexo/douban_image_403.png&quot; alt=&quot;douban_image_403.png&quot;&gt;&lt;/p&gt;
+&lt;p&gt;网上搜索了一下，可能的原因就是豆瓣为了封杀微信小程序在页面上直接请求豆瓣的图片，封杀了图片的外链。&lt;/p&gt;
+&lt;h3 id=&quot;原因&quot;&gt;&lt;a href=&quot;#原因&quot; class=&quot;headerlink&quot; title=&quot;原因&quot;&gt;&lt;/a&gt;原因&lt;/h3&gt;&lt;p&gt;尝试着将豆瓣API返回的图片链接拷贝到浏览器中直接访问，发现可以加载图片，那估计豆瓣是通过检测HTTP Request中的referer Header来实现防盗链。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Blog" scheme="http://www.jibing57.com/categories/Blog/"/>
+    
+    
+      <category term="Hexo" scheme="http://www.jibing57.com/tags/Hexo/"/>
+    
+      <category term="Douban" scheme="http://www.jibing57.com/tags/Douban/"/>
+    
+      <category term="Nodejs" scheme="http://www.jibing57.com/tags/Nodejs/"/>
+    
+  </entry>
   
   <entry>
     <title>S3进阶系列(二) ——权限管理</title>
@@ -33,9 +59,9 @@
       <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
     
     
-      <category term="IAM" scheme="http://www.jibing57.com/tags/IAM/"/>
-    
       <category term="S3" scheme="http://www.jibing57.com/tags/S3/"/>
+    
+      <category term="IAM" scheme="http://www.jibing57.com/tags/IAM/"/>
     
       <category term="AWS CLI" scheme="http://www.jibing57.com/tags/AWS-CLI/"/>
     
@@ -518,28 +544,6 @@
       <category term="S3" scheme="http://www.jibing57.com/tags/S3/"/>
     
       <category term="AWS Deep Dive" scheme="http://www.jibing57.com/tags/AWS-Deep-Dive/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>使用shell添加多行到文件的几个办法</title>
-    <link href="http://www.jibing57.com/2017/12/12/how-to-write-multiline-to-file-by-shell/"/>
-    <id>http://www.jibing57.com/2017/12/12/how-to-write-multiline-to-file-by-shell/</id>
-    <published>2017-12-12T13:51:21.000Z</published>
-    <updated>2017-12-25T07:09:02.985Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;使用shell添加多行到某个文件的几个办法, 启动EC2设置User Data时可能会用到。&lt;/p&gt;
-&lt;h4 id=&quot;方法一-逐行echo添加&quot;&gt;&lt;a href=&quot;#方法一-逐行echo添加&quot; class=&quot;headerlink&quot; title=&quot;方法一: 逐行echo添加&quot;&gt;&lt;/a&gt;方法一: 逐行echo添加&lt;/h4&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;echo &amp;apos;#!/bin/bash&amp;apos; &amp;gt; way1.sh&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;echo &amp;apos;export PATH=$PATH:~/bin/&amp;apos; &amp;gt;&amp;gt; way1.sh&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;查看文件内容为:&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ cat way1.sh&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;#!/bin/bash&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;export PATH=$PATH:~/bin/&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;$&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="Shell" scheme="http://www.jibing57.com/categories/Shell/"/>
-    
-    
-      <category term="EC2 User Data" scheme="http://www.jibing57.com/tags/EC2-User-Data/"/>
     
   </entry>
   

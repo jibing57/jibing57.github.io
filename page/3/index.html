@@ -139,6 +139,31 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
+			<div class="date"> 2017-12-12 </div>
+			<div class="article-title"><a href="/2017/12/12/how-to-write-multiline-to-file-by-shell/" >使用shell添加多行到文件的几个办法</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>使用shell添加多行到某个文件的几个办法, 启动EC2设置User Data时可能会用到。</p>
+<h4 id="方法一-逐行echo添加"><a href="#方法一-逐行echo添加" class="headerlink" title="方法一: 逐行echo添加"></a>方法一: 逐行echo添加</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">echo &apos;#!/bin/bash&apos; &gt; way1.sh</div><div class="line">echo &apos;export PATH=$PATH:~/bin/&apos; &gt;&gt; way1.sh</div></pre></td></tr></table></figure>
+<p>查看文件内容为:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ cat way1.sh</div><div class="line">#!/bin/bash</div><div class="line">export PATH=$PATH:~/bin/</div><div class="line">$</div></pre></td></tr></table></figure></p>
+	
+	</div>
+  <a type="button" href="/2017/12/12/how-to-write-multiline-to-file-by-shell/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
 			<div class="date"> 2017-12-04 </div>
 			<div class="article-title"><a href="/2017/12/04/AWS-Certified-Sysops-Administrator-Associate/" >AWS Certified Sysops Administrator - Associate Road Map</a></div>						
 		</h3>
@@ -418,40 +443,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2017-07-25 </div>
-			<div class="article-title"><a href="/2017/07/25/how-to-read-text-on-macos/" >Macos中如何语音朗读文字</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>Macos上看到大段大段的英文，有时候除了看以外，还想边听边看</p>
-<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><h3 id="Macos-自带speech"><a href="#Macos-自带speech" class="headerlink" title="Macos 自带speech"></a>Macos 自带speech</h3><p>Macos 自带了文本至语音的功能, 开启方法如下:</p>
-<ol>
-<li>打开[系统偏好设置] -&gt; [听写与语音] -&gt; 切换至[文本至语音]</li>
-<li>可以选择系统嗓音和朗读速率</li>
-<li>可以设置快捷键，默认为Option + Esc, 选择文字后按快捷键开启，再次按快捷键关闭</li>
-</ol>
-<p>或选中文字，右键菜单选择[语音]-&gt;[开始讲话]</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
-<li><a href="https://support.apple.com/kb/PH14230?locale=en_US" target="_blank" rel="external">OS X Mavericks: Hear your Mac speak text</a></li>
-</ul>
-
-	
-	</div>
-  <a type="button" href="/2017/07/25/how-to-read-text-on-macos/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -519,7 +510,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/AWS-Certified/">AWS Certified<span>3</span></a></li>
 		
-			<li><a href="/categories/Blog/">Blog<span>4</span></a></li>
+			<li><a href="/categories/Blog/">Blog<span>5</span></a></li>
 		
 			<li><a href="/categories/Code/">Code<span>2</span></a></li>
 		
@@ -536,48 +527,48 @@ var _hmt = _hmt || [];
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/EC2-User-Data/">EC2 User Data<span>1</span></a></li>
-		
-			<li><a href="/tags/AWS-Deep-Dive/">AWS Deep Dive<span>2</span></a></li>
-		
-			<li><a href="/tags/Ruby/">Ruby<span>5</span></a></li>
-		
-			<li><a href="/tags/AWS-Free-Tier/">AWS Free Tier<span>1</span></a></li>
-		
-			<li><a href="/tags/Solutions-Architect/">Solutions Architect<span>1</span></a></li>
-		
-			<li><a href="/tags/EC2/">EC2<span>1</span></a></li>
-		
-			<li><a href="/tags/SSH/">SSH<span>1</span></a></li>
-		
-			<li><a href="/tags/AWS-SDK/">AWS SDK<span>2</span></a></li>
-		
-			<li><a href="/tags/Sysops/">Sysops<span>1</span></a></li>
-		
-			<li><a href="/tags/Git/">Git<span>1</span></a></li>
+			<li><a href="/tags/Rails/">Rails<span>2</span></a></li>
 		
 			<li><a href="/tags/S3/">S3<span>7</span></a></li>
 		
-			<li><a href="/tags/Hexo/">Hexo<span>4</span></a></li>
-		
-			<li><a href="/tags/PostgreSQL/">PostgreSQL<span>1</span></a></li>
-		
-			<li><a href="/tags/Linux/">Linux<span>3</span></a></li>
-		
-			<li><a href="/tags/Rails/">Rails<span>2</span></a></li>
-		
-			<li><a href="/tags/Video/">Video<span>1</span></a></li>
-		
-			<li><a href="/tags/RDS/">RDS<span>3</span></a></li>
-		
-			<li><a href="/tags/Elastic-Load-Balancing/">Elastic Load Balancing<span>3</span></a></li>
-		
-			<li><a href="/tags/IAM/">IAM<span>2</span></a></li>
+			<li><a href="/tags/SSH/">SSH<span>1</span></a></li>
 		
 			<li><a href="/tags/AWS-CLI/">AWS CLI<span>5</span></a></li>
 		
+			<li><a href="/tags/CloudWatch/">CloudWatch<span>1</span></a></li>
 		
-		   <li><a href="/tags">...<span>30</span></a></li>
+			<li><a href="/tags/Nodejs/">Nodejs<span>1</span></a></li>
+		
+			<li><a href="/tags/EC2/">EC2<span>1</span></a></li>
+		
+			<li><a href="/tags/RDS/">RDS<span>3</span></a></li>
+		
+			<li><a href="/tags/AWS-SDK/">AWS SDK<span>2</span></a></li>
+		
+			<li><a href="/tags/Chrome/">Chrome<span>1</span></a></li>
+		
+			<li><a href="/tags/Ruby/">Ruby<span>5</span></a></li>
+		
+			<li><a href="/tags/Elastic-Beanstalk/">Elastic Beanstalk<span>1</span></a></li>
+		
+			<li><a href="/tags/IAM/">IAM<span>2</span></a></li>
+		
+			<li><a href="/tags/Tips/">Tips<span>1</span></a></li>
+		
+			<li><a href="/tags/Sysops/">Sysops<span>1</span></a></li>
+		
+			<li><a href="/tags/Github/">Github<span>2</span></a></li>
+		
+			<li><a href="/tags/DynamoDB/">DynamoDB<span>1</span></a></li>
+		
+			<li><a href="/tags/PostgreSQL/">PostgreSQL<span>1</span></a></li>
+		
+			<li><a href="/tags/Hexo/">Hexo<span>5</span></a></li>
+		
+			<li><a href="/tags/MacOS/">MacOS<span>3</span></a></li>
+		
+		
+		   <li><a href="/tags">...<span>32</span></a></li>
 		 
 		</ul>
 	</div>
@@ -588,6 +579,10 @@ var _hmt = _hmt || [];
 <div class="widget">
   <h4>Recent Posts</h4>
   <ul class="entry list-unstyled">
+    
+      <li>
+        <a href="/2018/04/24/douban-image-403/" ><i class="fa fa-file-o"></i>豆瓣图片403问题</a>
+      </li>
     
       <li>
         <a href="/2018/04/21/aws-s3-master-permission/" ><i class="fa fa-file-o"></i>S3进阶系列(二) ——权限管理</a>
@@ -603,10 +598,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2018/03/16/how-to-subscribe-RDS-event/" ><i class="fa fa-file-o"></i>订阅RDS事件</a>
-      </li>
-    
-      <li>
-        <a href="/2018/03/15/how-to-set-chrome-to-use-google-with-NoCountryRedirect/" ><i class="fa fa-file-o"></i>在Chrome中设置Google搜索为NoCountr...</a>
       </li>
     
   </ul>

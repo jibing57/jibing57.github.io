@@ -3,6 +3,78 @@
   
     
     <entry>
+      <title><![CDATA[豆瓣图片403问题]]></title>
+      <url>/2018/04/24/douban-image-403/</url>
+      <content type="html"><![CDATA[<h3 id="起由"><a href="#起由" class="headerlink" title="起由"></a>起由</h3><p>发布了一版blog到github上。偶然间发现<a href="/douban">豆瓣页面</a>中书的图片都无法显示了。打开Inspector调查了下，发现请求豆瓣图片的链接返回的都是403 Forbidden。<br><img src="/images/Hexo/douban_image_403.png" alt="douban_image_403.png"></p>
+<p>网上搜索了一下，可能的原因就是豆瓣为了封杀微信小程序在页面上直接请求豆瓣的图片，封杀了图片的外链。</p>
+<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>尝试着将豆瓣API返回的图片链接拷贝到浏览器中直接访问，发现可以加载图片，那估计豆瓣是通过检测HTTP Request中的referer Header来实现防盗链。</p>
+<a id="more"></a>
+<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><p>有下面这么几种方法可以来解决该403问题</p>
+<ol>
+<li>架设一个中转服务器，页面请求中转服务器，中转服务器请求豆瓣获取图片后再返回给前端页面。<ul>
+<li>优点是可以避开Referer Header限制</li>
+<li>缺点一是需要假设服务器，成本大</li>
+<li>缺点二是貌似豆瓣对请求的IP地址也有限制，请求量大时可能也会被禁。</li>
+</ul>
+</li>
+<li>通过某些代理网站来获取原始图片，比如要获取图片的原始链接是<a href="https://img3.doubanio.com/view/subject/l/public/s29542864.jpg" target="_blank" rel="external">https://img3.doubanio.com/view/subject/l/public/s29542864.jpg</a>，添加代理网站的信息后，访问链接变为<a href="https://images.weserv.nl/?url=img3.doubanio.com/view/subject/l/public/s29542864.jpg" target="_blank" rel="external">https://images.weserv.nl/?url=img3.doubanio.com/view/subject/l/public/s29542864.jpg</a>，原理和第一种类似，只是中转服务器变为使用第三方了。<ul>
+<li>优点是方便，快捷，不操心</li>
+<li>缺点是依赖于第三方的服务，可用性和稳定性不可控。</li>
+</ul>
+</li>
+<li>修改网页Html，使得在访问豆瓣图片时，不发送Referer的Header。2017年的时候，W3C制定了一个名为<a href="https://www.w3.org/TR/referrer-policy/" target="_blank" rel="external">Referrer Policy</a>的规范，可以用来告诉浏览器是否需要发送Referer Header。但非所有浏览器都能支持referrerpolicy这个属性。<ul>
+<li>好像除了自己可控外, 没什么其它优点。</li>
+<li>缺点是并非所有浏览器都能支持referrerpolicy这个属性。在MacOS 10.13.2下试验了几个在用的浏览器,结果如下:<ul>
+<li>66.0.3359.117版本的Chrome<strong>支持</strong></li>
+<li>59.0.2版本的Firefox<strong>支持</strong>该属性</li>
+<li>版本为11.0.2 (13604.4.7.1.6)的Safari<strong>不支持</strong>该属性。即使设置了referrerpolicy=”no-referrer”,还是会发送Referer Header。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="方案选取"><a href="#方案选取" class="headerlink" title="方案选取"></a>方案选取</h3><p>上面所述的几个方法中:</p>
+<ul>
+<li>方法一对于一个托管在Github上，追求简单的Blog来说，太过于沉重了。</li>
+<li>方法二是个很好的解决方案，但是自己的Blog就随手写点东西，抱着越简单越好的原则，不想引入任何不必要的第三方服务。</li>
+<li>方法三最搓，没有完整的解决问题。但<a href="/douban">豆瓣页面</a>只是为了记录一下读书记录，没有图片展示也无所谓，自己能看就行。</li>
+</ul>
+<p>最终决定采用第三种方法</p>
+<p>BLog的豆瓣页面使用的是<a href="https://github.com/Yikun/hexo-generator-douban" target="_blank" rel="external">hexo-generator-douban</a>插件，插件最新维护日期是2016年。因为只是一个自用的不完整的解决方案，没提issue, 就Fork了一份代码到自己的Github，自己改了改，添加了referrerpolicy=”no-referrer”。然后安装github版本到Hexo。</p>
+<p>代码修改diff: <a href="https://github.com/jibing57/hexo-generator-douban/commit/21f2bc7d2b259c6a9221a5cd3935c222ea0429cc" target="_blank" rel="external">https://github.com/jibing57/hexo-generator-douban/commit/21f2bc7d2b259c6a9221a5cd3935c222ea0429cc</a></p>
+<p>安装Github代码到本地:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">$ npm install git+https://github.com/jibing57/hexo-generator-douban.git --save</div><div class="line">+ hexo-generator-douban@0.1.2</div><div class="line">added 1 package and updated 3 packages in 11.748s</div><div class="line"></div><div class="line"></div><div class="line">   ╭─────────────────────────────────────╮</div><div class="line">   │                                     │</div><div class="line">   │   Update available 5.5.1 → 5.8.0    │</div><div class="line">   │     Run npm i -g npm to update      │</div><div class="line">   │                                     │</div><div class="line">   ╰─────────────────────────────────────╯</div><div class="line"></div><div class="line">$</div></pre></td></tr></table></figure>
+<p>本地启动Hexo，在Chrome中就可以正常看到豆瓣的图片了。<br><img src="/images/Hexo/douban_image_showed_in_chrome.png" alt="douban_image_showed_in_chrome.png"></p>
+<h3 id="小故事"><a href="#小故事" class="headerlink" title="小故事"></a>小故事</h3><p>Header中的referer，其实是referer的拼写错误。参见Wiki <a href="https://en.wikipedia.org/wiki/HTTP_referer" target="_blank" rel="external">HTTP referer</a></p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://www.w3.org/TR/referrer-policy/" target="_blank" rel="external">Referrer Policy</a></li>
+<li><a href="http://blog.ipsfan.com/3889.html" target="_blank" rel="external">解决豆瓣api图片403禁止访问问题</a></li>
+<li><a href="https://github.com/LingYanSi/blog/issues/89" target="_blank" rel="external">豆瓣API访问图片403的解决方案</a></li>
+<li><a href="https://github.com/izzyleung/ZhihuDailyPurify/issues/24" target="_blank" rel="external">api获取图片403，请问你是怎么解决的?</a></li>
+<li><a href="https://stackoverflow.com/questions/17509669/how-to-install-an-npm-package-from-github-directly" target="_blank" rel="external">How to install an npm package from GitHub directly</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> Blog </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Hexo </tag>
+            
+            <tag> Douban </tag>
+            
+            <tag> Nodejs </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[S3进阶系列(二) ——权限管理]]></title>
       <url>/2018/04/21/aws-s3-master-permission/</url>
       <content type="html"><![CDATA[<h3 id="什么是S3的权限管理"><a href="#什么是S3的权限管理" class="headerlink" title="什么是S3的权限管理"></a>什么是S3的权限管理</h3><p>S3的权限管理是任何使用S3的人都无法绕开的功能,决定了S3中的Object是否能够被访问。</p>
@@ -351,9 +423,9 @@
         
         <tags>
             
-            <tag> IAM </tag>
-            
             <tag> S3 </tag>
+            
+            <tag> IAM </tag>
             
             <tag> AWS CLI </tag>
             
@@ -6565,9 +6637,9 @@ You can wait for the scheduled retirement date - when the instance is stopped - 
             
             <tag> AWS SDK </tag>
             
-            <tag> RDS </tag>
-            
             <tag> Ruby </tag>
+            
+            <tag> RDS </tag>
             
             <tag> AWS CLI </tag>
             

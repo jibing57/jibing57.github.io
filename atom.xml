@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.jibing57.com/"/>
-  <updated>2018-04-25T02:37:13.744Z</updated>
+  <updated>2018-04-27T08:11:54.020Z</updated>
   <id>http://www.jibing57.com/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Mac下几个处理图片的命令</title>
+    <link href="http://www.jibing57.com/2018/04/25/command-line-tools-to-check-images-on-macos/"/>
+    <id>http://www.jibing57.com/2018/04/25/command-line-tools-to-check-images-on-macos/</id>
+    <published>2018-04-25T14:49:01.000Z</published>
+    <updated>2018-04-27T08:11:54.020Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;简述&quot;&gt;&lt;a href=&quot;#简述&quot; class=&quot;headerlink&quot; title=&quot;简述&quot;&gt;&lt;/a&gt;简述&lt;/h3&gt;&lt;p&gt;Macos下，查看图片，默认就是使用Preview。Preview基本包含了普通人能用到的各种功能。&lt;br&gt;但有时候需要批量处理图片时，常规的GUI工具会显得不太方便，使用命令来操作能够更快捷高效。下面介绍几个Macos下和图片相关的几个命令。&lt;/p&gt;
+&lt;h3 id=&quot;查看图片尺寸&quot;&gt;&lt;a href=&quot;#查看图片尺寸&quot; class=&quot;headerlink&quot; title=&quot;查看图片尺寸&quot;&gt;&lt;/a&gt;查看图片尺寸&lt;/h3&gt;&lt;h4 id=&quot;系统自带file命令&quot;&gt;&lt;a href=&quot;#系统自带file命令&quot; class=&quot;headerlink&quot; title=&quot;系统自带file命令&quot;&gt;&lt;/a&gt;系统自带file命令&lt;/h4&gt;&lt;p&gt;在命令行下查看图片的分辨率，可以直接使用Macos自带的file命令即可。&lt;br&gt;
+    
+    </summary>
+    
+      <category term="Shell" scheme="http://www.jibing57.com/categories/Shell/"/>
+    
+    
+      <category term="MacOS" scheme="http://www.jibing57.com/tags/MacOS/"/>
+    
+      <category term="Image" scheme="http://www.jibing57.com/tags/Image/"/>
+    
+  </entry>
   
   <entry>
     <title>豆瓣图片403问题</title>
@@ -61,9 +84,9 @@
     
       <category term="S3" scheme="http://www.jibing57.com/tags/S3/"/>
     
-      <category term="IAM" scheme="http://www.jibing57.com/tags/IAM/"/>
-    
       <category term="AWS CLI" scheme="http://www.jibing57.com/tags/AWS-CLI/"/>
+    
+      <category term="IAM" scheme="http://www.jibing57.com/tags/IAM/"/>
     
   </entry>
   
@@ -277,9 +300,9 @@
       <category term="Shell" scheme="http://www.jibing57.com/categories/Shell/"/>
     
     
-      <category term="Linux" scheme="http://www.jibing57.com/tags/Linux/"/>
-    
       <category term="MacOS" scheme="http://www.jibing57.com/tags/MacOS/"/>
+    
+      <category term="Linux" scheme="http://www.jibing57.com/tags/Linux/"/>
     
   </entry>
   
@@ -508,40 +531,6 @@
       <category term="S3" scheme="http://www.jibing57.com/tags/S3/"/>
     
       <category term="AWS CLI" scheme="http://www.jibing57.com/tags/AWS-CLI/"/>
-    
-      <category term="AWS Deep Dive" scheme="http://www.jibing57.com/tags/AWS-Deep-Dive/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>深挖AWS S3的权限管理</title>
-    <link href="http://www.jibing57.com/2017/12/14/deep-dig-on-s3-bucket-permission/"/>
-    <id>http://www.jibing57.com/2017/12/14/deep-dig-on-s3-bucket-permission/</id>
-    <published>2017-12-14T12:48:26.000Z</published>
-    <updated>2017-12-25T07:08:09.473Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;AWS共有三种方式用来管理S3的访问权限&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;IAM policy&lt;/li&gt;
-&lt;li&gt;Bucket Policy&lt;/li&gt;
-&lt;li&gt;S3 ACL&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;此处深挖一下这三种访问控制的用法和区别&lt;/p&gt;
-&lt;h3 id=&quot;三种访问控制的介绍&quot;&gt;&lt;a href=&quot;#三种访问控制的介绍&quot; class=&quot;headerlink&quot; title=&quot;三种访问控制的介绍&quot;&gt;&lt;/a&gt;三种访问控制的介绍&lt;/h3&gt;&lt;p&gt;S3的三种访问控制如下:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;IAM Policy, 是基于用户层面的控制，attach to IAM实体(User, Role或Group),规定了谁能对哪些S3做什么操作&lt;/li&gt;
-&lt;li&gt;Bucket Policy, 是基于Bucket层面的控制, attach to Bucket, 规定了哪些人能对我这个Bucket中的resource做什么操作。&lt;/li&gt;
-&lt;li&gt;S3 ACL, 是基于Bucket或单个对象的，规定了谁能对我这个Bucket或对象做什么操作。&lt;/li&gt;
-&lt;/ul&gt;
-    
-    </summary>
-    
-      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
-    
-    
-      <category term="S3" scheme="http://www.jibing57.com/tags/S3/"/>
     
       <category term="AWS Deep Dive" scheme="http://www.jibing57.com/tags/AWS-Deep-Dive/"/>
     

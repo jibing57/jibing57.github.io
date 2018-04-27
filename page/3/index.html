@@ -139,6 +139,41 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
+			<div class="date"> 2017-12-14 </div>
+			<div class="article-title"><a href="/2017/12/14/deep-dig-on-s3-bucket-permission/" >深挖AWS S3的权限管理</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>AWS共有三种方式用来管理S3的访问权限</p>
+<ul>
+<li>IAM policy</li>
+<li>Bucket Policy</li>
+<li>S3 ACL</li>
+</ul>
+<p>此处深挖一下这三种访问控制的用法和区别</p>
+<h3 id="三种访问控制的介绍"><a href="#三种访问控制的介绍" class="headerlink" title="三种访问控制的介绍"></a>三种访问控制的介绍</h3><p>S3的三种访问控制如下:</p>
+<ul>
+<li>IAM Policy, 是基于用户层面的控制，attach to IAM实体(User, Role或Group),规定了谁能对哪些S3做什么操作</li>
+<li>Bucket Policy, 是基于Bucket层面的控制, attach to Bucket, 规定了哪些人能对我这个Bucket中的resource做什么操作。</li>
+<li>S3 ACL, 是基于Bucket或单个对象的，规定了谁能对我这个Bucket或对象做什么操作。</li>
+</ul>
+	
+	</div>
+  <a type="button" href="/2017/12/14/deep-dig-on-s3-bucket-permission/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
 			<div class="date"> 2017-12-12 </div>
 			<div class="article-title"><a href="/2017/12/12/how-to-write-multiline-to-file-by-shell/" >使用shell添加多行到文件的几个办法</a></div>						
 		</h3>
@@ -410,39 +445,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2017-08-03 </div>
-			<div class="article-title"><a href="/2017/08/03/date-command-on-Linux-and-Mac/" >Linux 和 Mac下date命令的基本用法</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>Mac下的date命令是BSD系的, Linux下date命令是GNU系的，两者的用法有一些区别，罗列如下:</p>
-<h3 id="共同点"><a href="#共同点" class="headerlink" title="共同点"></a>共同点</h3><p>基本的时间格式的缩写是相同的，规则如下:</p>
-<ul>
-<li>%Y 表示四位数形式的年份, 比如2017</li>
-<li>%m 表示带前导0的月份，比如02,12</li>
-<li>%d 表示带前导0的日子， 比如 02，28</li>
-<li>%H 表示带前导0的24小时， 比如 01, 23</li>
-<li>%M 表示带前导0的分钟数， 比如 05, 22</li>
-<li>%S 表示带前导0的秒数， 比如 06，45</li>
-<li>%s 表示距离格林威治时间(1970年1月1日0点)的秒数</li>
-</ul>
-	
-	</div>
-  <a type="button" href="/2017/08/03/date-command-on-Linux-and-Mac/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -514,7 +516,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/Code/">Code<span>2</span></a></li>
 		
-			<li><a href="/categories/Shell/">Shell<span>5</span></a></li>
+			<li><a href="/categories/Shell/">Shell<span>6</span></a></li>
 		
 			<li><a href="/categories/Tools/">Tools<span>3</span></a></li>
 		
@@ -527,48 +529,48 @@ var _hmt = _hmt || [];
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/Rails/">Rails<span>2</span></a></li>
+			<li><a href="/tags/Elastic-Load-Balancing/">Elastic Load Balancing<span>3</span></a></li>
 		
-			<li><a href="/tags/S3/">S3<span>7</span></a></li>
-		
-			<li><a href="/tags/SSH/">SSH<span>1</span></a></li>
-		
-			<li><a href="/tags/AWS-CLI/">AWS CLI<span>5</span></a></li>
-		
-			<li><a href="/tags/CloudWatch/">CloudWatch<span>1</span></a></li>
-		
-			<li><a href="/tags/Nodejs/">Nodejs<span>1</span></a></li>
-		
-			<li><a href="/tags/EC2/">EC2<span>1</span></a></li>
-		
-			<li><a href="/tags/RDS/">RDS<span>3</span></a></li>
-		
-			<li><a href="/tags/AWS-SDK/">AWS SDK<span>2</span></a></li>
-		
-			<li><a href="/tags/Chrome/">Chrome<span>1</span></a></li>
-		
-			<li><a href="/tags/Ruby/">Ruby<span>5</span></a></li>
+			<li><a href="/tags/AWS-Deep-Dive/">AWS Deep Dive<span>2</span></a></li>
 		
 			<li><a href="/tags/Elastic-Beanstalk/">Elastic Beanstalk<span>1</span></a></li>
 		
-			<li><a href="/tags/IAM/">IAM<span>2</span></a></li>
-		
-			<li><a href="/tags/Tips/">Tips<span>1</span></a></li>
+			<li><a href="/tags/AWS-Tools/">AWS Tools<span>1</span></a></li>
 		
 			<li><a href="/tags/Sysops/">Sysops<span>1</span></a></li>
 		
-			<li><a href="/tags/Github/">Github<span>2</span></a></li>
+			<li><a href="/tags/Rails/">Rails<span>2</span></a></li>
 		
-			<li><a href="/tags/DynamoDB/">DynamoDB<span>1</span></a></li>
+			<li><a href="/tags/Image/">Image<span>1</span></a></li>
 		
-			<li><a href="/tags/PostgreSQL/">PostgreSQL<span>1</span></a></li>
+			<li><a href="/tags/Tips/">Tips<span>1</span></a></li>
+		
+			<li><a href="/tags/CodeCommit/">CodeCommit<span>1</span></a></li>
 		
 			<li><a href="/tags/Hexo/">Hexo<span>5</span></a></li>
 		
-			<li><a href="/tags/MacOS/">MacOS<span>3</span></a></li>
+			<li><a href="/tags/CloudWatch/">CloudWatch<span>1</span></a></li>
+		
+			<li><a href="/tags/Douban/">Douban<span>1</span></a></li>
+		
+			<li><a href="/tags/Github/">Github<span>2</span></a></li>
+		
+			<li><a href="/tags/Nodejs/">Nodejs<span>1</span></a></li>
+		
+			<li><a href="/tags/MacOS/">MacOS<span>4</span></a></li>
+		
+			<li><a href="/tags/Failover/">Failover<span>1</span></a></li>
+		
+			<li><a href="/tags/EC2-User-Data/">EC2 User Data<span>1</span></a></li>
+		
+			<li><a href="/tags/Git/">Git<span>1</span></a></li>
+		
+			<li><a href="/tags/EC2/">EC2<span>1</span></a></li>
+		
+			<li><a href="/tags/Ruby/">Ruby<span>5</span></a></li>
 		
 		
-		   <li><a href="/tags">...<span>32</span></a></li>
+		   <li><a href="/tags">...<span>33</span></a></li>
 		 
 		</ul>
 	</div>
@@ -579,6 +581,10 @@ var _hmt = _hmt || [];
 <div class="widget">
   <h4>Recent Posts</h4>
   <ul class="entry list-unstyled">
+    
+      <li>
+        <a href="/2018/04/25/command-line-tools-to-check-images-on-macos/" ><i class="fa fa-file-o"></i>Mac下几个处理图片的命令</a>
+      </li>
     
       <li>
         <a href="/2018/04/24/douban-image-403/" ><i class="fa fa-file-o"></i>豆瓣图片403问题</a>
@@ -594,10 +600,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2018/04/18/aws-s3-master-basic/" ><i class="fa fa-file-o"></i>S3进阶系列(一) —— S3基础知识</a>
-      </li>
-    
-      <li>
-        <a href="/2018/03/16/how-to-subscribe-RDS-event/" ><i class="fa fa-file-o"></i>订阅RDS事件</a>
       </li>
     
   </ul>

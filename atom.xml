@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.jibing57.com/"/>
-  <updated>2018-04-27T08:11:54.020Z</updated>
+  <updated>2018-08-30T05:02:58.269Z</updated>
   <id>http://www.jibing57.com/</id>
   
   <author>
@@ -15,6 +15,80 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>由于EC2中no space left引起的EB警报</title>
+    <link href="http://www.jibing57.com/2018/08/11/EB-warning-due-to-no-space-left-on-device-issue-on-EC2/"/>
+    <id>http://www.jibing57.com/2018/08/11/EB-warning-due-to-no-space-left-on-device-issue-on-EC2/</id>
+    <published>2018-08-11T12:12:13.000Z</published>
+    <updated>2018-08-30T05:02:58.269Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;问题现象&quot;&gt;&lt;a href=&quot;#问题现象&quot; class=&quot;headerlink&quot; title=&quot;问题现象&quot;&gt;&lt;/a&gt;问题现象&lt;/h3&gt;&lt;p&gt;周末早上突然收到大量Elastic Beanstalk的警报邮件，提示一个跑Rails的EB环境中有大量的请求是HTTP 5xx。&lt;/p&gt;
+&lt;p&gt;登陆AWS Console查看相关Event，已经有持续的WARN提示有大量的HTTP 5xx请求。&lt;br&gt;&lt;img src=&quot;/images/AWS/EBNoSpaceLeft/amounts_of_5XX_on_EB_event.png&quot; alt=&quot;amounts_of_5XX_on_EB_event&quot;&gt;&lt;/p&gt;
+&lt;h3 id=&quot;解决过程&quot;&gt;&lt;a href=&quot;#解决过程&quot; class=&quot;headerlink&quot; title=&quot;解决过程&quot;&gt;&lt;/a&gt;解决过程&lt;/h3&gt;&lt;p&gt;使用EB console下载了各个Instanc的日志，仔细进行排查。&lt;/p&gt;
+&lt;p&gt;最后在一个Instance的Rails log中发现有请求提示&lt;code&gt;No space left on device&lt;/code&gt;。原来是Instance的磁盘满了，导致了部分需要写临时文件的请求失败了。&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;F, [2018-08-11T02:10:43.084147 #11559] FATAL -- :&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;Errno::ENOSPC (No space left on device @ rb_sysopen - /var/app/current/tmp/cache/rack%3A%3Aattack%3A306790688%3Alocations%2Fip%3A46.229.168.8120180811-11559-4156fj):&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  app/middleware/catch_json_parse_errors.rb:8:in `call&amp;apos;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+    
+    </summary>
+    
+      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
+    
+    
+      <category term="Elastic Beanstalk" scheme="http://www.jibing57.com/tags/Elastic-Beanstalk/"/>
+    
+      <category term="EC2" scheme="http://www.jibing57.com/tags/EC2/"/>
+    
+      <category term="AutoScaling" scheme="http://www.jibing57.com/tags/AutoScaling/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>macOS 10.13.2下SSH命令Invalid key length错误的原因</title>
+    <link href="http://www.jibing57.com/2018/05/21/ssh-key-Invalid-key-length-Error-on-Macos/"/>
+    <id>http://www.jibing57.com/2018/05/21/ssh-key-Invalid-key-length-Error-on-Macos/</id>
+    <published>2018-05-21T11:53:07.000Z</published>
+    <updated>2018-05-23T06:48:46.315Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;升级到Macos 10.13.2后，使用ssh以key方式登陆一个12年配置的服务器的时候，ssh命令报告了&lt;code&gt;Invalid key length&lt;/code&gt;的错误。&lt;/p&gt;
+&lt;p&gt;很是纳闷，服务器和本地的key都是配置好后就没动过的，key pair本身肯定没问题啊，怎么会报错了呢?&lt;/p&gt;
+&lt;h3 id=&quot;原因&quot;&gt;&lt;a href=&quot;#原因&quot; class=&quot;headerlink&quot; title=&quot;原因&quot;&gt;&lt;/a&gt;原因&lt;/h3&gt;&lt;p&gt;Google了一下，发现是MacOS使用的OpenSSH版本升级到了7.6，小于1024bits的RSA keys已经不被支持了。&lt;/p&gt;
+&lt;p&gt;使用&lt;code&gt;ssh-keygen&lt;/code&gt;查看了一下public key，发现是1023bit的。所以ssh时候报了&lt;code&gt;Invalid key length&lt;/code&gt;的错误。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Shell" scheme="http://www.jibing57.com/categories/Shell/"/>
+    
+    
+      <category term="MacOS" scheme="http://www.jibing57.com/tags/MacOS/"/>
+    
+      <category term="SSH" scheme="http://www.jibing57.com/tags/SSH/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>macOS 10.13 High Sierra读写NTFS移动硬盘</title>
+    <link href="http://www.jibing57.com/2018/05/10/how-to-write-NTFS-Deives-on-a-Mac-10.13/"/>
+    <id>http://www.jibing57.com/2018/05/10/how-to-write-NTFS-Deives-on-a-Mac-10.13/</id>
+    <published>2018-05-10T12:30:07.000Z</published>
+    <updated>2018-05-14T06:55:13.357Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;系统升级到10.13后，没用过移动硬盘，所以一直也没发现以前装的osxfuse+ntfs-3g在系统更新后已经失效了。结果么在要使用的时候发现悲剧了，在10.13中没法写NTFT格式的移动硬盘了。&lt;/p&gt;
+&lt;p&gt;上网搜了一下，How-To Geek上面有一篇文章，详细讲述了Macos下挂载NTFS移动硬盘的几种方法,有收费方案也有免费方案，并比较了每个方案的优缺点。 虽然文章是基于macOS 10.12 Sierra的，但各个方案的优缺点同样适用于10.13。&lt;a href=&quot;https://www.howtogeek.com/236055/how-to-write-to-ntfs-drives-on-a-mac/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;How to Write to NTFS Drives on a Mac&lt;/a&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Tools" scheme="http://www.jibing57.com/categories/Tools/"/>
+    
+    
+      <category term="MacOS" scheme="http://www.jibing57.com/tags/MacOS/"/>
+    
+  </entry>
   
   <entry>
     <title>Mac下几个处理图片的命令</title>
@@ -82,11 +156,11 @@
       <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
     
     
+      <category term="IAM" scheme="http://www.jibing57.com/tags/IAM/"/>
+    
       <category term="S3" scheme="http://www.jibing57.com/tags/S3/"/>
     
       <category term="AWS CLI" scheme="http://www.jibing57.com/tags/AWS-CLI/"/>
-    
-      <category term="IAM" scheme="http://www.jibing57.com/tags/IAM/"/>
     
   </entry>
   
@@ -360,7 +434,7 @@
     <link href="http://www.jibing57.com/2017/12/26/a-simple-elb-access-log-parser-by-ruby/"/>
     <id>http://www.jibing57.com/2017/12/26/a-simple-elb-access-log-parser-by-ruby/</id>
     <published>2017-12-26T12:35:29.000Z</published>
-    <updated>2017-12-26T02:56:15.319Z</updated>
+    <updated>2018-09-04T11:39:01.545Z</updated>
     
     <summary type="html">
     
@@ -451,88 +525,6 @@
       <category term="Elastic Load Balancing" scheme="http://www.jibing57.com/tags/Elastic-Load-Balancing/"/>
     
       <category term="S3" scheme="http://www.jibing57.com/tags/S3/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>如何在Elastic Beanstalk的Rails环境中配置staging.log为可下载</title>
-    <link href="http://www.jibing57.com/2017/12/20/How-to-add-staging-log-to-EB-logs/"/>
-    <id>http://www.jibing57.com/2017/12/20/How-to-add-staging-log-to-EB-logs/</id>
-    <published>2017-12-20T15:32:43.000Z</published>
-    <updated>2017-12-25T07:08:09.553Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;新建了一个EB环境，来跑一个staging模式的rails。EB环境变量设置好后，部署成功。一系列测试都没问题，结果却在一个不起眼的地方出了点幺蛾子。&lt;/p&gt;
-&lt;p&gt;Rails代码中，没有特殊配置config.logger,因此staging模式时，默认的输出日志为logs/staging.log, 但是在EB的Web console中尝试获取Full Logs后，在BundleLogs中发现没有staging.log。&lt;/p&gt;
-&lt;p&gt;赶紧调查试验了一下，并将调查结果记录如下。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
-    
-    
-      <category term="Elastic Beanstalk" scheme="http://www.jibing57.com/tags/Elastic-Beanstalk/"/>
-    
-      <category term="Ruby" scheme="http://www.jibing57.com/tags/Ruby/"/>
-    
-      <category term="Rails" scheme="http://www.jibing57.com/tags/Rails/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>S3 RRS价格注意点</title>
-    <link href="http://www.jibing57.com/2017/12/20/expired-of-S3-RRS/"/>
-    <id>http://www.jibing57.com/2017/12/20/expired-of-S3-RRS/</id>
-    <published>2017-12-20T13:33:58.000Z</published>
-    <updated>2017-12-25T07:08:09.491Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;S3-存储类型&quot;&gt;&lt;a href=&quot;#S3-存储类型&quot; class=&quot;headerlink&quot; title=&quot;S3 存储类型&quot;&gt;&lt;/a&gt;S3 存储类型&lt;/h3&gt;&lt;p&gt;S3 总共提供三种存储类型&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;标准(Standard)&lt;/li&gt;
-&lt;li&gt;标准-低频率访问(Standard - Infrequent Access)&lt;/li&gt;
-&lt;li&gt;低冗余存储(Reduced Redundancy Storage)
-    
-    </summary>
-    
-      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
-    
-    
-      <category term="S3" scheme="http://www.jibing57.com/tags/S3/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>深挖AWS S3的权限管理(实验篇)</title>
-    <link href="http://www.jibing57.com/2017/12/19/deep-dig-on-s3-bucket-permission-exam/"/>
-    <id>http://www.jibing57.com/2017/12/19/deep-dig-on-s3-bucket-permission-exam/</id>
-    <published>2017-12-19T13:54:56.000Z</published>
-    <updated>2017-12-25T07:08:09.451Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;在&lt;a href=&quot;/2017/12/14/deep-dig-on-s3-bucket-permission/&quot; title=&quot;深挖AWS S3的权限管理&quot;&gt;深挖AWS S3的权限管理&lt;/a&gt; 一文中介绍了AWS S3权限管理的三种方法。此处再通过几个实验来看下三种方法的使用方法。&lt;/p&gt;
-&lt;hr&gt;
-&lt;h3 id=&quot;实验前准备&quot;&gt;&lt;a href=&quot;#实验前准备&quot; class=&quot;headerlink&quot; title=&quot;实验前准备&quot;&gt;&lt;/a&gt;实验前准备&lt;/h3&gt;&lt;h4 id=&quot;实验用相关账号介绍&quot;&gt;&lt;a href=&quot;#实验用相关账号介绍&quot; class=&quot;headerlink&quot; title=&quot;实验用相关账号介绍&quot;&gt;&lt;/a&gt;实验用相关账号介绍&lt;/h4&gt;&lt;ul&gt;
-&lt;li&gt;IAM User carl.shen - carl.shen有AdministratorAccess权限，用来上传图片到S3&lt;/li&gt;
-&lt;li&gt;IAM User carl - 测试IAM User一号，初始没有任何权限&lt;/li&gt;
-&lt;li&gt;IAM User shen - 测试IAM User二号，初始没有任何权限&lt;/li&gt;
-&lt;li&gt;IAM Group S3Exam - 用来给IAM User carl和shen统一赋权限&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;建好三个IAM账号，下载各自的Access key ID和Secret Access Key, 并设置好AWS CLI。AWS CLI多profile的设置方法可以参照 &lt;a href=&quot;/2017/10/24/how-to-use-aws-cli-with-multi-user/&quot; title=&quot;如何在aws cli中使用多个配置文件&quot;&gt;如何在aws cli中使用多个配置文件&lt;/a&gt;&lt;br&gt;
-    
-    </summary>
-    
-      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
-    
-    
-      <category term="S3" scheme="http://www.jibing57.com/tags/S3/"/>
-    
-      <category term="AWS CLI" scheme="http://www.jibing57.com/tags/AWS-CLI/"/>
-    
-      <category term="AWS Deep Dive" scheme="http://www.jibing57.com/tags/AWS-Deep-Dive/"/>
     
   </entry>
   

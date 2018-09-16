@@ -211,9 +211,37 @@ var _hmt = _hmt || [];
 		
             
 		
+            
+		
         
         <!-- render other articles -->
         
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2018-09-15 </div>
+			<div class="article-title"><a href="/2018/09/15/how-to-access-internal-by-ssh-tunnel/" >使用ssh隧道访问内网资源</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>日常开发过程中，会遇到一些情况需要和对端机构或公司进行联调。此时有可能会需要访问对端机构内部的一些网页或API。</p>
+<p>正规流程中，要访问内网，如果对端机构有VPN服务，应该是申请一个VPN来进行操作，这种方式比较安全可靠。但实际操作过程中，可能对端机构没有VPN服务，或者走VPN流程繁琐。此时如果你有对端机构中某个内网Linux机器的ssh登陆权限,而且该Linux机器可以可以访问相关网页或者API，则可以通过ssh tunnel的方式，临时来访问对端机构的内部资源。</p>
+<p>接下来，通过使用两台EC2来模拟内网环境,来介绍如何在Mac机器上使用ssh tunnel访问内网资源。</p>
+<h3 id="搭建说明"><a href="#搭建说明" class="headerlink" title="搭建说明"></a>搭建说明</h3><h4 id="搭建模拟用的EC2"><a href="#搭建模拟用的EC2" class="headerlink" title="搭建模拟用的EC2"></a>搭建模拟用的EC2</h4><p>首先，开启两台EC2，一台用来模拟ssh的跳板机(Jumpbox)，一台用来模拟内部网页服务器(HttpServer)。</p>
+	
+	</div>
+  <a type="button" href="/2018/09/15/how-to-access-internal-by-ssh-tunnel/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
            
 			  
 	
@@ -443,30 +471,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2018-03-15 </div>
-			<div class="article-title"><a href="/2018/03/15/how-to-set-chrome-to-use-google-with-NoCountryRedirect/" >在Chrome中设置Google搜索为NoCountryRedirect</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>添加代理来科学上网时，使用Google进行搜索，Chrome浏览器默认会重定向到代理国所在的Google域名。比如<code>https://www.google.co.kr/</code>,<code>https://www.google.co.jp/</code>等, 已经在<code>www.google.com</code>登录的Google账号就还得重登, 极度烦躁。</p>
-<p>下面是几个固定使用<code>www.google.com</code>来进行搜索的方法</p>
-	
-	</div>
-  <a type="button" href="/2018/03/15/how-to-set-chrome-to-use-google-with-NoCountryRedirect/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -540,7 +544,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/Shell/">Shell<span>7</span></a></li>
 		
-			<li><a href="/categories/Tools/">Tools<span>4</span></a></li>
+			<li><a href="/categories/Tools/">Tools<span>5</span></a></li>
 		
 		</ul>
 	</div>
@@ -551,45 +555,45 @@ var _hmt = _hmt || [];
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/AWS-SDK/">AWS SDK<span>2</span></a></li>
+			<li><a href="/tags/Douban/">Douban<span>1</span></a></li>
 		
-			<li><a href="/tags/Elastic-Beanstalk/">Elastic Beanstalk<span>2</span></a></li>
-		
-			<li><a href="/tags/RDS/">RDS<span>3</span></a></li>
-		
-			<li><a href="/tags/IAM/">IAM<span>2</span></a></li>
-		
-			<li><a href="/tags/Failover/">Failover<span>1</span></a></li>
-		
-			<li><a href="/tags/Elastic-Load-Balancing/">Elastic Load Balancing<span>3</span></a></li>
-		
-			<li><a href="/tags/Nodejs/">Nodejs<span>1</span></a></li>
-		
-			<li><a href="/tags/Tips/">Tips<span>1</span></a></li>
-		
-			<li><a href="/tags/DynamoDB/">DynamoDB<span>1</span></a></li>
-		
-			<li><a href="/tags/AWS-CLI/">AWS CLI<span>5</span></a></li>
-		
-			<li><a href="/tags/PostgreSQL/">PostgreSQL<span>1</span></a></li>
-		
-			<li><a href="/tags/Sysops/">Sysops<span>1</span></a></li>
+			<li><a href="/tags/AutoScaling/">AutoScaling<span>1</span></a></li>
 		
 			<li><a href="/tags/AWS-Tools/">AWS Tools<span>1</span></a></li>
 		
+			<li><a href="/tags/IAM/">IAM<span>2</span></a></li>
+		
+			<li><a href="/tags/AWS-Deep-Dive/">AWS Deep Dive<span>2</span></a></li>
+		
+			<li><a href="/tags/Elastic-Load-Balancing/">Elastic Load Balancing<span>3</span></a></li>
+		
+			<li><a href="/tags/Solutions-Architect/">Solutions Architect<span>1</span></a></li>
+		
+			<li><a href="/tags/CodeCommit/">CodeCommit<span>1</span></a></li>
+		
+			<li><a href="/tags/Hexo/">Hexo<span>5</span></a></li>
+		
+			<li><a href="/tags/DynamoDB/">DynamoDB<span>1</span></a></li>
+		
 			<li><a href="/tags/Linux/">Linux<span>3</span></a></li>
+		
+			<li><a href="/tags/CloudWatch/">CloudWatch<span>1</span></a></li>
+		
+			<li><a href="/tags/Nodejs/">Nodejs<span>1</span></a></li>
 		
 			<li><a href="/tags/Git/">Git<span>1</span></a></li>
 		
-			<li><a href="/tags/SSH/">SSH<span>2</span></a></li>
-		
-			<li><a href="/tags/Image/">Image<span>1</span></a></li>
-		
-			<li><a href="/tags/Chrome/">Chrome<span>1</span></a></li>
+			<li><a href="/tags/Rails/">Rails<span>2</span></a></li>
 		
 			<li><a href="/tags/AWS-Free-Tier/">AWS Free Tier<span>1</span></a></li>
 		
-			<li><a href="/tags/CloudWatch/">CloudWatch<span>1</span></a></li>
+			<li><a href="/tags/AWS-CLI/">AWS CLI<span>5</span></a></li>
+		
+			<li><a href="/tags/Video/">Video<span>1</span></a></li>
+		
+			<li><a href="/tags/Github/">Github<span>2</span></a></li>
+		
+			<li><a href="/tags/Elastic-Beanstalk/">Elastic Beanstalk<span>2</span></a></li>
 		
 		
 		   <li><a href="/tags">...<span>34</span></a></li>
@@ -605,6 +609,10 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2018/09/15/how-to-access-internal-by-ssh-tunnel/" ><i class="fa fa-file-o"></i>使用ssh隧道访问内网资源</a>
+      </li>
+    
+      <li>
         <a href="/2018/08/11/EB-warning-due-to-no-space-left-on-device-issue-on-EC2/" ><i class="fa fa-file-o"></i>由于EC2中no space left引起的EB警报</a>
       </li>
     
@@ -618,10 +626,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2018/04/25/command-line-tools-to-check-images-on-macos/" ><i class="fa fa-file-o"></i>Mac下几个处理图片的命令</a>
-      </li>
-    
-      <li>
-        <a href="/2018/04/24/douban-image-403/" ><i class="fa fa-file-o"></i>豆瓣图片403问题</a>
       </li>
     
   </ul>

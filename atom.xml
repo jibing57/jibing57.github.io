@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.jibing57.com/"/>
-  <updated>2018-08-30T05:02:58.269Z</updated>
+  <updated>2018-09-16T07:03:13.813Z</updated>
   <id>http://www.jibing57.com/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>使用ssh隧道访问内网资源</title>
+    <link href="http://www.jibing57.com/2018/09/15/how-to-access-internal-by-ssh-tunnel/"/>
+    <id>http://www.jibing57.com/2018/09/15/how-to-access-internal-by-ssh-tunnel/</id>
+    <published>2018-09-15T06:31:21.000Z</published>
+    <updated>2018-09-16T07:03:13.813Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h3&gt;&lt;p&gt;日常开发过程中，会遇到一些情况需要和对端机构或公司进行联调。此时有可能会需要访问对端机构内部的一些网页或API。&lt;/p&gt;
+&lt;p&gt;正规流程中，要访问内网，如果对端机构有VPN服务，应该是申请一个VPN来进行操作，这种方式比较安全可靠。但实际操作过程中，可能对端机构没有VPN服务，或者走VPN流程繁琐。此时如果你有对端机构中某个内网Linux机器的ssh登陆权限,而且该Linux机器可以可以访问相关网页或者API，则可以通过ssh tunnel的方式，临时来访问对端机构的内部资源。&lt;/p&gt;
+&lt;p&gt;接下来，通过使用两台EC2来模拟内网环境,来介绍如何在Mac机器上使用ssh tunnel访问内网资源。&lt;/p&gt;
+&lt;h3 id=&quot;搭建说明&quot;&gt;&lt;a href=&quot;#搭建说明&quot; class=&quot;headerlink&quot; title=&quot;搭建说明&quot;&gt;&lt;/a&gt;搭建说明&lt;/h3&gt;&lt;h4 id=&quot;搭建模拟用的EC2&quot;&gt;&lt;a href=&quot;#搭建模拟用的EC2&quot; class=&quot;headerlink&quot; title=&quot;搭建模拟用的EC2&quot;&gt;&lt;/a&gt;搭建模拟用的EC2&lt;/h4&gt;&lt;p&gt;首先，开启两台EC2，一台用来模拟ssh的跳板机(Jumpbox)，一台用来模拟内部网页服务器(HttpServer)。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Tools" scheme="http://www.jibing57.com/categories/Tools/"/>
+    
+    
+      <category term="EC2" scheme="http://www.jibing57.com/tags/EC2/"/>
+    
+      <category term="MacOS" scheme="http://www.jibing57.com/tags/MacOS/"/>
+    
+      <category term="SSH" scheme="http://www.jibing57.com/tags/SSH/"/>
+    
+  </entry>
   
   <entry>
     <title>由于EC2中no space left引起的EB警报</title>
@@ -501,30 +528,6 @@
     
     
       <category term="Hexo" scheme="http://www.jibing57.com/tags/Hexo/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>什么是传统负载均衡器的访问日志</title>
-    <link href="http://www.jibing57.com/2017/12/22/what-is-Access-Logs-of-Classic-Load-Balancer/"/>
-    <id>http://www.jibing57.com/2017/12/22/what-is-Access-Logs-of-Classic-Load-Balancer/</id>
-    <published>2017-12-22T07:26:12.000Z</published>
-    <updated>2017-12-26T02:57:19.342Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;什么是传统负载均衡器的Access-Logs&quot;&gt;&lt;a href=&quot;#什么是传统负载均衡器的Access-Logs&quot; class=&quot;headerlink&quot; title=&quot;什么是传统负载均衡器的Access Logs&quot;&gt;&lt;/a&gt;什么是传统负载均衡器的Access Logs&lt;/h3&gt;&lt;p&gt;Elastic Load Balancing 提供了Access Logs(访问日志)，Access Logs可记录下发送到负载均衡器的请求的详细信息。每个日志都包含固定格式的信息 (例如，收到请求的时间、客户端的 IP 地址、延迟、请求路径和服务器响应)。可以使用这些日志分析流量模式和进行Debug。&lt;/p&gt;
-&lt;p&gt;Access Logs是ELB的一项可选功能，默认情况下是Disable的。启用后，ELB会将logs存储到指定的某个S3 Bucket中。&lt;/p&gt;
-&lt;h3 id=&quot;收费&quot;&gt;&lt;a href=&quot;#收费&quot; class=&quot;headerlink&quot; title=&quot;收费&quot;&gt;&lt;/a&gt;收费&lt;/h3&gt;&lt;p&gt;ELB的Access Logs本身是不需要额外的费用的，从ELB传输到S3的流量是免费的，但是S3的存储费用是需要支付的。&lt;br&gt;
-    
-    </summary>
-    
-      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
-    
-    
-      <category term="Elastic Load Balancing" scheme="http://www.jibing57.com/tags/Elastic-Load-Balancing/"/>
-    
-      <category term="S3" scheme="http://www.jibing57.com/tags/S3/"/>
     
   </entry>
   

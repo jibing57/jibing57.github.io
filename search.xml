@@ -3,6 +3,87 @@
   
     
     <entry>
+      <title><![CDATA[使用ssh隧道访问内网资源]]></title>
+      <url>/2018/09/15/how-to-access-internal-by-ssh-tunnel/</url>
+      <content type="html"><![CDATA[<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>日常开发过程中，会遇到一些情况需要和对端机构或公司进行联调。此时有可能会需要访问对端机构内部的一些网页或API。</p>
+<p>正规流程中，要访问内网，如果对端机构有VPN服务，应该是申请一个VPN来进行操作，这种方式比较安全可靠。但实际操作过程中，可能对端机构没有VPN服务，或者走VPN流程繁琐。此时如果你有对端机构中某个内网Linux机器的ssh登陆权限,而且该Linux机器可以可以访问相关网页或者API，则可以通过ssh tunnel的方式，临时来访问对端机构的内部资源。</p>
+<p>接下来，通过使用两台EC2来模拟内网环境,来介绍如何在Mac机器上使用ssh tunnel访问内网资源。</p>
+<h3 id="搭建说明"><a href="#搭建说明" class="headerlink" title="搭建说明"></a>搭建说明</h3><h4 id="搭建模拟用的EC2"><a href="#搭建模拟用的EC2" class="headerlink" title="搭建模拟用的EC2"></a>搭建模拟用的EC2</h4><p>首先，开启两台EC2，一台用来模拟ssh的跳板机(Jumpbox)，一台用来模拟内部网页服务器(HttpServer)。</p>
+<a id="more"></a>
+<p>基本信息如下:</p>
+<table>
+<thead>
+<tr>
+<th>Instance</th>
+<th>Public IP</th>
+<th>Private IP</th>
+<th>SG Name</th>
+<th>SG Rule</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Jumpbox</td>
+<td>34.220.122.63</td>
+<td>172.31.17.27</td>
+<td>jumpbox-sg</td>
+<td>SSH From 0.0.0.0/0</td>
+</tr>
+<tr>
+<td>HttpServer</td>
+<td>52.33.58.113</td>
+<td>172.31.21.213</td>
+<td>HttpServer</td>
+<td>SSH from 0.0.0.0/0, HTTP from jumpbox-sg</td>
+</tr>
+</tbody>
+</table>
+<p>其中Jumpbox的SecurityGroup只允许ssh登陆，HttpServer开放ssh，并开放HTTP端口为只允许Jumpbox的SG访问。</p>
+<p>登陆HttpServer，设置一个简易的httpd服务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># 安装httpd</div><div class="line">sudo yum install httpd -y</div><div class="line"></div><div class="line"># 建立一个最简单的page</div><div class="line">sudo echo &quot;&lt;h1&gt; Page From `curl http://169.254.169.254/latest/meta-data/local-ipv4` &lt;/h1&gt;&quot; &gt; /var/www/html/index.html</div><div class="line"></div><div class="line"># 启动http服务</div><div class="line">sudo systemctl start httpd.service</div></pre></td></tr></table></figure>
+<p>在Jumpbox中测试使用curl，可以成功获取到index.html的内容，为<code>&lt;h1&gt; Page From 172.31.21.213 &lt;/h1&gt;</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">[ec2-user@ip-172-31-17-27 ~]$ curl -vL http://172.31.21.213</div><div class="line">* Rebuilt URL to: http://172.31.21.213/</div><div class="line">*   Trying 172.31.21.213...</div><div class="line">* TCP_NODELAY set</div><div class="line">* Connected to 172.31.21.213 (172.31.21.213) port 80 (#0)</div><div class="line">&gt; GET / HTTP/1.1</div><div class="line">&gt; Host: 172.31.21.213</div><div class="line">&gt; User-Agent: curl/7.55.1</div><div class="line">&gt; Accept: */*</div><div class="line">&gt;</div><div class="line">&lt; HTTP/1.1 200 OK</div><div class="line">&lt; Date: Sat, 15 Sep 2018 06:39:46 GMT</div><div class="line">&lt; Server: Apache/2.4.34 ()</div><div class="line">&lt; Upgrade: h2,h2c</div><div class="line">&lt; Connection: Upgrade</div><div class="line">&lt; Last-Modified: Sat, 15 Sep 2018 06:27:16 GMT</div><div class="line">&lt; ETag: &quot;23-575e3081098b7&quot;</div><div class="line">&lt; Accept-Ranges: bytes</div><div class="line">&lt; Content-Length: 35</div><div class="line">&lt; Content-Type: text/html; charset=UTF-8</div><div class="line">&lt;</div><div class="line">&lt;h1&gt; Page From 172.31.21.213 &lt;/h1&gt;</div><div class="line">* Connection #0 to host 172.31.21.213 left intact</div><div class="line">[ec2-user@ip-172-31-17-27 ~]$</div></pre></td></tr></table></figure>
+<h4 id="本地设置"><a href="#本地设置" class="headerlink" title="本地设置"></a>本地设置</h4><p>在本地电脑上，先使用<code>ssh -D</code>建立一个本地到Jumpbox的ssh tunnel，然后设置浏览器使用该链接来访问对端的内网服务。</p>
+<h5 id="搭建ssh-tunnel"><a href="#搭建ssh-tunnel" class="headerlink" title="搭建ssh tunnel"></a>搭建ssh tunnel</h5><p>打开本地Terminal，在命令行中创建ssh tunnel。ssh有三种方式创建tunnel，分别对应了参数<code>-D</code>,<code>-L</code>和<code>-R</code>。详细用法可参照<a href="http://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html" target="_blank" rel="external">SSH原理与运用（二）：远程操作与端口转发</a>, 此处使用<code>-D</code>即可。</p>
+<p>ssh <code>-D</code>参数的man说明如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">-D [bind_address:]port</div><div class="line">        Specifies a local ``dynamic&apos;&apos; application-level port forwarding.  This works by allocating a socket to listen to port on the local side, optionally bound to the speci-</div><div class="line">        fied bind_address.  Whenever a connection is made to this port, the connection is forwarded over the secure channel, and the application protocol is then used to deter-</div><div class="line">        mine where to connect to from the remote machine.  Currently the SOCKS4 and SOCKS5 protocols are supported, and ssh will act as a SOCKS server.  Only root can forward</div><div class="line">        privileged ports.  Dynamic port forwardings can also be specified in the configuration file.</div><div class="line"></div><div class="line">        IPv6 addresses can be specified by enclosing the address in square brackets.  Only the superuser can forward privileged ports.  By default, the local port is bound in</div><div class="line">        accordance with the GatewayPorts setting.  However, an explicit bind_address may be used to bind the connection to a specific address.  The bind_address of</div><div class="line">        ``localhost&apos;&apos; indicates that the listening port be bound for local use only, while an empty address or `*&apos; indicates that the port should be available from all inter-</div><div class="line">        faces.</div></pre></td></tr></table></figure>
+<p>使用如下命令,创建隧道</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ssh -D bind_port -i 登陆instance的private_key 用户名@public_ip</div><div class="line">$ ssh -D 1234 -i OregonKeyPairsInCarlshenCnpem.pem ec2-user@34.220.122.63</div></pre></td></tr></table></figure>
+<h5 id="设置Firefox"><a href="#设置Firefox" class="headerlink" title="设置Firefox"></a>设置Firefox</h5><p>设置Firefox来使用刚建立的ssh tunnel, 打开Firefox的【首选项】页面，选择【网络代理】, 在链接设置页面，选择“手动代理配置”，SOCKS主机一栏填入<code>127.0.0.1</code>,端口填入ssh -D绑定的端口，我这边设置的是端口1234。</p>
+<p>Firefox设置截图<br><img src="/images/SSH/Tunnel/firefox_socks_settings.png" alt="firefox_socks_settings"></p>
+<p>此时，通过浏览器，就可以成功访问到内网HttpServer中的网页了。</p>
+<p><img src="/images/SSH/Tunnel/internal_access_from_firefox.png" alt="internal_access_from_firefox"></p>
+<h5 id="设置Terminal来访问内网"><a href="#设置Terminal来访问内网" class="headerlink" title="设置Terminal来访问内网"></a>设置Terminal来访问内网</h5><p>在Terminal中也可以设置proxy来让http和https的流量走设置好的ssh proxy。</p>
+<p>在打开新的Terminal中，输入如下命令让本terminal中的http和https流量走设置好的ssh tunnel。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">export http_proxy=socks5://127.0.0.1:1234;export https_proxy=socks5://127.0.0.1:1234;</div></pre></td></tr></table></figure>
+<p>使用curl，可以成功访问HttpServer中的网页。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[carlshen@carl-186 ~]$ curl http://172.31.21.213</div><div class="line">&lt;h1&gt; Page From 172.31.21.213 &lt;/h1&gt;</div><div class="line">[carlshen@carl-186 ~]$</div></pre></td></tr></table></figure>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://unix.stackexchange.com/questions/215571/how-can-i-remotely-access-an-intranet-website-from-an-external-network-via-an-ss" target="_blank" rel="external">How can I remotely access an intranet website from an external network via an SSH tunnel?</a></li>
+<li><a href="https://askubuntu.com/questions/53553/how-do-i-retrieve-the-public-key-from-a-ssh-private-key" target="_blank" rel="external">How do I retrieve the public key from a SSH private key?</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> Tools </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> EC2 </tag>
+            
+            <tag> MacOS </tag>
+            
+            <tag> SSH </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[由于EC2中no space left引起的EB警报]]></title>
       <url>/2018/08/11/EB-warning-due-to-no-space-left-on-device-issue-on-EC2/</url>
       <content type="html"><![CDATA[<h3 id="问题现象"><a href="#问题现象" class="headerlink" title="问题现象"></a>问题现象</h3><p>周末早上突然收到大量Elastic Beanstalk的警报邮件，提示一个跑Rails的EB环境中有大量的请求是HTTP 5xx。</p>
@@ -6844,13 +6925,13 @@ You can wait for the scheduled retirement date - when the instance is stopped - 
         
         <tags>
             
+            <tag> AWS SDK </tag>
+            
             <tag> RDS </tag>
             
             <tag> Ruby </tag>
             
             <tag> AWS CLI </tag>
-            
-            <tag> AWS SDK </tag>
             
             <tag> PostgreSQL </tag>
             

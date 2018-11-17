@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.jibing57.com/"/>
-  <updated>2018-09-16T07:03:13.813Z</updated>
+  <updated>2018-11-17T03:27:39.860Z</updated>
   <id>http://www.jibing57.com/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>在Amazon Linux和Elastic Beanstalk中安装ffmpeg的方法</title>
+    <link href="http://www.jibing57.com/2018/11/15/a-way-to-install-ffmpeg-to-Amazon-Linux-and-ElasticBeanstalk/"/>
+    <id>http://www.jibing57.com/2018/11/15/a-way-to-install-ffmpeg-to-Amazon-Linux-and-ElasticBeanstalk/</id>
+    <published>2018-11-15T12:34:53.000Z</published>
+    <updated>2018-11-17T03:27:39.860Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;因为项目需要，需要在EC2和EB中安装FFMPEG来处理视频。 &lt;/p&gt;
+&lt;p&gt;但Amazon Linux默认的yum源中没有FFMPEG，因此需要手动进行安装。&lt;/p&gt;
+&lt;p&gt;网上有各种的安装方法，有使用Nux Dextop YUM的安装，也有直接使用Static Builds的方式。经过比较试验，最终决定使用Static Builds的方式进行安装，安装方法记录如下。 &lt;/p&gt;
+    
+    </summary>
+    
+      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
+    
+    
+      <category term="Elastic Beanstalk" scheme="http://www.jibing57.com/tags/Elastic-Beanstalk/"/>
+    
+      <category term="EC2" scheme="http://www.jibing57.com/tags/EC2/"/>
+    
+      <category term="FFMPEG" scheme="http://www.jibing57.com/tags/FFMPEG/"/>
+    
+  </entry>
   
   <entry>
     <title>使用ssh隧道访问内网资源</title>
@@ -505,29 +531,6 @@
     
     
       <category term="Elastic Load Balancing" scheme="http://www.jibing57.com/tags/Elastic-Load-Balancing/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>在Freemind主题中开启图片阴影</title>
-    <link href="http://www.jibing57.com/2017/12/25/how-to-add-shadow-of-images-in-freemind/"/>
-    <id>http://www.jibing57.com/2017/12/25/how-to-add-shadow-of-images-in-freemind/</id>
-    <published>2017-12-25T13:40:37.000Z</published>
-    <updated>2017-12-25T07:03:34.076Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;添加图片阴影&quot;&gt;&lt;a href=&quot;#添加图片阴影&quot; class=&quot;headerlink&quot; title=&quot;添加图片阴影&quot;&gt;&lt;/a&gt;添加图片阴影&lt;/h3&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/wzpan/hexo-theme-freemind&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;hexo-theme-freemind&lt;/a&gt;主题中，默认没有开启图片阴影。当图片的背景和文章的背景是同色的时候，有时会造成混淆，看不清楚哪部分是图片，哪部分是文章。&lt;/p&gt;
-&lt;p&gt;打开源码看了一下，发现其实&lt;a href=&quot;https://github.com/wzpan/hexo-theme-freemind&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;hexo-theme-freemind&lt;/a&gt;本身就已经支持图片shadow了。只是默认没有开启，而且也没有在README.md中提及。&lt;/p&gt;
-&lt;p&gt;在&lt;code&gt;hexo-theme-freemind/layout/_partial/article.ejs&lt;/code&gt;文件中有如下代码&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&amp;lt;% if (item.shadow ) &amp;#123; %&amp;gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;   &amp;lt;style type=&amp;quot;text/css&amp;quot;&amp;gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;           img, video &amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;                -webkit-box-shadow:0 0 10px rgba(0, 0, 0, .5);&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;                -moz-box-shadow:0 0 10px rgba(0, 0, 0, .5);&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;                box-shadow:0 0 10px rgba(0, 0, 0, .5);&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;           &amp;#125;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;   &amp;lt;/style&amp;gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;lt;% &amp;#125; %&amp;gt;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-    
-    </summary>
-    
-      <category term="Blog" scheme="http://www.jibing57.com/categories/Blog/"/>
-    
-    
-      <category term="Hexo" scheme="http://www.jibing57.com/tags/Hexo/"/>
     
   </entry>
   

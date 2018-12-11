@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.jibing57.com/2018/12/11/how-to-enable-cors-on-S3/</loc>
+    
+    <lastmod>2018-12-11T15:36:54.345Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.jibing57.com/2018/11/27/nginx-with-dynamic-upstreams-to-ELB/</loc>
     
     <lastmod>2018-12-11T11:24:09.075Z</lastmod>

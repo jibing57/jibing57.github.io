@@ -139,6 +139,29 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
+			<div class="date"> 2018-04-19 </div>
+			<div class="article-title"><a href="/2018/04/19/how-to-remove-the-passphrase-of-ssh-key/" >如何去除SSH key中的passphrase</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="去除passphrase的方法"><a href="#去除passphrase的方法" class="headerlink" title="去除passphrase的方法"></a>去除passphrase的方法</h3><p>使用<code>ssh-keygen</code>来重新设置一个空的passphrase, 就相当于去除了原来的passphrase, 答案来自<a href="https://stackoverflow.com/a/112409" target="_blank" rel="external">stackoverflow</a>, 回答者还很贴心的提示，输入的passphrase会被记录在~/.bash_history中，别忘记处理这个情况。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ssh-keygen -p [-P old_passphrase] [-N new_passphrase] [-f keyfile]</div></pre></td></tr></table></figure></p>
+	
+	</div>
+  <a type="button" href="/2018/04/19/how-to-remove-the-passphrase-of-ssh-key/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
 			<div class="date"> 2018-04-18 </div>
 			<div class="article-title"><a href="/2018/04/18/aws-s3-master-basic/" >S3进阶系列(一) —— S3基础知识</a></div>						
 		</h3>
@@ -396,32 +419,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2017-12-26 </div>
-			<div class="article-title"><a href="/2017/12/26/a-simple-elb-access-log-parser-by-ruby/" >A Simple ELB Access Log Parser By Ruby</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>工作时候，偶尔会有手动检查ELB Access Log的时候，下载下来的access log是空格隔开的，人眼将数值对应到字段名非常累。</p>
-<p>就顺手写了个Ruby的小程序来解析access log的内容，转换到csv格式。再使用Excel打开csv文件来进行查看。</p>
-<h3 id="用途"><a href="#用途" class="headerlink" title="用途"></a>用途</h3><p>读取access log日志，转换为csv。</p>
-<p>主要用于临时检查小数据量access log来定位问题。如果是基于access log来进行数据分析，还是需要结合RedShift来进行。</p>
-	
-	</div>
-  <a type="button" href="/2017/12/26/a-simple-elb-access-log-parser-by-ruby/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -485,7 +482,7 @@ var _hmt = _hmt || [];
 		<h4>Categories</h4>
 		<ul class="tag_box inline list-unstyled">
 		
-			<li><a href="/categories/AWS/">AWS<span>20</span></a></li>
+			<li><a href="/categories/AWS/">AWS<span>21</span></a></li>
 		
 			<li><a href="/categories/AWS-Certified/">AWS Certified<span>3</span></a></li>
 		
@@ -506,45 +503,45 @@ var _hmt = _hmt || [];
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/Tips/">Tips<span>1</span></a></li>
-		
-			<li><a href="/tags/Nginx/">Nginx<span>1</span></a></li>
-		
-			<li><a href="/tags/AWS-Free-Tier/">AWS Free Tier<span>1</span></a></li>
-		
 			<li><a href="/tags/Nodejs/">Nodejs<span>1</span></a></li>
-		
-			<li><a href="/tags/MacOS/">MacOS<span>7</span></a></li>
 		
 			<li><a href="/tags/DynamoDB/">DynamoDB<span>1</span></a></li>
 		
-			<li><a href="/tags/Sysops/">Sysops<span>1</span></a></li>
-		
-			<li><a href="/tags/IAM/">IAM<span>2</span></a></li>
-		
-			<li><a href="/tags/PostgreSQL/">PostgreSQL<span>1</span></a></li>
-		
-			<li><a href="/tags/Github/">Github<span>2</span></a></li>
-		
-			<li><a href="/tags/S3/">S3<span>7</span></a></li>
-		
-			<li><a href="/tags/Elastic-Load-Balancing/">Elastic Load Balancing<span>4</span></a></li>
-		
-			<li><a href="/tags/Douban/">Douban<span>1</span></a></li>
-		
-			<li><a href="/tags/SSH/">SSH<span>3</span></a></li>
-		
-			<li><a href="/tags/CodeCommit/">CodeCommit<span>1</span></a></li>
-		
-			<li><a href="/tags/Image/">Image<span>1</span></a></li>
-		
-			<li><a href="/tags/Solutions-Architect/">Solutions Architect<span>1</span></a></li>
-		
-			<li><a href="/tags/Hexo/">Hexo<span>5</span></a></li>
+			<li><a href="/tags/Chrome/">Chrome<span>1</span></a></li>
 		
 			<li><a href="/tags/AWS-SDK/">AWS SDK<span>2</span></a></li>
 		
-			<li><a href="/tags/FFMPEG/">FFMPEG<span>1</span></a></li>
+			<li><a href="/tags/RDS/">RDS<span>3</span></a></li>
+		
+			<li><a href="/tags/EC2/">EC2<span>4</span></a></li>
+		
+			<li><a href="/tags/Git/">Git<span>1</span></a></li>
+		
+			<li><a href="/tags/AWS-Free-Tier/">AWS Free Tier<span>1</span></a></li>
+		
+			<li><a href="/tags/Image/">Image<span>1</span></a></li>
+		
+			<li><a href="/tags/Elastic-Load-Balancing/">Elastic Load Balancing<span>4</span></a></li>
+		
+			<li><a href="/tags/EC2-User-Data/">EC2 User Data<span>1</span></a></li>
+		
+			<li><a href="/tags/AWS-CLI/">AWS CLI<span>5</span></a></li>
+		
+			<li><a href="/tags/Solutions-Architect/">Solutions Architect<span>1</span></a></li>
+		
+			<li><a href="/tags/CloudWatch/">CloudWatch<span>1</span></a></li>
+		
+			<li><a href="/tags/Elastic-Beanstalk/">Elastic Beanstalk<span>3</span></a></li>
+		
+			<li><a href="/tags/Douban/">Douban<span>1</span></a></li>
+		
+			<li><a href="/tags/Nginx/">Nginx<span>1</span></a></li>
+		
+			<li><a href="/tags/PostgreSQL/">PostgreSQL<span>1</span></a></li>
+		
+			<li><a href="/tags/Linux/">Linux<span>3</span></a></li>
+		
+			<li><a href="/tags/Rails/">Rails<span>2</span></a></li>
 		
 		
 		   <li><a href="/tags">...<span>36</span></a></li>
@@ -560,6 +557,10 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2018/12/11/how-to-enable-cors-on-S3/" ><i class="fa fa-file-o"></i>在S3上开启CORS</a>
+      </li>
+    
+      <li>
         <a href="/2018/11/27/nginx-with-dynamic-upstreams-to-ELB/" ><i class="fa fa-file-o"></i>如何配置Nginx的Dynamic Upstream指...</a>
       </li>
     
@@ -573,10 +574,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2018/08/11/EB-warning-due-to-no-space-left-on-device-issue-on-EC2/" ><i class="fa fa-file-o"></i>由于EC2中no space left引起的EB警报</a>
-      </li>
-    
-      <li>
-        <a href="/2018/05/21/ssh-key-Invalid-key-length-Error-on-Macos/" ><i class="fa fa-file-o"></i>macOS 10.13.2下SSH命令Invalid ...</a>
       </li>
     
   </ul>

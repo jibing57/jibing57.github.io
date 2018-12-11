@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.jibing57.com/"/>
-  <updated>2018-12-11T11:24:09.075Z</updated>
+  <updated>2018-12-11T15:36:54.345Z</updated>
   <id>http://www.jibing57.com/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>在S3上开启CORS</title>
+    <link href="http://www.jibing57.com/2018/12/11/how-to-enable-cors-on-S3/"/>
+    <id>http://www.jibing57.com/2018/12/11/how-to-enable-cors-on-S3/</id>
+    <published>2018-12-11T11:33:25.000Z</published>
+    <updated>2018-12-11T15:36:54.345Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在浏览器中使用AWS的SDK直接上传文件到S3时，需要在S3 Bucket上配置CORS才能成功上传，否则ajax请求会被浏览器拦截。&lt;/p&gt;
+&lt;h3 id=&quot;普通CORS访问配置&quot;&gt;&lt;a href=&quot;#普通CORS访问配置&quot; class=&quot;headerlink&quot; title=&quot;普通CORS访问配置&quot;&gt;&lt;/a&gt;普通CORS访问配置&lt;/h3&gt;&lt;p&gt;官方文档&lt;a href=&quot;https://docs.aws.amazon.com/AmazonS3/latest/dev/cors.html#how-do-i-enable-cors&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Cross-Origin Resource Sharing (CORS)&lt;/a&gt;中提供了开启CORS的范例，摘录如下:&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
+    
+    
+      <category term="S3" scheme="http://www.jibing57.com/tags/S3/"/>
+    
+  </entry>
   
   <entry>
     <title>如何配置Nginx的Dynamic Upstream指向ELB</title>
@@ -232,11 +253,11 @@
       <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
     
     
+      <category term="IAM" scheme="http://www.jibing57.com/tags/IAM/"/>
+    
       <category term="S3" scheme="http://www.jibing57.com/tags/S3/"/>
     
       <category term="AWS CLI" scheme="http://www.jibing57.com/tags/AWS-CLI/"/>
-    
-      <category term="IAM" scheme="http://www.jibing57.com/tags/IAM/"/>
     
   </entry>
   
@@ -502,31 +523,6 @@
     
     
       <category term="Solutions Architect" scheme="http://www.jibing57.com/tags/Solutions-Architect/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>A Simple ELB Access Log Parser By Ruby</title>
-    <link href="http://www.jibing57.com/2017/12/26/a-simple-elb-access-log-parser-by-ruby/"/>
-    <id>http://www.jibing57.com/2017/12/26/a-simple-elb-access-log-parser-by-ruby/</id>
-    <published>2017-12-26T12:35:29.000Z</published>
-    <updated>2018-09-04T11:39:01.545Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;工作时候，偶尔会有手动检查ELB Access Log的时候，下载下来的access log是空格隔开的，人眼将数值对应到字段名非常累。&lt;/p&gt;
-&lt;p&gt;就顺手写了个Ruby的小程序来解析access log的内容，转换到csv格式。再使用Excel打开csv文件来进行查看。&lt;/p&gt;
-&lt;h3 id=&quot;用途&quot;&gt;&lt;a href=&quot;#用途&quot; class=&quot;headerlink&quot; title=&quot;用途&quot;&gt;&lt;/a&gt;用途&lt;/h3&gt;&lt;p&gt;读取access log日志，转换为csv。&lt;/p&gt;
-&lt;p&gt;主要用于临时检查小数据量access log来定位问题。如果是基于access log来进行数据分析，还是需要结合RedShift来进行。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
-    
-    
-      <category term="Ruby" scheme="http://www.jibing57.com/tags/Ruby/"/>
-    
-      <category term="Elastic Load Balancing" scheme="http://www.jibing57.com/tags/Elastic-Load-Balancing/"/>
     
   </entry>
   

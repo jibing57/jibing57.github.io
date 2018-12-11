@@ -3,6 +3,42 @@
   
     
     <entry>
+      <title><![CDATA[在S3上开启CORS]]></title>
+      <url>/2018/12/11/how-to-enable-cors-on-S3/</url>
+      <content type="html"><![CDATA[<p>在浏览器中使用AWS的SDK直接上传文件到S3时，需要在S3 Bucket上配置CORS才能成功上传，否则ajax请求会被浏览器拦截。</p>
+<h3 id="普通CORS访问配置"><a href="#普通CORS访问配置" class="headerlink" title="普通CORS访问配置"></a>普通CORS访问配置</h3><p>官方文档<a href="https://docs.aws.amazon.com/AmazonS3/latest/dev/cors.html#how-do-i-enable-cors" target="_blank" rel="external">Cross-Origin Resource Sharing (CORS)</a>中提供了开启CORS的范例，摘录如下:</p>
+<a id="more"></a>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">&lt;CORSConfiguration&gt;</div><div class="line"> &lt;CORSRule&gt;</div><div class="line">   &lt;AllowedOrigin&gt;http://www.example1.com&lt;/AllowedOrigin&gt;</div><div class="line"></div><div class="line">   &lt;AllowedMethod&gt;PUT&lt;/AllowedMethod&gt;</div><div class="line">   &lt;AllowedMethod&gt;POST&lt;/AllowedMethod&gt;</div><div class="line">   &lt;AllowedMethod&gt;DELETE&lt;/AllowedMethod&gt;</div><div class="line"></div><div class="line">   &lt;AllowedHeader&gt;*&lt;/AllowedHeader&gt;</div><div class="line"> &lt;/CORSRule&gt;</div><div class="line"> &lt;CORSRule&gt;</div><div class="line">   &lt;AllowedOrigin&gt;http://www.example2.com&lt;/AllowedOrigin&gt;</div><div class="line"></div><div class="line">   &lt;AllowedMethod&gt;PUT&lt;/AllowedMethod&gt;</div><div class="line">   &lt;AllowedMethod&gt;POST&lt;/AllowedMethod&gt;</div><div class="line">   &lt;AllowedMethod&gt;DELETE&lt;/AllowedMethod&gt;</div><div class="line"></div><div class="line">   &lt;AllowedHeader&gt;*&lt;/AllowedHeader&gt;</div><div class="line"> &lt;/CORSRule&gt;</div><div class="line"> &lt;CORSRule&gt;</div><div class="line">   &lt;AllowedOrigin&gt;*&lt;/AllowedOrigin&gt;</div><div class="line">   &lt;AllowedMethod&gt;GET&lt;/AllowedMethod&gt;</div><div class="line"> &lt;/CORSRule&gt;</div><div class="line">&lt;/CORSConfiguration&gt;</div></pre></td></tr></table></figure>
+<h3 id="支持Multipart-Upload的配置"><a href="#支持Multipart-Upload的配置" class="headerlink" title="支持Multipart Upload的配置"></a>支持Multipart Upload的配置</h3><p>当上传的文件比较大的时候，AWS的javascript的SDK会使用Multipart upload的方式来上传, 而Multipart upload的机制中是需要用到Header中的Etag的，因此需要在S3的CORS的rule中配置允许暴露ETag, 也即需要添加<code>&lt;ExposeHeader&gt;ETag&lt;/ExposeHeader&gt;</code></p>
+<p>示例Rule:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</div><div class="line">&lt;CORSConfiguration xmlns=&quot;http://s3.amazonaws.com/doc/2006-03-01/&quot;&gt;</div><div class="line">&lt;CORSRule&gt;</div><div class="line">    &lt;AllowedOrigin&gt;http://localhost:3000&lt;/AllowedOrigin&gt;</div><div class="line">    &lt;AllowedMethod&gt;PUT&lt;/AllowedMethod&gt;</div><div class="line">    &lt;AllowedMethod&gt;POST&lt;/AllowedMethod&gt;</div><div class="line">    &lt;ExposeHeader&gt;ETag&lt;/ExposeHeader&gt;</div><div class="line">    &lt;AllowedHeader&gt;*&lt;/AllowedHeader&gt;</div><div class="line">&lt;/CORSRule&gt;</div><div class="line">&lt;/CORSConfiguration&gt;</div></pre></td></tr></table></figure>
+<p>S3 Multipart Upload的原理在官方博客<a href="https://aws.amazon.com/blogs/aws/amazon-s3-multipart-upload/" target="_blank" rel="external">Amazon S3: Multipart Upload</a>中有相关的说明。</p>
+<p>如下是一个Parts Uploaded的PUT请求的response的示例。PUT成功上传分片到S3后，S3返回的本次请求的Etag为<code>0a2f92d61cdc4682ba52adb9e077991f</code><br><img src="/images/AWS/S3/Etag_in_response_of_PUT.jpg" alt="Etag_in_response_of_PUT"></p>
+<p>分片全部上传完毕后，SDK再调用POST请求，将之前分片的ETag和PartNumber组成完成的S3文件。<br>如下是最后CompleteMultipartUpload的POST请求的Payload, 可以看到<code>0a2f92d61cdc4682ba52adb9e077991f</code>作为请求的payload的一部分被发送至S3。S3会根据payload将对应的partial block组成完整的S3文件。<br><img src="/images/AWS/S3/Etag_on_complete_post.jpg" alt="Etag_on_complete_post"></p>
+<p>如果不添加<code>&lt;ExposeHeader&gt;ETag&lt;/ExposeHeader&gt;</code>的话，Multipart upload的时候，AWS Javascript SDK会报<code>Error: No access to ETag property on response. Check CORS configuration to expose ETag header.</code>的错误。<br><img src="/images/AWS/S3/Error_No_access_to_ETag_property_on_response.jpg" alt="Error_No_access_to_ETag_property_on_response.jpg"></p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://aws.amazon.com/blogs/aws/amazon-s3-multipart-upload/" target="_blank" rel="external">Amazon S3: Multipart Upload</a></li>
+<li><a href="https://docs.aws.amazon.com/AmazonS3/latest/dev/cors.html#how-do-i-enable-cors" target="_blank" rel="external">Cross-Origin Resource Sharing (CORS)</a></li>
+<li><a href="https://stackoverflow.com/questions/28568794/amazon-s3-javascript-no-access-control-allow-origin-header-is-present-on-the" target="_blank" rel="external">Amazon s3 Javascript- No ‘Access-Control-Allow-Origin’ header is present on the requested resource</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> AWS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> S3 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[如何配置Nginx的Dynamic Upstream指向ELB]]></title>
       <url>/2018/11/27/nginx-with-dynamic-upstreams-to-ELB/</url>
       <content type="html"><![CDATA[<h3 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h3><p>公司有一个项目，部署有多个AWS环境，但由于一系列复杂的原因，需要先在账号A下备案的域名来使用在账号B中部署的服务，后续再将域名备案转到账号B中。<br>临时的解决办法就是在账号A下起一个Instance，通过Nginx反向代理到账号B的一个Classic ELB中。</p>
@@ -874,11 +910,11 @@
         
         <tags>
             
+            <tag> IAM </tag>
+            
             <tag> S3 </tag>
             
             <tag> AWS CLI </tag>
-            
-            <tag> IAM </tag>
             
         </tags>
         
@@ -7086,11 +7122,11 @@ You can wait for the scheduled retirement date - when the instance is stopped - 
         
         <tags>
             
+            <tag> AWS SDK </tag>
+            
             <tag> RDS </tag>
             
             <tag> Ruby </tag>
-            
-            <tag> AWS SDK </tag>
             
             <tag> AWS CLI </tag>
             

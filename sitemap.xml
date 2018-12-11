@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.jibing57.com/2018/11/27/nginx-with-dynamic-upstreams-to-ELB/</loc>
+    
+    <lastmod>2018-12-11T11:24:09.075Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.jibing57.com/2018/11/15/a-way-to-install-ffmpeg-to-Amazon-Linux-and-ElasticBeanstalk/</loc>
     
     <lastmod>2018-11-17T03:27:39.860Z</lastmod>

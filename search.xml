@@ -3,6 +3,119 @@
   
     
     <entry>
+      <title><![CDATA[如何配置Nginx的Dynamic Upstream指向ELB]]></title>
+      <url>/2018/11/27/nginx-with-dynamic-upstreams-to-ELB/</url>
+      <content type="html"><![CDATA[<h3 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h3><p>公司有一个项目，部署有多个AWS环境，但由于一系列复杂的原因，需要先在账号A下备案的域名来使用在账号B中部署的服务，后续再将域名备案转到账号B中。<br>临时的解决办法就是在账号A下起一个Instance，通过Nginx反向代理到账号B的一个Classic ELB中。</p>
+<p>起初服务跑的很顺畅，后来一天突然服务不可用，页面显示504 Gateway Timeout，查看了Nginx的日志，发现有多条<code>upstream timed out (110: Connection timed out) while connecting to upstream</code>的错误日志。</p>
+<a id="more"></a>
+<h3 id="调查"><a href="#调查" class="headerlink" title="调查"></a>调查</h3><p>AWS 的ELB是一个托管的负载均衡器，通过对外提供的域名来进行访问，北京Region的域名类似<code>service-3332222.cn-north-1.elb.amazonaws.com.cn</code>,但实际上底层还是会有对应的ENI来承载实际的流量，这些ENI有自己临时分配的IP地址。这些ENI可能会随着流量的扩展或AWS底层服务器的变动而随时改变。所以这也是AWS要求使用域名来访问ELB的原因。</p>
+<p>Nginx侧使用upstream时，里面如果填写的是域名，那么Nginx会在请求DNS后把对应的IP信息缓存起来，后续的请求就一直用缓存的IP。直到下次reload的时候才会再次查询domain</p>
+<p>此时问题就出现了，ELB的域名解析是时刻会更新的，当底层有变动时，承载ELB流量的Public IP就会变化。而Nginx的upstream中，如果使用了域名，第一次DNS请求后就会一直使用缓存的Public IP。当ELB的ENI有变化时，原先的Nginx反向代理缓存的IP地址就失效了，导致连接不上服务。出现<code>upstream timed out (110: Connection timed out) while connecting to upstream</code>的错误。</p>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>有这么几个方法可以用来解决这个问题:</p>
+<ol>
+<li>写一个监控的cron脚本，时刻检测ELB对应的IP是否有变化，一旦有变化，就reload Nginx。这个方法需要额外的开发。</li>
+<li><a href="https://www.nginx.com/products/nginx/" target="_blank" rel="external">Nginx Plus</a>支持在upstream中添加<a href="https://www.nginx.com/products/nginx/load-balancing/#service-discovery" target="_blank" rel="external">resolve</a>，可以周期性的重新解析DNS域名。可以完美解决所遇到的问题，可一个Nginx Plus Instance的授权费用就要<a href="https://www.nginx.com/products/buy-nginx-plus/" target="_blank" rel="external">$2500+/year</a>，穷人表示用不起。</li>
+<li>Nginx社区版的解决方案，不使用upstream，使用set将域名设为一个变量，再传递给proxy_pass。</li>
+</ol>
+<p>Nginx官方这篇<a href="https://www.nginx.com/blog/dns-service-discovery-nginx-plus/#domain-name-upstream-group" target="_blank" rel="external">Using DNS for Service Discovery with NGINX and NGINX Plus</a>的文章讲述了第二点和第三点的解决方案。</p>
+<p>Nginx的免费解决方案的配置如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">  listen        80;</div><div class="line">  server_name   example.com;</div><div class="line"></div><div class="line">  resolver 172.31.0.2;</div><div class="line">  set $upstream_endpoint http://service-3332222.cn-north-1.elb.amazonaws.com.cn;</div><div class="line"></div><div class="line">  location / &#123;</div><div class="line">    proxy_pass $upstream_endpoint$request_uri;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在 proxy_pass中使用变量来代替URI或者Upstream Server Group，Nginx就会在解析缓存过期后再次请求DNS服务器来解析域名。</p>
+<p><strong>注意: 此处的resolver所要填写的IP地址，取决于EC2所在的子网划分。如果网络是VPC，那需要设置为EC2所在子网的DNS地址，AWS会为每个子网保留5个IP地址，第三个IP地址用作DNS，例如如果子网CIDR为10.0.0.0/24，那10.0.0.2就是AWS保留的用作DNS的地址, 保留IP地址的官网说明<a href="https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Subnets.html" target="_blank" rel="external">VPCs and Subnets</a>。如果是Classic的网络,那么AWS的DNS服务器地址是固定的172.16.0.23，AWS官网说明<a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-classic-platform.html#ip-addressing-differences" target="_blank" rel="external">EC2-Classic Platform</a>。</strong></p>
+<h4 id="关于免费方案的缺陷"><a href="#关于免费方案的缺陷" class="headerlink" title="关于免费方案的缺陷"></a>关于免费方案的缺陷</h4><p>当location的参数不是‘/’，并且proxy_pass后面的参数是一个变量时，proxy_pass的转发规则和正常的规则有所不同。如下是相关的说明以及解决方案。<br>以下文字转自<a href="https://tenzer.dk/nginx-with-dynamic-upstreams/" target="_blank" rel="external">Nginx with dynamic upstreams</a></p>
+<p><code>proxy_pass</code>不使用变量时的正常转发规则:<br>nginx配置为如下时:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">location /foo/ &#123;</div><div class="line">    proxy_pass http://127.0.0.1:8080;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>如果请求的网页是<code>/foo/bar/baz</code>,那么Nginx会转发请求至<code>http://127.0.0.1:8080/foo/bar/baz</code>。但如果nginx的配置如下，在proxy_pass参数后面加上了‘/’时。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">location /foo/ &#123;</div><div class="line">    # Note the trailing slash       ↓</div><div class="line">    proxy_pass http://127.0.0.1:8080/;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>Nginx在将请求转发到upstream时，会将<code>location</code>中匹配的部分截掉，<code>/foo/bar/baz</code>会转发到<code>http://127.0.0.1:8080/bar/baz</code>。</p>
+<p>但当我们在proxy_pass中使用变量后，转发行为会发生变化。<br>当我们在转发的地址后面有‘/’时:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">resolver 172.31.0.2;</div><div class="line">set $upstream_endpoint http://service-1234567890.us-east-1.elb.amazonaws.com/;</div><div class="line">location /foo/ &#123;</div><div class="line">    proxy_pass $upstream_endpoint;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>当你请求<code>/foo/bar/baz</code>时，请求会转发到‘/’而不是期望的<code>/bar/baz</code></p>
+<p>解决办法:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">resolver 172.31.0.2;</div><div class="line">set $upstream_endpoint http://service-1234567890.us-east-1.elb.amazonaws.com;</div><div class="line">location /foo/ &#123;</div><div class="line">    rewrite ^/foo/(.*) /$1 break;</div><div class="line">    proxy_pass $upstream_endpoint;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>删掉<code>set $upstream_endpoint</code>后面的‘/’，手动rewrite地址，这样就可以将请求<code>/foo/bar/baz</code>转发到upstream的<code>/bar/baz</code>了。</p>
+<h3 id="实验验证"><a href="#实验验证" class="headerlink" title="实验验证"></a>实验验证</h3><p>来做几个实验来验证下上面的配置是否可以生效。</p>
+<h4 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h4><p>来做几个实验来验证下效果，新建几台Instance，配置好对应的SG。如下是几台实验机器的基本信息:</p>
+<table>
+<thead>
+<tr>
+<th>Instance</th>
+<th>Public IP</th>
+<th>Private IP</th>
+<th>SG Rule</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EC2-A</td>
+<td>18.237.0.231</td>
+<td>172.31.39.103</td>
+<td>SSH&amp;HTTP From 0.0.0.0/0</td>
+</tr>
+<tr>
+<td>EC2-B</td>
+<td>52.26.25.237</td>
+<td>172.31.35.141</td>
+<td>SSH&amp;HTTP from 0.0.0.0/0</td>
+</tr>
+<tr>
+<td>EC2-Reverse</td>
+<td>52.36.100.113</td>
+<td>172.31.18.5</td>
+<td>SSH&amp;HTTP from 0.0.0.0/0</td>
+</tr>
+</tbody>
+</table>
+<p>一个域名: dynamic-upstream.jibing57.com</p>
+<h4 id="环境设置"><a href="#环境设置" class="headerlink" title="环境设置"></a>环境设置</h4><p>分别在EC2-A和EC2-B上安装简单的httpd服务</p>
+<p>登陆EC2-A中执行命令安装httpd服务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"># 切换为root用户</div><div class="line">sudo bash</div><div class="line"></div><div class="line"># 安装httpd</div><div class="line">yum install httpd -y</div><div class="line"></div><div class="line"># 建立一个最简单的page</div><div class="line"># EC2-A中建立Hello, I&apos;m EC2-A的首页</div><div class="line">echo &quot;&lt;h1&gt; Hello, I&apos;m EC2-A &lt;/h1&gt;&quot; &gt; /var/www/html/index.html</div><div class="line"></div><div class="line"># 建立多级目录foo/bar/baz/并建立欢迎页</div><div class="line">mkdir -p /var/www/html/foo/bar/baz/</div><div class="line">echo &quot;&lt;h1&gt; Hello, I&apos;m EC2-A in dir foo/bar/baz/ &lt;/h1&gt;&quot; &gt; /var/www/html/foo/bar/baz/index.html</div><div class="line"></div><div class="line"># 建立多级目录bar/baz/并建立欢迎页</div><div class="line">mkdir -p /var/www/html/bar/baz/</div><div class="line">&quot;&lt;h1&gt; Hello, I&apos;m EC2-A in dir bar/baz/ &lt;/h1&gt;&quot; &gt; /var/www/html/bar/baz/index.html</div><div class="line"></div><div class="line"># 启动http服务</div><div class="line">systemctl start httpd.service</div></pre></td></tr></table></figure>
+<p>登陆EC2-B中执行命令安装httpd服务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"># 切换为root用户</div><div class="line">sudo bash</div><div class="line"></div><div class="line"># 安装httpd</div><div class="line">yum install httpd -y</div><div class="line"></div><div class="line"># EC2-B中建立Hello, I&apos;m EC2-B的首页</div><div class="line">echo &quot;&lt;h1&gt; Hello, I&apos;m EC2-B &lt;/h1&gt;&quot; &gt; /var/www/html/index.html</div><div class="line"></div><div class="line"># 建立多级目录foo/bar/baz/并建立欢迎页</div><div class="line">mkdir -p /var/www/html/foo/bar/baz/</div><div class="line">echo &quot;&lt;h1&gt; Hello, I&apos;m EC2-B in dir foo/bar/baz/ &lt;/h1&gt;&quot; &gt; /var/www/html/foo/bar/baz/index.html</div><div class="line"></div><div class="line"># 建立多级目录bar/baz/并建立欢迎页</div><div class="line">mkdir -p /var/www/html/bar/baz/</div><div class="line">echo &quot;&lt;h1&gt; Hello, I&apos;m EC2-B in dir bar/baz/ &lt;/h1&gt;&quot; &gt; /var/www/html/bar/baz/index.html</div><div class="line"></div><div class="line"># 启动http服务</div><div class="line">systemctl start httpd.service</div></pre></td></tr></table></figure>
+<p>配置好后，访问如下页面，确认网页能够正常展示</p>
+<ul>
+<li><a href="http://18.237.0.231/" target="_blank" rel="external">http://18.237.0.231/</a></li>
+<li><a href="http://18.237.0.231/foo/bar/baz/" target="_blank" rel="external">http://18.237.0.231/foo/bar/baz/</a></li>
+<li><a href="http://52.26.25.237/" target="_blank" rel="external">http://52.26.25.237/</a></li>
+<li><a href="http://52.26.25.237/foo/bar/baz/" target="_blank" rel="external">http://52.26.25.237/foo/bar/baz/</a></li>
+</ul>
+<p>配置EC2-Reverse的nginx，将请求重定向到dynamic-upstream.jibing57.com去。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">    listen 80;</div><div class="line">    server_name 52.36.100.113;</div><div class="line">    access_log  /var/log/nginx/access.log  main;</div><div class="line">    error_log  /var/log/nginx/error.log  notice;</div><div class="line"></div><div class="line">    resolver 172.31.0.2;</div><div class="line">    set $upstream_endpoint http://dynamic-upstream.jibing57.com;</div><div class="line">    location / &#123;</div><div class="line">        proxy_pass $upstream_endpoint;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="进行试验"><a href="#进行试验" class="headerlink" title="进行试验"></a>进行试验</h4><p>基本设置设置完后，让我们来进行试验</p>
+<ol>
+<li><p>首先将dynamic-upstream.jibing57.com解析到EC2-A的IP地址18.237.0.231<br><img src="/images/AWS/ELB/aliyun_parser_to_EC2-A.jpg" alt="aliyun_parser_to_EC2-A"><br>此时访问<a href="http://52.36.100.113" target="_blank" rel="external">http://52.36.100.113</a>, 可以看到的是EC2-A Instance上的主页内容 Hello, I’m EC2-A<br><img src="/images/AWS/ELB/upstream_to_EC2-A.jpg" alt="upstream_to_EC2-A"></p>
+</li>
+<li><p>再将dynamic-upstream.jibing57.com解析修改为EC2-B的IP地址52.26.25.237<br><img src="/images/AWS/ELB/aliyun_parser_to_EC2-B.jpg" alt="aliyun_parser_to_EC2-B"><br>当修改后的域名解析扩散到AWS的DNS服务器后，此时访问<a href="http://52.36.100.113" target="_blank" rel="external">http://52.36.100.113</a>，可以看到的是EC2-B Instance上的主页内容Hello, I’m EC2-B<br><img src="/images/AWS/ELB/upstream_to_EC2-B.jpg" alt="upstream_to_EC2-B"></p>
+</li>
+</ol>
+<p>说明设置的upstream起作用了，我们并没有重新启动load Nginx，就可以将请求转发到EC2-B中。</p>
+<p>再来修改EC2-Reverse的nginx，测试location /foo/的情形</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">    listen 80;</div><div class="line">    server_name 52.36.100.113;</div><div class="line">    access_log  /var/log/nginx/access.log  main;</div><div class="line">    error_log  /var/log/nginx/error.log  notice;</div><div class="line"></div><div class="line">    resolver 172.31.0.2;</div><div class="line">    set $upstream_endpoint http://dynamic-upstream.jibing57.com/;</div><div class="line">    location /foo/ &#123;</div><div class="line">        proxy_pass $upstream_endpoint;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>注意此时dynamic-upstream.jibing57.com域名后面带有‘/’。<br>此时访问<a href="http://52.36.100.113/foo/bar/baz/" target="_blank" rel="external">http://52.36.100.113/foo/bar/baz/</a>，页面内容是EC2-B中/index.html的内容<code>Hello, I&#39;m EC2-B</code>。<br>需改Nginx配置为rewrite。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">    listen 80;</div><div class="line">    server_name 52.36.100.113;</div><div class="line">    access_log  /var/log/nginx/access.log  main;</div><div class="line">    error_log  /var/log/nginx/error.log  notice;</div><div class="line"></div><div class="line">    resolver 172.31.0.2;</div><div class="line">    set $upstream_endpoint http://dynamic-upstream.jibing57.com;</div><div class="line">    location /foo/ &#123;</div><div class="line">        rewrite ^/foo/(.*) /$1 break;</div><div class="line">        proxy_pass $upstream_endpoint;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>此时访问<a href="http://52.36.100.113/foo/bar/baz/，" target="_blank" rel="external">http://52.36.100.113/foo/bar/baz/，</a> 页面内容为EC2-B中/bar/baz/index.html的内容<code>Hello, I&#39;m EC2-B in dir bar/baz/</code></p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://tenzer.dk/nginx-with-dynamic-upstreams/" target="_blank" rel="external">Nginx with dynamic upstreams</a></li>
+<li><a href="https://distinctplace.com/2017/04/19/nginx-resolver-explained/" target="_blank" rel="external">Nginx resolver explained</a></li>
+<li><a href="https://serverfault.com/questions/240476/how-to-force-nginx-to-resolve-dns-of-a-dynamic-hostname-everytime-when-doing-p" target="_blank" rel="external">How to force nginx to resolve DNS (of a dynamic hostname) everytime when doing proxy_pass?</a></li>
+<li><a href="https://www.nginx.com/blog/dns-service-discovery-nginx-plus/#domain-name-upstream-group" target="_blank" rel="external">Using DNS for Service Discovery with NGINX and NGINX Plus</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> AWS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Elastic Load Balancing </tag>
+            
+            <tag> Nginx </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[在Amazon Linux和Elastic Beanstalk中安装ffmpeg的方法]]></title>
       <url>/2018/11/15/a-way-to-install-ffmpeg-to-Amazon-Linux-and-ElasticBeanstalk/</url>
       <content type="html"><![CDATA[<p>因为项目需要，需要在EC2和EB中安装FFMPEG来处理视频。 </p>
@@ -761,11 +874,11 @@
         
         <tags>
             
-            <tag> IAM </tag>
-            
             <tag> S3 </tag>
             
             <tag> AWS CLI </tag>
+            
+            <tag> IAM </tag>
             
         </tags>
         
@@ -6973,11 +7086,11 @@ You can wait for the scheduled retirement date - when the instance is stopped - 
         
         <tags>
             
-            <tag> AWS SDK </tag>
-            
             <tag> RDS </tag>
             
             <tag> Ruby </tag>
+            
+            <tag> AWS SDK </tag>
             
             <tag> AWS CLI </tag>
             

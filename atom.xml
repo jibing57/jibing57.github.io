@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.jibing57.com/"/>
-  <updated>2018-11-17T03:27:39.860Z</updated>
+  <updated>2018-12-11T11:24:09.075Z</updated>
   <id>http://www.jibing57.com/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>如何配置Nginx的Dynamic Upstream指向ELB</title>
+    <link href="http://www.jibing57.com/2018/11/27/nginx-with-dynamic-upstreams-to-ELB/"/>
+    <id>http://www.jibing57.com/2018/11/27/nginx-with-dynamic-upstreams-to-ELB/</id>
+    <published>2018-11-27T13:36:48.000Z</published>
+    <updated>2018-12-11T11:24:09.075Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;起因&quot;&gt;&lt;a href=&quot;#起因&quot; class=&quot;headerlink&quot; title=&quot;起因&quot;&gt;&lt;/a&gt;起因&lt;/h3&gt;&lt;p&gt;公司有一个项目，部署有多个AWS环境，但由于一系列复杂的原因，需要先在账号A下备案的域名来使用在账号B中部署的服务，后续再将域名备案转到账号B中。&lt;br&gt;临时的解决办法就是在账号A下起一个Instance，通过Nginx反向代理到账号B的一个Classic ELB中。&lt;/p&gt;
+&lt;p&gt;起初服务跑的很顺畅，后来一天突然服务不可用，页面显示504 Gateway Timeout，查看了Nginx的日志，发现有多条&lt;code&gt;upstream timed out (110: Connection timed out) while connecting to upstream&lt;/code&gt;的错误日志。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
+    
+    
+      <category term="Elastic Load Balancing" scheme="http://www.jibing57.com/tags/Elastic-Load-Balancing/"/>
+    
+      <category term="Nginx" scheme="http://www.jibing57.com/tags/Nginx/"/>
+    
+  </entry>
   
   <entry>
     <title>在Amazon Linux和Elastic Beanstalk中安装ffmpeg的方法</title>
@@ -209,11 +232,11 @@
       <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
     
     
-      <category term="IAM" scheme="http://www.jibing57.com/tags/IAM/"/>
-    
       <category term="S3" scheme="http://www.jibing57.com/tags/S3/"/>
     
       <category term="AWS CLI" scheme="http://www.jibing57.com/tags/AWS-CLI/"/>
+    
+      <category term="IAM" scheme="http://www.jibing57.com/tags/IAM/"/>
     
   </entry>
   
@@ -502,33 +525,6 @@
     
     
       <category term="Ruby" scheme="http://www.jibing57.com/tags/Ruby/"/>
-    
-      <category term="Elastic Load Balancing" scheme="http://www.jibing57.com/tags/Elastic-Load-Balancing/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>shell gist to get http 5XX code from ELB access log</title>
-    <link href="http://www.jibing57.com/2017/12/25/shell-gist-to-get-http-5XX-code-from-ELB-access-log/"/>
-    <id>http://www.jibing57.com/2017/12/25/shell-gist-to-get-http-5XX-code-from-ELB-access-log/</id>
-    <published>2017-12-25T14:09:24.000Z</published>
-    <updated>2017-12-26T02:56:44.892Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;一个简陋的只是够用的shell小脚本，用来从S3中下载前一天的ELB access log，筛选出http code为5XX的日志，然后发送给某个指定的email地址。&lt;/p&gt;
-&lt;h3 id=&quot;变量设置&quot;&gt;&lt;a href=&quot;#变量设置&quot; class=&quot;headerlink&quot; title=&quot;变量设置&quot;&gt;&lt;/a&gt;变量设置&lt;/h3&gt;&lt;p&gt;设置下MAIL_TO和S3_BASE_PREFIX这两个变量，然后在有AWS CLI访问环境的机器上执行即可。&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;MAIL_TO 如果有多个地址，可用空格隔开&lt;/li&gt;
-&lt;li&gt;S3_BASE_PREFIX设置到Access log日志格式之前的prefix就行。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;比如完整的access log地址是: &lt;code&gt;s3://carl-elb-logs/AWSLogs/888888888888/elasticloadbalancing/ap-northeast-2/2017/12/24/704017765382_elasticloadbalancing_ap-northeast-2_ELB-carl_20171224T0120Z_13.125.86.136_5s9i5ef2.log&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;那么S3_BASE_PREFIX设置为&lt;code&gt;s3://carl-elb-logs/AWSLogs/888888888888/elasticloadbalancing/ap-northeast-2&lt;/code&gt;即可&lt;br&gt;
-    
-    </summary>
-    
-      <category term="Shell" scheme="http://www.jibing57.com/categories/Shell/"/>
-    
     
       <category term="Elastic Load Balancing" scheme="http://www.jibing57.com/tags/Elastic-Load-Balancing/"/>
     

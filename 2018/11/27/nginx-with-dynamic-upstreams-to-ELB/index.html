@@ -1,0 +1,414 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>如何配置Nginx的Dynamic Upstream指向ELB | Recording</title>
+  <meta name="author" content="jibing57">
+  
+  <meta name="description" content="AWS, 阅读, Architecture, PostgreSQL">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="如何配置Nginx的Dynamic Upstream指向ELB"/>
+  <meta property="og:site_name" content="Recording"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/css/themes/bootstrap.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/comment.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+  
+  <!-- analytics -->
+  
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-111771042-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?59d3e14cdc96877383afed646f44d216";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+</head>
+
+ <body>  
+  <nav id="main-nav" class="navbar  navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+	<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+       <a class="navbar-brand" href="/">Recording</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class="fa fa-archive"></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class="fa fa-folder"></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class="fa fa-tags"></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/douban" title="Douban">
+			  <i class="fa fa-book"></i>Douban
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header ">		
+			<h1 class="title "> 如何配置Nginx的Dynamic Upstream指向ELB</h1>
+		</div>		
+	
+
+
+
+
+   <style type="text/css">
+           img, video {
+                -webkit-box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+                -moz-box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+                box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+           }
+   </style>
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
+
+	<!-- content -->
+	<div class="mypage">		
+	  		
+
+	  <h3 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h3><p>公司有一个项目，部署有多个AWS环境，但由于一系列复杂的原因，需要先在账号A下备案的域名来使用在账号B中部署的服务，后续再将域名备案转到账号B中。<br>临时的解决办法就是在账号A下起一个Instance，通过Nginx反向代理到账号B的一个Classic ELB中。</p>
+<p>起初服务跑的很顺畅，后来一天突然服务不可用，页面显示504 Gateway Timeout，查看了Nginx的日志，发现有多条<code>upstream timed out (110: Connection timed out) while connecting to upstream</code>的错误日志。</p>
+<a id="more"></a>
+<h3 id="调查"><a href="#调查" class="headerlink" title="调查"></a>调查</h3><p>AWS 的ELB是一个托管的负载均衡器，通过对外提供的域名来进行访问，北京Region的域名类似<code>service-3332222.cn-north-1.elb.amazonaws.com.cn</code>,但实际上底层还是会有对应的ENI来承载实际的流量，这些ENI有自己临时分配的IP地址。这些ENI可能会随着流量的扩展或AWS底层服务器的变动而随时改变。所以这也是AWS要求使用域名来访问ELB的原因。</p>
+<p>Nginx侧使用upstream时，里面如果填写的是域名，那么Nginx会在请求DNS后把对应的IP信息缓存起来，后续的请求就一直用缓存的IP。直到下次reload的时候才会再次查询domain</p>
+<p>此时问题就出现了，ELB的域名解析是时刻会更新的，当底层有变动时，承载ELB流量的Public IP就会变化。而Nginx的upstream中，如果使用了域名，第一次DNS请求后就会一直使用缓存的Public IP。当ELB的ENI有变化时，原先的Nginx反向代理缓存的IP地址就失效了，导致连接不上服务。出现<code>upstream timed out (110: Connection timed out) while connecting to upstream</code>的错误。</p>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>有这么几个方法可以用来解决这个问题:</p>
+<ol>
+<li>写一个监控的cron脚本，时刻检测ELB对应的IP是否有变化，一旦有变化，就reload Nginx。这个方法需要额外的开发。</li>
+<li><a href="https://www.nginx.com/products/nginx/" target="_blank" rel="external">Nginx Plus</a>支持在upstream中添加<a href="https://www.nginx.com/products/nginx/load-balancing/#service-discovery" target="_blank" rel="external">resolve</a>，可以周期性的重新解析DNS域名。可以完美解决所遇到的问题，可一个Nginx Plus Instance的授权费用就要<a href="https://www.nginx.com/products/buy-nginx-plus/" target="_blank" rel="external">$2500+/year</a>，穷人表示用不起。</li>
+<li>Nginx社区版的解决方案，不使用upstream，使用set将域名设为一个变量，再传递给proxy_pass。</li>
+</ol>
+<p>Nginx官方这篇<a href="https://www.nginx.com/blog/dns-service-discovery-nginx-plus/#domain-name-upstream-group" target="_blank" rel="external">Using DNS for Service Discovery with NGINX and NGINX Plus</a>的文章讲述了第二点和第三点的解决方案。</p>
+<p>Nginx的免费解决方案的配置如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">  listen        80;</div><div class="line">  server_name   example.com;</div><div class="line"></div><div class="line">  resolver 172.31.0.2;</div><div class="line">  set $upstream_endpoint http://service-3332222.cn-north-1.elb.amazonaws.com.cn;</div><div class="line"></div><div class="line">  location / &#123;</div><div class="line">    proxy_pass $upstream_endpoint$request_uri;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在 proxy_pass中使用变量来代替URI或者Upstream Server Group，Nginx就会在解析缓存过期后再次请求DNS服务器来解析域名。</p>
+<p><strong>注意: 此处的resolver所要填写的IP地址，取决于EC2所在的子网划分。如果网络是VPC，那需要设置为EC2所在子网的DNS地址，AWS会为每个子网保留5个IP地址，第三个IP地址用作DNS，例如如果子网CIDR为10.0.0.0/24，那10.0.0.2就是AWS保留的用作DNS的地址, 保留IP地址的官网说明<a href="https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Subnets.html" target="_blank" rel="external">VPCs and Subnets</a>。如果是Classic的网络,那么AWS的DNS服务器地址是固定的172.16.0.23，AWS官网说明<a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-classic-platform.html#ip-addressing-differences" target="_blank" rel="external">EC2-Classic Platform</a>。</strong></p>
+<h4 id="关于免费方案的缺陷"><a href="#关于免费方案的缺陷" class="headerlink" title="关于免费方案的缺陷"></a>关于免费方案的缺陷</h4><p>当location的参数不是‘/’，并且proxy_pass后面的参数是一个变量时，proxy_pass的转发规则和正常的规则有所不同。如下是相关的说明以及解决方案。<br>以下文字转自<a href="https://tenzer.dk/nginx-with-dynamic-upstreams/" target="_blank" rel="external">Nginx with dynamic upstreams</a></p>
+<p><code>proxy_pass</code>不使用变量时的正常转发规则:<br>nginx配置为如下时:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">location /foo/ &#123;</div><div class="line">    proxy_pass http://127.0.0.1:8080;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>如果请求的网页是<code>/foo/bar/baz</code>,那么Nginx会转发请求至<code>http://127.0.0.1:8080/foo/bar/baz</code>。但如果nginx的配置如下，在proxy_pass参数后面加上了‘/’时。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">location /foo/ &#123;</div><div class="line">    # Note the trailing slash       ↓</div><div class="line">    proxy_pass http://127.0.0.1:8080/;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>Nginx在将请求转发到upstream时，会将<code>location</code>中匹配的部分截掉，<code>/foo/bar/baz</code>会转发到<code>http://127.0.0.1:8080/bar/baz</code>。</p>
+<p>但当我们在proxy_pass中使用变量后，转发行为会发生变化。<br>当我们在转发的地址后面有‘/’时:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">resolver 172.31.0.2;</div><div class="line">set $upstream_endpoint http://service-1234567890.us-east-1.elb.amazonaws.com/;</div><div class="line">location /foo/ &#123;</div><div class="line">    proxy_pass $upstream_endpoint;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>当你请求<code>/foo/bar/baz</code>时，请求会转发到‘/’而不是期望的<code>/bar/baz</code></p>
+<p>解决办法:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">resolver 172.31.0.2;</div><div class="line">set $upstream_endpoint http://service-1234567890.us-east-1.elb.amazonaws.com;</div><div class="line">location /foo/ &#123;</div><div class="line">    rewrite ^/foo/(.*) /$1 break;</div><div class="line">    proxy_pass $upstream_endpoint;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>删掉<code>set $upstream_endpoint</code>后面的‘/’，手动rewrite地址，这样就可以将请求<code>/foo/bar/baz</code>转发到upstream的<code>/bar/baz</code>了。</p>
+<h3 id="实验验证"><a href="#实验验证" class="headerlink" title="实验验证"></a>实验验证</h3><p>来做几个实验来验证下上面的配置是否可以生效。</p>
+<h4 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h4><p>来做几个实验来验证下效果，新建几台Instance，配置好对应的SG。如下是几台实验机器的基本信息:</p>
+<table>
+<thead>
+<tr>
+<th>Instance</th>
+<th>Public IP</th>
+<th>Private IP</th>
+<th>SG Rule</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EC2-A</td>
+<td>18.237.0.231</td>
+<td>172.31.39.103</td>
+<td>SSH&amp;HTTP From 0.0.0.0/0</td>
+</tr>
+<tr>
+<td>EC2-B</td>
+<td>52.26.25.237</td>
+<td>172.31.35.141</td>
+<td>SSH&amp;HTTP from 0.0.0.0/0</td>
+</tr>
+<tr>
+<td>EC2-Reverse</td>
+<td>52.36.100.113</td>
+<td>172.31.18.5</td>
+<td>SSH&amp;HTTP from 0.0.0.0/0</td>
+</tr>
+</tbody>
+</table>
+<p>一个域名: dynamic-upstream.jibing57.com</p>
+<h4 id="环境设置"><a href="#环境设置" class="headerlink" title="环境设置"></a>环境设置</h4><p>分别在EC2-A和EC2-B上安装简单的httpd服务</p>
+<p>登陆EC2-A中执行命令安装httpd服务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"># 切换为root用户</div><div class="line">sudo bash</div><div class="line"></div><div class="line"># 安装httpd</div><div class="line">yum install httpd -y</div><div class="line"></div><div class="line"># 建立一个最简单的page</div><div class="line"># EC2-A中建立Hello, I&apos;m EC2-A的首页</div><div class="line">echo &quot;&lt;h1&gt; Hello, I&apos;m EC2-A &lt;/h1&gt;&quot; &gt; /var/www/html/index.html</div><div class="line"></div><div class="line"># 建立多级目录foo/bar/baz/并建立欢迎页</div><div class="line">mkdir -p /var/www/html/foo/bar/baz/</div><div class="line">echo &quot;&lt;h1&gt; Hello, I&apos;m EC2-A in dir foo/bar/baz/ &lt;/h1&gt;&quot; &gt; /var/www/html/foo/bar/baz/index.html</div><div class="line"></div><div class="line"># 建立多级目录bar/baz/并建立欢迎页</div><div class="line">mkdir -p /var/www/html/bar/baz/</div><div class="line">&quot;&lt;h1&gt; Hello, I&apos;m EC2-A in dir bar/baz/ &lt;/h1&gt;&quot; &gt; /var/www/html/bar/baz/index.html</div><div class="line"></div><div class="line"># 启动http服务</div><div class="line">systemctl start httpd.service</div></pre></td></tr></table></figure>
+<p>登陆EC2-B中执行命令安装httpd服务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"># 切换为root用户</div><div class="line">sudo bash</div><div class="line"></div><div class="line"># 安装httpd</div><div class="line">yum install httpd -y</div><div class="line"></div><div class="line"># EC2-B中建立Hello, I&apos;m EC2-B的首页</div><div class="line">echo &quot;&lt;h1&gt; Hello, I&apos;m EC2-B &lt;/h1&gt;&quot; &gt; /var/www/html/index.html</div><div class="line"></div><div class="line"># 建立多级目录foo/bar/baz/并建立欢迎页</div><div class="line">mkdir -p /var/www/html/foo/bar/baz/</div><div class="line">echo &quot;&lt;h1&gt; Hello, I&apos;m EC2-B in dir foo/bar/baz/ &lt;/h1&gt;&quot; &gt; /var/www/html/foo/bar/baz/index.html</div><div class="line"></div><div class="line"># 建立多级目录bar/baz/并建立欢迎页</div><div class="line">mkdir -p /var/www/html/bar/baz/</div><div class="line">echo &quot;&lt;h1&gt; Hello, I&apos;m EC2-B in dir bar/baz/ &lt;/h1&gt;&quot; &gt; /var/www/html/bar/baz/index.html</div><div class="line"></div><div class="line"># 启动http服务</div><div class="line">systemctl start httpd.service</div></pre></td></tr></table></figure>
+<p>配置好后，访问如下页面，确认网页能够正常展示</p>
+<ul>
+<li><a href="http://18.237.0.231/" target="_blank" rel="external">http://18.237.0.231/</a></li>
+<li><a href="http://18.237.0.231/foo/bar/baz/" target="_blank" rel="external">http://18.237.0.231/foo/bar/baz/</a></li>
+<li><a href="http://52.26.25.237/" target="_blank" rel="external">http://52.26.25.237/</a></li>
+<li><a href="http://52.26.25.237/foo/bar/baz/" target="_blank" rel="external">http://52.26.25.237/foo/bar/baz/</a></li>
+</ul>
+<p>配置EC2-Reverse的nginx，将请求重定向到dynamic-upstream.jibing57.com去。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">    listen 80;</div><div class="line">    server_name 52.36.100.113;</div><div class="line">    access_log  /var/log/nginx/access.log  main;</div><div class="line">    error_log  /var/log/nginx/error.log  notice;</div><div class="line"></div><div class="line">    resolver 172.31.0.2;</div><div class="line">    set $upstream_endpoint http://dynamic-upstream.jibing57.com;</div><div class="line">    location / &#123;</div><div class="line">        proxy_pass $upstream_endpoint;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="进行试验"><a href="#进行试验" class="headerlink" title="进行试验"></a>进行试验</h4><p>基本设置设置完后，让我们来进行试验</p>
+<ol>
+<li><p>首先将dynamic-upstream.jibing57.com解析到EC2-A的IP地址18.237.0.231<br><img src="/images/AWS/ELB/aliyun_parser_to_EC2-A.jpg" alt="aliyun_parser_to_EC2-A"><br>此时访问<a href="http://52.36.100.113" target="_blank" rel="external">http://52.36.100.113</a>, 可以看到的是EC2-A Instance上的主页内容 Hello, I’m EC2-A<br><img src="/images/AWS/ELB/upstream_to_EC2-A.jpg" alt="upstream_to_EC2-A"></p>
+</li>
+<li><p>再将dynamic-upstream.jibing57.com解析修改为EC2-B的IP地址52.26.25.237<br><img src="/images/AWS/ELB/aliyun_parser_to_EC2-B.jpg" alt="aliyun_parser_to_EC2-B"><br>当修改后的域名解析扩散到AWS的DNS服务器后，此时访问<a href="http://52.36.100.113" target="_blank" rel="external">http://52.36.100.113</a>，可以看到的是EC2-B Instance上的主页内容Hello, I’m EC2-B<br><img src="/images/AWS/ELB/upstream_to_EC2-B.jpg" alt="upstream_to_EC2-B"></p>
+</li>
+</ol>
+<p>说明设置的upstream起作用了，我们并没有重新启动load Nginx，就可以将请求转发到EC2-B中。</p>
+<p>再来修改EC2-Reverse的nginx，测试location /foo/的情形</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">    listen 80;</div><div class="line">    server_name 52.36.100.113;</div><div class="line">    access_log  /var/log/nginx/access.log  main;</div><div class="line">    error_log  /var/log/nginx/error.log  notice;</div><div class="line"></div><div class="line">    resolver 172.31.0.2;</div><div class="line">    set $upstream_endpoint http://dynamic-upstream.jibing57.com/;</div><div class="line">    location /foo/ &#123;</div><div class="line">        proxy_pass $upstream_endpoint;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>注意此时dynamic-upstream.jibing57.com域名后面带有‘/’。<br>此时访问<a href="http://52.36.100.113/foo/bar/baz/" target="_blank" rel="external">http://52.36.100.113/foo/bar/baz/</a>，页面内容是EC2-B中/index.html的内容<code>Hello, I&#39;m EC2-B</code>。<br>需改Nginx配置为rewrite。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">    listen 80;</div><div class="line">    server_name 52.36.100.113;</div><div class="line">    access_log  /var/log/nginx/access.log  main;</div><div class="line">    error_log  /var/log/nginx/error.log  notice;</div><div class="line"></div><div class="line">    resolver 172.31.0.2;</div><div class="line">    set $upstream_endpoint http://dynamic-upstream.jibing57.com;</div><div class="line">    location /foo/ &#123;</div><div class="line">        rewrite ^/foo/(.*) /$1 break;</div><div class="line">        proxy_pass $upstream_endpoint;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>此时访问<a href="http://52.36.100.113/foo/bar/baz/，" target="_blank" rel="external">http://52.36.100.113/foo/bar/baz/，</a> 页面内容为EC2-B中/bar/baz/index.html的内容<code>Hello, I&#39;m EC2-B in dir bar/baz/</code></p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://tenzer.dk/nginx-with-dynamic-upstreams/" target="_blank" rel="external">Nginx with dynamic upstreams</a></li>
+<li><a href="https://distinctplace.com/2017/04/19/nginx-resolver-explained/" target="_blank" rel="external">Nginx resolver explained</a></li>
+<li><a href="https://serverfault.com/questions/240476/how-to-force-nginx-to-resolve-dns-of-a-dynamic-hostname-everytime-when-doing-p" target="_blank" rel="external">How to force nginx to resolve DNS (of a dynamic hostname) everytime when doing proxy_pass?</a></li>
+<li><a href="https://www.nginx.com/blog/dns-service-discovery-nginx-plus/#domain-name-upstream-group" target="_blank" rel="external">Using DNS for Service Discovery with NGINX and NGINX Plus</a></li>
+</ul>
+	  
+	</div>
+
+	<div>
+  	<center>
+	<div class="pagination">
+<ul class="pagination">
+	 
+		
+          <li class="prev disabled"><a><i class="fa fa-arrow-circle-o-left"></i>Prev</a></li>
+        
+
+        <li><a href="/archives"><i class="fa fa-archive"></i>Archive</a></li>
+
+		
+		   <li class="next"><a href="/2018/11/15/a-way-to-install-ffmpeg-to-Amazon-Linux-and-ElasticBeanstalk/" class="alignright next">Next<i class="fa fa-arrow-circle-o-right"></i></a></li>         
+        
+	
+</ul>
+</div>
+
+    </center>
+	</div>
+
+    <!-- share -->
+    
+        
+    <div class="bdsharebuttonbox">
+        <a href="#" class="bds_more" data-cmd="more"></a>
+        <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+        <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+        <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+        <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+        <a href="#" class="bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+        <a href="#" class="bds_evernotecn" data-cmd="evernotecn" title="分享到印象笔记"></a>
+        <a href="#" class="bds_youdao" data-cmd="youdao" title="分享到有道云笔记"></a>
+        <a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+    </div>
+    <script>
+        window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"24"},"share":{}};
+        with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+    </script>
+
+
+        
+
+    
+	
+	<!-- comment -->
+	
+<section id="comment">
+  <h2 class="title">Comments</h2>
+  
+  	 <div id="disqus_thread">
+     <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  	 </div>
+  
+</section>
+
+
+	</div> <!-- col-md-9/col-md-12 -->
+		
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta">
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2018-11-27 21:36:48
+	</div>
+	
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
+	   <div id="toc" class="toc collapse in">
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#起因"><span class="toc-article-text">起因</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#调查"><span class="toc-article-text">调查</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#解决方案"><span class="toc-article-text">解决方案</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#关于免费方案的缺陷"><span class="toc-article-text">关于免费方案的缺陷</span></a></li></ol></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#实验验证"><span class="toc-article-text">实验验证</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#环境准备"><span class="toc-article-text">环境准备</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#环境设置"><span class="toc-article-text">环境设置</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#进行试验"><span class="toc-article-text">进行试验</span></a></li></ol></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#Reference"><span class="toc-article-text">Reference</span></a></li></ol>
+		</div>
+	
+	</div>
+
+	<!-- categories -->
+    
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>
+    <ul id="categorys" class="tag_box list-unstyled collapse in">
+          
+  <li>
+    <li><a href="/categories/AWS/">AWS<span>20</span></a></li>
+  </li>
+
+    </ul>
+	</div>
+	
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>
+    <ul id="tags" class="tag_box list-unstyled collapse in">
+	    
+  <li><a href="/tags/Elastic-Load-Balancing/">Elastic Load Balancing<span>4</span></a></li> <li><a href="/tags/Nginx/">Nginx<span>1</span></a></li>
+    </ul>
+	</div>
+	
+
+    <hr>
+
+</div><!-- col-md-3 -->
+
+	</div>
+		
+
+</div><!-- row -->
+
+<script type="text/javascript">
+var disqus_shortname = 'jibing57-blog';
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  &copy; 2018 jibing57
+  
+      with help from <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>.    
+</p> </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>

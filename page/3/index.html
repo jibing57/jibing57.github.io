@@ -140,6 +140,36 @@ var _hmt = _hmt || [];
 	<!-- display as entry -->	
 		<h3 class="title">
 			<div class="date"> 2017-12-25 </div>
+			<div class="article-title"><a href="/2017/12/25/shell-gist-to-get-http-5XX-code-from-ELB-access-log/" >shell gist to get http 5XX code from ELB access log</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>一个简陋的只是够用的shell小脚本，用来从S3中下载前一天的ELB access log，筛选出http code为5XX的日志，然后发送给某个指定的email地址。</p>
+<h3 id="变量设置"><a href="#变量设置" class="headerlink" title="变量设置"></a>变量设置</h3><p>设置下MAIL_TO和S3_BASE_PREFIX这两个变量，然后在有AWS CLI访问环境的机器上执行即可。</p>
+<ul>
+<li>MAIL_TO 如果有多个地址，可用空格隔开</li>
+<li>S3_BASE_PREFIX设置到Access log日志格式之前的prefix就行。</li>
+</ul>
+<p>比如完整的access log地址是: <code>s3://carl-elb-logs/AWSLogs/888888888888/elasticloadbalancing/ap-northeast-2/2017/12/24/704017765382_elasticloadbalancing_ap-northeast-2_ELB-carl_20171224T0120Z_13.125.86.136_5s9i5ef2.log</code></p>
+<p>那么S3_BASE_PREFIX设置为<code>s3://carl-elb-logs/AWSLogs/888888888888/elasticloadbalancing/ap-northeast-2</code>即可<br>
+	
+	</div>
+  <a type="button" href="/2017/12/25/shell-gist-to-get-http-5XX-code-from-ELB-access-log/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2017-12-25 </div>
 			<div class="article-title"><a href="/2017/12/25/how-to-add-shadow-of-images-in-freemind/" >在Freemind主题中开启图片阴影</a></div>						
 		</h3>
 	
@@ -403,36 +433,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2017-10-31 </div>
-			<div class="article-title"><a href="/2017/10/31/account-setting-by-aws/" >创建AWS Account后的基本账号设置</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>记录创建好AWS账号后的几个基本设置, 大概介绍如下几点:</p>
-<ul>
-<li>查看是否满足Free Tier Usage</li>
-<li>创建IAM账号</li>
-<li>为IAM账号启用Billing</li>
-<li>如何提交Case</li>
-<li>切换Console语言</li>
-</ul>
-	
-	</div>
-  <a type="button" href="/2017/10/31/account-setting-by-aws/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -496,7 +496,7 @@ var _hmt = _hmt || [];
 		<h4>Categories</h4>
 		<ul class="tag_box inline list-unstyled">
 		
-			<li><a href="/categories/AWS/">AWS<span>19</span></a></li>
+			<li><a href="/categories/AWS/">AWS<span>20</span></a></li>
 		
 			<li><a href="/categories/AWS-Certified/">AWS Certified<span>3</span></a></li>
 		
@@ -517,48 +517,48 @@ var _hmt = _hmt || [];
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/AWS-Free-Tier/">AWS Free Tier<span>1</span></a></li>
-		
-			<li><a href="/tags/EC2-User-Data/">EC2 User Data<span>1</span></a></li>
-		
-			<li><a href="/tags/Elastic-Load-Balancing/">Elastic Load Balancing<span>3</span></a></li>
-		
-			<li><a href="/tags/PostgreSQL/">PostgreSQL<span>1</span></a></li>
-		
-			<li><a href="/tags/Linux/">Linux<span>3</span></a></li>
-		
-			<li><a href="/tags/AWS-SDK/">AWS SDK<span>2</span></a></li>
+			<li><a href="/tags/FFMPEG/">FFMPEG<span>1</span></a></li>
 		
 			<li><a href="/tags/CodeCommit/">CodeCommit<span>1</span></a></li>
 		
-			<li><a href="/tags/SSH/">SSH<span>3</span></a></li>
+			<li><a href="/tags/Tips/">Tips<span>1</span></a></li>
 		
-			<li><a href="/tags/Elastic-Beanstalk/">Elastic Beanstalk<span>3</span></a></li>
+			<li><a href="/tags/Rails/">Rails<span>2</span></a></li>
 		
-			<li><a href="/tags/Github/">Github<span>2</span></a></li>
+			<li><a href="/tags/Nginx/">Nginx<span>1</span></a></li>
 		
-			<li><a href="/tags/Git/">Git<span>1</span></a></li>
-		
-			<li><a href="/tags/IAM/">IAM<span>2</span></a></li>
+			<li><a href="/tags/Failover/">Failover<span>1</span></a></li>
 		
 			<li><a href="/tags/AWS-CLI/">AWS CLI<span>5</span></a></li>
 		
+			<li><a href="/tags/Nodejs/">Nodejs<span>1</span></a></li>
+		
 			<li><a href="/tags/Chrome/">Chrome<span>1</span></a></li>
 		
-			<li><a href="/tags/Tips/">Tips<span>1</span></a></li>
-		
-			<li><a href="/tags/MacOS/">MacOS<span>7</span></a></li>
-		
-			<li><a href="/tags/RDS/">RDS<span>3</span></a></li>
-		
-			<li><a href="/tags/AutoScaling/">AutoScaling<span>1</span></a></li>
+			<li><a href="/tags/IAM/">IAM<span>2</span></a></li>
 		
 			<li><a href="/tags/EC2/">EC2<span>4</span></a></li>
+		
+			<li><a href="/tags/Ruby/">Ruby<span>5</span></a></li>
+		
+			<li><a href="/tags/Image/">Image<span>1</span></a></li>
+		
+			<li><a href="/tags/AWS-Free-Tier/">AWS Free Tier<span>1</span></a></li>
+		
+			<li><a href="/tags/Solutions-Architect/">Solutions Architect<span>1</span></a></li>
+		
+			<li><a href="/tags/Git/">Git<span>1</span></a></li>
+		
+			<li><a href="/tags/Elastic-Beanstalk/">Elastic Beanstalk<span>3</span></a></li>
+		
+			<li><a href="/tags/CloudWatch/">CloudWatch<span>1</span></a></li>
+		
+			<li><a href="/tags/S3/">S3<span>7</span></a></li>
 		
 			<li><a href="/tags/AWS-Deep-Dive/">AWS Deep Dive<span>2</span></a></li>
 		
 		
-		   <li><a href="/tags">...<span>35</span></a></li>
+		   <li><a href="/tags">...<span>36</span></a></li>
 		 
 		</ul>
 	</div>
@@ -569,6 +569,10 @@ var _hmt = _hmt || [];
 <div class="widget">
   <h4>Recent Posts</h4>
   <ul class="entry list-unstyled">
+    
+      <li>
+        <a href="/2018/11/27/nginx-with-dynamic-upstreams-to-ELB/" ><i class="fa fa-file-o"></i>如何配置Nginx的Dynamic Upstream指...</a>
+      </li>
     
       <li>
         <a href="/2018/11/15/a-way-to-install-ffmpeg-to-Amazon-Linux-and-ElasticBeanstalk/" ><i class="fa fa-file-o"></i>在Amazon Linux和Elastic Beans...</a>
@@ -584,10 +588,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2018/05/21/ssh-key-Invalid-key-length-Error-on-Macos/" ><i class="fa fa-file-o"></i>macOS 10.13.2下SSH命令Invalid ...</a>
-      </li>
-    
-      <li>
-        <a href="/2018/05/10/how-to-write-NTFS-Deives-on-a-Mac-10.13/" ><i class="fa fa-file-o"></i>macOS 10.13 High Sierra读写NT...</a>
       </li>
     
   </ul>

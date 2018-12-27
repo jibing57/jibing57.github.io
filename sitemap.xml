@@ -2,16 +2,44 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://www.jibing57.com/2018/12/11/how-to-enable-cors-on-S3/</loc>
+    <loc>http://www.jibing57.com/2018/12/25/How-to-change-max-pool-size-of-passenger-on-ElasticBeanstalk/</loc>
     
-    <lastmod>2018-12-11T15:36:54.345Z</lastmod>
+    <lastmod>2018-12-27T07:02:05.228Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.jibing57.com/2018/12/24/404-on-Scale-Up-of-ElasticBeanstalk/</loc>
+    
+    <lastmod>2018-12-25T09:19:31.850Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://www.jibing57.com/2018/11/27/nginx-with-dynamic-upstreams-to-ELB/</loc>
     
-    <lastmod>2018-12-11T11:24:09.075Z</lastmod>
+    <lastmod>2018-12-23T12:16:40.890Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.jibing57.com/2018/12/17/how-to-handle-heap-out-of-memory-in-node/</loc>
+    
+    <lastmod>2018-12-23T06:22:55.542Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.jibing57.com/2018/02/07/AWS-Certified-Solutions-Architect-Professional/</loc>
+    
+    <lastmod>2018-12-20T02:01:20.224Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.jibing57.com/2018/12/11/how-to-enable-cors-on-S3/</loc>
+    
+    <lastmod>2018-12-11T15:36:54.345Z</lastmod>
     
   </url>
   
@@ -138,13 +166,6 @@
     <loc>http://www.jibing57.com/2018/03/12/how-to-handle-Retirement-Notification-Amazon-EC2-Instance-scheduled-for-retirement/</loc>
     
     <lastmod>2018-03-12T14:19:11.395Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.jibing57.com/2018/02/07/AWS-Certified-Solutions-Architect-Professional/</loc>
-    
-    <lastmod>2018-02-11T17:18:12.338Z</lastmod>
     
   </url>
   

@@ -219,9 +219,98 @@ var _hmt = _hmt || [];
 		
             
 		
+            
+		
+            
+		
+            
+		
         
         <!-- render other articles -->
         
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2018-12-25 </div>
+			<div class="article-title"><a href="/2018/12/25/How-to-change-max-pool-size-of-passenger-on-ElasticBeanstalk/" >修改ElasticBeanstalk中Passenger的max-pool-size</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>在AWS Elastic Beanstalk中，如果选用Ruby with Passenger运行Rails时，会遇到一个问题，就是EB环境中的Passenger的max_pool_size是默认的6。如果EB中的Instance选用的是性能比较高的类型，只起6个Passenger进程会是一个巨大的浪费。下面介绍几个修改EB中Passenger max_pool_size参数的方法。</p>
+<h4 id="Passenger官方说明"><a href="#Passenger官方说明" class="headerlink" title="Passenger官方说明"></a>Passenger官方说明</h4><p>最新的官方<a href="https://www.phusionpassenger.com/library/config/standalone/intro.html#location-of-passengerfile-json" target="_blank" rel="external">Introduction to configuring Passenger Standalone</a>文档中，Passenger Standalone可以通过如下几种方式来修改启动参数</p>
+<ul>
+<li>一、传递参数给启动命令<code>passenger start</code></li>
+<li>二、使用环境变量(从5.0.22开始)</li>
+<li>三、通过配置文件<code>Passengerfile.json</code></li>
+</ul>
+	
+	</div>
+  <a type="button" href="/2018/12/25/How-to-change-max-pool-size-of-passenger-on-ElasticBeanstalk/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2018-12-24 </div>
+			<div class="article-title"><a href="/2018/12/24/404-on-Scale-Up-of-ElasticBeanstalk/" >ElasticBeanstalk伸缩时偶发404的原因</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>使用EB Passenger with Ruby部署rails时，如果是以默认配置启动，没有做对应的配置，在ASG Scale Up的时候，可能会有请求没法正常处理，返回404。</p>
+<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><ol>
+<li>EB中创建的ELB，默认是使用TCP:80的方式来检查Instance的健康状态的。</li>
+<li>ELB的<code>health check</code>的默认<code>Interval</code>是10 seconds，<code>Healthy threshold</code>是3 requests。</li>
+<li>当ASG Scale Up时，新建的Instance中Passenger在Rails APP部署完成之前就已经在监听80端口了。</li>
+<li>Passenger启动30秒之后，因为超过了<code>Healthy threshold * Interval</code>的时间, 并且每次检查都是OK的，ELB会判定Instance是可用的，就会将流量导入到该Instance中。</li>
+<li>但此时rails APP可能并没有部署完成(bundle install加上precompile，部署一个新的APP可能需要5分钟左右)，所以client会得到404的错误。</li>
+</ol>
+	
+	</div>
+  <a type="button" href="/2018/12/24/404-on-Scale-Up-of-ElasticBeanstalk/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2018-12-17 </div>
+			<div class="article-title"><a href="/2018/12/17/how-to-handle-heap-out-of-memory-in-node/" >Node中heap out of memory的解决办法</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h3><p>公司一个ReactOnRails的项目，之前一直都是跑的好好的。上次一个小修改后，发布预编译React代码的时候，屡次出现<code>FATAL ERROR: CALL_AND_RETRY_LAST Allocation failed - JavaScript heap out of memory</code> 的错误。</p>
+<h3 id="调查"><a href="#调查" class="headerlink" title="调查"></a>调查</h3><p>项目使用的是webpacker打包js代码，一开始是以为webpacker的问题，调查了一圈下来，最终发现是node中V8的限制。默认情况下，在64位系统下内存使用是有限制的，有一说是1.4GB，有一说是1.76GB。但在node官网搜了一圈也没找到明确说现在的限制是多少。</p>
+	
+	</div>
+  <a type="button" href="/2018/12/17/how-to-handle-heap-out-of-memory-in-node/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
            
 			  
 	
@@ -398,79 +487,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2018-04-25 </div>
-			<div class="article-title"><a href="/2018/04/25/command-line-tools-to-check-images-on-macos/" >Mac下几个处理图片的命令</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h3><p>Macos下，查看图片，默认就是使用Preview。Preview基本包含了普通人能用到的各种功能。<br>但有时候需要批量处理图片时，常规的GUI工具会显得不太方便，使用命令来操作能够更快捷高效。下面介绍几个Macos下和图片相关的几个命令。</p>
-<h3 id="查看图片尺寸"><a href="#查看图片尺寸" class="headerlink" title="查看图片尺寸"></a>查看图片尺寸</h3><h4 id="系统自带file命令"><a href="#系统自带file命令" class="headerlink" title="系统自带file命令"></a>系统自带file命令</h4><p>在命令行下查看图片的分辨率，可以直接使用Macos自带的file命令即可。<br>
-	
-	</div>
-  <a type="button" href="/2018/04/25/command-line-tools-to-check-images-on-macos/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2018-04-24 </div>
-			<div class="article-title"><a href="/2018/04/24/douban-image-403/" >豆瓣图片403问题</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="起由"><a href="#起由" class="headerlink" title="起由"></a>起由</h3><p>发布了一版blog到github上。偶然间发现<a href="/douban">豆瓣页面</a>中书的图片都无法显示了。打开Inspector调查了下，发现请求豆瓣图片的链接返回的都是403 Forbidden。<br><img src="/images/Hexo/douban_image_403.png" alt="douban_image_403.png"></p>
-<p>网上搜索了一下，可能的原因就是豆瓣为了封杀微信小程序在页面上直接请求豆瓣的图片，封杀了图片的外链。</p>
-<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>尝试着将豆瓣API返回的图片链接拷贝到浏览器中直接访问，发现可以加载图片，那估计豆瓣是通过检测HTTP Request中的referer Header来实现防盗链。</p>
-	
-	</div>
-  <a type="button" href="/2018/04/24/douban-image-403/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2018-04-21 </div>
-			<div class="article-title"><a href="/2018/04/21/aws-s3-master-permission/" >S3进阶系列(二) ——权限管理</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="什么是S3的权限管理"><a href="#什么是S3的权限管理" class="headerlink" title="什么是S3的权限管理"></a>什么是S3的权限管理</h3><p>S3的权限管理是任何使用S3的人都无法绕开的功能,决定了S3中的Object是否能够被访问。</p>
-<p>权限管理本质上解决了这么一个问题: 谁(Principal)能够在何种条件(condition)下被允许或拒绝(Effect)对哪些资源(Resource)做何种操作(Action)</p>
-	
-	</div>
-  <a type="button" href="/2018/04/21/aws-s3-master-permission/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -534,13 +550,13 @@ var _hmt = _hmt || [];
 		<h4>Categories</h4>
 		<ul class="tag_box inline list-unstyled">
 		
-			<li><a href="/categories/AWS/">AWS<span>21</span></a></li>
+			<li><a href="/categories/AWS/">AWS<span>23</span></a></li>
 		
 			<li><a href="/categories/AWS-Certified/">AWS Certified<span>3</span></a></li>
 		
 			<li><a href="/categories/Blog/">Blog<span>5</span></a></li>
 		
-			<li><a href="/categories/Code/">Code<span>2</span></a></li>
+			<li><a href="/categories/Code/">Code<span>3</span></a></li>
 		
 			<li><a href="/categories/Shell/">Shell<span>7</span></a></li>
 		
@@ -555,48 +571,48 @@ var _hmt = _hmt || [];
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/AWS-Free-Tier/">AWS Free Tier<span>1</span></a></li>
-		
-			<li><a href="/tags/Failover/">Failover<span>1</span></a></li>
-		
-			<li><a href="/tags/Nodejs/">Nodejs<span>1</span></a></li>
-		
-			<li><a href="/tags/RDS/">RDS<span>3</span></a></li>
-		
-			<li><a href="/tags/AutoScaling/">AutoScaling<span>1</span></a></li>
-		
-			<li><a href="/tags/Ruby/">Ruby<span>5</span></a></li>
+			<li><a href="/tags/AWS-Deep-Dive/">AWS Deep Dive<span>2</span></a></li>
 		
 			<li><a href="/tags/IAM/">IAM<span>2</span></a></li>
 		
-			<li><a href="/tags/Image/">Image<span>1</span></a></li>
+			<li><a href="/tags/CloudWatch/">CloudWatch<span>1</span></a></li>
 		
-			<li><a href="/tags/CodeCommit/">CodeCommit<span>1</span></a></li>
+			<li><a href="/tags/Elastic-Beanstalk/">Elastic Beanstalk<span>5</span></a></li>
 		
-			<li><a href="/tags/Solutions-Architect/">Solutions Architect<span>1</span></a></li>
+			<li><a href="/tags/Ruby/">Ruby<span>5</span></a></li>
+		
+			<li><a href="/tags/Passenger/">Passenger<span>1</span></a></li>
+		
+			<li><a href="/tags/Elastic-Load-Balancing/">Elastic Load Balancing<span>5</span></a></li>
+		
+			<li><a href="/tags/AutoScaling/">AutoScaling<span>2</span></a></li>
 		
 			<li><a href="/tags/FFMPEG/">FFMPEG<span>1</span></a></li>
 		
-			<li><a href="/tags/AWS-CLI/">AWS CLI<span>5</span></a></li>
+			<li><a href="/tags/EC2/">EC2<span>4</span></a></li>
 		
-			<li><a href="/tags/Sysops/">Sysops<span>1</span></a></li>
+			<li><a href="/tags/Linux/">Linux<span>3</span></a></li>
+		
+			<li><a href="/tags/Douban/">Douban<span>1</span></a></li>
+		
+			<li><a href="/tags/AWS-Tools/">AWS Tools<span>1</span></a></li>
+		
+			<li><a href="/tags/AWS-Free-Tier/">AWS Free Tier<span>1</span></a></li>
+		
+			<li><a href="/tags/Hexo/">Hexo<span>5</span></a></li>
+		
+			<li><a href="/tags/RDS/">RDS<span>3</span></a></li>
+		
+			<li><a href="/tags/Nodejs/">Nodejs<span>2</span></a></li>
 		
 			<li><a href="/tags/Chrome/">Chrome<span>1</span></a></li>
 		
-			<li><a href="/tags/AWS-Deep-Dive/">AWS Deep Dive<span>2</span></a></li>
+			<li><a href="/tags/Git/">Git<span>1</span></a></li>
 		
-			<li><a href="/tags/EC2/">EC2<span>4</span></a></li>
-		
-			<li><a href="/tags/EC2-User-Data/">EC2 User Data<span>1</span></a></li>
-		
-			<li><a href="/tags/Nginx/">Nginx<span>1</span></a></li>
-		
-			<li><a href="/tags/Github/">Github<span>2</span></a></li>
-		
-			<li><a href="/tags/CloudWatch/">CloudWatch<span>1</span></a></li>
+			<li><a href="/tags/Solutions-Architect/">Solutions Architect<span>1</span></a></li>
 		
 		
-		   <li><a href="/tags">...<span>36</span></a></li>
+		   <li><a href="/tags">...<span>37</span></a></li>
 		 
 		</ul>
 	</div>
@@ -609,23 +625,23 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2018/12/25/How-to-change-max-pool-size-of-passenger-on-ElasticBeanstalk/" ><i class="fa fa-file-o"></i>修改ElasticBeanstalk中Passenge...</a>
+      </li>
+    
+      <li>
+        <a href="/2018/12/24/404-on-Scale-Up-of-ElasticBeanstalk/" ><i class="fa fa-file-o"></i>ElasticBeanstalk伸缩时偶发404的原因</a>
+      </li>
+    
+      <li>
+        <a href="/2018/12/17/how-to-handle-heap-out-of-memory-in-node/" ><i class="fa fa-file-o"></i>Node中heap out of memory的解决办法</a>
+      </li>
+    
+      <li>
         <a href="/2018/12/11/how-to-enable-cors-on-S3/" ><i class="fa fa-file-o"></i>在S3上开启CORS</a>
       </li>
     
       <li>
         <a href="/2018/11/27/nginx-with-dynamic-upstreams-to-ELB/" ><i class="fa fa-file-o"></i>如何配置Nginx的Dynamic Upstream指...</a>
-      </li>
-    
-      <li>
-        <a href="/2018/11/15/a-way-to-install-ffmpeg-to-Amazon-Linux-and-ElasticBeanstalk/" ><i class="fa fa-file-o"></i>在Amazon Linux和Elastic Beans...</a>
-      </li>
-    
-      <li>
-        <a href="/2018/09/15/how-to-access-internal-by-ssh-tunnel/" ><i class="fa fa-file-o"></i>使用ssh隧道访问内网资源</a>
-      </li>
-    
-      <li>
-        <a href="/2018/08/11/EB-warning-due-to-no-space-left-on-device-issue-on-EC2/" ><i class="fa fa-file-o"></i>由于EC2中no space left引起的EB警报</a>
       </li>
     
   </ul>

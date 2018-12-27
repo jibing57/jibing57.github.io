@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.jibing57.com/"/>
-  <updated>2018-12-11T15:36:54.345Z</updated>
+  <updated>2018-12-27T07:02:05.228Z</updated>
   <id>http://www.jibing57.com/</id>
   
   <author>
@@ -15,6 +15,86 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>修改ElasticBeanstalk中Passenger的max-pool-size</title>
+    <link href="http://www.jibing57.com/2018/12/25/How-to-change-max-pool-size-of-passenger-on-ElasticBeanstalk/"/>
+    <id>http://www.jibing57.com/2018/12/25/How-to-change-max-pool-size-of-passenger-on-ElasticBeanstalk/</id>
+    <published>2018-12-25T09:37:24.000Z</published>
+    <updated>2018-12-27T07:02:05.228Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h3&gt;&lt;p&gt;在AWS Elastic Beanstalk中，如果选用Ruby with Passenger运行Rails时，会遇到一个问题，就是EB环境中的Passenger的max_pool_size是默认的6。如果EB中的Instance选用的是性能比较高的类型，只起6个Passenger进程会是一个巨大的浪费。下面介绍几个修改EB中Passenger max_pool_size参数的方法。&lt;/p&gt;
+&lt;h4 id=&quot;Passenger官方说明&quot;&gt;&lt;a href=&quot;#Passenger官方说明&quot; class=&quot;headerlink&quot; title=&quot;Passenger官方说明&quot;&gt;&lt;/a&gt;Passenger官方说明&lt;/h4&gt;&lt;p&gt;最新的官方&lt;a href=&quot;https://www.phusionpassenger.com/library/config/standalone/intro.html#location-of-passengerfile-json&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Introduction to configuring Passenger Standalone&lt;/a&gt;文档中，Passenger Standalone可以通过如下几种方式来修改启动参数&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;一、传递参数给启动命令&lt;code&gt;passenger start&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;二、使用环境变量(从5.0.22开始)&lt;/li&gt;
+&lt;li&gt;三、通过配置文件&lt;code&gt;Passengerfile.json&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+    
+    </summary>
+    
+      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
+    
+    
+      <category term="Elastic Beanstalk" scheme="http://www.jibing57.com/tags/Elastic-Beanstalk/"/>
+    
+      <category term="Passenger" scheme="http://www.jibing57.com/tags/Passenger/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ElasticBeanstalk伸缩时偶发404的原因</title>
+    <link href="http://www.jibing57.com/2018/12/24/404-on-Scale-Up-of-ElasticBeanstalk/"/>
+    <id>http://www.jibing57.com/2018/12/24/404-on-Scale-Up-of-ElasticBeanstalk/</id>
+    <published>2018-12-24T12:45:51.000Z</published>
+    <updated>2018-12-25T09:19:31.850Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;使用EB Passenger with Ruby部署rails时，如果是以默认配置启动，没有做对应的配置，在ASG Scale Up的时候，可能会有请求没法正常处理，返回404。&lt;/p&gt;
+&lt;h3 id=&quot;原因&quot;&gt;&lt;a href=&quot;#原因&quot; class=&quot;headerlink&quot; title=&quot;原因&quot;&gt;&lt;/a&gt;原因&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;EB中创建的ELB，默认是使用TCP:80的方式来检查Instance的健康状态的。&lt;/li&gt;
+&lt;li&gt;ELB的&lt;code&gt;health check&lt;/code&gt;的默认&lt;code&gt;Interval&lt;/code&gt;是10 seconds，&lt;code&gt;Healthy threshold&lt;/code&gt;是3 requests。&lt;/li&gt;
+&lt;li&gt;当ASG Scale Up时，新建的Instance中Passenger在Rails APP部署完成之前就已经在监听80端口了。&lt;/li&gt;
+&lt;li&gt;Passenger启动30秒之后，因为超过了&lt;code&gt;Healthy threshold * Interval&lt;/code&gt;的时间, 并且每次检查都是OK的，ELB会判定Instance是可用的，就会将流量导入到该Instance中。&lt;/li&gt;
+&lt;li&gt;但此时rails APP可能并没有部署完成(bundle install加上precompile，部署一个新的APP可能需要5分钟左右)，所以client会得到404的错误。&lt;/li&gt;
+&lt;/ol&gt;
+    
+    </summary>
+    
+      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
+    
+    
+      <category term="Elastic Beanstalk" scheme="http://www.jibing57.com/tags/Elastic-Beanstalk/"/>
+    
+      <category term="Elastic Load Balancing" scheme="http://www.jibing57.com/tags/Elastic-Load-Balancing/"/>
+    
+      <category term="AutoScaling" scheme="http://www.jibing57.com/tags/AutoScaling/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Node中heap out of memory的解决办法</title>
+    <link href="http://www.jibing57.com/2018/12/17/how-to-handle-heap-out-of-memory-in-node/"/>
+    <id>http://www.jibing57.com/2018/12/17/how-to-handle-heap-out-of-memory-in-node/</id>
+    <published>2018-12-17T14:27:31.000Z</published>
+    <updated>2018-12-23T06:22:55.542Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;背景介绍&quot;&gt;&lt;a href=&quot;#背景介绍&quot; class=&quot;headerlink&quot; title=&quot;背景介绍&quot;&gt;&lt;/a&gt;背景介绍&lt;/h3&gt;&lt;p&gt;公司一个ReactOnRails的项目，之前一直都是跑的好好的。上次一个小修改后，发布预编译React代码的时候，屡次出现&lt;code&gt;FATAL ERROR: CALL_AND_RETRY_LAST Allocation failed - JavaScript heap out of memory&lt;/code&gt; 的错误。&lt;/p&gt;
+&lt;h3 id=&quot;调查&quot;&gt;&lt;a href=&quot;#调查&quot; class=&quot;headerlink&quot; title=&quot;调查&quot;&gt;&lt;/a&gt;调查&lt;/h3&gt;&lt;p&gt;项目使用的是webpacker打包js代码，一开始是以为webpacker的问题，调查了一圈下来，最终发现是node中V8的限制。默认情况下，在64位系统下内存使用是有限制的，有一说是1.4GB，有一说是1.76GB。但在node官网搜了一圈也没找到明确说现在的限制是多少。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Code" scheme="http://www.jibing57.com/categories/Code/"/>
+    
+    
+      <category term="Nodejs" scheme="http://www.jibing57.com/tags/Nodejs/"/>
+    
+  </entry>
   
   <entry>
     <title>在S3上开启CORS</title>
@@ -42,7 +122,7 @@
     <link href="http://www.jibing57.com/2018/11/27/nginx-with-dynamic-upstreams-to-ELB/"/>
     <id>http://www.jibing57.com/2018/11/27/nginx-with-dynamic-upstreams-to-ELB/</id>
     <published>2018-11-27T13:36:48.000Z</published>
-    <updated>2018-12-11T11:24:09.075Z</updated>
+    <updated>2018-12-23T12:16:40.890Z</updated>
     
     <summary type="html">
     
@@ -135,9 +215,9 @@
     
       <category term="Elastic Beanstalk" scheme="http://www.jibing57.com/tags/Elastic-Beanstalk/"/>
     
-      <category term="EC2" scheme="http://www.jibing57.com/tags/EC2/"/>
-    
       <category term="AutoScaling" scheme="http://www.jibing57.com/tags/AutoScaling/"/>
+    
+      <category term="EC2" scheme="http://www.jibing57.com/tags/EC2/"/>
     
   </entry>
   
@@ -253,11 +333,11 @@
       <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
     
     
-      <category term="IAM" scheme="http://www.jibing57.com/tags/IAM/"/>
-    
       <category term="S3" scheme="http://www.jibing57.com/tags/S3/"/>
     
       <category term="AWS CLI" scheme="http://www.jibing57.com/tags/AWS-CLI/"/>
+    
+      <category term="IAM" scheme="http://www.jibing57.com/tags/IAM/"/>
     
   </entry>
   
@@ -424,105 +504,6 @@
       <category term="Ruby" scheme="http://www.jibing57.com/tags/Ruby/"/>
     
       <category term="Rails" scheme="http://www.jibing57.com/tags/Rails/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>使用AWS CLI来备份和恢复S3 Bucket的ACL</title>
-    <link href="http://www.jibing57.com/2018/02/11/aws-s3-cli-to-backup-and-restore-bucket-acl/"/>
-    <id>http://www.jibing57.com/2018/02/11/aws-s3-cli-to-backup-and-restore-bucket-acl/</id>
-    <published>2018-02-11T12:43:43.000Z</published>
-    <updated>2018-02-11T10:08:02.977Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;S3 Bucket层面的权限管理，推荐使用Bucket Policy来管理，但可能会有一些遗留的S3 Bucket, 还使用着Bucket ACL来进行权限管理。&lt;/p&gt;
-&lt;p&gt;在将Bucket ACl升级为Bucket Policy或者是更新Bucket ACL的时候，会有备份Bucket ACL的需求。此处介绍一下如何使用AWS CLI来备份和恢复Bucket的Bucket ACL。&lt;/p&gt;
-&lt;h3 id=&quot;备份-Bucket-ACL&quot;&gt;&lt;a href=&quot;#备份-Bucket-ACL&quot; class=&quot;headerlink&quot; title=&quot;备份 Bucket ACL&quot;&gt;&lt;/a&gt;备份 Bucket ACL&lt;/h3&gt;&lt;p&gt;使用CLI中s3api中的&lt;a href=&quot;https://docs.aws.amazon.com/cli/latest/reference/s3api/get-bucket-acl.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;get-bucket-acl&lt;/a&gt;命令来保存bucket acl。&lt;/p&gt;
-&lt;h4 id=&quot;用法&quot;&gt;&lt;a href=&quot;#用法&quot; class=&quot;headerlink&quot; title=&quot;用法&quot;&gt;&lt;/a&gt;用法&lt;/h4&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;  get-bucket-acl&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;--bucket &amp;lt;value&amp;gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;[--cli-input-json &amp;lt;value&amp;gt;]&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;[--generate-cli-skeleton &amp;lt;value&amp;gt;]&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-    
-    </summary>
-    
-      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
-    
-    
-      <category term="S3" scheme="http://www.jibing57.com/tags/S3/"/>
-    
-      <category term="AWS CLI" scheme="http://www.jibing57.com/tags/AWS-CLI/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Macos下如何实现grep的非贪婪模式</title>
-    <link href="http://www.jibing57.com/2018/02/09/non-greedy-match-in-grep-on-macos/"/>
-    <id>http://www.jibing57.com/2018/02/09/non-greedy-match-in-grep-on-macos/</id>
-    <published>2018-02-09T13:10:43.000Z</published>
-    <updated>2018-02-09T09:16:23.889Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;有时候需要使用正则的&lt;code&gt;非贪婪模式(non-greedy或者叫lazy模式)&lt;/code&gt;来搜一些内容，但Macos系统自带的&lt;code&gt;grep&lt;/code&gt;无法胜任。&lt;br&gt;Mac下的&lt;code&gt;grep&lt;/code&gt;是BSD系的，不能使用-P参数来使用perl模式。Linux下的&lt;code&gt;GNU grep&lt;/code&gt;就可以使用-P参数来支持非贪婪模式。&lt;/p&gt;
-&lt;p&gt;MacOS自带的&lt;code&gt;grep&lt;/code&gt;的示例:&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;10&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ cat grep_on_macos.txt&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;carl has a nice car. the car has four wheels.&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;$&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;# 支持普通正则&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;$ grep -o &amp;quot;car.*has&amp;quot; grep_on_macos.txt&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;carl has a nice car. the car has&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;$&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;# 不支持带?的非贪婪模式&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;$ grep -o &amp;quot;car.*?has&amp;quot; grep_on_macos.txt&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;$&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;此处记录两个可行的方法来解决该问题&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="Shell" scheme="http://www.jibing57.com/categories/Shell/"/>
-    
-    
-      <category term="MacOS" scheme="http://www.jibing57.com/tags/MacOS/"/>
-    
-      <category term="Linux" scheme="http://www.jibing57.com/tags/Linux/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>AWS Certified Solutions Architect - Professional Road Map</title>
-    <link href="http://www.jibing57.com/2018/02/07/AWS-Certified-Solutions-Architect-Professional/"/>
-    <id>http://www.jibing57.com/2018/02/07/AWS-Certified-Solutions-Architect-Professional/</id>
-    <published>2018-02-07T07:27:17.000Z</published>
-    <updated>2018-02-11T17:18:12.338Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;Official-AWS-Certification-Page&quot;&gt;&lt;a href=&quot;#Official-AWS-Certification-Page&quot; class=&quot;headerlink&quot; title=&quot;Official AWS Certification Page&quot;&gt;&lt;/a&gt;Official AWS Certification Page&lt;/h2&gt;&lt;p&gt;访问官网&lt;a href=&quot;https://amazonaws-china.com/certification/certification-prep/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;AWS Certification&lt;/a&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;参加 AWS 培训课程&lt;/li&gt;
-&lt;li&gt;查看考试指南和样题&lt;ul&gt;
-&lt;li&gt;了解考试涉及的概念并整体了解需要学习哪些内容, &lt;a href=&quot;http://d0.awsstatic-china.com/Train%20&amp;amp;%20Cert/docs/AWS_certified_solutions_architect_professional_blueprint.pdf&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;AWS Certified Solutions Architect – Professional 考试指南&lt;/a&gt; 相当于考试大纲, 必看,而且需要反复的看。因为学习过一阵后再来看Guide，会有更深的体会。&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://d0.awsstatic-china.com/training-and-certification/docs/AWS_certified_solutions_architect_professional_examsample.pdf&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;考试样题&lt;/a&gt;用于熟悉题目题型。几个样题都是大段大段的文字，实际考试题目中也有字数少的题目。但题目的阅读量绝对是比Asoocaiated的大得多。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;练习试验&lt;ul&gt;
-&lt;li&gt;注册一个AWS全球账号，使用一年的免费额度结合Blueprint中的各个内容进行试验。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;学习 AWS 白皮书&lt;ul&gt;
-&lt;li&gt;白皮书是纯英文的，每个白皮书篇幅都很长。&lt;/li&gt;
-&lt;li&gt;在BluePrint的描述中，和AWS Certified Solutions Architect - Associate的白皮书列表相比，多了&lt;strong&gt;Defining Fault Tolerant Applications in the AWS Cloud&lt;/strong&gt;这一份白皮书，官网找了一下，只有一个名字类似的名为&lt;a href=&quot;https://d1.awsstatic.com/whitepapers/aws-building-fault-tolerant-applications.pdf&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Building Fault-Tolerant Applications on AWS&lt;/a&gt;的白皮书，时间还是October 2011的。不管怎样，但愿好理念永不过时，还是整个念一遍吧。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;查看 AWS 常见问题&lt;ul&gt;
-&lt;li&gt;官网推荐的FAQ都建议看完。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;参加模拟考试&lt;ul&gt;
-&lt;li&gt;40美刀一次。是否值得因人而异。参加Professional的考试，肯定都已经经历过AWS Certified Solutions Architect – Associate的洗礼了, 因此熟悉考试界面肯定不是决定要参加模拟考试的目的。一个合理的理由是，可以提前熟悉一下Professional考题阅读难度, 为正式考试的时候做好心理准备。网上都说AWS Certified Solutions Architect – Professional这个考试最大的难度就是要在170分钟内阅读，理解77~80道字数不算少的题，然后选出最优的答案。网上一些母语是英语的老外都感慨阅读量比较大，何况是我们这种非英语系的国家的考生了。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;报名考试并获得认证&lt;ul&gt;
-&lt;li&gt;登陆&lt;a href=&quot;https://www.aws.training/certification&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://www.aws.training/certification&lt;/a&gt;注册进行考试&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-    
-    </summary>
-    
-      <category term="AWS Certified" scheme="http://www.jibing57.com/categories/AWS-Certified/"/>
-    
-    
-      <category term="Solutions Architect" scheme="http://www.jibing57.com/tags/Solutions-Architect/"/>
     
   </entry>
   

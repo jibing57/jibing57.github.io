@@ -3,6 +3,159 @@
   
     
     <entry>
+      <title><![CDATA[修改ElasticBeanstalk中Passenger的max-pool-size]]></title>
+      <url>/2018/12/25/How-to-change-max-pool-size-of-passenger-on-ElasticBeanstalk/</url>
+      <content type="html"><![CDATA[<h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>在AWS Elastic Beanstalk中，如果选用Ruby with Passenger运行Rails时，会遇到一个问题，就是EB环境中的Passenger的max_pool_size是默认的6。如果EB中的Instance选用的是性能比较高的类型，只起6个Passenger进程会是一个巨大的浪费。下面介绍几个修改EB中Passenger max_pool_size参数的方法。</p>
+<h4 id="Passenger官方说明"><a href="#Passenger官方说明" class="headerlink" title="Passenger官方说明"></a>Passenger官方说明</h4><p>最新的官方<a href="https://www.phusionpassenger.com/library/config/standalone/intro.html#location-of-passengerfile-json" target="_blank" rel="external">Introduction to configuring Passenger Standalone</a>文档中，Passenger Standalone可以通过如下几种方式来修改启动参数</p>
+<ul>
+<li>一、传递参数给启动命令<code>passenger start</code></li>
+<li>二、使用环境变量(从5.0.22开始)</li>
+<li>三、通过配置文件<code>Passengerfile.json</code></li>
+</ul>
+<a id="more"></a>
+<h4 id="EB的限制"><a href="#EB的限制" class="headerlink" title="EB的限制"></a>EB的限制</h4><p>EB中的Passenger, 版本还是使用的<code>4.0.60</code>, 因此官网所述的三个方法中，在EB中并不完全适用。</p>
+<ul>
+<li>方法二需要在<code>5.0.22</code>以上版本才支持，因此在EB环境中不可用</li>
+<li>方法三中所述的<code>Passengerfile.json</code>是在5.0.1中才被正式使用的，在之前的版本中，使用的是<code>passenger-standalone.json</code>。所以在EB环境中，需要使用<code>passenger-standalone.json</code>来修改启动参数。文件命令的变化可参见<a href="https://blog.phusion.nl/2015/03/04/phusion-passenger-5-0-1-released/" target="_blank" rel="external">Passenger 5.0.1的Release Note</a></li>
+</ul>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><h4 id="通过passenger-standalone-json来实现"><a href="#通过passenger-standalone-json来实现" class="headerlink" title="通过passenger-standalone.json来实现"></a>通过passenger-standalone.json来实现</h4><p>在项目代码主目录下，添加文件<code>passenger-standalone.json</code>, 文件内容为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  &quot;max_pool_size&quot;: 10</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>eb deploy</code>完成后，使用EC2的key pair登陆EC2, sudo后运行<code>passenger-status</code>。可以看到max_pool_size已成功修改为10。</p>
+<p><img src="/images/AWS/EB/passenger-standalone_for_max_pool_size.jpg" alt="passenger-standalone_for_max_pool_size"></p>
+<h4 id="通过EB中的passenger命令参数来实现"><a href="#通过EB中的passenger命令参数来实现" class="headerlink" title="通过EB中的passenger命令参数来实现"></a>通过EB中的passenger命令参数来实现</h4><p>EB环境中的EC2的passenger启动脚本是<code>/etc/init.d/passenger</code>，实际运行的是<code>/opt/elasticbeanstalk/support/conf/passenger</code>。</p>
+<p><img src="/images/AWS/EB/passenger_link_on_EC2_of_EB.jpg" alt="passenger_link_on_EC2_of_EB.jpg"></p>
+<p>只要通过ebextension配置文件，修改<code>/opt/elasticbeanstalk/support/conf/passenger</code>,添加上对<code>max_pool_size</code>的支持即可。</p>
+<p>原始的<code>passenger</code>文件参见<a href="https://github.com/jibing57/my-snippet/blob/master/AWS/ElasticBeanstalk/01_increase_passenger_max_pool_size/origin_passenger" target="_blank" rel="external">origin_passenger</a></p>
+<p>用来修改<code>passenger</code>，支持读取环境变量中的<code>PASSENGER_MAX_POOL_SIZE</code>的extension config如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div></pre></td><td class="code"><pre><div class="line">files:</div><div class="line">    &quot;/opt/elasticbeanstalk/support/conf/passenger&quot;:</div><div class="line">      mode: &quot;000755&quot;</div><div class="line">      owner: root</div><div class="line">      group: root</div><div class="line">      content: |</div><div class="line">        #!/usr/bin/env bash</div><div class="line">        #</div><div class="line">        # chkconfig: 2345 80 20</div><div class="line">        # description: Passenger</div><div class="line">        #</div><div class="line"></div><div class="line">        EB_HTTP_PORT=$(/opt/elasticbeanstalk/bin/get-config container -k http_port)</div><div class="line">        EB_APP_USER=$(/opt/elasticbeanstalk/bin/get-config container -k app_user)</div><div class="line">        EB_APP_DEPLOY_DIR=$(/opt/elasticbeanstalk/bin/get-config container -k app_deploy_dir)</div><div class="line">        EB_APP_PID_DIR=$(/opt/elasticbeanstalk/bin/get-config container -k app_pid_dir)</div><div class="line">        EB_APP_LOG_DIR=$(/opt/elasticbeanstalk/bin/get-config container -k app_log_dir)</div><div class="line">        EB_SCRIPT_DIR=$(/opt/elasticbeanstalk/bin/get-config container -k script_dir)</div><div class="line">        EB_SUPPORT_DIR=$(/opt/elasticbeanstalk/bin/get-config container -k support_dir)</div><div class="line">        EB_NGINX_VERSION=$(/opt/elasticbeanstalk/bin/get-config container -k nginx_version)</div><div class="line"></div><div class="line">        . $EB_SUPPORT_DIR/envvars</div><div class="line">        . $EB_SCRIPT_DIR/use-app-ruby.sh</div><div class="line"></div><div class="line">        if [ -f /etc/elasticbeanstalk/set-ulimit.sh ]; then</div><div class="line">          . /etc/elasticbeanstalk/set-ulimit.sh</div><div class="line">        fi</div><div class="line"></div><div class="line">        # fixes http://code.google.com/p/phusion-passenger/issues/detail?id=614</div><div class="line">        export HOME=/tmp</div><div class="line">        export PASSENGER_DOWNLOAD_NATIVE_SUPPORT_BINARY=0</div><div class="line"></div><div class="line">        if [ -d /etc/healthd ]; then</div><div class="line">            STARTOPTS=&quot;--nginx-version $EB_NGINX_VERSION --nginx-config-template $EB_SUPPORT_DIR/conf/nginx_config_healthd.erb&quot;</div><div class="line">        else</div><div class="line">            STARTOPTS=&quot;--nginx-version $EB_NGINX_VERSION --nginx-config-template $EB_SUPPORT_DIR/conf/nginx_config.erb&quot;</div><div class="line">        fi</div><div class="line"></div><div class="line">        ENV_STAGE=$&#123;RACK_ENV:-$RAILS_ENV&#125;    # Read from $RAILS_ENV if $RACK_ENV is empty</div><div class="line">        if [ $&#123;ENV_STAGE,,&#125; = &quot;production&quot; ]; then    # Convert $ENV_STAGE to lower case and compare to &quot;production&quot;</div><div class="line">          # Disable passenger friendly page for production stage</div><div class="line">          STARTOPTS=&quot;$STARTOPTS --no-friendly-error-pages&quot;</div><div class="line">        fi</div><div class="line"></div><div class="line">        GENERALOPTS=&quot;-p $EB_HTTP_PORT --pid-file $EB_APP_PID_DIR/passenger.pid&quot;</div><div class="line">        SELFOPTS=&quot;--max-pool-size $&#123;PASSENGER_MAX_POOL_SIZE:-6&#125;&quot;</div><div class="line"></div><div class="line">        function start() &#123;</div><div class="line">          touch $EB_APP_LOG_DIR/passenger.log</div><div class="line"></div><div class="line">          if [ -d /etc/healthd ]; then</div><div class="line">            mkdir -p $EB_APP_LOG_DIR/healthd</div><div class="line">            chown -R $EB_APP_USER:$EB_APP_USER $EB_APP_LOG_DIR/healthd</div><div class="line">          fi</div><div class="line"></div><div class="line">          chown $EB_APP_USER:$EB_APP_USER \</div><div class="line">            $EB_APP_LOG_DIR/passenger.log</div><div class="line">          passenger start $EB_APP_DEPLOY_DIR $STARTOPTS $GENERALOPTS $SELFOPTS\</div><div class="line">            -d -e $&#123;RACK_ENV:-$RAILS_ENV&#125; --user $EB_APP_USER \</div><div class="line">            --log-file $EB_APP_LOG_DIR/passenger.log</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        function stop() &#123;</div><div class="line">          passenger stop $GENERALOPTS</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        function status() &#123;</div><div class="line">          passenger status $GENERALOPTS</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        case &quot;$1&quot; in</div><div class="line">          start)</div><div class="line">            start</div><div class="line">            ;;</div><div class="line">          stop)</div><div class="line">            stop</div><div class="line">            ;;</div><div class="line">          status)</div><div class="line">            status</div><div class="line">            ;;</div><div class="line">          restart|graceful)</div><div class="line">            stop</div><div class="line">            start</div><div class="line">            ;;</div><div class="line">          reload)</div><div class="line">            su -s /bin/bash -c &quot;touch $EB_APP_DEPLOY_DIR/tmp/restart.txt&quot; $EB_APP_USER</div><div class="line">            ;;</div><div class="line">          *)</div><div class="line">            echo &quot;Usage: $0 &#123;start|stop|restart|reload|status&#125;&quot;</div><div class="line">            exit 1</div><div class="line">            ;;</div><div class="line">        esac</div><div class="line"></div><div class="line">        exit 0</div></pre></td></tr></table></figure>
+<p>对原<code>passenger</code>脚本进行了两处修改</p>
+<ul>
+<li>添加了<code>SELFOPTS</code></li>
+<li>添加<code>SELFOPTS</code>到<code>passenger start</code>命令之后。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">$ diff origin_passenger  passenger_with_selfopt</div><div class="line">39a40</div><div class="line">&gt; SELFOPTS=&quot;--max-pool-size $&#123;PASSENGER_MAX_POOL_SIZE:-6&#125;&quot;</div><div class="line">51c52</div><div class="line">&lt;   passenger start $EB_APP_DEPLOY_DIR $STARTOPTS $GENERALOPTS \</div><div class="line">---</div><div class="line">&gt;   passenger start $EB_APP_DEPLOY_DIR $STARTOPTS $GENERALOPTS $SELFOPTS\</div><div class="line">87a89</div><div class="line">&gt;</div><div class="line">$</div></pre></td></tr></table></figure>
+<p>该修改参考了如下的两篇帖子:</p>
+<ul>
+<li><a href="https://serverfault.com/questions/466123/elastic-beanstalk-rails-modify-passenger-config-passenger-max-pool-size" target="_blank" rel="external">Elastic Beanstalk Rails - Modify passenger config passenger_max_pool_size</a></li>
+<li><a href="https://forums.aws.amazon.com/thread.jspa?messageID=614495" target="_blank" rel="external">change passenger standalone configuration (max_pool_size) for rails app</a></li>
+</ul>
+<p>但这两篇帖子中，都把<code>--max-pool-size</code>放在了<code>GENERALOPTS</code>变量中，但这么设置是存在问题的。<br>因为脚本里的stop和status也会用到<code>GENERALOPTS</code>这个变量，但<code>passenger stop</code>和<code>passenger status</code>并不支持<code>--max-pool-size</code>这个参数，如果放在<code>GENERALOPTS</code>中，会导致<code>passenger stop</code>和<code>passenger status</code>运行失败。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">[root@ip-172-31-40-19 ec2-user]# passenger stop -h</div><div class="line">Usage: passenger stop [options]</div><div class="line"></div><div class="line">Options:</div><div class="line">    -p, --port NUMBER                The port number of a Phusion Passenger</div><div class="line">                                     Standalone instance (default: 3000)</div><div class="line">        --pid-file FILE              PID file of a running Phusion Passenger</div><div class="line">                                     Standalone instance.</div><div class="line">    -h, --help                       Show this help message</div><div class="line">[root@ip-172-31-40-19 ec2-user]#</div><div class="line">[root@ip-172-31-40-19 ec2-user]# passenger status -h</div><div class="line">Usage: passenger status [options]</div><div class="line"></div><div class="line">Options:</div><div class="line">    -p, --port NUMBER                The port number of a Phusion Passenger</div><div class="line">                                     Standalone instance (default: 3000)</div><div class="line">        --pid-file FILE              PID file of a running Phusion Passenger</div><div class="line">                                     Standalone instance.</div><div class="line">    -h, --help                       Show this help message</div><div class="line">[root@ip-172-31-40-19 ec2-user]#</div></pre></td></tr></table></figure>
+<p>所以最终解决方案是额外添加了变量<code>SELFOPTS</code>用来存放参数<code>--max-pool-size</code>， 并且只将<code>SELFOPTS</code>添加到<code>passenger start</code>中。</p>
+<p>使用<code>eb deploy</code>发布ebextension到EB中，在EB Console中添加环境变量<code>PASSENGER_MAX_POOL_SIZE</code>并设定所想要的值。</p>
+<p><img src="/images/AWS/EB/passenger_max_pool_size_env_on_eb_console.jpg" alt="passenger_max_pool_size_env_on_eb_console.jpg"></p>
+<p>登陆Instance后，即可看到<code>Max pool size</code>已经被设置为<code>PASSENGER_MAX_POOL_SIZE</code>相同的值了。</p>
+<p><img src="/images/AWS/EB/ebextension_and_env_for_max_pool_size.jpg" alt="ebextension_and_env_for_max_pool_size.jpg"></p>
+<h3 id="相关修改的snippet"><a href="#相关修改的snippet" class="headerlink" title="相关修改的snippet"></a>相关修改的snippet</h3><p>原始passenger文件以及ebextension配置文件可参照 <a href="https://github.com/jibing57/my-snippet/tree/master/AWS/ElasticBeanstalk/01_increase_passenger_max_pool_size" target="_blank" rel="external">https://github.com/jibing57/my-snippet/tree/master/AWS/ElasticBeanstalk/01_increase_passenger_max_pool_size</a></p>
+<h3 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h3><p>要修改其他的Passenger启动参数，也可以使用类似的方法来实现。Passenger所支持的参数在官网中都有相关说明,<strong><a href="https://www.phusionpassenger.com/library/config/standalone/reference/#standalone-server-options" target="_blank" rel="external">Configuration reference for Passenger Standalone</a></strong>。 唯一要注意的是，EB中的Passenger版本是4.0.60的，版本要求大于4.0.60的选项在EB中是无效的。</p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://stackoverflow.com/questions/34774310/rails-elastic-beanstalk-passenger-change-passenger-configuration" target="_blank" rel="external">Rails + Elastic Beanstalk + Passenger: change Passenger configuration</a></li>
+<li><a href="https://serverfault.com/questions/466123/elastic-beanstalk-rails-modify-passenger-config-passenger-max-pool-size" target="_blank" rel="external">Elastic Beanstalk Rails - Modify passenger config passenger_max_pool_size</a></li>
+<li><a href="https://forums.aws.amazon.com/thread.jspa?messageID=614495" target="_blank" rel="external">change passenger standalone configuration (max_pool_size) for rails app</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> AWS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Elastic Beanstalk </tag>
+            
+            <tag> Passenger </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[ElasticBeanstalk伸缩时偶发404的原因]]></title>
+      <url>/2018/12/24/404-on-Scale-Up-of-ElasticBeanstalk/</url>
+      <content type="html"><![CDATA[<p>使用EB Passenger with Ruby部署rails时，如果是以默认配置启动，没有做对应的配置，在ASG Scale Up的时候，可能会有请求没法正常处理，返回404。</p>
+<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><ol>
+<li>EB中创建的ELB，默认是使用TCP:80的方式来检查Instance的健康状态的。</li>
+<li>ELB的<code>health check</code>的默认<code>Interval</code>是10 seconds，<code>Healthy threshold</code>是3 requests。</li>
+<li>当ASG Scale Up时，新建的Instance中Passenger在Rails APP部署完成之前就已经在监听80端口了。</li>
+<li>Passenger启动30秒之后，因为超过了<code>Healthy threshold * Interval</code>的时间, 并且每次检查都是OK的，ELB会判定Instance是可用的，就会将流量导入到该Instance中。</li>
+<li>但此时rails APP可能并没有部署完成(bundle install加上precompile，部署一个新的APP可能需要5分钟左右)，所以client会得到404的错误。</li>
+</ol>
+<a id="more"></a>
+<h3 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h3><ol>
+<li>通过修改EB中ELB的<code>health check</code>的检查方式为HTTP方式，可以避免该问题。</li>
+<li>在Rails中新增一个单纯返回200 OK的路由(可以是任意的路由,此处以<code>/health</code>为例)</li>
+<li><p>在EB Console中，设置ELB中<code>Health check path</code>为<code>/health</code>。选择Configuration中的load balancer，点击<code>modify</code>,在<code>Health check</code>设置中设置<code>Health check path</code>的值为对应的链接。</p>
+<p><img src="/images/AWS/EB/health_check_setting_on_EB.jpg" alt="health_check_setting_on_EB"></p>
+</li>
+<li><p>设置过后，当ASG启动新的Instance时，在APP部署完毕，<code>health check</code>链接生效之前, ELB的检查都无法成功，也就不会将流量导给新的Instance了。只有APP部署完成，<code>health check</code>通过后，才会将流量导给Instance。</p>
+</li>
+</ol>
+<p><strong>注意点：</strong></p>
+<ol>
+<li>建议专门用一个只回应200 OK的链接用来响应<code>health Check</code>, 而不要使用带有业务逻辑的链接。</li>
+<li>必须要先发布Rails APP添加/health，接下来才能修改ELB的Health check path。</li>
+</ol>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/environments-cfg-clb.html#using-features.managing.elb.healthchecks" target="_blank" rel="external">EB Health Check</a></li>
+<li><a href="https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/using-features.healthstatus.html#using-features.healthstatus.understanding" target="_blank" rel="external">Elastic Load Balancing Health Checks</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> AWS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Elastic Beanstalk </tag>
+            
+            <tag> Elastic Load Balancing </tag>
+            
+            <tag> AutoScaling </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Node中heap out of memory的解决办法]]></title>
+      <url>/2018/12/17/how-to-handle-heap-out-of-memory-in-node/</url>
+      <content type="html"><![CDATA[<h3 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h3><p>公司一个ReactOnRails的项目，之前一直都是跑的好好的。上次一个小修改后，发布预编译React代码的时候，屡次出现<code>FATAL ERROR: CALL_AND_RETRY_LAST Allocation failed - JavaScript heap out of memory</code> 的错误。</p>
+<h3 id="调查"><a href="#调查" class="headerlink" title="调查"></a>调查</h3><p>项目使用的是webpacker打包js代码，一开始是以为webpacker的问题，调查了一圈下来，最终发现是node中V8的限制。默认情况下，在64位系统下内存使用是有限制的，有一说是1.4GB，有一说是1.76GB。但在node官网搜了一圈也没找到明确说现在的限制是多少。</p>
+<a id="more"></a>
+<p>在预编译的报错信息中，找到了如下的错误信息，应该是超过了默认的使用限额，使得node进程爆掉了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;--- Last few GCs ---&gt;</div><div class="line"></div><div class="line">  155958 ms: Mark-sweep 1225.9 (1439.4) -&gt; 1225.9 (1439.4) MB, 1078.8 / 0.0 ms [allocation failure] [GC in old space requested].</div><div class="line">  157041 ms: Mark-sweep 1225.9 (1439.4) -&gt; 1225.9 (1439.4) MB, 1082.3 / 0.0 ms [allocation failure] [GC in old space requested].</div><div class="line">  158129 ms: Mark-sweep 1225.9 (1439.4) -&gt; 1235.9 (1423.4) MB, 1087.9 / 0.0 ms [last resort gc].</div><div class="line">  159213 ms: Mark-sweep 1235.9 (1423.4) -&gt; 1246.1 (1423.4) MB, 1083.6 / 0.0 ms [last resort gc].</div></pre></td></tr></table></figure></p>
+<p>最终的解决方案是，在使用node之前，设置环境变量<code>NODE_OPTIONS=--max_old_space_size</code>为一个更大的值，此处，设置<code>NODE_OPTIONS=--max_old_space_size=4096</code>后，解决了问题。</p>
+<p>注意的是，破折号格式的<code>NODE_OPTIONS=--max-old-space-size</code>似乎是不起作用的。</p>
+<p>任何可以使用环境变量来修改配置的软件，都是部署友好的软件, 特别的适用于类似Elastic Beanstalk这种集成的发布环境。</p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://github.com/rails/webpacker/issues/1189" target="_blank" rel="external">How to run node with flag –max_old_space_size</a></li>
+<li><a href="https://segmentfault.com/a/1190000004934938" target="_blank" rel="external">NodeJS中被忽略的内存</a></li>
+<li><a href="https://github.com/nodejs/node/issues/16999" target="_blank" rel="external">v6.12.0: max-old-space-size can no longer be set via NODE_OPTIONS</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> Code </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Nodejs </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[在S3上开启CORS]]></title>
       <url>/2018/12/11/how-to-enable-cors-on-S3/</url>
       <content type="html"><![CDATA[<p>在浏览器中使用AWS的SDK直接上传文件到S3时，需要在S3 Bucket上配置CORS才能成功上传，否则ajax请求会被浏览器拦截。</p>
@@ -131,6 +284,7 @@
 <li><a href="https://distinctplace.com/2017/04/19/nginx-resolver-explained/" target="_blank" rel="external">Nginx resolver explained</a></li>
 <li><a href="https://serverfault.com/questions/240476/how-to-force-nginx-to-resolve-dns-of-a-dynamic-hostname-everytime-when-doing-p" target="_blank" rel="external">How to force nginx to resolve DNS (of a dynamic hostname) everytime when doing proxy_pass?</a></li>
 <li><a href="https://www.nginx.com/blog/dns-service-discovery-nginx-plus/#domain-name-upstream-group" target="_blank" rel="external">Using DNS for Service Discovery with NGINX and NGINX Plus</a></li>
+<li><a href="https://stackoverflow.com/questions/26956979/error-with-ip-and-nginx-as-reverse-proxy" target="_blank" rel="external">Error with IP and Nginx as reverse proxy</a></li>
 </ul>
 ]]></content>
       
@@ -331,9 +485,9 @@
             
             <tag> Elastic Beanstalk </tag>
             
-            <tag> EC2 </tag>
-            
             <tag> AutoScaling </tag>
+            
+            <tag> EC2 </tag>
             
         </tags>
         
@@ -910,11 +1064,11 @@
         
         <tags>
             
-            <tag> IAM </tag>
-            
             <tag> S3 </tag>
             
             <tag> AWS CLI </tag>
+            
+            <tag> IAM </tag>
             
         </tags>
         
@@ -1645,7 +1799,7 @@ You can wait for the scheduled retirement date - when the instance is stopped - 
 </li>
 </ul>
 <a id="more"></a>
-<h2 id="考试指南"><a href="#考试指南" class="headerlink" title="考试指南"></a>考试指南</h2><p><a href="http://d0.awsstatic-china.com/Train%20&amp;%20Cert/docs/AWS_certified_solutions_architect_professional_blueprint.pdf" target="_blank" rel="external">AWS Certified Developer – Associate 考试指南</a> 读三遍，读三遍，读三遍</p>
+<h2 id="考试指南"><a href="#考试指南" class="headerlink" title="考试指南"></a>考试指南</h2><p><a href="http://d0.awsstatic-china.com/Train%20&amp;%20Cert/docs/AWS_certified_solutions_architect_professional_blueprint.pdf" target="_blank" rel="external">AWS Certified Solutions Architect – Professional 考试指南</a> 读三遍，读三遍，读三遍</p>
 <p>总计8个Domain, 各个Domain占的百分比如下</p>
 <ul>
 <li>High Availability and Business Continuity - 15%</li>
@@ -1693,7 +1847,7 @@ You can wait for the scheduled retirement date - when the instance is stopped - 
 <li>Storage Gateway</li>
 <li>VPC</li>
 </ul>
-<h2 id="视频学习"><a href="#视频学习" class="headerlink" title="视频学习"></a>视频学习</h2><p>网上有多种视频教程，当时个人觉得<a href="https://acloud.guru" target="_blank" rel="external">Acloudguru</a>的AWS Associated系列的教程非常好(三份Associated的教程都买了)，因此此次也购买了<a href="https://acloud.guru" target="_blank" rel="external">Acloudguru</a>的<a href="https://acloud.guru/course/aws-certified-developer-associate/dashboard" target="_blank" rel="external">AWS Certified Solutions Architect – Professional</a>的教程。但学下来整体感觉这个Professional的教程一般，总感觉内容和AWS Certified Solutions Architect – Associated系列的差不多。不够深入和细致。其余的教程没有学习过，因此无法做评价。</p>
+<h2 id="视频学习"><a href="#视频学习" class="headerlink" title="视频学习"></a>视频学习</h2><p>网上有多种视频教程，当时个人觉得<a href="https://acloud.guru" target="_blank" rel="external">Acloudguru</a>的AWS Associated系列的教程非常好(三份Associated的教程都买了)，因此此次也购买了<a href="https://acloud.guru" target="_blank" rel="external">Acloudguru</a>的<a href="https://acloud.guru/learn/aws-certified-solutions-architect-professional" target="_blank" rel="external">AWS Certified Solutions Architect – Professional</a>的教程。但学下来整体感觉这个Professional的教程一般，总感觉内容和AWS Certified Solutions Architect – Associated系列的差不多。不够深入和细致。其余的教程没有学习过，因此无法做评价。</p>
 <h2 id="要点摘录"><a href="#要点摘录" class="headerlink" title="要点摘录"></a>要点摘录</h2><h3 id="Domain-1-High-Availability-and-Business-Continuity-15"><a href="#Domain-1-High-Availability-and-Business-Continuity-15" class="headerlink" title="Domain 1 - High Availability and Business Continuity - 15%"></a>Domain 1 - High Availability and Business Continuity - 15%</h3><ul>
 <li><strong>Disaster Recovery</strong><ul>
 <li>WhitePaper : <a href="https://media.amazonwebservices.com/AWS_Disaster_Recovery.pdf" target="_blank" rel="external">https://media.amazonwebservices.com/AWS_Disaster_Recovery.pdf</a></li>
@@ -4594,7 +4748,7 @@ You can wait for the scheduled retirement date - when the instance is stopped - 
 <li><p>WAF</p>
 <ul>
 <li>WAF sandwich<ul>
-<li><a href="https://www.cloudaxis.com/2016/11/21/waf-sandwich/" target="_blank" rel="external">WAF Sandwich</a><br><img src="CSAP_WAF_Sandwich.png" alt="CSAP_WAF_Sandwich.png"></li>
+<li><a href="https://www.cloudaxis.com/2016/11/21/waf-sandwich/" target="_blank" rel="external">WAF Sandwich</a><br><img src="/images/AWS/CSAP/CSAP_WAF_Sandwich.png" alt="CSAP_WAF_Sandwich.png"></li>
 </ul>
 </li>
 </ul>
@@ -4753,9 +4907,9 @@ You can wait for the scheduled retirement date - when the instance is stopped - 
         
         <tags>
             
-            <tag> Ruby </tag>
-            
             <tag> Elastic Load Balancing </tag>
+            
+            <tag> Ruby </tag>
             
         </tags>
         

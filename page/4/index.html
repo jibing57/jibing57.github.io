@@ -139,6 +139,111 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
+			<div class="date"> 2017-12-14 </div>
+			<div class="article-title"><a href="/2017/12/14/deep-dig-on-s3-bucket-permission/" >深挖AWS S3的权限管理</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>AWS共有三种方式用来管理S3的访问权限</p>
+<ul>
+<li>IAM policy</li>
+<li>Bucket Policy</li>
+<li>S3 ACL</li>
+</ul>
+<p>此处深挖一下这三种访问控制的用法和区别</p>
+<h3 id="三种访问控制的介绍"><a href="#三种访问控制的介绍" class="headerlink" title="三种访问控制的介绍"></a>三种访问控制的介绍</h3><p>S3的三种访问控制如下:</p>
+<ul>
+<li>IAM Policy, 是基于用户层面的控制，attach to IAM实体(User, Role或Group),规定了谁能对哪些S3做什么操作</li>
+<li>Bucket Policy, 是基于Bucket层面的控制, attach to Bucket, 规定了哪些人能对我这个Bucket中的resource做什么操作。</li>
+<li>S3 ACL, 是基于Bucket或单个对象的，规定了谁能对我这个Bucket或对象做什么操作。</li>
+</ul>
+	
+	</div>
+  <a type="button" href="/2017/12/14/deep-dig-on-s3-bucket-permission/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2017-12-12 </div>
+			<div class="article-title"><a href="/2017/12/12/how-to-write-multiline-to-file-by-shell/" >使用shell添加多行到文件的几个办法</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>使用shell添加多行到某个文件的几个办法, 启动EC2设置User Data时可能会用到。</p>
+<h4 id="方法一-逐行echo添加"><a href="#方法一-逐行echo添加" class="headerlink" title="方法一: 逐行echo添加"></a>方法一: 逐行echo添加</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">echo &apos;#!/bin/bash&apos; &gt; way1.sh</div><div class="line">echo &apos;export PATH=$PATH:~/bin/&apos; &gt;&gt; way1.sh</div></pre></td></tr></table></figure>
+<p>查看文件内容为:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ cat way1.sh</div><div class="line">#!/bin/bash</div><div class="line">export PATH=$PATH:~/bin/</div><div class="line">$</div></pre></td></tr></table></figure></p>
+	
+	</div>
+  <a type="button" href="/2017/12/12/how-to-write-multiline-to-file-by-shell/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2017-12-04 </div>
+			<div class="article-title"><a href="/2017/12/04/AWS-Certified-Sysops-Administrator-Associate/" >AWS Certified Sysops Administrator - Associate Road Map</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h2 id="Official-AWS-Certification-Page"><a href="#Official-AWS-Certification-Page" class="headerlink" title="Official AWS Certification Page"></a>Official AWS Certification Page</h2><p>访问官网<a href="https://amazonaws-china.com/certification/certification-prep/" target="_blank" rel="external">AWS Certification</a></p>
+<ul>
+<li>参加 AWS 培训课程</li>
+<li>查看考试指南和样题<ul>
+<li>了解考试涉及的概念并整体了解需要学习哪些内容, <a href="http://awstrainingandcertification.s3.amazonaws.com/production/AWS_certified_sysops_associate_blueprint.pdf" target="_blank" rel="external">AWS Certified SysOps Administrator - Associate 考试指南</a> 相当于考试大纲, 必看,而且需要反复的看。因为学习过一阵后再来看Guide，会有更深的体会。</li>
+<li><a href="http://awstrainingandcertification.s3.amazonaws.com/production/AWS_certified_sysops_associate_examsample.pdf" target="_blank" rel="external">考试样题</a>用于熟悉题目题型</li>
+</ul>
+</li>
+<li>完成自主进度动手实验和备考任务<ul>
+<li>官方<a href="https://www.qwiklabs.com/learning_paths/20/lab_catalogue?locale=en" target="_blank" rel="external">qwikLABS 任务</a>提供了一系列动手实验, 提供部分免费实验，但大部分实验所需的积分都需要购买。高性价比的做法是， 注册一个AWS全球账号，使用一年的免费额度来对照着实验手册来进行试验。</li>
+</ul>
+</li>
+<li>学习 AWS 白皮书<ul>
+<li>白皮书是纯英文的，而且每个白皮书篇幅都很长，读起来既费时又枯燥。但是有时间还是建议把推荐的几个都看一下。</li>
+</ul>
+</li>
+<li>查看 AWS 常见问题</li>
+<li>参加模拟考试<ul>
+<li>20美刀一次，主要目的是为了让人熟悉考试时上机的流程。是否需要因人而异, 特别想先熟悉下考试流程的可以考虑参加一次。我个人觉得没有必要, 因为真实考试时，操作界面一目了然，没有磕磕绊绊的机关，省下20美刀可以去买一份课程。</li>
+</ul>
+</li>
+<li>报名考试并获得认证<ul>
+<li>登陆<a href="https://www.aws.training/certification" target="_blank" rel="external">https://www.aws.training/certification</a>注册进行考试
+	
+	</div>
+  <a type="button" href="/2017/12/04/AWS-Certified-Sysops-Administrator-Associate/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
 			<div class="date"> 2017-11-29 </div>
 			<div class="article-title"><a href="/2017/11/29/how-to-enable-slow-query-on-aws-rds-postgresql/" >在AWS RDS中为Postgresql开启慢查询日志</a></div>						
 		</h3>
@@ -340,101 +445,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2017-08-03 </div>
-			<div class="article-title"><a href="/2017/08/03/date-command-on-Linux-and-Mac/" >Linux 和 Mac下date命令的基本用法</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>Mac下的date命令是BSD系的, Linux下date命令是GNU系的，两者的用法有一些区别，罗列如下:</p>
-<h3 id="共同点"><a href="#共同点" class="headerlink" title="共同点"></a>共同点</h3><p>基本的时间格式的缩写是相同的，规则如下:</p>
-<ul>
-<li>%Y 表示四位数形式的年份, 比如2017</li>
-<li>%m 表示带前导0的月份，比如02,12</li>
-<li>%d 表示带前导0的日子， 比如 02，28</li>
-<li>%H 表示带前导0的24小时， 比如 01, 23</li>
-<li>%M 表示带前导0的分钟数， 比如 05, 22</li>
-<li>%S 表示带前导0的秒数， 比如 06，45</li>
-<li>%s 表示距离格林威治时间(1970年1月1日0点)的秒数</li>
-</ul>
-	
-	</div>
-  <a type="button" href="/2017/08/03/date-command-on-Linux-and-Mac/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2017-07-25 </div>
-			<div class="article-title"><a href="/2017/07/25/how-to-read-text-on-macos/" >Macos中如何语音朗读文字</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>Macos上看到大段大段的英文，有时候除了看以外，还想边听边看</p>
-<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><h3 id="Macos-自带speech"><a href="#Macos-自带speech" class="headerlink" title="Macos 自带speech"></a>Macos 自带speech</h3><p>Macos 自带了文本至语音的功能, 开启方法如下:</p>
-<ol>
-<li>打开[系统偏好设置] -&gt; [听写与语音] -&gt; 切换至[文本至语音]</li>
-<li>可以选择系统嗓音和朗读速率</li>
-<li>可以设置快捷键，默认为Option + Esc, 选择文字后按快捷键开启，再次按快捷键关闭</li>
-</ol>
-<p>或选中文字，右键菜单选择[语音]-&gt;[开始讲话]</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
-<li><a href="https://support.apple.com/kb/PH14230?locale=en_US" target="_blank" rel="external">OS X Mavericks: Hear your Mac speak text</a></li>
-</ul>
-
-	
-	</div>
-  <a type="button" href="/2017/07/25/how-to-read-text-on-macos/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2017-07-25 </div>
-			<div class="article-title"><a href="/2017/07/25/useful-website-of-aws/" >AWS相关的一些有用的网址</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="cloudping-info"><a href="#cloudping-info" class="headerlink" title="cloudping.info"></a>cloudping.info</h3><p><a href="http://www.cloudping.info/" target="_blank" rel="external">clougping.info</a>是一个可以检测当前浏览器到AWS各个Region的延迟的网站, 可以用来评估访问哪个Region更快一点。在建立测试服务的时候十分有用。</p>
-<p>单次的测试结果不一定准确，建议多试几次后再选取平均延迟低的结果。</p>
-<ul>
-<li>国内测试的结果:<br><img src="/images/AWS/Tools/cloudping_on_cn.jpg" alt="cloudping_on_cn"></li>
-</ul>
-<p>在国内使用AWS全球账号时，在韩国首尔Region建测试服务延迟会小一点。</p>
-	
-	</div>
-  <a type="button" href="/2017/07/25/useful-website-of-aws/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -498,13 +508,13 @@ var _hmt = _hmt || [];
 		<h4>Categories</h4>
 		<ul class="tag_box inline list-unstyled">
 		
-			<li><a href="/categories/AWS/">AWS<span>21</span></a></li>
+			<li><a href="/categories/AWS/">AWS<span>23</span></a></li>
 		
 			<li><a href="/categories/AWS-Certified/">AWS Certified<span>3</span></a></li>
 		
 			<li><a href="/categories/Blog/">Blog<span>5</span></a></li>
 		
-			<li><a href="/categories/Code/">Code<span>2</span></a></li>
+			<li><a href="/categories/Code/">Code<span>3</span></a></li>
 		
 			<li><a href="/categories/Shell/">Shell<span>7</span></a></li>
 		
@@ -519,48 +529,48 @@ var _hmt = _hmt || [];
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/MacOS/">MacOS<span>7</span></a></li>
+			<li><a href="/tags/AWS-Deep-Dive/">AWS Deep Dive<span>2</span></a></li>
 		
-			<li><a href="/tags/AWS-CLI/">AWS CLI<span>5</span></a></li>
+			<li><a href="/tags/Nodejs/">Nodejs<span>2</span></a></li>
+		
+			<li><a href="/tags/PostgreSQL/">PostgreSQL<span>1</span></a></li>
 		
 			<li><a href="/tags/CodeCommit/">CodeCommit<span>1</span></a></li>
 		
-			<li><a href="/tags/AWS-Free-Tier/">AWS Free Tier<span>1</span></a></li>
-		
-			<li><a href="/tags/AWS-SDK/">AWS SDK<span>2</span></a></li>
-		
-			<li><a href="/tags/SSH/">SSH<span>3</span></a></li>
-		
-			<li><a href="/tags/Elastic-Beanstalk/">Elastic Beanstalk<span>3</span></a></li>
-		
-			<li><a href="/tags/RDS/">RDS<span>3</span></a></li>
-		
-			<li><a href="/tags/AWS-Deep-Dive/">AWS Deep Dive<span>2</span></a></li>
-		
-			<li><a href="/tags/AutoScaling/">AutoScaling<span>1</span></a></li>
-		
-			<li><a href="/tags/Ruby/">Ruby<span>5</span></a></li>
-		
-			<li><a href="/tags/Git/">Git<span>1</span></a></li>
-		
-			<li><a href="/tags/AWS-Tools/">AWS Tools<span>1</span></a></li>
+			<li><a href="/tags/Sysops/">Sysops<span>1</span></a></li>
 		
 			<li><a href="/tags/Rails/">Rails<span>2</span></a></li>
 		
+			<li><a href="/tags/Elastic-Load-Balancing/">Elastic Load Balancing<span>5</span></a></li>
+		
+			<li><a href="/tags/Passenger/">Passenger<span>1</span></a></li>
+		
+			<li><a href="/tags/AWS-Tools/">AWS Tools<span>1</span></a></li>
+		
+			<li><a href="/tags/Hexo/">Hexo<span>5</span></a></li>
+		
+			<li><a href="/tags/Github/">Github<span>2</span></a></li>
+		
 			<li><a href="/tags/DynamoDB/">DynamoDB<span>1</span></a></li>
 		
-			<li><a href="/tags/EC2-User-Data/">EC2 User Data<span>1</span></a></li>
-		
-			<li><a href="/tags/EC2/">EC2<span>4</span></a></li>
+			<li><a href="/tags/AWS-CLI/">AWS CLI<span>5</span></a></li>
 		
 			<li><a href="/tags/Douban/">Douban<span>1</span></a></li>
 		
-			<li><a href="/tags/Elastic-Load-Balancing/">Elastic Load Balancing<span>4</span></a></li>
+			<li><a href="/tags/Video/">Video<span>1</span></a></li>
 		
-			<li><a href="/tags/CloudWatch/">CloudWatch<span>1</span></a></li>
+			<li><a href="/tags/AWS-Free-Tier/">AWS Free Tier<span>1</span></a></li>
+		
+			<li><a href="/tags/Git/">Git<span>1</span></a></li>
+		
+			<li><a href="/tags/Tips/">Tips<span>1</span></a></li>
+		
+			<li><a href="/tags/AutoScaling/">AutoScaling<span>2</span></a></li>
+		
+			<li><a href="/tags/Elastic-Beanstalk/">Elastic Beanstalk<span>5</span></a></li>
 		
 		
-		   <li><a href="/tags">...<span>36</span></a></li>
+		   <li><a href="/tags">...<span>37</span></a></li>
 		 
 		</ul>
 	</div>
@@ -573,23 +583,23 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2018/12/25/How-to-change-max-pool-size-of-passenger-on-ElasticBeanstalk/" ><i class="fa fa-file-o"></i>修改ElasticBeanstalk中Passenge...</a>
+      </li>
+    
+      <li>
+        <a href="/2018/12/24/404-on-Scale-Up-of-ElasticBeanstalk/" ><i class="fa fa-file-o"></i>ElasticBeanstalk伸缩时偶发404的原因</a>
+      </li>
+    
+      <li>
+        <a href="/2018/12/17/how-to-handle-heap-out-of-memory-in-node/" ><i class="fa fa-file-o"></i>Node中heap out of memory的解决办法</a>
+      </li>
+    
+      <li>
         <a href="/2018/12/11/how-to-enable-cors-on-S3/" ><i class="fa fa-file-o"></i>在S3上开启CORS</a>
       </li>
     
       <li>
         <a href="/2018/11/27/nginx-with-dynamic-upstreams-to-ELB/" ><i class="fa fa-file-o"></i>如何配置Nginx的Dynamic Upstream指...</a>
-      </li>
-    
-      <li>
-        <a href="/2018/11/15/a-way-to-install-ffmpeg-to-Amazon-Linux-and-ElasticBeanstalk/" ><i class="fa fa-file-o"></i>在Amazon Linux和Elastic Beans...</a>
-      </li>
-    
-      <li>
-        <a href="/2018/09/15/how-to-access-internal-by-ssh-tunnel/" ><i class="fa fa-file-o"></i>使用ssh隧道访问内网资源</a>
-      </li>
-    
-      <li>
-        <a href="/2018/08/11/EB-warning-due-to-no-space-left-on-device-issue-on-EC2/" ><i class="fa fa-file-o"></i>由于EC2中no space left引起的EB警报</a>
       </li>
     
   </ul>

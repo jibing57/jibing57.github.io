@@ -333,11 +333,11 @@
       <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
     
     
+      <category term="IAM" scheme="http://www.jibing57.com/tags/IAM/"/>
+    
       <category term="S3" scheme="http://www.jibing57.com/tags/S3/"/>
     
       <category term="AWS CLI" scheme="http://www.jibing57.com/tags/AWS-CLI/"/>
-    
-      <category term="IAM" scheme="http://www.jibing57.com/tags/IAM/"/>
     
   </entry>
   

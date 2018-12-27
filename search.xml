@@ -1064,11 +1064,11 @@
         
         <tags>
             
+            <tag> IAM </tag>
+            
             <tag> S3 </tag>
             
             <tag> AWS CLI </tag>
-            
-            <tag> IAM </tag>
             
         </tags>
         

@@ -3,6 +3,144 @@
   
     
     <entry>
+      <title><![CDATA[AWS C5类型Instance的挂载点变更]]></title>
+      <url>/2019/02/25/mount-point-changed-in-C5/</url>
+      <content type="html"><![CDATA[<h3 id="问题点"><a href="#问题点" class="headerlink" title="问题点"></a>问题点</h3><p>一直使用的是Amazon自有的Amazon Linux，中国区的C5出来后，将原有的机器升级到C5的时候，发现额外挂载的磁盘没有挂载成功。</p>
+<p>调查了一下，C5系列属于<a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-types.html#ec2-nitro-instances" target="_blank" rel="external">Nitro-based instance</a>, EBS卷默认使用的是NVMe driver,设备名由原来C4的/dev/xvda1和/dev/xvdf变为了/dev/nvme[0-26]n1的格式。官网说明<a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/device_naming.html" target="_blank" rel="external">Device Naming on Linux Instances</a>。</p>
+<p>以前C4的机器中,/etc/fstab中设定的另外一块EBS的挂载点是/dev/xvdf, 所以导致了换用C5的时候，没能自动挂载。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># C4时的设置</div><div class="line">/dev/xvdf   /mnt/data ext4  auto,nofail,defaults        1   2</div></pre></td></tr></table></figure>
+<h3 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h3><p><code>lsblk</code>查看EBS的挂载路径，然后修改/etc/fstab。解决了问题。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/dev/nvme1n1 /mnt/data ext4  auto,nofail,defaults        1   2</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<h3 id="AWS推荐的mount方法"><a href="#AWS推荐的mount方法" class="headerlink" title="AWS推荐的mount方法"></a>AWS推荐的mount方法</h3><p>关于/etc/fstab的挂载点，AWS官方文档<a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-using-volumes.html#ebs-mount-after-reboot" target="_blank" rel="external">Automatically Mount an Attached Volume After Reboot</a>推荐使用UUID来进行挂载，而不要直接使用像/dev/xvdf之类的设备名。类似<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">UUID=aebf131c-6957-451e-8d34-ec978d9581ae  /data  xfs  defaults,nofail  0  2</div></pre></td></tr></table></figure></p>
+<p>其中的磁盘UUID<code>aebf131c-6957-451e-8d34-ec978d9581ae</code>可以通过命令<code>blkid</code>来查看。此时，无论Instance改为了哪种类型的Instance，启动时都可以正常挂载使用。<br>使用UUID的挂载方法，也适用于于从Instance制作AMI，再从AMI启动新的Instance的情况，从AMI中启动的Instance的相同分区的EBS的UUID都是相同的,所以能够自动挂载。</p>
+<h3 id="相关知识"><a href="#相关知识" class="headerlink" title="相关知识"></a>相关知识</h3><h4 id="开启ENA"><a href="#开启ENA" class="headerlink" title="开启ENA"></a>开启ENA</h4><p>使用C5类型时，要求Instance或AMI是支持Elastic Network Adapter(ENA)的才行。<br>将现有的Instance升级为ENA Support的方法参见官网说明<a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/enhanced-networking-ena.html#enable-enhanced-networking-ena-AL" target="_blank" rel="external">Enabling Enhanced Networking with the Elastic Network Adapter (ENA) on Linux Instances</a></p>
+<p>大概步骤:</p>
+<ul>
+<li>系统中安装ENA支持</li>
+<li>修改Instance为ena-support : <code>aws ec2 modify-instance-attribute --instance-id instance_id --ena-support</code></li>
+<li>查看Instance是否ena-support: <code>aws ec2 describe-instances --instance-ids instance_id --query &quot;Reservations[].Instances[].EnaSupport&quot;</code></li>
+<li>支持ena的Instance制作的AMI，会继承该Instance的ena属性。</li>
+</ul>
+<p>如果没有开启ENA，则无法使用C5类型。</p>
+<ul>
+<li><p>当不支持ENA的Instance被修改为C5时，启动时会报如下的错误:<br><img src="/images/AWS/EC2/Start-instance-error-when-C5.png" alt="Start-instance-error-when-C5.png"></p>
+</li>
+<li><p>当从不支持ENA的AMI来launch Instance时，直接就没法选择C5系列的类型。<br><img src="/images/AWS/EC2/AMI-ena-required-when-launching-C5.png" alt="AMI-ena-required-when-launching-C5.png"></p>
+</li>
+</ul>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-using-volumes.html" target="_blank" rel="external">Making an Amazon EBS Volume Available for Use on Linux</a></li>
+<li><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-types.html#ec2-nitro-instances" target="_blank" rel="external">Instance Types</a></li>
+<li><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/enhanced-networking-ena.html" target="_blank" rel="external">Enabling Enhanced Networking with the Elastic Network Adapter (ENA) on Linux Instances</a></li>
+<li><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/device_naming.html" target="_blank" rel="external">Device Naming on Linux Instances</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> AWS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> EC2 </tag>
+            
+            <tag> Linux </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[ruby异常]]></title>
+      <url>/2019/02/14/ruby-exception/</url>
+      <content type="html"><![CDATA[<h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>有一个通知服务，需要使用<a href="https://mandrill.com/" target="_blank" rel="external">Mandrill</a>的提供的邮件服务给客户发送邮件。开发时使用了<a href="https://github.com/renz45/mandrill_mailer" target="_blank" rel="external">mandrill_mailer</a>这个GEM来实现和Mandrill服务的交互。</p>
+<p>今天监控程序报警提及昨天的邮件发送量比平时低了不少。上线查了一下日志，发现是代码中一处exception没处理好,导致程序崩溃了。</p>
+<h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><p>Ruby 中捕获非指定类型的异常，会使用如下方式来捕获异常。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">begin</div><div class="line">rescue =&gt; e</div><div class="line">end</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>根据<a href="https://ruby-doc.org/core-2.3.0/Exception.html" target="_blank" rel="external">官方文档</a>的说明，不指定exception类型时，rescue默认捕获的是<code>StandardError</code>类型的exception。</p>
+<p>在我这个问题中，由于<a href="https://mandrill.com/" target="_blank" rel="external">Mandrill</a>的服务出现了问题，发送请求后，没有返回正常的json格式，而是返回了<code>504 Gateway Time-out</code>的一段HTML, Gem <a href="https://github.com/renz45/mandrill_mailer" target="_blank" rel="external">mandrill_mailer</a>解析JSON失败，抛出了自定义的<code>Mandrill::Error</code>的异常。</p>
+<p>Gem中抛异常的代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">begin</div><div class="line">    error_info = JSON.parse(body)</div><div class="line">    if error_info[&apos;status&apos;] != &apos;error&apos; or not error_info[&apos;name&apos;]</div><div class="line">        raise Error, &quot;We received an unexpected error: #&#123;body&#125;&quot;</div><div class="line">    end</div><div class="line">    if error_map[error_info[&apos;name&apos;]]</div><div class="line">        raise error_map[error_info[&apos;name&apos;]], error_info[&apos;message&apos;]</div><div class="line">    else</div><div class="line">        raise Error, error_info[&apos;message&apos;]</div><div class="line">    end</div><div class="line">rescue JSON::ParserError</div><div class="line">    raise Error, &quot;We received an unexpected error: #&#123;body&#125;&quot;</div><div class="line">end</div></pre></td></tr></table></figure>
+<p>Error异常定义的代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">module Mandrill</div><div class="line">    class Error &lt; Exception</div><div class="line">    end</div><div class="line">    class ValidationError &lt; Error</div><div class="line">    end</div></pre></td></tr></table></figure>
+<p>可以看到，Mandrill::Error这个类型，是直接继承自<code>Exception</code>的。而在原有的代码中，没有指定exception的类型,捕获不到这个exception，导致程序崩溃了。</p>
+<p>在代码中指定固定类型的exception，解决该问题</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">begin</div><div class="line">rescue StandardError, Mandrill::Error =&gt; e</div><div class="line">end</div></pre></td></tr></table></figure>
+<h3 id="深挖"><a href="#深挖" class="headerlink" title="深挖"></a>深挖</h3><p>Ruby中关于如何throw和catch exception，<a href="https://stackoverflow.com/" target="_blank" rel="external">stackoverflow</a>和<a href="https://ruby-doc.org/" target="_blank" rel="external">ruby-doc.org</a>上的这几个网页值得细读</p>
+<ul>
+<li><a href="https://stackoverflow.com/questions/10048173/why-is-it-bad-style-to-rescue-exception-e-in-ruby" target="_blank" rel="external">Why is it bad style to `rescue Exception =&gt; e` in Ruby?</a></li>
+<li><a href="https://stackoverflow.com/questions/4800698/what-is-the-difference-between-raise-foo-and-raise-exception-newfoo" target="_blank" rel="external">What is the difference between `raise “foo”` and `raise Exception.new(“foo”)`?</a></li>
+<li><a href="https://ruby-doc.org/core-2.3.0/Exception.html" target="_blank" rel="external">Exception</a> </li>
+</ul>
+<p>梳理了一下，罗列如下:</p>
+<ul>
+<li>三种常用的exception类<ul>
+<li><a href="https://ruby-doc.org/core-2.3.0/RuntimeError.html" target="_blank" rel="external">RuntimeError</a></li>
+<li><a href="https://ruby-doc.org/core-2.3.0/StandardError.html" target="_blank" rel="external">StandardError</a></li>
+<li><a href="https://ruby-doc.org/core-2.3.0/Exception.html" target="_blank" rel="external">Exception</a></li>
+</ul>
+</li>
+<li><code>RuntimeError</code>是<code>StandardError</code>的一个子类，而<code>StandardError</code>又是<code>Exception</code>的一个子类。</li>
+<li>直接raise，抛出的是<code>RuntimeError</code>的异常</li>
+<li>默认的rescue，捕获的是<code>StandardError</code>的异常</li>
+<li><code>Exception</code>包含了全部的异常，ruby中全部异常都可以使用<code>rescue Exception =&gt; e</code>这种写法来捕获。</li>
+<li>但强烈建议不要直接粗暴的指定基类<code>Exception</code>来捕获异常<ul>
+<li><code>rescue Exception</code>时，会捕获所有的异常，包括<code>SyntaxError</code>, <code>LoadError</code>和<code>SignalException</code>等</li>
+<li>捕获了<code>SignalException</code>，会导致除了<code>kill -9</code>的其他信号量失效，包括<code>Ctrl + C</code></li>
+<li>捕获<code>SyntaxError</code>，调用eval时，即使失败了也不会有提示</li>
+</ul>
+</li>
+<li>编写库和Gem的自定义异常时，强烈反对直接继承自基类<code>Exception</code>，因为这会导致使用者在没有指定异常类型时，无法成功捕获异常，导致程序崩溃。</li>
+</ul>
+<h3 id="小实验"><a href="#小实验" class="headerlink" title="小实验"></a>小实验</h3><ol>
+<li><p>raise字符串，rescue不指定异常类型</p>
+<p> 代码:</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">begin</div><div class="line">  raise &quot;error occur&quot;</div><div class="line">rescue</div><div class="line">  puts &quot;here is string exception&quot;</div><div class="line">end</div></pre></td></tr></table></figure>
+<p> 运行结果:</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">here is string exception</div></pre></td></tr></table></figure>
+</li>
+<li><p>raise Exception, rescue Exception</p>
+<p> 代码:</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">begin</div><div class="line">  raise Exception.new(&quot;error occur&quot;)</div><div class="line">rescue Exception</div><div class="line">  puts &quot;here is Exception exception&quot;</div><div class="line">end</div></pre></td></tr></table></figure>
+<p> 运行结果:</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">here is Exception exception</div></pre></td></tr></table></figure>
+</li>
+<li><p>raise字符串，rescue Exception</p>
+<p> 代码:</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">begin</div><div class="line">  raise &quot;error occur&quot;</div><div class="line">rescue Exception</div><div class="line">  puts &quot;here is exception exception&quot;</div><div class="line">end</div></pre></td></tr></table></figure>
+<p> 运行结果:</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># rescue Exception可以捕获任何异常</div><div class="line">here is exception exception</div></pre></td></tr></table></figure>
+</li>
+<li><p>raise Exception, rescue不指定异常类型</p>
+<p> 代码:</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">begin</div><div class="line">  raise Exception.new(&quot;error occur&quot;)</div><div class="line">rescue</div><div class="line">  puts &quot;here is string exception&quot;</div><div class="line">end</div></pre></td></tr></table></figure>
+<p> 运行结果:</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># 没有捕获到异常，程序崩溃了</div><div class="line">Exception: error occur</div><div class="line">    from (irb):39</div><div class="line">    from /Users/carlshen/.rvm/rubies/ruby-2.3.0/bin/irb:11:in `&lt;main&gt;&apos;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+]]></content>
+      
+        <categories>
+            
+            <category> Code </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Ruby </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[修改ElasticBeanstalk中Passenger的max-pool-size]]></title>
       <url>/2018/12/25/How-to-change-max-pool-size-of-passenger-on-ElasticBeanstalk/</url>
       <content type="html"><![CDATA[<h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>在AWS Elastic Beanstalk中，如果选用Ruby with Passenger运行Rails时，会遇到一个问题，就是EB环境中的Passenger的max_pool_size是默认的6。如果EB中的Instance选用的是性能比较高的类型，只起6个Passenger进程会是一个巨大的浪费。下面介绍几个修改EB中Passenger max_pool_size参数的方法。</p>
@@ -1064,11 +1202,11 @@
         
         <tags>
             
-            <tag> IAM </tag>
-            
             <tag> S3 </tag>
             
             <tag> AWS CLI </tag>
+            
+            <tag> IAM </tag>
             
         </tags>
         
@@ -7276,11 +7414,11 @@ You can wait for the scheduled retirement date - when the instance is stopped - 
         
         <tags>
             
-            <tag> AWS SDK </tag>
-            
             <tag> RDS </tag>
             
             <tag> Ruby </tag>
+            
+            <tag> AWS SDK </tag>
             
             <tag> AWS CLI </tag>
             

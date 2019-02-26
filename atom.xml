@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.jibing57.com/"/>
-  <updated>2018-12-27T07:02:05.228Z</updated>
+  <updated>2019-02-26T07:47:36.448Z</updated>
   <id>http://www.jibing57.com/</id>
   
   <author>
@@ -15,6 +15,56 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>AWS C5类型Instance的挂载点变更</title>
+    <link href="http://www.jibing57.com/2019/02/25/mount-point-changed-in-C5/"/>
+    <id>http://www.jibing57.com/2019/02/25/mount-point-changed-in-C5/</id>
+    <published>2019-02-25T13:55:30.000Z</published>
+    <updated>2019-02-26T07:47:36.448Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;问题点&quot;&gt;&lt;a href=&quot;#问题点&quot; class=&quot;headerlink&quot; title=&quot;问题点&quot;&gt;&lt;/a&gt;问题点&lt;/h3&gt;&lt;p&gt;一直使用的是Amazon自有的Amazon Linux，中国区的C5出来后，将原有的机器升级到C5的时候，发现额外挂载的磁盘没有挂载成功。&lt;/p&gt;
+&lt;p&gt;调查了一下，C5系列属于&lt;a href=&quot;https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-types.html#ec2-nitro-instances&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Nitro-based instance&lt;/a&gt;, EBS卷默认使用的是NVMe driver,设备名由原来C4的/dev/xvda1和/dev/xvdf变为了/dev/nvme[0-26]n1的格式。官网说明&lt;a href=&quot;https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/device_naming.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Device Naming on Linux Instances&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;以前C4的机器中,/etc/fstab中设定的另外一块EBS的挂载点是/dev/xvdf, 所以导致了换用C5的时候，没能自动挂载。&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;# C4时的设置&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;/dev/xvdf   /mnt/data ext4  auto,nofail,defaults        1   2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h3 id=&quot;解决办法&quot;&gt;&lt;a href=&quot;#解决办法&quot; class=&quot;headerlink&quot; title=&quot;解决办法&quot;&gt;&lt;/a&gt;解决办法&lt;/h3&gt;&lt;p&gt;&lt;code&gt;lsblk&lt;/code&gt;查看EBS的挂载路径，然后修改/etc/fstab。解决了问题。&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;/dev/nvme1n1 /mnt/data ext4  auto,nofail,defaults        1   2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+    
+    </summary>
+    
+      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
+    
+    
+      <category term="EC2" scheme="http://www.jibing57.com/tags/EC2/"/>
+    
+      <category term="Linux" scheme="http://www.jibing57.com/tags/Linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ruby异常</title>
+    <link href="http://www.jibing57.com/2019/02/14/ruby-exception/"/>
+    <id>http://www.jibing57.com/2019/02/14/ruby-exception/</id>
+    <published>2019-02-14T12:04:12.000Z</published>
+    <updated>2019-02-15T06:37:48.724Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h3&gt;&lt;p&gt;有一个通知服务，需要使用&lt;a href=&quot;https://mandrill.com/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Mandrill&lt;/a&gt;的提供的邮件服务给客户发送邮件。开发时使用了&lt;a href=&quot;https://github.com/renz45/mandrill_mailer&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;mandrill_mailer&lt;/a&gt;这个GEM来实现和Mandrill服务的交互。&lt;/p&gt;
+&lt;p&gt;今天监控程序报警提及昨天的邮件发送量比平时低了不少。上线查了一下日志，发现是代码中一处exception没处理好,导致程序崩溃了。&lt;/p&gt;
+&lt;h3 id=&quot;分析&quot;&gt;&lt;a href=&quot;#分析&quot; class=&quot;headerlink&quot; title=&quot;分析&quot;&gt;&lt;/a&gt;分析&lt;/h3&gt;&lt;p&gt;Ruby 中捕获非指定类型的异常，会使用如下方式来捕获异常。&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;begin&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;rescue =&amp;gt; e&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;end&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+    
+    </summary>
+    
+      <category term="Code" scheme="http://www.jibing57.com/categories/Code/"/>
+    
+    
+      <category term="Ruby" scheme="http://www.jibing57.com/tags/Ruby/"/>
+    
+  </entry>
   
   <entry>
     <title>修改ElasticBeanstalk中Passenger的max-pool-size</title>
@@ -333,11 +383,11 @@
       <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
     
     
-      <category term="IAM" scheme="http://www.jibing57.com/tags/IAM/"/>
-    
       <category term="S3" scheme="http://www.jibing57.com/tags/S3/"/>
     
       <category term="AWS CLI" scheme="http://www.jibing57.com/tags/AWS-CLI/"/>
+    
+      <category term="IAM" scheme="http://www.jibing57.com/tags/IAM/"/>
     
   </entry>
   
@@ -456,54 +506,6 @@
       <category term="RDS" scheme="http://www.jibing57.com/tags/RDS/"/>
     
       <category term="Failover" scheme="http://www.jibing57.com/tags/Failover/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>EC2底层硬件Retirement的处理方法</title>
-    <link href="http://www.jibing57.com/2018/03/12/how-to-handle-Retirement-Notification-Amazon-EC2-Instance-scheduled-for-retirement/"/>
-    <id>http://www.jibing57.com/2018/03/12/how-to-handle-Retirement-Notification-Amazon-EC2-Instance-scheduled-for-retirement/</id>
-    <published>2018-03-12T14:10:54.000Z</published>
-    <updated>2018-03-12T14:19:11.395Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;AWS的EC2的实例是在物理机上虚拟化出来的，当承载EC2的物理机出现问题或者要退役时，AWS会发送一封主题为&lt;strong&gt;[Retirement Notification] Amazon EC2 Instance scheduled for retirement&lt;/strong&gt;的email到AWS Account的注册邮箱中。&lt;/p&gt;
-&lt;p&gt;以前多次收到过这类邮件，但提示的目标instance-ID都是AutoScaling中运行的EC2，而AutoScaling中的Instance自动伸缩不会影响业务，因此也从没有主动去处理过。&lt;/p&gt;
-&lt;p&gt;这次突然收到通知邮件，说一台运行后台任务的Instance的underlying hardware hosting出问题了。在此记录一下相关的现象和解决方法。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
-    
-    
-      <category term="EC2" scheme="http://www.jibing57.com/tags/EC2/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>使用seed将csv格式的db文件导入DB</title>
-    <link href="http://www.jibing57.com/2018/02/11/a-way-to-use-csv-file-to-populate-the-database-by-rake-db-seed-on-rails/"/>
-    <id>http://www.jibing57.com/2018/02/11/a-way-to-use-csv-file-to-populate-the-database-by-rake-db-seed-on-rails/</id>
-    <published>2018-02-11T14:00:33.000Z</published>
-    <updated>2018-02-11T10:05:51.406Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;一段将csv格式的db文件导入对应表结构的代码。&lt;/p&gt;
-&lt;h3 id=&quot;前提要求&quot;&gt;&lt;a href=&quot;#前提要求&quot; class=&quot;headerlink&quot; title=&quot;前提要求&quot;&gt;&lt;/a&gt;前提要求&lt;/h3&gt;&lt;ol&gt;
-&lt;li&gt;csv文件名字和Model Class需要一一对应， 比如用户表users, Model中定义是&lt;code&gt;class User &amp;lt; ActiveRecord::Base&lt;/code&gt;, 那么csv文件名字得是user.csv&lt;/li&gt;
-&lt;li&gt;csv文件需要有header,并且header名字需要同数据库中对应表的字段名相同&lt;/li&gt;
-&lt;/ol&gt;
-    
-    </summary>
-    
-      <category term="Code" scheme="http://www.jibing57.com/categories/Code/"/>
-    
-    
-      <category term="Ruby" scheme="http://www.jibing57.com/tags/Ruby/"/>
-    
-      <category term="Rails" scheme="http://www.jibing57.com/tags/Rails/"/>
     
   </entry>
   

@@ -139,6 +139,58 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
+			<div class="date"> 2018-03-12 </div>
+			<div class="article-title"><a href="/2018/03/12/how-to-handle-Retirement-Notification-Amazon-EC2-Instance-scheduled-for-retirement/" >EC2底层硬件Retirement的处理方法</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>AWS的EC2的实例是在物理机上虚拟化出来的，当承载EC2的物理机出现问题或者要退役时，AWS会发送一封主题为<strong>[Retirement Notification] Amazon EC2 Instance scheduled for retirement</strong>的email到AWS Account的注册邮箱中。</p>
+<p>以前多次收到过这类邮件，但提示的目标instance-ID都是AutoScaling中运行的EC2，而AutoScaling中的Instance自动伸缩不会影响业务，因此也从没有主动去处理过。</p>
+<p>这次突然收到通知邮件，说一台运行后台任务的Instance的underlying hardware hosting出问题了。在此记录一下相关的现象和解决方法。</p>
+	
+	</div>
+  <a type="button" href="/2018/03/12/how-to-handle-Retirement-Notification-Amazon-EC2-Instance-scheduled-for-retirement/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2018-02-11 </div>
+			<div class="article-title"><a href="/2018/02/11/a-way-to-use-csv-file-to-populate-the-database-by-rake-db-seed-on-rails/" >使用seed将csv格式的db文件导入DB</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>一段将csv格式的db文件导入对应表结构的代码。</p>
+<h3 id="前提要求"><a href="#前提要求" class="headerlink" title="前提要求"></a>前提要求</h3><ol>
+<li>csv文件名字和Model Class需要一一对应， 比如用户表users, Model中定义是<code>class User &lt; ActiveRecord::Base</code>, 那么csv文件名字得是user.csv</li>
+<li>csv文件需要有header,并且header名字需要同数据库中对应表的字段名相同</li>
+</ol>
+	
+	</div>
+  <a type="button" href="/2018/02/11/a-way-to-use-csv-file-to-populate-the-database-by-rake-db-seed-on-rails/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
 			<div class="date"> 2018-02-11 </div>
 			<div class="article-title"><a href="/2018/02/11/aws-s3-cli-to-backup-and-restore-bucket-acl/" >使用AWS CLI来备份和恢复S3 Bucket的ACL</a></div>						
 		</h3>
@@ -370,64 +422,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2017-12-20 </div>
-			<div class="article-title"><a href="/2017/12/20/expired-of-S3-RRS/" >S3 RRS价格注意点</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="S3-存储类型"><a href="#S3-存储类型" class="headerlink" title="S3 存储类型"></a>S3 存储类型</h3><p>S3 总共提供三种存储类型</p>
-<ul>
-<li>标准(Standard)</li>
-<li>标准-低频率访问(Standard - Infrequent Access)</li>
-<li>低冗余存储(Reduced Redundancy Storage)
-	
-	</div>
-  <a type="button" href="/2017/12/20/expired-of-S3-RRS/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2017-12-19 </div>
-			<div class="article-title"><a href="/2017/12/19/deep-dig-on-s3-bucket-permission-exam/" >深挖AWS S3的权限管理(实验篇)</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>在<a href="/2017/12/14/deep-dig-on-s3-bucket-permission/" title="深挖AWS S3的权限管理">深挖AWS S3的权限管理</a> 一文中介绍了AWS S3权限管理的三种方法。此处再通过几个实验来看下三种方法的使用方法。</p>
-<hr>
-<h3 id="实验前准备"><a href="#实验前准备" class="headerlink" title="实验前准备"></a>实验前准备</h3><h4 id="实验用相关账号介绍"><a href="#实验用相关账号介绍" class="headerlink" title="实验用相关账号介绍"></a>实验用相关账号介绍</h4><ul>
-<li>IAM User carl.shen - carl.shen有AdministratorAccess权限，用来上传图片到S3</li>
-<li>IAM User carl - 测试IAM User一号，初始没有任何权限</li>
-<li>IAM User shen - 测试IAM User二号，初始没有任何权限</li>
-<li>IAM Group S3Exam - 用来给IAM User carl和shen统一赋权限</li>
-</ul>
-<p>建好三个IAM账号，下载各自的Access key ID和Secret Access Key, 并设置好AWS CLI。AWS CLI多profile的设置方法可以参照 <a href="/2017/10/24/how-to-use-aws-cli-with-multi-user/" title="如何在aws cli中使用多个配置文件">如何在aws cli中使用多个配置文件</a><br>
-	
-	</div>
-  <a type="button" href="/2017/12/19/deep-dig-on-s3-bucket-permission-exam/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -491,13 +485,13 @@ var _hmt = _hmt || [];
 		<h4>Categories</h4>
 		<ul class="tag_box inline list-unstyled">
 		
-			<li><a href="/categories/AWS/">AWS<span>23</span></a></li>
+			<li><a href="/categories/AWS/">AWS<span>24</span></a></li>
 		
 			<li><a href="/categories/AWS-Certified/">AWS Certified<span>3</span></a></li>
 		
 			<li><a href="/categories/Blog/">Blog<span>5</span></a></li>
 		
-			<li><a href="/categories/Code/">Code<span>3</span></a></li>
+			<li><a href="/categories/Code/">Code<span>4</span></a></li>
 		
 			<li><a href="/categories/Shell/">Shell<span>7</span></a></li>
 		
@@ -512,45 +506,45 @@ var _hmt = _hmt || [];
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/Failover/">Failover<span>1</span></a></li>
-		
-			<li><a href="/tags/Elastic-Load-Balancing/">Elastic Load Balancing<span>5</span></a></li>
-		
-			<li><a href="/tags/Passenger/">Passenger<span>1</span></a></li>
-		
-			<li><a href="/tags/PostgreSQL/">PostgreSQL<span>1</span></a></li>
-		
-			<li><a href="/tags/CodeCommit/">CodeCommit<span>1</span></a></li>
-		
-			<li><a href="/tags/Solutions-Architect/">Solutions Architect<span>1</span></a></li>
-		
-			<li><a href="/tags/Nginx/">Nginx<span>1</span></a></li>
-		
-			<li><a href="/tags/AutoScaling/">AutoScaling<span>2</span></a></li>
-		
-			<li><a href="/tags/EC2/">EC2<span>4</span></a></li>
-		
-			<li><a href="/tags/EC2-User-Data/">EC2 User Data<span>1</span></a></li>
-		
-			<li><a href="/tags/AWS-CLI/">AWS CLI<span>5</span></a></li>
-		
-			<li><a href="/tags/RDS/">RDS<span>3</span></a></li>
-		
 			<li><a href="/tags/AWS-Deep-Dive/">AWS Deep Dive<span>2</span></a></li>
 		
-			<li><a href="/tags/Tips/">Tips<span>1</span></a></li>
-		
-			<li><a href="/tags/Video/">Video<span>1</span></a></li>
+			<li><a href="/tags/CloudWatch/">CloudWatch<span>1</span></a></li>
 		
 			<li><a href="/tags/MacOS/">MacOS<span>7</span></a></li>
 		
 			<li><a href="/tags/AWS-Tools/">AWS Tools<span>1</span></a></li>
 		
-			<li><a href="/tags/Image/">Image<span>1</span></a></li>
+			<li><a href="/tags/EC2/">EC2<span>5</span></a></li>
 		
-			<li><a href="/tags/AWS-SDK/">AWS SDK<span>2</span></a></li>
+			<li><a href="/tags/Video/">Video<span>1</span></a></li>
+		
+			<li><a href="/tags/Git/">Git<span>1</span></a></li>
+		
+			<li><a href="/tags/AWS-CLI/">AWS CLI<span>5</span></a></li>
+		
+			<li><a href="/tags/CodeCommit/">CodeCommit<span>1</span></a></li>
 		
 			<li><a href="/tags/Sysops/">Sysops<span>1</span></a></li>
+		
+			<li><a href="/tags/Image/">Image<span>1</span></a></li>
+		
+			<li><a href="/tags/RDS/">RDS<span>3</span></a></li>
+		
+			<li><a href="/tags/Failover/">Failover<span>1</span></a></li>
+		
+			<li><a href="/tags/Douban/">Douban<span>1</span></a></li>
+		
+			<li><a href="/tags/Solutions-Architect/">Solutions Architect<span>1</span></a></li>
+		
+			<li><a href="/tags/Rails/">Rails<span>2</span></a></li>
+		
+			<li><a href="/tags/EC2-User-Data/">EC2 User Data<span>1</span></a></li>
+		
+			<li><a href="/tags/PostgreSQL/">PostgreSQL<span>1</span></a></li>
+		
+			<li><a href="/tags/Nodejs/">Nodejs<span>2</span></a></li>
+		
+			<li><a href="/tags/Tips/">Tips<span>1</span></a></li>
 		
 		
 		   <li><a href="/tags">...<span>37</span></a></li>
@@ -566,6 +560,14 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2019/02/25/mount-point-changed-in-C5/" ><i class="fa fa-file-o"></i>AWS C5类型Instance的挂载点变更</a>
+      </li>
+    
+      <li>
+        <a href="/2019/02/14/ruby-exception/" ><i class="fa fa-file-o"></i>ruby异常</a>
+      </li>
+    
+      <li>
         <a href="/2018/12/25/How-to-change-max-pool-size-of-passenger-on-ElasticBeanstalk/" ><i class="fa fa-file-o"></i>修改ElasticBeanstalk中Passenge...</a>
       </li>
     
@@ -575,14 +577,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2018/12/17/how-to-handle-heap-out-of-memory-in-node/" ><i class="fa fa-file-o"></i>Node中heap out of memory的解决办法</a>
-      </li>
-    
-      <li>
-        <a href="/2018/12/11/how-to-enable-cors-on-S3/" ><i class="fa fa-file-o"></i>在S3上开启CORS</a>
-      </li>
-    
-      <li>
-        <a href="/2018/11/27/nginx-with-dynamic-upstreams-to-ELB/" ><i class="fa fa-file-o"></i>如何配置Nginx的Dynamic Upstream指...</a>
       </li>
     
   </ul>
@@ -619,7 +613,7 @@ var _hmt = _hmt || [];
   </div>
   <div class="container-narrow">
   <footer> <p>
-  &copy; 2018 jibing57
+  &copy; 2019 jibing57
   
       with help from <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>.    
 </p> </footer>

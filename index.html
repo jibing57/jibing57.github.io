@@ -225,9 +225,67 @@ var _hmt = _hmt || [];
 		
             
 		
+            
+		
+            
+		
         
         <!-- render other articles -->
         
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2019-02-25 </div>
+			<div class="article-title"><a href="/2019/02/25/mount-point-changed-in-C5/" >AWS C5类型Instance的挂载点变更</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="问题点"><a href="#问题点" class="headerlink" title="问题点"></a>问题点</h3><p>一直使用的是Amazon自有的Amazon Linux，中国区的C5出来后，将原有的机器升级到C5的时候，发现额外挂载的磁盘没有挂载成功。</p>
+<p>调查了一下，C5系列属于<a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-types.html#ec2-nitro-instances" target="_blank" rel="external">Nitro-based instance</a>, EBS卷默认使用的是NVMe driver,设备名由原来C4的/dev/xvda1和/dev/xvdf变为了/dev/nvme[0-26]n1的格式。官网说明<a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/device_naming.html" target="_blank" rel="external">Device Naming on Linux Instances</a>。</p>
+<p>以前C4的机器中,/etc/fstab中设定的另外一块EBS的挂载点是/dev/xvdf, 所以导致了换用C5的时候，没能自动挂载。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># C4时的设置</div><div class="line">/dev/xvdf   /mnt/data ext4  auto,nofail,defaults        1   2</div></pre></td></tr></table></figure>
+<h3 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h3><p><code>lsblk</code>查看EBS的挂载路径，然后修改/etc/fstab。解决了问题。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/dev/nvme1n1 /mnt/data ext4  auto,nofail,defaults        1   2</div></pre></td></tr></table></figure>
+	
+	</div>
+  <a type="button" href="/2019/02/25/mount-point-changed-in-C5/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2019-02-14 </div>
+			<div class="article-title"><a href="/2019/02/14/ruby-exception/" >ruby异常</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>有一个通知服务，需要使用<a href="https://mandrill.com/" target="_blank" rel="external">Mandrill</a>的提供的邮件服务给客户发送邮件。开发时使用了<a href="https://github.com/renz45/mandrill_mailer" target="_blank" rel="external">mandrill_mailer</a>这个GEM来实现和Mandrill服务的交互。</p>
+<p>今天监控程序报警提及昨天的邮件发送量比平时低了不少。上线查了一下日志，发现是代码中一处exception没处理好,导致程序崩溃了。</p>
+<h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><p>Ruby 中捕获非指定类型的异常，会使用如下方式来捕获异常。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">begin</div><div class="line">rescue =&gt; e</div><div class="line">end</div></pre></td></tr></table></figure>
+	
+	</div>
+  <a type="button" href="/2019/02/14/ruby-exception/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
            
 			  
 	
@@ -437,56 +495,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2018-05-21 </div>
-			<div class="article-title"><a href="/2018/05/21/ssh-key-Invalid-key-length-Error-on-Macos/" >macOS 10.13.2下SSH命令Invalid key length错误的原因</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>升级到Macos 10.13.2后，使用ssh以key方式登陆一个12年配置的服务器的时候，ssh命令报告了<code>Invalid key length</code>的错误。</p>
-<p>很是纳闷，服务器和本地的key都是配置好后就没动过的，key pair本身肯定没问题啊，怎么会报错了呢?</p>
-<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>Google了一下，发现是MacOS使用的OpenSSH版本升级到了7.6，小于1024bits的RSA keys已经不被支持了。</p>
-<p>使用<code>ssh-keygen</code>查看了一下public key，发现是1023bit的。所以ssh时候报了<code>Invalid key length</code>的错误。</p>
-	
-	</div>
-  <a type="button" href="/2018/05/21/ssh-key-Invalid-key-length-Error-on-Macos/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2018-05-10 </div>
-			<div class="article-title"><a href="/2018/05/10/how-to-write-NTFS-Deives-on-a-Mac-10.13/" >macOS 10.13 High Sierra读写NTFS移动硬盘</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>系统升级到10.13后，没用过移动硬盘，所以一直也没发现以前装的osxfuse+ntfs-3g在系统更新后已经失效了。结果么在要使用的时候发现悲剧了，在10.13中没法写NTFT格式的移动硬盘了。</p>
-<p>上网搜了一下，How-To Geek上面有一篇文章，详细讲述了Macos下挂载NTFS移动硬盘的几种方法,有收费方案也有免费方案，并比较了每个方案的优缺点。 虽然文章是基于macOS 10.12 Sierra的，但各个方案的优缺点同样适用于10.13。<a href="https://www.howtogeek.com/236055/how-to-write-to-ntfs-drives-on-a-mac/" target="_blank" rel="external">How to Write to NTFS Drives on a Mac</a></p>
-	
-	</div>
-  <a type="button" href="/2018/05/10/how-to-write-NTFS-Deives-on-a-Mac-10.13/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -550,13 +558,13 @@ var _hmt = _hmt || [];
 		<h4>Categories</h4>
 		<ul class="tag_box inline list-unstyled">
 		
-			<li><a href="/categories/AWS/">AWS<span>23</span></a></li>
+			<li><a href="/categories/AWS/">AWS<span>24</span></a></li>
 		
 			<li><a href="/categories/AWS-Certified/">AWS Certified<span>3</span></a></li>
 		
 			<li><a href="/categories/Blog/">Blog<span>5</span></a></li>
 		
-			<li><a href="/categories/Code/">Code<span>3</span></a></li>
+			<li><a href="/categories/Code/">Code<span>4</span></a></li>
 		
 			<li><a href="/categories/Shell/">Shell<span>7</span></a></li>
 		
@@ -571,45 +579,45 @@ var _hmt = _hmt || [];
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/PostgreSQL/">PostgreSQL<span>1</span></a></li>
-		
-			<li><a href="/tags/FFMPEG/">FFMPEG<span>1</span></a></li>
-		
-			<li><a href="/tags/Rails/">Rails<span>2</span></a></li>
-		
-			<li><a href="/tags/AutoScaling/">AutoScaling<span>2</span></a></li>
-		
-			<li><a href="/tags/AWS-Free-Tier/">AWS Free Tier<span>1</span></a></li>
-		
-			<li><a href="/tags/Hexo/">Hexo<span>5</span></a></li>
-		
-			<li><a href="/tags/Git/">Git<span>1</span></a></li>
-		
-			<li><a href="/tags/AWS-Deep-Dive/">AWS Deep Dive<span>2</span></a></li>
-		
-			<li><a href="/tags/Sysops/">Sysops<span>1</span></a></li>
-		
-			<li><a href="/tags/Elastic-Load-Balancing/">Elastic Load Balancing<span>5</span></a></li>
-		
-			<li><a href="/tags/SSH/">SSH<span>3</span></a></li>
-		
-			<li><a href="/tags/Video/">Video<span>1</span></a></li>
-		
-			<li><a href="/tags/AWS-Tools/">AWS Tools<span>1</span></a></li>
-		
-			<li><a href="/tags/Chrome/">Chrome<span>1</span></a></li>
-		
-			<li><a href="/tags/Tips/">Tips<span>1</span></a></li>
-		
-			<li><a href="/tags/Nginx/">Nginx<span>1</span></a></li>
-		
-			<li><a href="/tags/AWS-CLI/">AWS CLI<span>5</span></a></li>
+			<li><a href="/tags/CodeCommit/">CodeCommit<span>1</span></a></li>
 		
 			<li><a href="/tags/RDS/">RDS<span>3</span></a></li>
 		
-			<li><a href="/tags/Solutions-Architect/">Solutions Architect<span>1</span></a></li>
+			<li><a href="/tags/Image/">Image<span>1</span></a></li>
 		
-			<li><a href="/tags/AWS-SDK/">AWS SDK<span>2</span></a></li>
+			<li><a href="/tags/Rails/">Rails<span>2</span></a></li>
+		
+			<li><a href="/tags/AWS-Free-Tier/">AWS Free Tier<span>1</span></a></li>
+		
+			<li><a href="/tags/S3/">S3<span>8</span></a></li>
+		
+			<li><a href="/tags/CloudWatch/">CloudWatch<span>1</span></a></li>
+		
+			<li><a href="/tags/Ruby/">Ruby<span>6</span></a></li>
+		
+			<li><a href="/tags/Douban/">Douban<span>1</span></a></li>
+		
+			<li><a href="/tags/Elastic-Load-Balancing/">Elastic Load Balancing<span>5</span></a></li>
+		
+			<li><a href="/tags/AWS-Deep-Dive/">AWS Deep Dive<span>2</span></a></li>
+		
+			<li><a href="/tags/Elastic-Beanstalk/">Elastic Beanstalk<span>5</span></a></li>
+		
+			<li><a href="/tags/FFMPEG/">FFMPEG<span>1</span></a></li>
+		
+			<li><a href="/tags/EC2/">EC2<span>5</span></a></li>
+		
+			<li><a href="/tags/Sysops/">Sysops<span>1</span></a></li>
+		
+			<li><a href="/tags/Passenger/">Passenger<span>1</span></a></li>
+		
+			<li><a href="/tags/AWS-CLI/">AWS CLI<span>5</span></a></li>
+		
+			<li><a href="/tags/EC2-User-Data/">EC2 User Data<span>1</span></a></li>
+		
+			<li><a href="/tags/Github/">Github<span>2</span></a></li>
+		
+			<li><a href="/tags/Nodejs/">Nodejs<span>2</span></a></li>
 		
 		
 		   <li><a href="/tags">...<span>37</span></a></li>
@@ -625,6 +633,14 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2019/02/25/mount-point-changed-in-C5/" ><i class="fa fa-file-o"></i>AWS C5类型Instance的挂载点变更</a>
+      </li>
+    
+      <li>
+        <a href="/2019/02/14/ruby-exception/" ><i class="fa fa-file-o"></i>ruby异常</a>
+      </li>
+    
+      <li>
         <a href="/2018/12/25/How-to-change-max-pool-size-of-passenger-on-ElasticBeanstalk/" ><i class="fa fa-file-o"></i>修改ElasticBeanstalk中Passenge...</a>
       </li>
     
@@ -634,14 +650,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2018/12/17/how-to-handle-heap-out-of-memory-in-node/" ><i class="fa fa-file-o"></i>Node中heap out of memory的解决办法</a>
-      </li>
-    
-      <li>
-        <a href="/2018/12/11/how-to-enable-cors-on-S3/" ><i class="fa fa-file-o"></i>在S3上开启CORS</a>
-      </li>
-    
-      <li>
-        <a href="/2018/11/27/nginx-with-dynamic-upstreams-to-ELB/" ><i class="fa fa-file-o"></i>如何配置Nginx的Dynamic Upstream指...</a>
       </li>
     
   </ul>
@@ -678,7 +686,7 @@ var _hmt = _hmt || [];
   </div>
   <div class="container-narrow">
   <footer> <p>
-  &copy; 2018 jibing57
+  &copy; 2019 jibing57
   
       with help from <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>.    
 </p> </footer>

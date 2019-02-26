@@ -1,0 +1,389 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>ruby异常 | Recording</title>
+  <meta name="author" content="jibing57">
+  
+  <meta name="description" content="AWS, 阅读, Architecture, PostgreSQL">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="ruby异常"/>
+  <meta property="og:site_name" content="Recording"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/css/themes/bootstrap.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/comment.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+  
+  <!-- analytics -->
+  
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-111771042-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?59d3e14cdc96877383afed646f44d216";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+</head>
+
+ <body>  
+  <nav id="main-nav" class="navbar  navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+	<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+       <a class="navbar-brand" href="/">Recording</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class="fa fa-archive"></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class="fa fa-folder"></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class="fa fa-tags"></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/douban" title="Douban">
+			  <i class="fa fa-book"></i>Douban
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header ">		
+			<h1 class="title "> ruby异常</h1>
+		</div>		
+	
+
+
+
+
+   <style type="text/css">
+           img, video {
+                -webkit-box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+                -moz-box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+                box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+           }
+   </style>
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
+
+	<!-- content -->
+	<div class="mypage">		
+	  		
+
+	  <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>有一个通知服务，需要使用<a href="https://mandrill.com/" target="_blank" rel="external">Mandrill</a>的提供的邮件服务给客户发送邮件。开发时使用了<a href="https://github.com/renz45/mandrill_mailer" target="_blank" rel="external">mandrill_mailer</a>这个GEM来实现和Mandrill服务的交互。</p>
+<p>今天监控程序报警提及昨天的邮件发送量比平时低了不少。上线查了一下日志，发现是代码中一处exception没处理好,导致程序崩溃了。</p>
+<h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><p>Ruby 中捕获非指定类型的异常，会使用如下方式来捕获异常。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">begin</div><div class="line">rescue =&gt; e</div><div class="line">end</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>根据<a href="https://ruby-doc.org/core-2.3.0/Exception.html" target="_blank" rel="external">官方文档</a>的说明，不指定exception类型时，rescue默认捕获的是<code>StandardError</code>类型的exception。</p>
+<p>在我这个问题中，由于<a href="https://mandrill.com/" target="_blank" rel="external">Mandrill</a>的服务出现了问题，发送请求后，没有返回正常的json格式，而是返回了<code>504 Gateway Time-out</code>的一段HTML, Gem <a href="https://github.com/renz45/mandrill_mailer" target="_blank" rel="external">mandrill_mailer</a>解析JSON失败，抛出了自定义的<code>Mandrill::Error</code>的异常。</p>
+<p>Gem中抛异常的代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">begin</div><div class="line">    error_info = JSON.parse(body)</div><div class="line">    if error_info[&apos;status&apos;] != &apos;error&apos; or not error_info[&apos;name&apos;]</div><div class="line">        raise Error, &quot;We received an unexpected error: #&#123;body&#125;&quot;</div><div class="line">    end</div><div class="line">    if error_map[error_info[&apos;name&apos;]]</div><div class="line">        raise error_map[error_info[&apos;name&apos;]], error_info[&apos;message&apos;]</div><div class="line">    else</div><div class="line">        raise Error, error_info[&apos;message&apos;]</div><div class="line">    end</div><div class="line">rescue JSON::ParserError</div><div class="line">    raise Error, &quot;We received an unexpected error: #&#123;body&#125;&quot;</div><div class="line">end</div></pre></td></tr></table></figure>
+<p>Error异常定义的代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">module Mandrill</div><div class="line">    class Error &lt; Exception</div><div class="line">    end</div><div class="line">    class ValidationError &lt; Error</div><div class="line">    end</div></pre></td></tr></table></figure>
+<p>可以看到，Mandrill::Error这个类型，是直接继承自<code>Exception</code>的。而在原有的代码中，没有指定exception的类型,捕获不到这个exception，导致程序崩溃了。</p>
+<p>在代码中指定固定类型的exception，解决该问题</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">begin</div><div class="line">rescue StandardError, Mandrill::Error =&gt; e</div><div class="line">end</div></pre></td></tr></table></figure>
+<h3 id="深挖"><a href="#深挖" class="headerlink" title="深挖"></a>深挖</h3><p>Ruby中关于如何throw和catch exception，<a href="https://stackoverflow.com/" target="_blank" rel="external">stackoverflow</a>和<a href="https://ruby-doc.org/" target="_blank" rel="external">ruby-doc.org</a>上的这几个网页值得细读</p>
+<ul>
+<li><a href="https://stackoverflow.com/questions/10048173/why-is-it-bad-style-to-rescue-exception-e-in-ruby" target="_blank" rel="external">Why is it bad style to `rescue Exception =&gt; e` in Ruby?</a></li>
+<li><a href="https://stackoverflow.com/questions/4800698/what-is-the-difference-between-raise-foo-and-raise-exception-newfoo" target="_blank" rel="external">What is the difference between `raise “foo”` and `raise Exception.new(“foo”)`?</a></li>
+<li><a href="https://ruby-doc.org/core-2.3.0/Exception.html" target="_blank" rel="external">Exception</a> </li>
+</ul>
+<p>梳理了一下，罗列如下:</p>
+<ul>
+<li>三种常用的exception类<ul>
+<li><a href="https://ruby-doc.org/core-2.3.0/RuntimeError.html" target="_blank" rel="external">RuntimeError</a></li>
+<li><a href="https://ruby-doc.org/core-2.3.0/StandardError.html" target="_blank" rel="external">StandardError</a></li>
+<li><a href="https://ruby-doc.org/core-2.3.0/Exception.html" target="_blank" rel="external">Exception</a></li>
+</ul>
+</li>
+<li><code>RuntimeError</code>是<code>StandardError</code>的一个子类，而<code>StandardError</code>又是<code>Exception</code>的一个子类。</li>
+<li>直接raise，抛出的是<code>RuntimeError</code>的异常</li>
+<li>默认的rescue，捕获的是<code>StandardError</code>的异常</li>
+<li><code>Exception</code>包含了全部的异常，ruby中全部异常都可以使用<code>rescue Exception =&gt; e</code>这种写法来捕获。</li>
+<li>但强烈建议不要直接粗暴的指定基类<code>Exception</code>来捕获异常<ul>
+<li><code>rescue Exception</code>时，会捕获所有的异常，包括<code>SyntaxError</code>, <code>LoadError</code>和<code>SignalException</code>等</li>
+<li>捕获了<code>SignalException</code>，会导致除了<code>kill -9</code>的其他信号量失效，包括<code>Ctrl + C</code></li>
+<li>捕获<code>SyntaxError</code>，调用eval时，即使失败了也不会有提示</li>
+</ul>
+</li>
+<li>编写库和Gem的自定义异常时，强烈反对直接继承自基类<code>Exception</code>，因为这会导致使用者在没有指定异常类型时，无法成功捕获异常，导致程序崩溃。</li>
+</ul>
+<h3 id="小实验"><a href="#小实验" class="headerlink" title="小实验"></a>小实验</h3><ol>
+<li><p>raise字符串，rescue不指定异常类型</p>
+<p> 代码:</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">begin</div><div class="line">  raise &quot;error occur&quot;</div><div class="line">rescue</div><div class="line">  puts &quot;here is string exception&quot;</div><div class="line">end</div></pre></td></tr></table></figure>
+<p> 运行结果:</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">here is string exception</div></pre></td></tr></table></figure>
+</li>
+<li><p>raise Exception, rescue Exception</p>
+<p> 代码:</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">begin</div><div class="line">  raise Exception.new(&quot;error occur&quot;)</div><div class="line">rescue Exception</div><div class="line">  puts &quot;here is Exception exception&quot;</div><div class="line">end</div></pre></td></tr></table></figure>
+<p> 运行结果:</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">here is Exception exception</div></pre></td></tr></table></figure>
+</li>
+<li><p>raise字符串，rescue Exception</p>
+<p> 代码:</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">begin</div><div class="line">  raise &quot;error occur&quot;</div><div class="line">rescue Exception</div><div class="line">  puts &quot;here is exception exception&quot;</div><div class="line">end</div></pre></td></tr></table></figure>
+<p> 运行结果:</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># rescue Exception可以捕获任何异常</div><div class="line">here is exception exception</div></pre></td></tr></table></figure>
+</li>
+<li><p>raise Exception, rescue不指定异常类型</p>
+<p> 代码:</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">begin</div><div class="line">  raise Exception.new(&quot;error occur&quot;)</div><div class="line">rescue</div><div class="line">  puts &quot;here is string exception&quot;</div><div class="line">end</div></pre></td></tr></table></figure>
+<p> 运行结果:</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># 没有捕获到异常，程序崩溃了</div><div class="line">Exception: error occur</div><div class="line">    from (irb):39</div><div class="line">    from /Users/carlshen/.rvm/rubies/ruby-2.3.0/bin/irb:11:in `&lt;main&gt;&apos;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+	  
+	</div>
+
+	<div>
+  	<center>
+	<div class="pagination">
+<ul class="pagination">
+	 
+				
+    	<li class="prev"><a href="/2019/02/25/mount-point-changed-in-C5/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>Prev</a></li>
+  		
+
+        <li><a href="/archives"><i class="fa fa-archive"></i>Archive</a></li>
+
+		
+		   <li class="next"><a href="/2018/12/25/How-to-change-max-pool-size-of-passenger-on-ElasticBeanstalk/" class="alignright next">Next<i class="fa fa-arrow-circle-o-right"></i></a></li>         
+        
+	
+</ul>
+</div>
+
+    </center>
+	</div>
+
+    <!-- share -->
+    
+        
+    <div class="bdsharebuttonbox">
+        <a href="#" class="bds_more" data-cmd="more"></a>
+        <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+        <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+        <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+        <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+        <a href="#" class="bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+        <a href="#" class="bds_evernotecn" data-cmd="evernotecn" title="分享到印象笔记"></a>
+        <a href="#" class="bds_youdao" data-cmd="youdao" title="分享到有道云笔记"></a>
+        <a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+    </div>
+    <script>
+        window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"24"},"share":{}};
+        with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+    </script>
+
+
+        
+
+    
+	
+	<!-- comment -->
+	
+<section id="comment">
+  <h2 class="title">Comments</h2>
+  
+  	 <div id="disqus_thread">
+     <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  	 </div>
+  
+</section>
+
+
+	</div> <!-- col-md-9/col-md-12 -->
+		
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta">
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2019-02-14 20:04:12
+	</div>
+	
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
+	   <div id="toc" class="toc collapse in">
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#背景"><span class="toc-article-text">背景</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#分析"><span class="toc-article-text">分析</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#深挖"><span class="toc-article-text">深挖</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#小实验"><span class="toc-article-text">小实验</span></a></li></ol>
+		</div>
+	
+	</div>
+
+	<!-- categories -->
+    
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>
+    <ul id="categorys" class="tag_box list-unstyled collapse in">
+          
+  <li>
+    <li><a href="/categories/Code/">Code<span>4</span></a></li>
+  </li>
+
+    </ul>
+	</div>
+	
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>
+    <ul id="tags" class="tag_box list-unstyled collapse in">
+	    
+  <li><a href="/tags/Ruby/">Ruby<span>6</span></a></li>
+    </ul>
+	</div>
+	
+
+    <hr>
+
+</div><!-- col-md-3 -->
+
+	</div>
+		
+
+</div><!-- row -->
+
+<script type="text/javascript">
+var disqus_shortname = 'jibing57-blog';
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  &copy; 2019 jibing57
+  
+      with help from <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>.    
+</p> </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>

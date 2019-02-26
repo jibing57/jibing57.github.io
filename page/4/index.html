@@ -139,6 +139,64 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
+			<div class="date"> 2017-12-20 </div>
+			<div class="article-title"><a href="/2017/12/20/expired-of-S3-RRS/" >S3 RRS价格注意点</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="S3-存储类型"><a href="#S3-存储类型" class="headerlink" title="S3 存储类型"></a>S3 存储类型</h3><p>S3 总共提供三种存储类型</p>
+<ul>
+<li>标准(Standard)</li>
+<li>标准-低频率访问(Standard - Infrequent Access)</li>
+<li>低冗余存储(Reduced Redundancy Storage)
+	
+	</div>
+  <a type="button" href="/2017/12/20/expired-of-S3-RRS/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2017-12-19 </div>
+			<div class="article-title"><a href="/2017/12/19/deep-dig-on-s3-bucket-permission-exam/" >深挖AWS S3的权限管理(实验篇)</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>在<a href="/2017/12/14/deep-dig-on-s3-bucket-permission/" title="深挖AWS S3的权限管理">深挖AWS S3的权限管理</a> 一文中介绍了AWS S3权限管理的三种方法。此处再通过几个实验来看下三种方法的使用方法。</p>
+<hr>
+<h3 id="实验前准备"><a href="#实验前准备" class="headerlink" title="实验前准备"></a>实验前准备</h3><h4 id="实验用相关账号介绍"><a href="#实验用相关账号介绍" class="headerlink" title="实验用相关账号介绍"></a>实验用相关账号介绍</h4><ul>
+<li>IAM User carl.shen - carl.shen有AdministratorAccess权限，用来上传图片到S3</li>
+<li>IAM User carl - 测试IAM User一号，初始没有任何权限</li>
+<li>IAM User shen - 测试IAM User二号，初始没有任何权限</li>
+<li>IAM Group S3Exam - 用来给IAM User carl和shen统一赋权限</li>
+</ul>
+<p>建好三个IAM账号，下载各自的Access key ID和Secret Access Key, 并设置好AWS CLI。AWS CLI多profile的设置方法可以参照 <a href="/2017/10/24/how-to-use-aws-cli-with-multi-user/" title="如何在aws cli中使用多个配置文件">如何在aws cli中使用多个配置文件</a><br>
+	
+	</div>
+  <a type="button" href="/2017/12/19/deep-dig-on-s3-bucket-permission-exam/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
 			<div class="date"> 2017-12-14 </div>
 			<div class="article-title"><a href="/2017/12/14/deep-dig-on-s3-bucket-permission/" >深挖AWS S3的权限管理</a></div>						
 		</h3>
@@ -377,74 +435,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2017-10-24 </div>
-			<div class="article-title"><a href="/2017/10/24/how-to-use-aws-cli-with-multi-user/" >如何在aws cli中使用多个配置文件</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p><code>aws cli</code>使用中，可能会有在多个IAM账户中进行切换的需求，手动切换<code>~/.aws/</code>目录下的<code>config</code>和<code>credentials</code>是十分费力的事情。还好<code>aws cli</code>本身就可以支持多个aws credentials</p>
-<h3 id="配置多个profile"><a href="#配置多个profile" class="headerlink" title="配置多个profile"></a>配置多个profile</h3><p><code>aws configure</code>时，加上<code>--profile</code>参数来命名不同的账户, 依次输入access id, access key, region和output format。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ aws configure --profile user1</div><div class="line">$ aws configure --profile user2</div></pre></td></tr></table></figure>
-<p>此时生成的<code>config</code>和<code>credentials</code>文件中，会使用账户名来分割不同的配置</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">[carlshen@carl-macpro-lan ~]$ cat ~/.aws/config</div><div class="line">[profile user1]</div><div class="line">output = json</div><div class="line">region = us-west-2</div><div class="line">[profile user2]</div><div class="line">output = json</div><div class="line">region = ap-northeast-2</div><div class="line">[carlshen@carl-macpro-lan ~]$</div><div class="line">[carlshen@carl-macpro-lan ~]$ cat ~/.aws/credentials</div><div class="line">[user1]</div><div class="line">aws_access_key_id = AKIAXXXXXXXXXXXXXXXX</div><div class="line">aws_secret_access_key = XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</div><div class="line">[user2]</div><div class="line">aws_access_key_id = AKIAXXXXXXXXXXXXXXXX</div><div class="line">aws_secret_access_key = XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</div><div class="line">[carlshen@carl-macpro-lan ~]$</div></pre></td></tr></table></figure>
-	
-	</div>
-  <a type="button" href="/2017/10/24/how-to-use-aws-cli-with-multi-user/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2017-10-24 </div>
-			<div class="article-title"><a href="/2017/10/24/how-to-use-aws-codecommit/" >使用aws codecommit作为私有的git远程服务器</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>博客的hexo的代码，一直是保存在本地的。上次电脑花了一次屏后，感觉到保存在本地实在是不够安全。因此考虑寻觅一个远端的私密git库，存起来。</p>
-<p>开始寻寻觅觅合适的仓库.</p>
-<ul>
-<li>Github?,私有库是收费的。但为了这些哪天就不更新的markdown，每月7刀开个Developer的Plan，感觉不划算。</li>
-<li>自建Gitlab？嫌麻烦麻烦。</li>
-<li>oschina的私有库？不想用。</li>
-<li>。。。。。。</li>
-</ul>
-<p>好吧，我承认我就是想尝试用一下aws的codecommit。</p>
-<p>关于CodeCommit的免费额度，<a href="https://aws.amazon.com/cn/codecommit/pricing/" target="_blank" rel="external">官网</a>介绍:</p>
-<ul>
-<li>最初5位活动用户<ul>
-<li>无限存储库</li>
-<li>50GB的月存储量</li>
-<li>每月10000个git请求</li>
-</ul>
-</li>
-</ul>
-<p>托管我一个小博客，妥妥的够了。毕竟除了我，没人还会来关心这点markdown文件, 5位用户免费足够了。至于50GB的月存储量么，除非把看过的电影都commit进git来，要不然应该是足够了。</p>
-	
-	</div>
-  <a type="button" href="/2017/10/24/how-to-use-aws-codecommit/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -508,13 +498,13 @@ var _hmt = _hmt || [];
 		<h4>Categories</h4>
 		<ul class="tag_box inline list-unstyled">
 		
-			<li><a href="/categories/AWS/">AWS<span>23</span></a></li>
+			<li><a href="/categories/AWS/">AWS<span>24</span></a></li>
 		
 			<li><a href="/categories/AWS-Certified/">AWS Certified<span>3</span></a></li>
 		
 			<li><a href="/categories/Blog/">Blog<span>5</span></a></li>
 		
-			<li><a href="/categories/Code/">Code<span>3</span></a></li>
+			<li><a href="/categories/Code/">Code<span>4</span></a></li>
 		
 			<li><a href="/categories/Shell/">Shell<span>7</span></a></li>
 		
@@ -529,45 +519,45 @@ var _hmt = _hmt || [];
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
+			<li><a href="/tags/Failover/">Failover<span>1</span></a></li>
+		
 			<li><a href="/tags/AWS-CLI/">AWS CLI<span>5</span></a></li>
-		
-			<li><a href="/tags/Github/">Github<span>2</span></a></li>
-		
-			<li><a href="/tags/Douban/">Douban<span>1</span></a></li>
-		
-			<li><a href="/tags/AWS-SDK/">AWS SDK<span>2</span></a></li>
-		
-			<li><a href="/tags/PostgreSQL/">PostgreSQL<span>1</span></a></li>
-		
-			<li><a href="/tags/CloudWatch/">CloudWatch<span>1</span></a></li>
-		
-			<li><a href="/tags/DynamoDB/">DynamoDB<span>1</span></a></li>
-		
-			<li><a href="/tags/AutoScaling/">AutoScaling<span>2</span></a></li>
-		
-			<li><a href="/tags/Solutions-Architect/">Solutions Architect<span>1</span></a></li>
-		
-			<li><a href="/tags/AWS-Free-Tier/">AWS Free Tier<span>1</span></a></li>
-		
-			<li><a href="/tags/Video/">Video<span>1</span></a></li>
-		
-			<li><a href="/tags/Chrome/">Chrome<span>1</span></a></li>
 		
 			<li><a href="/tags/Rails/">Rails<span>2</span></a></li>
 		
-			<li><a href="/tags/Nginx/">Nginx<span>1</span></a></li>
+			<li><a href="/tags/RDS/">RDS<span>3</span></a></li>
 		
-			<li><a href="/tags/Image/">Image<span>1</span></a></li>
-		
-			<li><a href="/tags/Passenger/">Passenger<span>1</span></a></li>
-		
-			<li><a href="/tags/IAM/">IAM<span>2</span></a></li>
-		
-			<li><a href="/tags/AWS-Tools/">AWS Tools<span>1</span></a></li>
+			<li><a href="/tags/CloudWatch/">CloudWatch<span>1</span></a></li>
 		
 			<li><a href="/tags/Elastic-Beanstalk/">Elastic Beanstalk<span>5</span></a></li>
 		
-			<li><a href="/tags/Ruby/">Ruby<span>5</span></a></li>
+			<li><a href="/tags/Image/">Image<span>1</span></a></li>
+		
+			<li><a href="/tags/Git/">Git<span>1</span></a></li>
+		
+			<li><a href="/tags/Video/">Video<span>1</span></a></li>
+		
+			<li><a href="/tags/AWS-Deep-Dive/">AWS Deep Dive<span>2</span></a></li>
+		
+			<li><a href="/tags/Linux/">Linux<span>4</span></a></li>
+		
+			<li><a href="/tags/Hexo/">Hexo<span>5</span></a></li>
+		
+			<li><a href="/tags/Solutions-Architect/">Solutions Architect<span>1</span></a></li>
+		
+			<li><a href="/tags/AWS-Tools/">AWS Tools<span>1</span></a></li>
+		
+			<li><a href="/tags/Nginx/">Nginx<span>1</span></a></li>
+		
+			<li><a href="/tags/Tips/">Tips<span>1</span></a></li>
+		
+			<li><a href="/tags/Passenger/">Passenger<span>1</span></a></li>
+		
+			<li><a href="/tags/Nodejs/">Nodejs<span>2</span></a></li>
+		
+			<li><a href="/tags/Ruby/">Ruby<span>6</span></a></li>
+		
+			<li><a href="/tags/MacOS/">MacOS<span>7</span></a></li>
 		
 		
 		   <li><a href="/tags">...<span>37</span></a></li>
@@ -583,6 +573,14 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2019/02/25/mount-point-changed-in-C5/" ><i class="fa fa-file-o"></i>AWS C5类型Instance的挂载点变更</a>
+      </li>
+    
+      <li>
+        <a href="/2019/02/14/ruby-exception/" ><i class="fa fa-file-o"></i>ruby异常</a>
+      </li>
+    
+      <li>
         <a href="/2018/12/25/How-to-change-max-pool-size-of-passenger-on-ElasticBeanstalk/" ><i class="fa fa-file-o"></i>修改ElasticBeanstalk中Passenge...</a>
       </li>
     
@@ -592,14 +590,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2018/12/17/how-to-handle-heap-out-of-memory-in-node/" ><i class="fa fa-file-o"></i>Node中heap out of memory的解决办法</a>
-      </li>
-    
-      <li>
-        <a href="/2018/12/11/how-to-enable-cors-on-S3/" ><i class="fa fa-file-o"></i>在S3上开启CORS</a>
-      </li>
-    
-      <li>
-        <a href="/2018/11/27/nginx-with-dynamic-upstreams-to-ELB/" ><i class="fa fa-file-o"></i>如何配置Nginx的Dynamic Upstream指...</a>
       </li>
     
   </ul>
@@ -636,7 +626,7 @@ var _hmt = _hmt || [];
   </div>
   <div class="container-narrow">
   <footer> <p>
-  &copy; 2018 jibing57
+  &copy; 2019 jibing57
   
       with help from <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>.    
 </p> </footer>

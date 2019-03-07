@@ -3,6 +3,98 @@
   
     
     <entry>
+      <title><![CDATA[Macos下因为找不到libxml2而导致nokogiri安装失败的解决办法]]></title>
+      <url>/2019/03/05/how-resolve-nokogiri-failed-by-xml2-on-macos/</url>
+      <content type="html"><![CDATA[<p>今天要跑一个其他的rails项目，为了不污染原先的gemset。就重建了一个gemset, 但是bundle install的时候，安装nokogiri 1.8.4一直失败。<br>系统版本是Macos 10.13 High Sierra中, ruby版本是rvm安装的ruby2.3.0。</p>
+<p>令人费解的是，同样在ruby2.3.0下的另一个gemset,nokogiri 1.8.2可以顺利安装。</p>
+<p>网上搜了一圈后，找到了解决办法。记录如下:</p>
+<p>设置bundle config，编译nokogiri时，使用系统xml2路径即可。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">bundle config build.nokogiri --use-system-libraries --with-xml2-include=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/usr/include/libxml2</div></pre></td></tr></table></figure>
+<p>参考资料: <a href="https://github.com/sparklemotion/nokogiri/issues/1547" target="_blank" rel="external">Installation of nokogiri fail with bundle on macOS Sierra 10.12 </a></p>
+]]></content>
+      
+        <categories>
+            
+            <category> Code </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Ruby </tag>
+            
+            <tag> Rails </tag>
+            
+            <tag> MacOS </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Nginx的HTTP Code444和307设置]]></title>
+      <url>/2019/02/28/nginx_444_and_307/</url>
+      <content type="html"><![CDATA[<h3 id="nginx-444"><a href="#nginx-444" class="headerlink" title="nginx 444"></a>nginx 444</h3><h4 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h4><p>当没有显式指定default server的时候，Nginx会使用第一个server来作为默认的响应server，即使请求的Host并没有匹配到server_name。<br>这是为了兼容老旧的一些不带Host的HTTP请求而做的设置。官文描述: <a href="http://nginx.org/en/docs/http/request_processing.html" target="_blank" rel="external">How nginx processes a request</a></p>
+<p>此时可能存在一定的风险。如果有非备案的名解析到了你的Public IP上，而你的Web服务对该域名的请求有所响应的话，可能会导致Public IP被运营商封锁。</p>
+<h4 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法:"></a>解决办法:</h4><p>在nginx中添加一个default server，并在default server中设置<code>return 444;</code>。此时Nginx就不会响应请求，除非请求的Host是配置的。<br><a id="more"></a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">    listen      80 default_server;</div><div class="line">    server_name _;</div><div class="line">    return      444;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>此时请求服务器，在Chrome中显示的页面如下:</p>
+<p><img src="/images/Nginx/444_no_response.png" alt="444_no_response.png"></p>
+<p>和499类似，444不是标准的HTTP status code，而是Nginx自己设立的状态码，参见<a href="https://httpstatuses.com/444" target="_blank" rel="external">444 CONNECTION CLOSED WITHOUT RESPONSE</a><br>设置了444过后，nginx收到不匹配的Host请求的话，不会有任何响应。比起404之类，另外一个好处就是可以节省一点点的带宽。</p>
+<h4 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h4><ul>
+<li><a href="https://stackoverflow.com/questions/9824328/why-is-nginx-responding-to-any-domain-name" target="_blank" rel="external">Why is nginx responding to any domain name?</a></li>
+<li><a href="http://nginx.org/en/docs/http/ngx_http_rewrite_module.html#return" target="_blank" rel="external">Module ngx_http_rewrite_module</a></li>
+</ul>
+<h3 id="HTTP-307-Temporary-Redirect"><a href="#HTTP-307-Temporary-Redirect" class="headerlink" title="HTTP 307 Temporary Redirect"></a>HTTP 307 Temporary Redirect</h3><h4 id="介绍-1"><a href="#介绍-1" class="headerlink" title="介绍"></a>介绍</h4><p>随着网络安全越发重要，越来越多的网站都从http迁移到了https。但迁移到https之前分发出去的链接都是http，为了兼容以前的链接，就需要做一个redirect，将http的请求redirect到https中。<br>最常见的redirect方式就是<a href="https://tools.ietf.org/html/rfc7231#section-6.4.2" target="_blank" rel="external">301 Moved Permanently</a>或者<a href="https://tools.ietf.org/html/rfc7231#section-6.4.3" target="_blank" rel="external">302 Found</a>, 将http重定向到https中。</p>
+<p>对于普通的GET请求，这种方式是完全可以的。但当请求是POST的时候，由于一些历史原因，一些浏览器和库收到301或302的时候，会将原本的POST请求转为GET请求发送。此时POST的body会丢失，导致请求出问题。<br>如果要redirect POST请求，则需要使用<a href="https://tools.ietf.org/html/rfc7231#section-6.4.7" target="_blank" rel="external">307 Temporary Redirect</a>来进行redirect。RFC 7231中对于307的一个描述”Note: This status code is similar to 302 (Found), except that it does not allow changing the request method from POST to GET. “</p>
+<h4 id="nginx-例子"><a href="#nginx-例子" class="headerlink" title="nginx 例子"></a>nginx 例子</h4><p>一个GET是301， POST是307的nginx配置例子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">    listen 80;</div><div class="line">    server_name www.fake.com;</div><div class="line">    if ($request_method = POST) &#123;</div><div class="line">        return 307 https://$host$request_uri;</div><div class="line">    &#125;</div><div class="line">    return 301 https://$host$request_uri;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="国内各大站的处理方式"><a href="#国内各大站的处理方式" class="headerlink" title="国内各大站的处理方式"></a>国内各大站的处理方式</h4><p>查看了国内BAT，国外Google，facebook和amazon是如何从http重定向到https的。发现除了腾讯外，其他几个大站，即使请求是GET,也是直接甩307。</p>
+<p>如下是几大巨头网站主页http redirect https的截图:</p>
+<ul>
+<li><p>百度从http redirect到https时，直接使用的是307。Chrome中访问<a href="http://www.baidu.com的截图如下" target="_blank" rel="external">http://www.baidu.com的截图如下</a>:<br><img src="/images/Nginx/307_redirect_from_http_to_https_in_baidu.png" alt="307_redirect_from_http_to_https_in_baidu.png"></p>
+</li>
+<li><p>淘宝从http redirect到https时，直接使用的是307。Chrome中访问<a href="http://www.taobao.com的截图如下" target="_blank" rel="external">http://www.taobao.com的截图如下</a>:<br><img src="/images/Nginx/307_redirect_from_http_to_https_in_taobao.png" alt="307_redirect_from_http_to_https_in_taobao.png"></p>
+</li>
+<li><p>腾讯从http redirect到https时，使用的是302。Chrome中访问<a href="http://www.qq.com的截图如下" target="_blank" rel="external">http://www.qq.com的截图如下</a>:<br><img src="/images/Nginx/302_redirect_from_http_to_https_in_qq.png" alt="302_redirect_from_http_to_https_in_qq.png"></p>
+</li>
+<li><p>google从http redirect到https时，直接使用的是307。Chrome中访问<a href="http://www.google.com的截图如下" target="_blank" rel="external">http://www.google.com的截图如下</a>:<br><img src="/images/Nginx/307_redirect_from_http_to_https_in_google.png" alt="307_redirect_from_http_to_https_in_google.png"></p>
+</li>
+<li><p>facebook从http redirect到https时，直接使用的是307。Chrome中访问<a href="http://www.facebook.com的截图如下" target="_blank" rel="external">http://www.facebook.com的截图如下</a>:<br><img src="/images/Nginx/307_redirect_from_http_to_https_in_facebook.png" alt="307_redirect_from_http_to_https_in_facebook.png"></p>
+</li>
+<li><p>amazon从http redirect到https时，直接使用的是307。Chrome中访问<a href="http://www.amazon.com的截图如下" target="_blank" rel="external">http://www.amazon.com的截图如下</a>:<br><img src="/images/Nginx/307_redirect_from_http_to_https_in_amazon.png" alt="307_redirect_from_http_to_https_in_amazon.png"></p>
+</li>
+</ul>
+<h4 id="Reference-1"><a href="#Reference-1" class="headerlink" title="Reference"></a>Reference</h4><ul>
+<li><a href="https://tools.ietf.org/html/rfc7231" target="_blank" rel="external">RFC 7231</a></li>
+<li><a href="https://httpstatuses.com/301" target="_blank" rel="external">301 MOVED PERMANENTLY</a></li>
+<li><a href="https://en.wikipedia.org/wiki/List_of_HTTP_status_codes" target="_blank" rel="external">List of HTTP status codes</a></li>
+<li><a href="https://stackoverflow.com/questions/39280361/nginx-loses-post-variable-with-http-https-redirect" target="_blank" rel="external">Nginx loses POST variable with http -&gt; https redirect</a></li>
+<li><a href="https://softwareengineering.stackexchange.com/questions/99894/why-doesnt-http-have-post-redirect#99966" target="_blank" rel="external">Why doesn’t HTTP have POST redirect?</a></li>
+<li><a href="https://stackoverflow.com/questions/4764297/difference-between-http-redirect-codes" target="_blank" rel="external">Difference between HTTP redirect codes</a></li>
+<li><a href="https://airbrake.io/blog/http-errors/307-temporary-redirect" target="_blank" rel="external">307 Temporary Redirect: What It Is and How to Fix It</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> Tools </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Nginx </tag>
+            
+            <tag> HTTP </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[AWS C5类型Instance的挂载点变更]]></title>
       <url>/2019/02/25/mount-point-changed-in-C5/</url>
       <content type="html"><![CDATA[<h3 id="问题点"><a href="#问题点" class="headerlink" title="问题点"></a>问题点</h3><p>一直使用的是Amazon自有的Amazon Linux，中国区的C5出来后，将原有的机器升级到C5的时候，发现额外挂载的磁盘没有挂载成功。</p>
@@ -7416,9 +7508,9 @@ You can wait for the scheduled retirement date - when the instance is stopped - 
             
             <tag> RDS </tag>
             
-            <tag> Ruby </tag>
-            
             <tag> AWS SDK </tag>
+            
+            <tag> Ruby </tag>
             
             <tag> AWS CLI </tag>
             

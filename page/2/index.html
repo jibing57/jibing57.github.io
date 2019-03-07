@@ -139,6 +139,59 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
+			<div class="date"> 2018-09-15 </div>
+			<div class="article-title"><a href="/2018/09/15/how-to-access-internal-by-ssh-tunnel/" >使用ssh隧道访问内网资源</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>日常开发过程中，会遇到一些情况需要和对端机构或公司进行联调。此时有可能会需要访问对端机构内部的一些网页或API。</p>
+<p>正规流程中，要访问内网，如果对端机构有VPN服务，应该是申请一个VPN来进行操作，这种方式比较安全可靠。但实际操作过程中，可能对端机构没有VPN服务，或者走VPN流程繁琐。此时如果你有对端机构中某个内网Linux机器的ssh登陆权限,而且该Linux机器可以可以访问相关网页或者API，则可以通过ssh tunnel的方式，临时来访问对端机构的内部资源。</p>
+<p>接下来，通过使用两台EC2来模拟内网环境,来介绍如何在Mac机器上使用ssh tunnel访问内网资源。</p>
+<h3 id="搭建说明"><a href="#搭建说明" class="headerlink" title="搭建说明"></a>搭建说明</h3><h4 id="搭建模拟用的EC2"><a href="#搭建模拟用的EC2" class="headerlink" title="搭建模拟用的EC2"></a>搭建模拟用的EC2</h4><p>首先，开启两台EC2，一台用来模拟ssh的跳板机(Jumpbox)，一台用来模拟内部网页服务器(HttpServer)。</p>
+	
+	</div>
+  <a type="button" href="/2018/09/15/how-to-access-internal-by-ssh-tunnel/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2018-08-11 </div>
+			<div class="article-title"><a href="/2018/08/11/EB-warning-due-to-no-space-left-on-device-issue-on-EC2/" >由于EC2中no space left引起的EB警报</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="问题现象"><a href="#问题现象" class="headerlink" title="问题现象"></a>问题现象</h3><p>周末早上突然收到大量Elastic Beanstalk的警报邮件，提示一个跑Rails的EB环境中有大量的请求是HTTP 5xx。</p>
+<p>登陆AWS Console查看相关Event，已经有持续的WARN提示有大量的HTTP 5xx请求。<br><img src="/images/AWS/EBNoSpaceLeft/amounts_of_5XX_on_EB_event.png" alt="amounts_of_5XX_on_EB_event"></p>
+<h3 id="解决过程"><a href="#解决过程" class="headerlink" title="解决过程"></a>解决过程</h3><p>使用EB console下载了各个Instanc的日志，仔细进行排查。</p>
+<p>最后在一个Instance的Rails log中发现有请求提示<code>No space left on device</code>。原来是Instance的磁盘满了，导致了部分需要写临时文件的请求失败了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">F, [2018-08-11T02:10:43.084147 #11559] FATAL -- :</div><div class="line">Errno::ENOSPC (No space left on device @ rb_sysopen - /var/app/current/tmp/cache/rack%3A%3Aattack%3A306790688%3Alocations%2Fip%3A46.229.168.8120180811-11559-4156fj):</div><div class="line">  app/middleware/catch_json_parse_errors.rb:8:in `call&apos;</div></pre></td></tr></table></figure>
+	
+	</div>
+  <a type="button" href="/2018/08/11/EB-warning-due-to-no-space-left-on-device-issue-on-EC2/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
 			<div class="date"> 2018-05-21 </div>
 			<div class="article-title"><a href="/2018/05/21/ssh-key-Invalid-key-length-Error-on-Macos/" >macOS 10.13.2下SSH命令Invalid key length错误的原因</a></div>						
 		</h3>
@@ -336,56 +389,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2018-03-15 </div>
-			<div class="article-title"><a href="/2018/03/15/how-to-set-chrome-to-use-google-with-NoCountryRedirect/" >在Chrome中设置Google搜索为NoCountryRedirect</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>添加代理来科学上网时，使用Google进行搜索，Chrome浏览器默认会重定向到代理国所在的Google域名。比如<code>https://www.google.co.kr/</code>,<code>https://www.google.co.jp/</code>等, 已经在<code>www.google.com</code>登录的Google账号就还得重登, 极度烦躁。</p>
-<p>下面是几个固定使用<code>www.google.com</code>来进行搜索的方法</p>
-	
-	</div>
-  <a type="button" href="/2018/03/15/how-to-set-chrome-to-use-google-with-NoCountryRedirect/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2018-03-14 </div>
-			<div class="article-title"><a href="/2018/03/14/AWS-RDS-recovery-due-to-issue-with-underlying-hardware/" >AWS RDS recovery due to issue with underlying hardware</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>早上刚上班就收到一封主题为”RDS Notification Message”的订阅邮件，message内容为”Recovery of the DB instance has started. Recovery time will vary with the amount of data to be recovered”。</p>
-<p>上Web Console查看发生了什么事，发现RDS已经自我恢复完毕了。最新的Event消息提示为”Recovery of the DB instance is complete.”</p>
-<p><img src="/images/AWS/RDS/rds_recovery_event.png" alt="rds_recovery_event"></p>
-<p>提了Case询问了下，也在网上搜了一下，基本搞清楚了是怎么个回事，记录如下。</p>
-	
-	</div>
-  <a type="button" href="/2018/03/14/AWS-RDS-recovery-due-to-issue-with-underlying-hardware/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -455,11 +458,11 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/Blog/">Blog<span>5</span></a></li>
 		
-			<li><a href="/categories/Code/">Code<span>4</span></a></li>
+			<li><a href="/categories/Code/">Code<span>5</span></a></li>
 		
 			<li><a href="/categories/Shell/">Shell<span>7</span></a></li>
 		
-			<li><a href="/categories/Tools/">Tools<span>5</span></a></li>
+			<li><a href="/categories/Tools/">Tools<span>6</span></a></li>
 		
 		</ul>
 	</div>
@@ -470,48 +473,48 @@ var _hmt = _hmt || [];
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/Sysops/">Sysops<span>1</span></a></li>
-		
-			<li><a href="/tags/PostgreSQL/">PostgreSQL<span>1</span></a></li>
-		
-			<li><a href="/tags/Solutions-Architect/">Solutions Architect<span>1</span></a></li>
-		
-			<li><a href="/tags/Nginx/">Nginx<span>1</span></a></li>
-		
-			<li><a href="/tags/Tips/">Tips<span>1</span></a></li>
-		
-			<li><a href="/tags/Failover/">Failover<span>1</span></a></li>
-		
-			<li><a href="/tags/Elastic-Load-Balancing/">Elastic Load Balancing<span>5</span></a></li>
-		
-			<li><a href="/tags/AWS-Deep-Dive/">AWS Deep Dive<span>2</span></a></li>
-		
-			<li><a href="/tags/AWS-SDK/">AWS SDK<span>2</span></a></li>
+			<li><a href="/tags/AWS-CLI/">AWS CLI<span>5</span></a></li>
 		
 			<li><a href="/tags/EC2/">EC2<span>5</span></a></li>
 		
-			<li><a href="/tags/Image/">Image<span>1</span></a></li>
-		
-			<li><a href="/tags/EC2-User-Data/">EC2 User Data<span>1</span></a></li>
-		
-			<li><a href="/tags/Nodejs/">Nodejs<span>2</span></a></li>
-		
-			<li><a href="/tags/AWS-CLI/">AWS CLI<span>5</span></a></li>
-		
-			<li><a href="/tags/S3/">S3<span>8</span></a></li>
-		
-			<li><a href="/tags/CloudWatch/">CloudWatch<span>1</span></a></li>
+			<li><a href="/tags/Hexo/">Hexo<span>5</span></a></li>
 		
 			<li><a href="/tags/RDS/">RDS<span>3</span></a></li>
 		
-			<li><a href="/tags/Hexo/">Hexo<span>5</span></a></li>
+			<li><a href="/tags/AutoScaling/">AutoScaling<span>2</span></a></li>
 		
-			<li><a href="/tags/CodeCommit/">CodeCommit<span>1</span></a></li>
+			<li><a href="/tags/IAM/">IAM<span>2</span></a></li>
+		
+			<li><a href="/tags/Rails/">Rails<span>3</span></a></li>
+		
+			<li><a href="/tags/Chrome/">Chrome<span>1</span></a></li>
+		
+			<li><a href="/tags/HTTP/">HTTP<span>1</span></a></li>
+		
+			<li><a href="/tags/EC2-User-Data/">EC2 User Data<span>1</span></a></li>
 		
 			<li><a href="/tags/Passenger/">Passenger<span>1</span></a></li>
 		
+			<li><a href="/tags/Linux/">Linux<span>4</span></a></li>
 		
-		   <li><a href="/tags">...<span>37</span></a></li>
+			<li><a href="/tags/AWS-Tools/">AWS Tools<span>1</span></a></li>
+		
+			<li><a href="/tags/S3/">S3<span>8</span></a></li>
+		
+			<li><a href="/tags/Github/">Github<span>2</span></a></li>
+		
+			<li><a href="/tags/Video/">Video<span>1</span></a></li>
+		
+			<li><a href="/tags/Nodejs/">Nodejs<span>2</span></a></li>
+		
+			<li><a href="/tags/Solutions-Architect/">Solutions Architect<span>1</span></a></li>
+		
+			<li><a href="/tags/Tips/">Tips<span>1</span></a></li>
+		
+			<li><a href="/tags/Douban/">Douban<span>1</span></a></li>
+		
+		
+		   <li><a href="/tags">...<span>38</span></a></li>
 		 
 		</ul>
 	</div>
@@ -524,6 +527,14 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2019/03/05/how-resolve-nokogiri-failed-by-xml2-on-macos/" ><i class="fa fa-file-o"></i>Macos下因为找不到libxml2而导致nokogi...</a>
+      </li>
+    
+      <li>
+        <a href="/2019/02/28/nginx_444_and_307/" ><i class="fa fa-file-o"></i>Nginx的HTTP Code444和307设置</a>
+      </li>
+    
+      <li>
         <a href="/2019/02/25/mount-point-changed-in-C5/" ><i class="fa fa-file-o"></i>AWS C5类型Instance的挂载点变更</a>
       </li>
     
@@ -533,14 +544,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2018/12/25/How-to-change-max-pool-size-of-passenger-on-ElasticBeanstalk/" ><i class="fa fa-file-o"></i>修改ElasticBeanstalk中Passenge...</a>
-      </li>
-    
-      <li>
-        <a href="/2018/12/24/404-on-Scale-Up-of-ElasticBeanstalk/" ><i class="fa fa-file-o"></i>ElasticBeanstalk伸缩时偶发404的原因</a>
-      </li>
-    
-      <li>
-        <a href="/2018/12/17/how-to-handle-heap-out-of-memory-in-node/" ><i class="fa fa-file-o"></i>Node中heap out of memory的解决办法</a>
       </li>
     
   </ul>

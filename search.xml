@@ -2300,9 +2300,9 @@ You can wait for the scheduled retirement date - when the instance is stopped - 
         
         <tags>
             
-            <tag> MacOS </tag>
-            
             <tag> Linux </tag>
+            
+            <tag> MacOS </tag>
             
         </tags>
         
@@ -7821,9 +7821,9 @@ You can wait for the scheduled retirement date - when the instance is stopped - 
             
             <tag> RDS </tag>
             
-            <tag> AWS SDK </tag>
-            
             <tag> Ruby </tag>
+            
+            <tag> AWS SDK </tag>
             
             <tag> AWS CLI </tag>
             
@@ -8193,9 +8193,9 @@ You can wait for the scheduled retirement date - when the instance is stopped - 
         
         <tags>
             
-            <tag> MacOS </tag>
-            
             <tag> Linux </tag>
+            
+            <tag> MacOS </tag>
             
         </tags>
         

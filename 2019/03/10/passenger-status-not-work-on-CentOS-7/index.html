@@ -1,0 +1,391 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>CentOS 7下passenger-status报错 | Recording</title>
+  <meta name="author" content="jibing57">
+  
+  <meta name="description" content="AWS, 阅读, Architecture, PostgreSQL">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="CentOS 7下passenger-status报错"/>
+  <meta property="og:site_name" content="Recording"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/css/themes/bootstrap.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/comment.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+  
+  <!-- analytics -->
+  
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-111771042-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?59d3e14cdc96877383afed646f44d216";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+</head>
+
+ <body>  
+  <nav id="main-nav" class="navbar  navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+	<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+       <a class="navbar-brand" href="/">Recording</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class="fa fa-archive"></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class="fa fa-folder"></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class="fa fa-tags"></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/douban" title="Douban">
+			  <i class="fa fa-book"></i>Douban
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header ">		
+			<h1 class="title "> CentOS 7下passenger-status报错</h1>
+		</div>		
+	
+
+
+
+
+   <style type="text/css">
+           img, video {
+                -webkit-box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+                -moz-box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+                box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+           }
+   </style>
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
+
+	<!-- content -->
+	<div class="mypage">		
+	  		
+
+	  <h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>CentOS 7中，执行<code>passenger-status</code>报了如下错误:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">ERROR: Phusion Passenger doesn&apos;t seem to be running. If you are sure that it is running, then the causes of this problem could be:</div><div class="line"></div><div class="line">1. You customized the instance registry directory using Apache&apos;s PassengerInstanceRegistryDir option, Nginx&apos;s passenger_instance_registry_dir option, or Phusion Passenger Standalone&apos;s --instance-registry-dir command line argument. If so, please set the environment variable PASSENGER_INSTANCE_REGISTRY_DIR to that directory and run passenger-status again.</div><div class="line">2. The instance directory has been removed by an operating system background service. Please set a different instance registry directory using Apache&apos;s PassengerInstanceRegistryDir option, Nginx&apos;s passenger_instance_registry_dir option, or Phusion Passenger Standalone&apos;s --instance-registry-dir command line argument.</div></pre></td></tr></table></figure>
+<p>而命令<code>passenger-memory-stats</code>可以正常工作。</p>
+<p>同样的问题，在Amazon Linux 2 AMI中也同样存在。</p>
+<a id="more"></a>
+<p>机器上Passenger的安装信息如下:</p>
+<ul>
+<li>没有通过加载yum源来安装passenger，而是通过<code>gem install passenger</code>和<code>passenger-install-nginx-module</code>来安装的passenger-standalone</li>
+<li>安装目录使用的默认路径<code>/opt/nginx/</code></li>
+<li>参照<a href="https://www.nginx.com/resources/wiki/start/topics/examples/systemd/" target="_blank" rel="external">Nginx官方的说明</a>来设置的nginx启动脚本。</li>
+</ul>
+<h3 id="原因解析"><a href="#原因解析" class="headerlink" title="原因解析"></a>原因解析</h3><p>RHEL 7中<code>systemd</code>的一些安全特性和<code>passenger-status</code>的一些默认值不相匹配，导致了<code>passenger-status</code>命令的不可用。<br>如下先介绍一下解决过程和其中涉及到的一些知识。</p>
+<ul>
+<li>systemd PriavteTmp的配置</li>
+<li>Nginx推荐的nginx.service的写法</li>
+<li>passenger-status命令中passenger_instance_registry_dir的默认路径</li>
+</ul>
+<h4 id="systemd-PrivateTmp"><a href="#systemd-PrivateTmp" class="headerlink" title="systemd PrivateTmp"></a>systemd PrivateTmp</h4><p>先介绍一些RHEL 7 systemd中名为<code>PrivateTmp</code>的配置，这是在RHEL 7中新添加一个新的安全设置，目的是增强系统的安全性。<br>设立这个设置的原因:</p>
+<ul>
+<li>有一些系统服务会使用<code>/tmp</code>目录来保存服务的运行时信息，但<code>/tmp</code>目录默认是任何人都有读写权限的，如果某些系统服务使用<code>/tmp</code>，并依赖于其中的某些配置来运行，那么这些配置有可能被普通用户或者服务所修改，导致安全隐患。</li>
+<li>设置<code>PrivateTmp</code>为true，使用systemctl启动服务时，系统会将原来设置到<code>/tmp</code>下的内容分配到<code>/tmp/systemd-private-&lt;random string&gt;-&lt;servicename&gt;.service-&lt;random string&gt;</code>这个的一个命令空间中。并且设置这个目录的权限为700。就可以保证对应的配置文件不会被其他用户和进程所更改。</li>
+</ul>
+<p>例如:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># ll /tmp/ | grep &apos;systemd&apos;</div><div class="line">drwx------ 3 root root 17 3月   1 09:28 systemd-private-1adb681dede84276b650ea38bfa4dc1d-chronyd.service-y66NBd</div><div class="line">drwx------ 3 root root 17 3月   6 09:55 systemd-private-1adb681dede84276b650ea38bfa4dc1d-nginx.service-MgTlBE</div><div class="line">#</div></pre></td></tr></table></figure></p>
+<p>详细说明参见红帽官网的这篇blog <a href="https://access.redhat.com/blogs/766093/posts/1976243" target="_blank" rel="external">New Red Hat Enterprise Linux 7 Security Feature: PrivateTmp</a></p>
+<h4 id="Nginx推荐的nginx-service的写法"><a href="#Nginx推荐的nginx-service的写法" class="headerlink" title="Nginx推荐的nginx.service的写法"></a>Nginx推荐的nginx.service的写法</h4><p>Nginx官方建议的设置Nginx的文档<a href="https://www.nginx.com/resources/wiki/start/topics/examples/systemd/" target="_blank" rel="external">NGINX systemd service file</a>中推荐的<code>nginx.service</code>的设置如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">[Unit]</div><div class="line">Description=The NGINX HTTP and reverse proxy server</div><div class="line">After=syslog.target network.target remote-fs.target nss-lookup.target</div><div class="line"></div><div class="line">[Service]</div><div class="line">Type=forking</div><div class="line">PIDFile=/run/nginx.pid</div><div class="line">ExecStartPre=/usr/sbin/nginx -t</div><div class="line">ExecStart=/usr/sbin/nginx</div><div class="line">ExecReload=/usr/sbin/nginx -s reload</div><div class="line">ExecStop=/bin/kill -s QUIT $MAINPID</div><div class="line">PrivateTmp=true</div><div class="line"></div><div class="line">[Install]</div><div class="line">WantedBy=multi-user.target</div></pre></td></tr></table></figure>
+<p>结合<code>gem install passenger</code>的默认路径<code>/opt/nginx/</code>，实际部署的时候，被修改成如下内容来写入<code>/lib/systemd/system/nginx.service</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">[Unit]</div><div class="line">Description=The nginx HTTP and reverse proxy server</div><div class="line">After=syslog.target network.target remote-fs.target nss-lookup.target</div><div class="line"></div><div class="line">[Service]</div><div class="line">Type=forking</div><div class="line">PIDFile=/var/run/nginx.pid</div><div class="line">ExecStartPre=/opt/nginx/sbin/nginx -t</div><div class="line">ExecStart=/opt/nginx/sbin/nginx -c /opt/nginx/conf/nginx.conf</div><div class="line">ExecReload=/bin/kill -s HUP $MAINPID</div><div class="line">ExecStop=/bin/kill -s QUIT $MAINPID</div><div class="line">PrivateTmp=true</div><div class="line"></div><div class="line">[Install]</div><div class="line">WantedBy=multi-user.target</div></pre></td></tr></table></figure>
+<h4 id="passenger-instance-registry-dir的default值"><a href="#passenger-instance-registry-dir的default值" class="headerlink" title="passenger_instance_registry_dir的default值"></a>passenger_instance_registry_dir的default值</h4><p>根据<a href="https://www.phusionpassenger.com/library/config/nginx/reference/#passenger_instance_registry_dir" target="_blank" rel="external">Passenger官方文档</a>说明，Passenger使用<code>passenger_instance_registry_dir</code>这个参数，来指定存放passenger进程信息的目录。</p>
+<blockquote>
+<p>Specifies the directory that Passenger should use for registering its current instance.</p>
+<p>When Passenger starts up, it creates a temporary directory inside the instance registry directory. This temporary directory is called the instance directory. It contains all sorts of files that are important to that specific running Passenger instance, such as Unix domain socket files so that all the different Passenger processes can communicate with each other. Command line tools such as passenger-status use the files in this directory in order to query Passenger’s status.</p>
+</blockquote>
+<p>该目录会被<code>passenger-status</code>命令用来获取Passenger的状态。</p>
+<p>而根据Passenger官方的介绍，<a href="https://www.phusionpassenger.com/library/config/nginx/reference/#passenger_instance_registry_dir" target="_blank" rel="external"><code>passenger_instance_registry_dir</code></a>参数默认的值是<code>/tmp|/var/run/passenger-instreg</code></p>
+<ul>
+<li>如果是Red Hat and CentOS，并且是通过Phusion的yum源安装的，那么默认值是<code>/var/run/passenger-instreg</code></li>
+<li>其他情况下，默认值是<code>$TMPDIR</code>环境变量的值，如果<code>$TMPDIR</code>没有设置，那么就是<code>/tmp</code></li>
+</ul>
+<p>如果没有使用默认路径，那么运行<code>passenger-status</code>之前，就需要使用<code>export PASSENGER_INSTANCE_REGISTRY_DIR=/my_temp-dir</code>来声明registry dir。</p>
+<h4 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h4><p>了解了相关的原理，就很清晰地知道<code>passenger-status</code>运行不成功的原因了。<br>Nginx推荐的nginx.service脚本中，PrivateTmp是true的，passenger的进程信息就被系统放在了<code>/tmp/systemd-private-xxxx</code>的目录中了。而<code>passenger-status</code>还是去默认的<code>/tmp</code>下去寻找passenger进程状态，导致了命令运行失败。</p>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>两个解决办法也就一目了然了。</p>
+<ul>
+<li>修改<code>nginx.service</code>的PrivateTmp值</li>
+<li>修改passenger_instance_registry_dir</li>
+</ul>
+<h4 id="修改PrivateTmp"><a href="#修改PrivateTmp" class="headerlink" title="修改PrivateTmp"></a>修改PrivateTmp</h4><p>第一个简单的办法就是修改<code>nginx.service</code>的PrivateTmp为false。</p>
+<p>此时，禁用了systemd的private tmp的隔离机制，passenger的进程信息会被写入<code>/tmp/</code>目录，<code>passenger-status</code>命令就能够获取passenger运行信息并输出了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">[Unit]</div><div class="line">Description=The nginx HTTP and reverse proxy server</div><div class="line">After=syslog.target network.target remote-fs.target nss-lookup.target</div><div class="line"></div><div class="line">[Service]</div><div class="line">Type=forking</div><div class="line">PIDFile=/var/run/nginx.pid</div><div class="line">ExecStartPre=/opt/nginx/sbin/nginx -t</div><div class="line">ExecStart=/opt/nginx/sbin/nginx -c /opt/nginx/conf/nginx.conf</div><div class="line">ExecReload=/bin/kill -s HUP $MAINPID</div><div class="line">ExecStop=/bin/kill -s QUIT $MAINPID</div><div class="line">PrivateTmp=false</div><div class="line"></div><div class="line">[Install]</div><div class="line">WantedBy=multi-user.target</div></pre></td></tr></table></figure>
+<p>重新load nginx.service并重启nginx.service<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># reload the nginx.service</div><div class="line">systemctl daemon-reload</div><div class="line"></div><div class="line"># restart the nginx</div><div class="line">systemctl restart nginx.service</div></pre></td></tr></table></figure></p>
+<p>在<code>/tmp</code>下就可以看到passenger的信息目录，<code>passenger-status</code>命令也就可以输出passenger的状态了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">$ ll /tmp/</div><div class="line">总用量 0</div><div class="line">drwxr-xr-x 5 root root 223 3月  10 09:20 passenger.wRvwBR0</div><div class="line">drwx------ 3 root root  17 3月   1 09:28 systemd-private-1adb681dede84276b650ea38bfa4dc1d-chronyd.service-y66NBd</div><div class="line">$</div><div class="line">$ passenger-status</div><div class="line">Version : 5.3.7</div><div class="line">Date    : 2019-03-10 09:23:15 +0000</div><div class="line">Instance: 9NWwyPOn (nginx/1.14.0 Phusion_Passenger/5.3.7)</div><div class="line"></div><div class="line">----------- General information -----------</div><div class="line">Max pool size : 6</div><div class="line">App groups    : 0</div><div class="line">Processes     : 0</div><div class="line">Requests in top-level queue : 0</div><div class="line"></div><div class="line">----------- Application groups -----------</div><div class="line">$</div></pre></td></tr></table></figure>
+<h4 id="指定passenger-instance-registry-dir"><a href="#指定passenger-instance-registry-dir" class="headerlink" title="指定passenger_instance_registry_dir"></a>指定passenger_instance_registry_dir</h4><p>按照上文所述的官方文档的说明，理论上运行<code>passenger-status</code>时，指定正确的passenger_instance_registry_dir，即可成功执行。</p>
+<p>但实际执行中，在CentOS 7下，在<code>nginx.service</code>中<code>PrivateTmp=true</code>的情况下，因为路径过长，会报<code>too long unix socket path</code>的错误。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">$ export PASSENGER_INSTANCE_REGISTRY_DIR=/tmp/systemd-private-1adb681dede84276b650ea38bfa4dc1d-nginx.service-xrbYa5/tmp/</div><div class="line">$ passenger-status</div><div class="line">Version : 5.3.7</div><div class="line">Date    : 2019-03-10 09:37:36 +0000</div><div class="line">Instance: wbr6WsVE (nginx/1.14.0 Phusion_Passenger/5.3.7)</div><div class="line"></div><div class="line">/usr/local/rvm/gems/ruby-2.3.7/gems/passenger-5.3.7/src/ruby_supportlib/phusion_passenger/admin_tools/instance.rb:94:in `initialize&apos;: too long unix socket path (115bytes given but 108bytes max) (ArgumentError)</div><div class="line">	from /usr/local/rvm/gems/ruby-2.3.7/gems/passenger-5.3.7/src/ruby_supportlib/phusion_passenger/admin_tools/instance.rb:94:in `new&apos;</div><div class="line">	from /usr/local/rvm/gems/ruby-2.3.7/gems/passenger-5.3.7/src/ruby_supportlib/phusion_passenger/admin_tools/instance.rb:94:in `http_request&apos;</div><div class="line">	from /usr/local/rvm/gems/ruby-2.3.7/gems/passenger-5.3.7/bin/passenger-status:113:in `show_status&apos;</div><div class="line">	from /usr/local/rvm/gems/ruby-2.3.7/gems/passenger-5.3.7/bin/passenger-status:61:in `command_show_status&apos;</div><div class="line">	from /usr/local/rvm/gems/ruby-2.3.7/gems/passenger-5.3.7/bin/passenger-status:332:in `start&apos;</div><div class="line">	from /usr/local/rvm/gems/ruby-2.3.7/gems/passenger-5.3.7/bin/passenger-status:335:in `&lt;top (required)&gt;&apos;</div><div class="line">	from /usr/local/rvm/gems/ruby-2.3.7/bin/passenger-status:23:in `load&apos;</div><div class="line">	from /usr/local/rvm/gems/ruby-2.3.7/bin/passenger-status:23:in `&lt;main&gt;&apos;</div><div class="line">	from /usr/local/rvm/gems/ruby-2.3.7/bin/ruby_executable_hooks:24:in `eval&apos;</div><div class="line">	from /usr/local/rvm/gems/ruby-2.3.7/bin/ruby_executable_hooks:24:in `&lt;main&gt;&apos;</div><div class="line">$</div></pre></td></tr></table></figure>
+<p>sock path length是Linux系统的限制。具体可以参考<a href="https://unix.stackexchange.com/questions/367008/why-is-socket-path-length-limited-to-a-hundred-chars" target="_blank" rel="external">Why is socket path length limited to a hundred chars?</a>这篇文章。</p>
+<p>既然替换为systemd的privatetmp的路径不可行，那么换个思路，可在Passenger启动的时候, 在配置文件中手动指定passenger注册实例的目录。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"># 创建新的注册目录</div><div class="line">$ sudo mkdir /opt/nginx/tmp</div><div class="line"></div><div class="line"># 打开nginx配置文件，添加passenger_instance_registry_dir</div><div class="line">$ sudo vim /opt/nginx/conf/nginx.conf</div><div class="line"></div><div class="line">http &#123;</div><div class="line">    ......</div><div class="line">    passenger_instance_registry_dir /opt/nginx/tmp;</div><div class="line">    ......</div><div class="line">&#125;</div><div class="line"></div><div class="line"># 重启nginx</div><div class="line">sudo systemctl restart nginx.service</div></pre></td></tr></table></figure>
+<p>再在执行<code>passenger-status</code>的时候，添加上registry_dir的路径。就可以顺利执行命令了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">$ export PASSENGER_INSTANCE_REGISTRY_DIR=/opt/nginx/tmp/</div><div class="line">$ passenger-status</div><div class="line">Version : 5.3.7</div><div class="line">Date    : 2019-03-10 10:02:15 +0000 </div><div class="line">Instance: inceochh (nginx/1.14.0 Phusion_Passenger/5.3.7)</div><div class="line"></div><div class="line">----------- General information -----------</div><div class="line">Max pool size : 6</div><div class="line">App groups    : 0</div><div class="line">Processes     : 0</div><div class="line">Requests in top-level queue : 0</div><div class="line"></div><div class="line">----------- Application groups -----------</div><div class="line">$</div></pre></td></tr></table></figure>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://access.redhat.com/blogs/766093/posts/1976243" target="_blank" rel="external">New Red Hat Enterprise Linux 7 Security Feature: PrivateTmp</a></li>
+<li><a href="https://www.nginx.com/resources/wiki/start/topics/examples/systemd/" target="_blank" rel="external">NGINX systemd service file</a></li>
+<li><a href="https://www.phusionpassenger.com/library/config/nginx/reference/#passenger_instance_registry_dir" target="_blank" rel="external">Configuration reference for Passenger + Nginx</a></li>
+<li><a href="https://unix.stackexchange.com/questions/367008/why-is-socket-path-length-limited-to-a-hundred-chars" target="_blank" rel="external">Why is socket path length limited to a hundred chars?</a></li>
+<li><a href="http://llawlor.github.io/2016/03/05/phusion-passenger-nginx-notes.html" target="_blank" rel="external">Phusion Passenger &amp; Nginx with Systemd Notes</a></li>
+<li><a href="https://www.xncoding.com/2016/06/07/linux/systemd.html" target="_blank" rel="external">centos7上systemd详解</a></li>
+</ul>
+	  
+	</div>
+
+	<div>
+  	<center>
+	<div class="pagination">
+<ul class="pagination">
+	 
+				
+    	<li class="prev"><a href="/2019/03/11/ways-to-support-public-s3-file-in-nginx/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>Prev</a></li>
+  		
+
+        <li><a href="/archives"><i class="fa fa-archive"></i>Archive</a></li>
+
+		
+		   <li class="next"><a href="/2019/03/05/how-resolve-nokogiri-failed-by-xml2-on-macos/" class="alignright next">Next<i class="fa fa-arrow-circle-o-right"></i></a></li>         
+        
+	
+</ul>
+</div>
+
+    </center>
+	</div>
+
+    <!-- share -->
+    
+        
+    <div class="bdsharebuttonbox">
+        <a href="#" class="bds_more" data-cmd="more"></a>
+        <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+        <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+        <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+        <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+        <a href="#" class="bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+        <a href="#" class="bds_evernotecn" data-cmd="evernotecn" title="分享到印象笔记"></a>
+        <a href="#" class="bds_youdao" data-cmd="youdao" title="分享到有道云笔记"></a>
+        <a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+    </div>
+    <script>
+        window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"24"},"share":{}};
+        with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+    </script>
+
+
+        
+
+    
+	
+	<!-- comment -->
+	
+<section id="comment">
+  <h2 class="title">Comments</h2>
+  
+  	 <div id="disqus_thread">
+     <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  	 </div>
+  
+</section>
+
+
+	</div> <!-- col-md-9/col-md-12 -->
+		
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta">
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2019-03-10 15:21:36
+	</div>
+	
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
+	   <div id="toc" class="toc collapse in">
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#问题"><span class="toc-article-text">问题</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#原因解析"><span class="toc-article-text">原因解析</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#systemd-PrivateTmp"><span class="toc-article-text">systemd PrivateTmp</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#Nginx推荐的nginx-service的写法"><span class="toc-article-text">Nginx推荐的nginx.service的写法</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#passenger-instance-registry-dir的default值"><span class="toc-article-text">passenger_instance_registry_dir的default值</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#原因"><span class="toc-article-text">原因</span></a></li></ol></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#解决方案"><span class="toc-article-text">解决方案</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#修改PrivateTmp"><span class="toc-article-text">修改PrivateTmp</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#指定passenger-instance-registry-dir"><span class="toc-article-text">指定passenger_instance_registry_dir</span></a></li></ol></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#Reference"><span class="toc-article-text">Reference</span></a></li></ol>
+		</div>
+	
+	</div>
+
+	<!-- categories -->
+    
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>
+    <ul id="categorys" class="tag_box list-unstyled collapse in">
+          
+  <li>
+    <li><a href="/categories/AWS/">AWS<span>27</span></a></li>
+  </li>
+
+    </ul>
+	</div>
+	
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>
+    <ul id="tags" class="tag_box list-unstyled collapse in">
+	    
+  <li><a href="/tags/EC2/">EC2<span>7</span></a></li> <li><a href="/tags/Passenger/">Passenger<span>2</span></a></li> <li><a href="/tags/Nginx/">Nginx<span>4</span></a></li>
+    </ul>
+	</div>
+	
+
+    <hr>
+
+</div><!-- col-md-3 -->
+
+	</div>
+		
+
+</div><!-- row -->
+
+<script type="text/javascript">
+var disqus_shortname = 'jibing57-blog';
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  &copy; 2019 jibing57
+  
+      with help from <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>.    
+</p> </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>

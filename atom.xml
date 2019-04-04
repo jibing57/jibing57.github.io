@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.jibing57.com/"/>
-  <updated>2019-03-05T09:22:04.544Z</updated>
+  <updated>2019-04-03T11:28:17.194Z</updated>
   <id>http://www.jibing57.com/</id>
   
   <author>
@@ -15,6 +15,155 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>AWS EC2中开启BBR</title>
+    <link href="http://www.jibing57.com/2019/04/02/bbr-on-aws-ec2/"/>
+    <id>http://www.jibing57.com/2019/04/02/bbr-on-aws-ec2/</id>
+    <published>2019-04-02T13:06:46.000Z</published>
+    <updated>2019-04-03T11:28:17.194Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;官网中关于如何在EC2中开启BBR的说明。&lt;a href=&quot;https://aws.amazon.com/amazon-linux-ami/2017.09-release-notes/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Amazon Linux AMI 2017.09 Release Notes&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&quot;开启方法&quot;&gt;&lt;a href=&quot;#开启方法&quot; class=&quot;headerlink&quot; title=&quot;开启方法&quot;&gt;&lt;/a&gt;开启方法&lt;/h3&gt;&lt;p&gt;开启方法摘录如下:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The Kernel has been updated to latest 4.9.y stable tree, new ENA driver 1.3.0 as well as support for TCP Bottleneck Bandwidth and RTT (BBR) which improve network performance.&lt;br&gt;BBR is not enabled by default. You can enable it on your EC2 Instance via:&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;10&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;11&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;12&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;13&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;14&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;15&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;16&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;17&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;18&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;19&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;20&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;21&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;22&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;23&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ sudo modprobe tcp_bbr&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;$ sudo modprobe sch_fq&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;$ sudo sysctl -w net.ipv4.tcp_congestion_control=bbr&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;Persistent configuration should look like:&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;$ sudo su -&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;# cat &amp;lt;&amp;lt;EOF&amp;gt;&amp;gt; /etc/sysconfig/modules/tcpcong.modules  &lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;gt;#!/bin/bash&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;gt; exec /sbin/modprobe tcp_bbr &amp;gt;/dev/null 2&amp;gt;&amp;amp;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;gt; exec /sbin/modprobe sch_fq &amp;gt;/dev/null 2&amp;gt;&amp;amp;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;gt; EOF&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;# chmod 755 /etc/sysconfig/modules/tcpcong.modules&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;# echo &amp;quot;net.ipv4.tcp_congestion_control = bbr&amp;quot; &amp;gt;&amp;gt; /etc/sysctl.d/00-tcpcong.conf&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+    
+    </summary>
+    
+      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
+    
+    
+      <category term="EC2" scheme="http://www.jibing57.com/tags/EC2/"/>
+    
+      <category term="Network" scheme="http://www.jibing57.com/tags/Network/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Mac下共享ShadowsocksX-NG的梯子给iOS</title>
+    <link href="http://www.jibing57.com/2019/03/24/share-ShadowsocksX-NG-to-iOS/"/>
+    <id>http://www.jibing57.com/2019/03/24/share-ShadowsocksX-NG-to-iOS/</id>
+    <published>2019-03-24T13:16:46.000Z</published>
+    <updated>2019-03-26T02:58:38.872Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;提供一个Mac下共享&lt;code&gt;ShadowsocksX-NG&lt;/code&gt;(小飞机)梯子给iPhone的方法。&lt;/p&gt;
+&lt;h3 id=&quot;Mac端设置&quot;&gt;&lt;a href=&quot;#Mac端设置&quot; class=&quot;headerlink&quot; title=&quot;Mac端设置&quot;&gt;&lt;/a&gt;Mac端设置&lt;/h3&gt;&lt;p&gt;打开小飞机的“偏好设置”，切换到HTTP一栏，其中的HTTP代理监听地址默认是127.0.0.1，将其改成0.0.0.0。保留默认的1087或改为自己想要设置的端口，并勾选“开启HTTP代理服务器”。&lt;br&gt;&lt;img src=&quot;/images/ShadowSock/shadowsock_http_proxy.png&quot; alt=&quot;shadowsock_http_proxy.png&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Terminal中输入&lt;code&gt;ifconfig&lt;/code&gt;查看Mac的IP地址, 供iPhone设置时使用。此处是&lt;code&gt;192.168.3.18&lt;/code&gt;&lt;br&gt;
+    
+    </summary>
+    
+      <category term="Tools" scheme="http://www.jibing57.com/categories/Tools/"/>
+    
+    
+      <category term="MacOS" scheme="http://www.jibing57.com/tags/MacOS/"/>
+    
+      <category term="iOS" scheme="http://www.jibing57.com/tags/iOS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>CentOS 7下Ctrl-C失效问题</title>
+    <link href="http://www.jibing57.com/2019/03/21/ctrl-c-invalid-on-Centos-7/"/>
+    <id>http://www.jibing57.com/2019/03/21/ctrl-c-invalid-on-Centos-7/</id>
+    <published>2019-03-21T13:33:01.000Z</published>
+    <updated>2019-04-02T12:30:29.449Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;rvm 1.29.4在CentOS 7上有一个bug，在Bash下，source了rvm后，执行Crtl+C时，无法终止shell命令。&lt;/p&gt;
+&lt;p&gt;具体讨论在&lt;a href=&quot;https://github.com/rvm/rvm/issues/4422&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Unable to pass SIGINT signal (control-C) on 1.29.4 &lt;/a&gt;中。&lt;/p&gt;
+&lt;p&gt;解决办法:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;在用户账号下强制使用trap设置回被改写的信号量INT QUIT&lt;/li&gt;
+&lt;li&gt;升级rvm到1.29.4以上版本&lt;/li&gt;
+&lt;/ol&gt;
+    
+    </summary>
+    
+      <category term="Shell" scheme="http://www.jibing57.com/categories/Shell/"/>
+    
+    
+      <category term="Ruby" scheme="http://www.jibing57.com/tags/Ruby/"/>
+    
+      <category term="Linux" scheme="http://www.jibing57.com/tags/Linux/"/>
+    
+      <category term="CentOS" scheme="http://www.jibing57.com/tags/CentOS/"/>
+    
+      <category term="RVM" scheme="http://www.jibing57.com/tags/RVM/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>使用nginx处理S3静态资源</title>
+    <link href="http://www.jibing57.com/2019/03/11/ways-to-support-public-s3-file-in-nginx/"/>
+    <id>http://www.jibing57.com/2019/03/11/ways-to-support-public-s3-file-in-nginx/</id>
+    <published>2019-03-11T13:28:17.000Z</published>
+    <updated>2019-03-22T06:02:39.729Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在网页或APP中，使用S3公开的静态资源，比如图片,小视频等。通常有这么几个常用的方式&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;直接在页面中使用S3的public链接&lt;/li&gt;
+&lt;li&gt;使用自己的域名，再在Web服务器侧redirect到S3的链接&lt;/li&gt;
+&lt;li&gt;使用自己的域名，再在服务器上经过反向代理服务，获取S3内容后再返回给客户端或浏览器。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;在APP中，因为不需要考虑SEO，可以在页面或接口中直接返回S3的链接，APP直接访问S3资源，效率最高。&lt;br&gt;如果是网页，有时候为了SEO的需要，可能更多的会采用第二和第三种方式, 将资源经过服务器来中转一下。&lt;br&gt;下面介绍一下第二和第三种方式在Nginx侧的简单实现。&lt;/p&gt;
+&lt;h3 id=&quot;使用Nginx来redirect-S3的链接&quot;&gt;&lt;a href=&quot;#使用Nginx来redirect-S3的链接&quot; class=&quot;headerlink&quot; title=&quot;使用Nginx来redirect S3的链接&quot;&gt;&lt;/a&gt;使用Nginx来redirect S3的链接&lt;/h3&gt;&lt;p&gt;如下是一个简单的Nginx的配置的例子。基于以下几个前提&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;测试域名为test.jibing57.com&lt;/li&gt;
+&lt;li&gt;所有放在S3上的静态文件，在网站上都以&lt;code&gt;/s3_redirect&lt;/code&gt;路径打头&lt;/li&gt;
+&lt;li&gt;S3 Region为us-west-2, Bucket 为&lt;code&gt;s3-for-blog&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;将&lt;code&gt;/s3_redirect&lt;/code&gt;开头的文件redirect到真实的S3 URL中。&lt;/li&gt;
+&lt;/ul&gt;
+    
+    </summary>
+    
+      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
+    
+    
+      <category term="S3" scheme="http://www.jibing57.com/tags/S3/"/>
+    
+      <category term="Linux" scheme="http://www.jibing57.com/tags/Linux/"/>
+    
+      <category term="Nginx" scheme="http://www.jibing57.com/tags/Nginx/"/>
+    
+      <category term="HTTP" scheme="http://www.jibing57.com/tags/HTTP/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>CentOS 7下passenger-status报错</title>
+    <link href="http://www.jibing57.com/2019/03/10/passenger-status-not-work-on-CentOS-7/"/>
+    <id>http://www.jibing57.com/2019/03/10/passenger-status-not-work-on-CentOS-7/</id>
+    <published>2019-03-10T07:21:36.000Z</published>
+    <updated>2019-03-11T07:32:17.015Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;问题&quot;&gt;&lt;a href=&quot;#问题&quot; class=&quot;headerlink&quot; title=&quot;问题&quot;&gt;&lt;/a&gt;问题&lt;/h3&gt;&lt;p&gt;CentOS 7中，执行&lt;code&gt;passenger-status&lt;/code&gt;报了如下错误:&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;ERROR: Phusion Passenger doesn&amp;apos;t seem to be running. If you are sure that it is running, then the causes of this problem could be:&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;1. You customized the instance registry directory using Apache&amp;apos;s PassengerInstanceRegistryDir option, Nginx&amp;apos;s passenger_instance_registry_dir option, or Phusion Passenger Standalone&amp;apos;s --instance-registry-dir command line argument. If so, please set the environment variable PASSENGER_INSTANCE_REGISTRY_DIR to that directory and run passenger-status again.&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2. The instance directory has been removed by an operating system background service. Please set a different instance registry directory using Apache&amp;apos;s PassengerInstanceRegistryDir option, Nginx&amp;apos;s passenger_instance_registry_dir option, or Phusion Passenger Standalone&amp;apos;s --instance-registry-dir command line argument.&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;而命令&lt;code&gt;passenger-memory-stats&lt;/code&gt;可以正常工作。&lt;/p&gt;
+&lt;p&gt;同样的问题，在Amazon Linux 2 AMI中也同样存在。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
+    
+    
+      <category term="EC2" scheme="http://www.jibing57.com/tags/EC2/"/>
+    
+      <category term="Passenger" scheme="http://www.jibing57.com/tags/Passenger/"/>
+    
+      <category term="Nginx" scheme="http://www.jibing57.com/tags/Nginx/"/>
+    
+  </entry>
   
   <entry>
     <title>Macos下因为找不到libxml2而导致nokogiri安装失败的解决办法</title>
@@ -388,129 +537,6 @@
       <category term="MacOS" scheme="http://www.jibing57.com/tags/MacOS/"/>
     
       <category term="Image" scheme="http://www.jibing57.com/tags/Image/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>豆瓣图片403问题</title>
-    <link href="http://www.jibing57.com/2018/04/24/douban-image-403/"/>
-    <id>http://www.jibing57.com/2018/04/24/douban-image-403/</id>
-    <published>2018-04-24T12:14:50.000Z</published>
-    <updated>2018-04-25T02:37:13.744Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;起由&quot;&gt;&lt;a href=&quot;#起由&quot; class=&quot;headerlink&quot; title=&quot;起由&quot;&gt;&lt;/a&gt;起由&lt;/h3&gt;&lt;p&gt;发布了一版blog到github上。偶然间发现&lt;a href=&quot;/douban&quot;&gt;豆瓣页面&lt;/a&gt;中书的图片都无法显示了。打开Inspector调查了下，发现请求豆瓣图片的链接返回的都是403 Forbidden。&lt;br&gt;&lt;img src=&quot;/images/Hexo/douban_image_403.png&quot; alt=&quot;douban_image_403.png&quot;&gt;&lt;/p&gt;
-&lt;p&gt;网上搜索了一下，可能的原因就是豆瓣为了封杀微信小程序在页面上直接请求豆瓣的图片，封杀了图片的外链。&lt;/p&gt;
-&lt;h3 id=&quot;原因&quot;&gt;&lt;a href=&quot;#原因&quot; class=&quot;headerlink&quot; title=&quot;原因&quot;&gt;&lt;/a&gt;原因&lt;/h3&gt;&lt;p&gt;尝试着将豆瓣API返回的图片链接拷贝到浏览器中直接访问，发现可以加载图片，那估计豆瓣是通过检测HTTP Request中的referer Header来实现防盗链。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="Blog" scheme="http://www.jibing57.com/categories/Blog/"/>
-    
-    
-      <category term="Hexo" scheme="http://www.jibing57.com/tags/Hexo/"/>
-    
-      <category term="Douban" scheme="http://www.jibing57.com/tags/Douban/"/>
-    
-      <category term="Nodejs" scheme="http://www.jibing57.com/tags/Nodejs/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>S3进阶系列(二) ——权限管理</title>
-    <link href="http://www.jibing57.com/2018/04/21/aws-s3-master-permission/"/>
-    <id>http://www.jibing57.com/2018/04/21/aws-s3-master-permission/</id>
-    <published>2018-04-21T09:59:59.000Z</published>
-    <updated>2018-04-23T02:59:55.711Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;什么是S3的权限管理&quot;&gt;&lt;a href=&quot;#什么是S3的权限管理&quot; class=&quot;headerlink&quot; title=&quot;什么是S3的权限管理&quot;&gt;&lt;/a&gt;什么是S3的权限管理&lt;/h3&gt;&lt;p&gt;S3的权限管理是任何使用S3的人都无法绕开的功能,决定了S3中的Object是否能够被访问。&lt;/p&gt;
-&lt;p&gt;权限管理本质上解决了这么一个问题: 谁(Principal)能够在何种条件(condition)下被允许或拒绝(Effect)对哪些资源(Resource)做何种操作(Action)&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
-    
-    
-      <category term="S3" scheme="http://www.jibing57.com/tags/S3/"/>
-    
-      <category term="AWS CLI" scheme="http://www.jibing57.com/tags/AWS-CLI/"/>
-    
-      <category term="IAM" scheme="http://www.jibing57.com/tags/IAM/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>如何去除SSH key中的passphrase</title>
-    <link href="http://www.jibing57.com/2018/04/19/how-to-remove-the-passphrase-of-ssh-key/"/>
-    <id>http://www.jibing57.com/2018/04/19/how-to-remove-the-passphrase-of-ssh-key/</id>
-    <published>2018-04-19T13:15:28.000Z</published>
-    <updated>2018-04-19T08:15:06.891Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;去除passphrase的方法&quot;&gt;&lt;a href=&quot;#去除passphrase的方法&quot; class=&quot;headerlink&quot; title=&quot;去除passphrase的方法&quot;&gt;&lt;/a&gt;去除passphrase的方法&lt;/h3&gt;&lt;p&gt;使用&lt;code&gt;ssh-keygen&lt;/code&gt;来重新设置一个空的passphrase, 就相当于去除了原来的passphrase, 答案来自&lt;a href=&quot;https://stackoverflow.com/a/112409&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;stackoverflow&lt;/a&gt;, 回答者还很贴心的提示，输入的passphrase会被记录在~/.bash_history中，别忘记处理这个情况。&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ ssh-keygen -p [-P old_passphrase] [-N new_passphrase] [-f keyfile]&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="Shell" scheme="http://www.jibing57.com/categories/Shell/"/>
-    
-    
-      <category term="Linux" scheme="http://www.jibing57.com/tags/Linux/"/>
-    
-      <category term="SSH" scheme="http://www.jibing57.com/tags/SSH/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>S3进阶系列(一) —— S3基础知识</title>
-    <link href="http://www.jibing57.com/2018/04/18/aws-s3-master-basic/"/>
-    <id>http://www.jibing57.com/2018/04/18/aws-s3-master-basic/</id>
-    <published>2018-04-18T12:44:08.000Z</published>
-    <updated>2018-04-20T03:22:02.880Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;S3是AWS服务最早推出的几项服务之一，也是使用最为频繁的几个AWS服务之一。官网文档以及网上文章零零散散看了不少,实际使用中也用过S3的大多数功能，但“纸上得来终觉浅，绝知此事要躬行”，决定给自己挖个坑，结合已读资料和实际使用经验，系统地来梳理一下S3的已有功能。&lt;/p&gt;
-&lt;p&gt;本篇是第一篇,介绍一下S3的一些基础知识。希望能够坚持把这个系列写完。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
-    
-    
-      <category term="S3" scheme="http://www.jibing57.com/tags/S3/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>订阅RDS事件</title>
-    <link href="http://www.jibing57.com/2018/03/16/how-to-subscribe-RDS-event/"/>
-    <id>http://www.jibing57.com/2018/03/16/how-to-subscribe-RDS-event/</id>
-    <published>2018-03-16T12:22:54.000Z</published>
-    <updated>2018-03-19T02:40:03.535Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;关于RDS状态的监控，除了常规的CloudWatch Metric以外。RDS还有一个事件机制，能够将RDS的事件通知到SNS。&lt;/p&gt;
-&lt;h3 id=&quot;RDS-Event简介&quot;&gt;&lt;a href=&quot;#RDS-Event简介&quot; class=&quot;headerlink&quot; title=&quot;RDS Event简介&quot;&gt;&lt;/a&gt;RDS Event简介&lt;/h3&gt;&lt;h4 id=&quot;RDS-Event-Source-type&quot;&gt;&lt;a href=&quot;#RDS-Event-Source-type&quot; class=&quot;headerlink&quot; title=&quot;RDS Event - Source type&quot;&gt;&lt;/a&gt;RDS Event - Source type&lt;/h4&gt;&lt;p&gt;RDS的事件类型分为如下六大类:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;数据库实例(DB instance)&lt;/li&gt;
-&lt;li&gt;数据库集群(DB cluster)&lt;/li&gt;
-&lt;li&gt;数据库快照(DB snapshot)&lt;/li&gt;
-&lt;li&gt;数据库集群快照(DB cluster snapshot)&lt;/li&gt;
-&lt;li&gt;数据库安全组(DB security group)&lt;/li&gt;
-&lt;li&gt;数据库参数组(DB parameter group)&lt;/li&gt;
-&lt;/ul&gt;
-    
-    </summary>
-    
-      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
-    
-    
-      <category term="RDS" scheme="http://www.jibing57.com/tags/RDS/"/>
     
   </entry>
   

@@ -3,6 +3,319 @@
   
     
     <entry>
+      <title><![CDATA[AWS EC2中开启BBR]]></title>
+      <url>/2019/04/02/bbr-on-aws-ec2/</url>
+      <content type="html"><![CDATA[<p>官网中关于如何在EC2中开启BBR的说明。<a href="https://aws.amazon.com/amazon-linux-ami/2017.09-release-notes/" target="_blank" rel="external">Amazon Linux AMI 2017.09 Release Notes</a></p>
+<h3 id="开启方法"><a href="#开启方法" class="headerlink" title="开启方法"></a>开启方法</h3><p>开启方法摘录如下:</p>
+<blockquote>
+<p>The Kernel has been updated to latest 4.9.y stable tree, new ENA driver 1.3.0 as well as support for TCP Bottleneck Bandwidth and RTT (BBR) which improve network performance.<br>BBR is not enabled by default. You can enable it on your EC2 Instance via:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">$ sudo modprobe tcp_bbr</div><div class="line"></div><div class="line">$ sudo modprobe sch_fq</div><div class="line"></div><div class="line">$ sudo sysctl -w net.ipv4.tcp_congestion_control=bbr</div><div class="line"></div><div class="line">Persistent configuration should look like:</div><div class="line"></div><div class="line">$ sudo su -</div><div class="line"></div><div class="line"># cat &lt;&lt;EOF&gt;&gt; /etc/sysconfig/modules/tcpcong.modules  </div><div class="line"></div><div class="line">&gt;#!/bin/bash</div><div class="line"></div><div class="line">&gt; exec /sbin/modprobe tcp_bbr &gt;/dev/null 2&gt;&amp;1</div><div class="line"></div><div class="line">&gt; exec /sbin/modprobe sch_fq &gt;/dev/null 2&gt;&amp;1</div><div class="line"></div><div class="line">&gt; EOF</div><div class="line"></div><div class="line"># chmod 755 /etc/sysconfig/modules/tcpcong.modules</div><div class="line"></div><div class="line"># echo &quot;net.ipv4.tcp_congestion_control = bbr&quot; &gt;&gt; /etc/sysctl.d/00-tcpcong.conf</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<h3 id="额外的命令"><a href="#额外的命令" class="headerlink" title="额外的命令"></a>额外的命令</h3><p>Amazon Linux AMI中查看系统中拥塞控制的命令如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"># 查看系统支持的拥塞控制方法</div><div class="line">$ sysctl net.ipv4.tcp_available_congestion_control</div><div class="line">net.ipv4.tcp_available_congestion_control = bbr cubic reno</div><div class="line">$</div><div class="line"></div><div class="line"># 查看当前使用的拥塞控制方法</div><div class="line">$ sysctl net.ipv4.tcp_congestion_control</div><div class="line">net.ipv4.tcp_congestion_control = bbr</div><div class="line">$</div></pre></td></tr></table></figure>
+<p>其中</p>
+<ul>
+<li>bbr就是<a href="https://ai.google/research/pubs/pub45646" target="_blank" rel="external">TCP Bottleneck Bandwidth and RTT</a></li>
+<li>cubic的介绍页面<a href="https://en.wikipedia.org/wiki/CUBIC_TCP" target="_blank" rel="external">CUBIC TCP</a>以及<a href="https://tools.ietf.org/html/rfc8312" target="_blank" rel="external">RFC8312</a></li>
+<li>reno的RFC <a href="https://tools.ietf.org/html/rfc5681" target="_blank" rel="external">TCP Congestion Control</a></li>
+</ul>
+<p>用命令<code>lsmod | grep bbr</code>查看bbr是否已经启动<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ lsmod | grep bbr</div><div class="line">tcp_bbr                20480  15</div><div class="line">$</div></pre></td></tr></table></figure></p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://aws.amazon.com/amazon-linux-ami/2017.09-release-notes/" target="_blank" rel="external">Amazon Linux AMI 2017.09 Release Notes</a></li>
+<li><a href="https://ai.google/research/pubs/pub45646" target="_blank" rel="external">TCP Bottleneck Bandwidth and RTT</a></li>
+<li><a href="https://tools.ietf.org/html/rfc8312" target="_blank" rel="external">RFC8312</a></li>
+<li><a href="https://tools.ietf.org/html/rfc5681" target="_blank" rel="external">TCP Congestion Control</a></li>
+<li><a href="https://github.com/google/bbr" target="_blank" rel="external">google bbr</a></li>
+<li><a href="https://coolshell.cn/articles/11564.html" target="_blank" rel="external">TCP 的那些事儿（上）</a></li>
+<li><a href="https://coolshell.cn/articles/11609.html" target="_blank" rel="external">TCP 的那些事儿（下）</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> AWS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> EC2 </tag>
+            
+            <tag> Network </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Mac下共享ShadowsocksX-NG的梯子给iOS]]></title>
+      <url>/2019/03/24/share-ShadowsocksX-NG-to-iOS/</url>
+      <content type="html"><![CDATA[<p>提供一个Mac下共享<code>ShadowsocksX-NG</code>(小飞机)梯子给iPhone的方法。</p>
+<h3 id="Mac端设置"><a href="#Mac端设置" class="headerlink" title="Mac端设置"></a>Mac端设置</h3><p>打开小飞机的“偏好设置”，切换到HTTP一栏，其中的HTTP代理监听地址默认是127.0.0.1，将其改成0.0.0.0。保留默认的1087或改为自己想要设置的端口，并勾选“开启HTTP代理服务器”。<br><img src="/images/ShadowSock/shadowsock_http_proxy.png" alt="shadowsock_http_proxy.png"></p>
+<p>Terminal中输入<code>ifconfig</code>查看Mac的IP地址, 供iPhone设置时使用。此处是<code>192.168.3.18</code><br><a id="more"></a></p>
+<h3 id="iPhone侧设置"><a href="#iPhone侧设置" class="headerlink" title="iPhone侧设置"></a>iPhone侧设置</h3><p>iPhone连接到和Mac相同的局域网，然后在“无线局域网”中设置HTTP代理。</p>
+<ul>
+<li>打开“设置”，找到“无线局域网”</li>
+<li>点击WIFI名称进入设置详情页</li>
+<li>找到“HTTP代理”，点击“配置代理”<br><img src="/images/ShadowSock/setting_of_wifi.jpg" alt="setting_of_wifi.jpg"></li>
+<li>选择手动，服务器一栏填入Mac的IP地址，此处是192.168.3.18，端口一栏填入1087<br><img src="/images/ShadowSock/http_proxy_setting.jpg" alt="http_proxy_setting.jpg"></li>
+</ul>
+<p>打开Chrome，输入<code>www.google.com</code>，就可以畅快的呼吸了。<br><img src="/images/ShadowSock/hello_google.jpg" alt="hello_google.jpg"></p>
+<p>Hello,Trump.<br><img src="/images/ShadowSock/hello_trump.jpg" alt="hello_trump.jpg"></p>
+<h3 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h3><p>网上有些文章讲到了需要下载并配置<code>privoxy</code>来做HTTP代理，可能是针对旧版的<code>ShadowsocksX-NG</code>的教程。我目前使用的1.6.1版本中，已经自带了HTTP代理的功能，而且其实也是使用了<code>privoxy</code>来实现的HTTP代理。只是<code>ShadowsocksX-NG</code>都已经集成了。</p>
+<p>打开<code>~/Library/Application Support/ShadowsocksX-NG</code>，可以看到里面自带了一个static版本的<code>privoxy</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">$ ll</div><div class="line">total 16</div><div class="line">drwxr-xr-x  3 carlshen  staff   96 11 19 11:58 kcptun_20170322</div><div class="line">lrwxr-xr-x  1 carlshen  staff   89 11 24  2017 kcptun_client -&gt; /Users/carlshen/Library/Application Support/ShadowsocksX-NG/kcptun_20170322/kcptun_client</div><div class="line">lrwxr-xr-x  1 carlshen  staff   89 11 24  2017 privoxy -&gt; /Users/carlshen/Library/Application Support/ShadowsocksX-NG/privoxy-3.0.26.static/privoxy</div><div class="line">drwxr-xr-x  3 carlshen  staff   96 11 24  2017 privoxy-3.0.26.static</div><div class="line">-rw-r--r--  1 carlshen  staff  434  3 26 10:52 privoxy.config</div><div class="line">drwxr-xr-x  9 carlshen  staff  288 11 19 11:58 ss-local-3.0.5</div><div class="line">-rw-r--r--  1 carlshen  staff  190  3 26 10:52 ss-local-config.json</div><div class="line">lrwxr-xr-x  1 carlshen  staff   74 11 24  2017 ss-local-latest -&gt; /Users/carlshen/Library/Application Support/ShadowsocksX-NG/ss-local-3.0.5</div><div class="line">$</div></pre></td></tr></table></figure>
+<p>查看进程也可以看到，使用的就是<code>ShadowsocksX-NG</code>下的<code>privoxy</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ ps -ef | grep privoxy</div><div class="line">  505 57716     1   0 日09下午 ??         0:00.38 /Users/carlshen/Library/Application Support/ShadowsocksX-NG/privoxy --no-daemon privoxy.config</div><div class="line">  505 83345 83015   0 10:56上午 ttys046    0:00.00 ggrep privoxy</div><div class="line">$</div></pre></td></tr></table></figure>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://github.com/shadowsocks/ShadowsocksX-NG/issues/236" target="_blank" rel="external">是否考虑增加pac服务的局域网访问</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> Tools </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> MacOS </tag>
+            
+            <tag> iOS </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[CentOS 7下Ctrl-C失效问题]]></title>
+      <url>/2019/03/21/ctrl-c-invalid-on-Centos-7/</url>
+      <content type="html"><![CDATA[<p>rvm 1.29.4在CentOS 7上有一个bug，在Bash下，source了rvm后，执行Crtl+C时，无法终止shell命令。</p>
+<p>具体讨论在<a href="https://github.com/rvm/rvm/issues/4422" target="_blank" rel="external">Unable to pass SIGINT signal (control-C) on 1.29.4 </a>中。</p>
+<p>解决办法:</p>
+<ol>
+<li>在用户账号下强制使用trap设置回被改写的信号量INT QUIT</li>
+<li>升级rvm到1.29.4以上版本</li>
+</ol>
+<a id="more"></a>
+<h3 id="临时修改trap"><a href="#临时修改trap" class="headerlink" title="临时修改trap"></a>临时修改trap</h3><p>在用户账号下强制使用trap设置回被改写的信号量INT QUIT</p>
+<ul>
+<li>在~/.bash_profile中source rvm命令之后添加<code>trap - INT QUIT</code></li>
+<li>~/.bashrc 末尾加上<code>trap - INT QUIT</code></li>
+</ul>
+<p>使用trap强行改回的方法不限于rvm，也可用于其他扰乱系统shell的脚本。</p>
+<p>关于trap的用法参见这篇文章<a href="https://blog.robotshell.org/2012/necessary-details-about-signal-trap-in-shell/" target="_blank" rel="external">关于Linux Shell的信号trap功能你必须知道的细节</a></p>
+<h3 id="升级rvm版本"><a href="#升级rvm版本" class="headerlink" title="升级rvm版本"></a>升级rvm版本</h3><p>使用<code>rvm get stable</code>升级rvm为最新的稳定版</p>
+<p>过程中可能会报如下错误</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"># rvm get stable</div><div class="line">Downloading https://get.rvm.io</div><div class="line">Downloading https://raw.githubusercontent.com/rvm/rvm/master/binscripts/rvm-installer.asc</div><div class="line">Verifying /usr/local/rvm/archives/rvm-installer.asc</div><div class="line">gpg: Signature made Sun 30 Dec 2018 10:44:46 AM UTC using RSA key ID 39499BDB</div><div class="line">gpg: Can&apos;t check signature: No public key</div><div class="line">Warning, RVM 1.26.0 introduces signed releases and automated check of signatures when GPG software found. Assuming you trust Michal Papis import the mpapis public key (downloading the signatures).</div><div class="line"></div><div class="line">GPG signature verification failed for &apos;/usr/local/rvm/archives/rvm-installer&apos; - &apos;https://raw.githubusercontent.com/rvm/rvm/master/binscripts/rvm-installer.asc&apos;! Try to install GPG v2 and then fetch the public key:</div><div class="line"></div><div class="line">    sudo gpg2 --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3</div><div class="line"></div><div class="line">or if it fails:</div><div class="line"></div><div class="line">    command curl -sSL https://rvm.io/mpapis.asc | sudo gpg2 --import -</div><div class="line"></div><div class="line">the key can be compared with:</div><div class="line"></div><div class="line">    https://rvm.io/mpapis.asc</div><div class="line">    https://keybase.io/mpapis</div><div class="line"></div><div class="line">NOTE: GPG version 2.1.17 have a bug which cause failures during fetching keys from remote server. Please downgrade or upgrade to newer version (if available) or use the second method described above.</div><div class="line"></div><div class="line">bash: return: _ret: numeric argument required</div><div class="line">#</div></pre></td></tr></table></figure>
+<p>使用如下命令安装新key后再<code>rvm get stable</code>即可正常升级。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">gpg --keyserver hkp://keys.gnupg.net --recv-keys 7D2BAF1CF37B13E2069D6956105BD0E739499BDB</div></pre></td></tr></table></figure></p>
+<p>rvm 版本升级报错的详细说明参见该issue <a href="https://github.com/rvm/rvm/issues/4520#issuecomment-446688051" target="_blank" rel="external">RVM 1.29.5 stable signed with different key</a></p>
+]]></content>
+      
+        <categories>
+            
+            <category> Shell </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Ruby </tag>
+            
+            <tag> Linux </tag>
+            
+            <tag> CentOS </tag>
+            
+            <tag> RVM </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[使用nginx处理S3静态资源]]></title>
+      <url>/2019/03/11/ways-to-support-public-s3-file-in-nginx/</url>
+      <content type="html"><![CDATA[<p>在网页或APP中，使用S3公开的静态资源，比如图片,小视频等。通常有这么几个常用的方式</p>
+<ul>
+<li>直接在页面中使用S3的public链接</li>
+<li>使用自己的域名，再在Web服务器侧redirect到S3的链接</li>
+<li>使用自己的域名，再在服务器上经过反向代理服务，获取S3内容后再返回给客户端或浏览器。</li>
+</ul>
+<p>在APP中，因为不需要考虑SEO，可以在页面或接口中直接返回S3的链接，APP直接访问S3资源，效率最高。<br>如果是网页，有时候为了SEO的需要，可能更多的会采用第二和第三种方式, 将资源经过服务器来中转一下。<br>下面介绍一下第二和第三种方式在Nginx侧的简单实现。</p>
+<h3 id="使用Nginx来redirect-S3的链接"><a href="#使用Nginx来redirect-S3的链接" class="headerlink" title="使用Nginx来redirect S3的链接"></a>使用Nginx来redirect S3的链接</h3><p>如下是一个简单的Nginx的配置的例子。基于以下几个前提</p>
+<ul>
+<li>测试域名为test.jibing57.com</li>
+<li>所有放在S3上的静态文件，在网站上都以<code>/s3_redirect</code>路径打头</li>
+<li>S3 Region为us-west-2, Bucket 为<code>s3-for-blog</code></li>
+<li>将<code>/s3_redirect</code>开头的文件redirect到真实的S3 URL中。</li>
+</ul>
+<a id="more"></a>
+<p>nginx侧配置:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">location ~ ^/s3_redirect/(.*) &#123;</div><div class="line">    return 301 https://s3-for-blog.s3-us-west-2.amazonaws.com/$1;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>以访问<code>http://test.jibing57.com/s3_redirect/kulipa.jpg</code>这个测试图片为例。</p>
+<p>Chrome侧访问测试链接的截图如下, 可以看到nginx返回了301 redirect，将路径重定向到S3中。<br><img src="/images/Nginx/chrome_inspect_of_S3_file_redirect.png" alt="chrome_inspect_of_S3_file_redirect"></p>
+<p>curl 命令的输出<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">$ curl -L -I http://test.jibing57.com/s3_redirect/kulipa.jpg</div><div class="line">HTTP/1.1 301 Moved Permanently</div><div class="line">Server: nginx/1.14.0</div><div class="line">Date: Thu, 21 Mar 2019 09:02:48 GMT</div><div class="line">Content-Type: text/html</div><div class="line">Content-Length: 185</div><div class="line">Connection: keep-alive</div><div class="line">Location: https://s3-for-blog.s3-us-west-2.amazonaws.com/kulipa.jpg</div><div class="line"></div><div class="line">HTTP/1.1 200 OK</div><div class="line">x-amz-id-2: u3CHOBo7dc8TBbI8q9miqTBkiinM0vktcMN6fSeXQOMhIYQyZys6k2vRqQKWiYrBSAiJ1WMzNFg=</div><div class="line">x-amz-request-id: 0069391D5213BD5C</div><div class="line">Date: Thu, 21 Mar 2019 09:02:50 GMT</div><div class="line">Last-Modified: Wed, 20 Mar 2019 05:58:56 GMT</div><div class="line">ETag: &quot;d98f298bce5a81e41ca8f278324c5056&quot;</div><div class="line">Accept-Ranges: bytes</div><div class="line">Content-Type: image/jpeg</div><div class="line">Content-Length: 10857</div><div class="line">Server: AmazonS3</div><div class="line"></div><div class="line">$</div></pre></td></tr></table></figure></p>
+<p>几个注意点:</p>
+<ol>
+<li>return 301，302甚至是307需要按照实际需要进行配置</li>
+</ol>
+<h3 id="使用Nginx作为反向代理获取S3内容"><a href="#使用Nginx作为反向代理获取S3内容" class="headerlink" title="使用Nginx作为反向代理获取S3内容"></a>使用Nginx作为反向代理获取S3内容</h3><h4 id="不使用Nginx-Cache时"><a href="#不使用Nginx-Cache时" class="headerlink" title="不使用Nginx Cache时"></a>不使用Nginx Cache时</h4><p>如下是一个简单的Nginx反向代理获取S3文件再返回给客户端的例子。基于以下几个前提</p>
+<ul>
+<li>测试域名为test.jibing57.com</li>
+<li>所有放在S3上的静态文件，在网站上都以<code>/s3_proxy</code>路径打头</li>
+<li>S3 Region为us-west-2, Bucket 为<code>s3-for-blog</code></li>
+<li>Nginx从后端S3中获取文件，再返回给客户端</li>
+</ul>
+<p>nginx配置:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">location /s3_proxy/ &#123;</div><div class="line">  proxy_http_version     1.1;</div><div class="line">  proxy_set_header       Connection &quot;&quot;;</div><div class="line">  proxy_set_header       Authorization &apos;&apos;;</div><div class="line">  proxy_set_header       Host s3-for-blog.s3-us-west-2.amazonaws.com;</div><div class="line">  proxy_hide_header      x-amz-id-2;</div><div class="line">  proxy_hide_header      x-amz-request-id;</div><div class="line">  proxy_hide_header      x-amz-meta-server-side-encryption;</div><div class="line">  proxy_hide_header      x-amz-server-side-encryption;</div><div class="line">  proxy_hide_header      Set-Cookie;</div><div class="line">  proxy_ignore_headers   Set-Cookie;</div><div class="line">  proxy_intercept_errors on;</div><div class="line">  add_header             Cache-Control max-age=31536000;</div><div class="line">  proxy_pass             https://s3-for-blog.s3-us-west-2.amazonaws.com/;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>测试连接<code>http://test.jibing57.com/s3_proxy/kulipa.jpg</code></p>
+<p>Chrome侧访问测试链接的截图如下，整个过程对于客户端来说，只有200的response。<br><img src="/images/Nginx/chrome_inspect_of_S3_file_proxy.png" alt="chrome_inspect_of_S3_file_proxy"></p>
+<p>curl 命令输出:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">$ curl -L -I http://test.jibing57.com/s3_proxy/kulipa.jpg</div><div class="line">HTTP/1.1 200 OK</div><div class="line">Server: nginx/1.14.0</div><div class="line">Date: Thu, 21 Mar 2019 09:18:58 GMT</div><div class="line">Content-Type: image/jpeg</div><div class="line">Content-Length: 10857</div><div class="line">Connection: keep-alive</div><div class="line">Last-Modified: Wed, 20 Mar 2019 05:58:56 GMT</div><div class="line">ETag: &quot;d98f298bce5a81e41ca8f278324c5056&quot;</div><div class="line">Accept-Ranges: bytes</div><div class="line">Cache-Control: max-age=31536000</div><div class="line"></div><div class="line">$</div></pre></td></tr></table></figure>
+<p>和上面direct方式相比，由于nginx的配置,少了amazon自定义的以<code>x-amz</code>打头的一些header, 并且header <code>Server</code>变为了<code>nginx/xxxx</code>，而不是<code>AmazonS3</code></p>
+<h4 id="使用nginx-cache缓存文件"><a href="#使用nginx-cache缓存文件" class="headerlink" title="使用nginx cache缓存文件"></a>使用nginx cache缓存文件</h4><p>如下是一个简单的Nginx反向代理获取S3文件,缓存后再返回给客户端的例子。基于以下几个前提</p>
+<ul>
+<li>测试域名为test.jibing57.com</li>
+<li>所有放在S3上的静态文件，在网站上都以<code>/s3_proxy_cache</code>路径打头</li>
+<li>S3 Region为us-west-2, Bucket 为<code>s3-for-blog</code></li>
+<li>Nginx从后端S3中获取文件,返回给客户端,并缓存在本地</li>
+</ul>
+<p>nginx配置:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">http &#123;</div><div class="line">    ....</div><div class="line">    proxy_cache_path   /tmp/ levels=1:2 keys_zone=s3_proxy_cache:10m max_size=500m</div><div class="line">                     inactive=60m use_temp_path=off;</div><div class="line">    ....</div><div class="line">    server &#123;</div><div class="line">      ......</div><div class="line">      location /s3_proxy_cache/ &#123;</div><div class="line">        proxy_cache            s3_proxy_cache;</div><div class="line">        proxy_http_version     1.1;</div><div class="line">        proxy_set_header       Connection &quot;&quot;;</div><div class="line">        proxy_set_header       Authorization &apos;&apos;;</div><div class="line">        proxy_set_header       Host s3-for-blog.s3-us-west-2.amazonaws.com;</div><div class="line">        proxy_hide_header      x-amz-id-2;</div><div class="line">        proxy_hide_header      x-amz-request-id;</div><div class="line">        proxy_hide_header      x-amz-meta-server-side-encryption;</div><div class="line">        proxy_hide_header      x-amz-server-side-encryption;</div><div class="line">        proxy_hide_header      Set-Cookie;</div><div class="line">        proxy_ignore_headers   Set-Cookie;</div><div class="line">        proxy_cache_revalidate on;</div><div class="line">        proxy_intercept_errors on;</div><div class="line">        proxy_cache_use_stale  error timeout updating http_500 http_502 http_503 http_504;</div><div class="line">        proxy_cache_lock       on;</div><div class="line">        proxy_cache_valid      200 304 60m;</div><div class="line">        add_header             Cache-Control max-age=31536000;</div><div class="line">        add_header             X-Cache-Status $upstream_cache_status;</div><div class="line">        proxy_pass             https://s3-for-blog.s3-us-west-2.amazonaws.com/;</div><div class="line">      &#125;</div><div class="line">      ......</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>测试链接<code>http://test.jibing57.com/s3_proxy_cache/kulipa.jpg</code></p>
+<p>Chrom访问测试链接的截图如下，对客户端来说，只有200的response。<br><img src="/images/Nginx/chrome_inspect_of_S3_file_proxy_cache.png" alt="chrome_inspect_of_S3_file_proxy_cache"></p>
+<p>curl 命令输出:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">$ curl -L -I http://test.jibing57.com/s3_proxy_cache/kulipa.jpg</div><div class="line">HTTP/1.1 200 OK</div><div class="line">Server: nginx/1.14.0</div><div class="line">Date: Fri, 22 Mar 2019 05:34:25 GMT</div><div class="line">Content-Type: image/jpeg</div><div class="line">Content-Length: 10857</div><div class="line">Connection: keep-alive</div><div class="line">Last-Modified: Wed, 20 Mar 2019 05:58:56 GMT</div><div class="line">ETag: &quot;d98f298bce5a81e41ca8f278324c5056&quot;</div><div class="line">Cache-Control: max-age=31536000</div><div class="line">X-Cache-Status: MISS</div><div class="line">Accept-Ranges: bytes</div><div class="line"></div><div class="line">$</div><div class="line">$ curl -L -I http://test.jibing57.com/s3_proxy_cache/kulipa.jpg</div><div class="line">HTTP/1.1 200 OK</div><div class="line">Server: nginx/1.14.0</div><div class="line">Date: Fri, 22 Mar 2019 05:34:27 GMT</div><div class="line">Content-Type: image/jpeg</div><div class="line">Content-Length: 10857</div><div class="line">Connection: keep-alive</div><div class="line">Last-Modified: Wed, 20 Mar 2019 05:58:56 GMT</div><div class="line">ETag: &quot;d98f298bce5a81e41ca8f278324c5056&quot;</div><div class="line">Cache-Control: max-age=31536000</div><div class="line">X-Cache-Status: HIT</div><div class="line">Accept-Ranges: bytes</div><div class="line"></div><div class="line">$</div></pre></td></tr></table></figure>
+<p>可以看到第一次<code>X-Cache-Status</code>状态是MISS，第二次请求就是HIT了。</p>
+<p>注意点:</p>
+<ol>
+<li>如果重启nginx时，有<code>&quot;proxy_cache_path&quot; directive is not allowed here in</code>的错误提示时，则需要检查一下<code>proxy_cache_path</code>是不是没有放在配置文件的http下。</li>
+<li>当proxy_cache_path中设置了缓存目录为<code>/tmp</code>，但在<code>/tmp/</code>目录下，却没有找到缓存的文件时。别慌，记得查看下<code>/lib/systemd/system/nginx.service</code>中的<code>PrivateTmp</code>值有没有设为true，如果是true的话，在类似<code>/tmp/systemd-private-1adb681dede84276b650ea38bfa4dc1d-nginx.service-z9XRZN/tmp</code>这样的目录下找一下。具体原因参考<a href="/2019/03/10/passenger-status-not-work-on-CentOS-7/" title="CentOS 7下passenger-status报错">CentOS 7下passenger-status报错</a>中systemd PrivateTmp一章的说明</li>
+</ol>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="/2019/03/10/passenger-status-not-work-on-CentOS-7/" title="CentOS 7下passenger-status报错">CentOS 7下passenger-status报错</a></li>
+<li><a href="https://stackoverflow.com/a/44749584" target="_blank" rel="external">Nginx proxy Amazon S3 resources</a></li>
+<li><a href="http://nginx.org/en/docs/http/ngx_http_proxy_module.html" target="_blank" rel="external">ngx_http_proxy_module</a> </li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> AWS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> S3 </tag>
+            
+            <tag> Linux </tag>
+            
+            <tag> Nginx </tag>
+            
+            <tag> HTTP </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[CentOS 7下passenger-status报错]]></title>
+      <url>/2019/03/10/passenger-status-not-work-on-CentOS-7/</url>
+      <content type="html"><![CDATA[<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>CentOS 7中，执行<code>passenger-status</code>报了如下错误:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">ERROR: Phusion Passenger doesn&apos;t seem to be running. If you are sure that it is running, then the causes of this problem could be:</div><div class="line"></div><div class="line">1. You customized the instance registry directory using Apache&apos;s PassengerInstanceRegistryDir option, Nginx&apos;s passenger_instance_registry_dir option, or Phusion Passenger Standalone&apos;s --instance-registry-dir command line argument. If so, please set the environment variable PASSENGER_INSTANCE_REGISTRY_DIR to that directory and run passenger-status again.</div><div class="line">2. The instance directory has been removed by an operating system background service. Please set a different instance registry directory using Apache&apos;s PassengerInstanceRegistryDir option, Nginx&apos;s passenger_instance_registry_dir option, or Phusion Passenger Standalone&apos;s --instance-registry-dir command line argument.</div></pre></td></tr></table></figure>
+<p>而命令<code>passenger-memory-stats</code>可以正常工作。</p>
+<p>同样的问题，在Amazon Linux 2 AMI中也同样存在。</p>
+<a id="more"></a>
+<p>机器上Passenger的安装信息如下:</p>
+<ul>
+<li>没有通过加载yum源来安装passenger，而是通过<code>gem install passenger</code>和<code>passenger-install-nginx-module</code>来安装的passenger-standalone</li>
+<li>安装目录使用的默认路径<code>/opt/nginx/</code></li>
+<li>参照<a href="https://www.nginx.com/resources/wiki/start/topics/examples/systemd/" target="_blank" rel="external">Nginx官方的说明</a>来设置的nginx启动脚本。</li>
+</ul>
+<h3 id="原因解析"><a href="#原因解析" class="headerlink" title="原因解析"></a>原因解析</h3><p>RHEL 7中<code>systemd</code>的一些安全特性和<code>passenger-status</code>的一些默认值不相匹配，导致了<code>passenger-status</code>命令的不可用。<br>如下先介绍一下解决过程和其中涉及到的一些知识。</p>
+<ul>
+<li>systemd PriavteTmp的配置</li>
+<li>Nginx推荐的nginx.service的写法</li>
+<li>passenger-status命令中passenger_instance_registry_dir的默认路径</li>
+</ul>
+<h4 id="systemd-PrivateTmp"><a href="#systemd-PrivateTmp" class="headerlink" title="systemd PrivateTmp"></a>systemd PrivateTmp</h4><p>先介绍一些RHEL 7 systemd中名为<code>PrivateTmp</code>的配置，这是在RHEL 7中新添加一个新的安全设置，目的是增强系统的安全性。<br>设立这个设置的原因:</p>
+<ul>
+<li>有一些系统服务会使用<code>/tmp</code>目录来保存服务的运行时信息，但<code>/tmp</code>目录默认是任何人都有读写权限的，如果某些系统服务使用<code>/tmp</code>，并依赖于其中的某些配置来运行，那么这些配置有可能被普通用户或者服务所修改，导致安全隐患。</li>
+<li>设置<code>PrivateTmp</code>为true，使用systemctl启动服务时，系统会将原来设置到<code>/tmp</code>下的内容分配到<code>/tmp/systemd-private-&lt;random string&gt;-&lt;servicename&gt;.service-&lt;random string&gt;</code>这个的一个命令空间中。并且设置这个目录的权限为700。就可以保证对应的配置文件不会被其他用户和进程所更改。</li>
+</ul>
+<p>例如:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># ll /tmp/ | grep &apos;systemd&apos;</div><div class="line">drwx------ 3 root root 17 3月   1 09:28 systemd-private-1adb681dede84276b650ea38bfa4dc1d-chronyd.service-y66NBd</div><div class="line">drwx------ 3 root root 17 3月   6 09:55 systemd-private-1adb681dede84276b650ea38bfa4dc1d-nginx.service-MgTlBE</div><div class="line">#</div></pre></td></tr></table></figure></p>
+<p>详细说明参见红帽官网的这篇blog <a href="https://access.redhat.com/blogs/766093/posts/1976243" target="_blank" rel="external">New Red Hat Enterprise Linux 7 Security Feature: PrivateTmp</a></p>
+<h4 id="Nginx推荐的nginx-service的写法"><a href="#Nginx推荐的nginx-service的写法" class="headerlink" title="Nginx推荐的nginx.service的写法"></a>Nginx推荐的nginx.service的写法</h4><p>Nginx官方建议的设置Nginx的文档<a href="https://www.nginx.com/resources/wiki/start/topics/examples/systemd/" target="_blank" rel="external">NGINX systemd service file</a>中推荐的<code>nginx.service</code>的设置如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">[Unit]</div><div class="line">Description=The NGINX HTTP and reverse proxy server</div><div class="line">After=syslog.target network.target remote-fs.target nss-lookup.target</div><div class="line"></div><div class="line">[Service]</div><div class="line">Type=forking</div><div class="line">PIDFile=/run/nginx.pid</div><div class="line">ExecStartPre=/usr/sbin/nginx -t</div><div class="line">ExecStart=/usr/sbin/nginx</div><div class="line">ExecReload=/usr/sbin/nginx -s reload</div><div class="line">ExecStop=/bin/kill -s QUIT $MAINPID</div><div class="line">PrivateTmp=true</div><div class="line"></div><div class="line">[Install]</div><div class="line">WantedBy=multi-user.target</div></pre></td></tr></table></figure>
+<p>结合<code>gem install passenger</code>的默认路径<code>/opt/nginx/</code>，实际部署的时候，被修改成如下内容来写入<code>/lib/systemd/system/nginx.service</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">[Unit]</div><div class="line">Description=The nginx HTTP and reverse proxy server</div><div class="line">After=syslog.target network.target remote-fs.target nss-lookup.target</div><div class="line"></div><div class="line">[Service]</div><div class="line">Type=forking</div><div class="line">PIDFile=/var/run/nginx.pid</div><div class="line">ExecStartPre=/opt/nginx/sbin/nginx -t</div><div class="line">ExecStart=/opt/nginx/sbin/nginx -c /opt/nginx/conf/nginx.conf</div><div class="line">ExecReload=/bin/kill -s HUP $MAINPID</div><div class="line">ExecStop=/bin/kill -s QUIT $MAINPID</div><div class="line">PrivateTmp=true</div><div class="line"></div><div class="line">[Install]</div><div class="line">WantedBy=multi-user.target</div></pre></td></tr></table></figure>
+<h4 id="passenger-instance-registry-dir的default值"><a href="#passenger-instance-registry-dir的default值" class="headerlink" title="passenger_instance_registry_dir的default值"></a>passenger_instance_registry_dir的default值</h4><p>根据<a href="https://www.phusionpassenger.com/library/config/nginx/reference/#passenger_instance_registry_dir" target="_blank" rel="external">Passenger官方文档</a>说明，Passenger使用<code>passenger_instance_registry_dir</code>这个参数，来指定存放passenger进程信息的目录。</p>
+<blockquote>
+<p>Specifies the directory that Passenger should use for registering its current instance.</p>
+<p>When Passenger starts up, it creates a temporary directory inside the instance registry directory. This temporary directory is called the instance directory. It contains all sorts of files that are important to that specific running Passenger instance, such as Unix domain socket files so that all the different Passenger processes can communicate with each other. Command line tools such as passenger-status use the files in this directory in order to query Passenger’s status.</p>
+</blockquote>
+<p>该目录会被<code>passenger-status</code>命令用来获取Passenger的状态。</p>
+<p>而根据Passenger官方的介绍，<a href="https://www.phusionpassenger.com/library/config/nginx/reference/#passenger_instance_registry_dir" target="_blank" rel="external"><code>passenger_instance_registry_dir</code></a>参数默认的值是<code>/tmp|/var/run/passenger-instreg</code></p>
+<ul>
+<li>如果是Red Hat and CentOS，并且是通过Phusion的yum源安装的，那么默认值是<code>/var/run/passenger-instreg</code></li>
+<li>其他情况下，默认值是<code>$TMPDIR</code>环境变量的值，如果<code>$TMPDIR</code>没有设置，那么就是<code>/tmp</code></li>
+</ul>
+<p>如果没有使用默认路径，那么运行<code>passenger-status</code>之前，就需要使用<code>export PASSENGER_INSTANCE_REGISTRY_DIR=/my_temp-dir</code>来声明registry dir。</p>
+<h4 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h4><p>了解了相关的原理，就很清晰地知道<code>passenger-status</code>运行不成功的原因了。<br>Nginx推荐的nginx.service脚本中，PrivateTmp是true的，passenger的进程信息就被系统放在了<code>/tmp/systemd-private-xxxx</code>的目录中了。而<code>passenger-status</code>还是去默认的<code>/tmp</code>下去寻找passenger进程状态，导致了命令运行失败。</p>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>两个解决办法也就一目了然了。</p>
+<ul>
+<li>修改<code>nginx.service</code>的PrivateTmp值</li>
+<li>修改passenger_instance_registry_dir</li>
+</ul>
+<h4 id="修改PrivateTmp"><a href="#修改PrivateTmp" class="headerlink" title="修改PrivateTmp"></a>修改PrivateTmp</h4><p>第一个简单的办法就是修改<code>nginx.service</code>的PrivateTmp为false。</p>
+<p>此时，禁用了systemd的private tmp的隔离机制，passenger的进程信息会被写入<code>/tmp/</code>目录，<code>passenger-status</code>命令就能够获取passenger运行信息并输出了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">[Unit]</div><div class="line">Description=The nginx HTTP and reverse proxy server</div><div class="line">After=syslog.target network.target remote-fs.target nss-lookup.target</div><div class="line"></div><div class="line">[Service]</div><div class="line">Type=forking</div><div class="line">PIDFile=/var/run/nginx.pid</div><div class="line">ExecStartPre=/opt/nginx/sbin/nginx -t</div><div class="line">ExecStart=/opt/nginx/sbin/nginx -c /opt/nginx/conf/nginx.conf</div><div class="line">ExecReload=/bin/kill -s HUP $MAINPID</div><div class="line">ExecStop=/bin/kill -s QUIT $MAINPID</div><div class="line">PrivateTmp=false</div><div class="line"></div><div class="line">[Install]</div><div class="line">WantedBy=multi-user.target</div></pre></td></tr></table></figure>
+<p>重新load nginx.service并重启nginx.service<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># reload the nginx.service</div><div class="line">systemctl daemon-reload</div><div class="line"></div><div class="line"># restart the nginx</div><div class="line">systemctl restart nginx.service</div></pre></td></tr></table></figure></p>
+<p>在<code>/tmp</code>下就可以看到passenger的信息目录，<code>passenger-status</code>命令也就可以输出passenger的状态了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">$ ll /tmp/</div><div class="line">总用量 0</div><div class="line">drwxr-xr-x 5 root root 223 3月  10 09:20 passenger.wRvwBR0</div><div class="line">drwx------ 3 root root  17 3月   1 09:28 systemd-private-1adb681dede84276b650ea38bfa4dc1d-chronyd.service-y66NBd</div><div class="line">$</div><div class="line">$ passenger-status</div><div class="line">Version : 5.3.7</div><div class="line">Date    : 2019-03-10 09:23:15 +0000</div><div class="line">Instance: 9NWwyPOn (nginx/1.14.0 Phusion_Passenger/5.3.7)</div><div class="line"></div><div class="line">----------- General information -----------</div><div class="line">Max pool size : 6</div><div class="line">App groups    : 0</div><div class="line">Processes     : 0</div><div class="line">Requests in top-level queue : 0</div><div class="line"></div><div class="line">----------- Application groups -----------</div><div class="line">$</div></pre></td></tr></table></figure>
+<h4 id="指定passenger-instance-registry-dir"><a href="#指定passenger-instance-registry-dir" class="headerlink" title="指定passenger_instance_registry_dir"></a>指定passenger_instance_registry_dir</h4><p>按照上文所述的官方文档的说明，理论上运行<code>passenger-status</code>时，指定正确的passenger_instance_registry_dir，即可成功执行。</p>
+<p>但实际执行中，在CentOS 7下，在<code>nginx.service</code>中<code>PrivateTmp=true</code>的情况下，因为路径过长，会报<code>too long unix socket path</code>的错误。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">$ export PASSENGER_INSTANCE_REGISTRY_DIR=/tmp/systemd-private-1adb681dede84276b650ea38bfa4dc1d-nginx.service-xrbYa5/tmp/</div><div class="line">$ passenger-status</div><div class="line">Version : 5.3.7</div><div class="line">Date    : 2019-03-10 09:37:36 +0000</div><div class="line">Instance: wbr6WsVE (nginx/1.14.0 Phusion_Passenger/5.3.7)</div><div class="line"></div><div class="line">/usr/local/rvm/gems/ruby-2.3.7/gems/passenger-5.3.7/src/ruby_supportlib/phusion_passenger/admin_tools/instance.rb:94:in `initialize&apos;: too long unix socket path (115bytes given but 108bytes max) (ArgumentError)</div><div class="line">	from /usr/local/rvm/gems/ruby-2.3.7/gems/passenger-5.3.7/src/ruby_supportlib/phusion_passenger/admin_tools/instance.rb:94:in `new&apos;</div><div class="line">	from /usr/local/rvm/gems/ruby-2.3.7/gems/passenger-5.3.7/src/ruby_supportlib/phusion_passenger/admin_tools/instance.rb:94:in `http_request&apos;</div><div class="line">	from /usr/local/rvm/gems/ruby-2.3.7/gems/passenger-5.3.7/bin/passenger-status:113:in `show_status&apos;</div><div class="line">	from /usr/local/rvm/gems/ruby-2.3.7/gems/passenger-5.3.7/bin/passenger-status:61:in `command_show_status&apos;</div><div class="line">	from /usr/local/rvm/gems/ruby-2.3.7/gems/passenger-5.3.7/bin/passenger-status:332:in `start&apos;</div><div class="line">	from /usr/local/rvm/gems/ruby-2.3.7/gems/passenger-5.3.7/bin/passenger-status:335:in `&lt;top (required)&gt;&apos;</div><div class="line">	from /usr/local/rvm/gems/ruby-2.3.7/bin/passenger-status:23:in `load&apos;</div><div class="line">	from /usr/local/rvm/gems/ruby-2.3.7/bin/passenger-status:23:in `&lt;main&gt;&apos;</div><div class="line">	from /usr/local/rvm/gems/ruby-2.3.7/bin/ruby_executable_hooks:24:in `eval&apos;</div><div class="line">	from /usr/local/rvm/gems/ruby-2.3.7/bin/ruby_executable_hooks:24:in `&lt;main&gt;&apos;</div><div class="line">$</div></pre></td></tr></table></figure>
+<p>sock path length是Linux系统的限制。具体可以参考<a href="https://unix.stackexchange.com/questions/367008/why-is-socket-path-length-limited-to-a-hundred-chars" target="_blank" rel="external">Why is socket path length limited to a hundred chars?</a>这篇文章。</p>
+<p>既然替换为systemd的privatetmp的路径不可行，那么换个思路，可在Passenger启动的时候, 在配置文件中手动指定passenger注册实例的目录。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"># 创建新的注册目录</div><div class="line">$ sudo mkdir /opt/nginx/tmp</div><div class="line"></div><div class="line"># 打开nginx配置文件，添加passenger_instance_registry_dir</div><div class="line">$ sudo vim /opt/nginx/conf/nginx.conf</div><div class="line"></div><div class="line">http &#123;</div><div class="line">    ......</div><div class="line">    passenger_instance_registry_dir /opt/nginx/tmp;</div><div class="line">    ......</div><div class="line">&#125;</div><div class="line"></div><div class="line"># 重启nginx</div><div class="line">sudo systemctl restart nginx.service</div></pre></td></tr></table></figure>
+<p>再在执行<code>passenger-status</code>的时候，添加上registry_dir的路径。就可以顺利执行命令了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">$ export PASSENGER_INSTANCE_REGISTRY_DIR=/opt/nginx/tmp/</div><div class="line">$ passenger-status</div><div class="line">Version : 5.3.7</div><div class="line">Date    : 2019-03-10 10:02:15 +0000 </div><div class="line">Instance: inceochh (nginx/1.14.0 Phusion_Passenger/5.3.7)</div><div class="line"></div><div class="line">----------- General information -----------</div><div class="line">Max pool size : 6</div><div class="line">App groups    : 0</div><div class="line">Processes     : 0</div><div class="line">Requests in top-level queue : 0</div><div class="line"></div><div class="line">----------- Application groups -----------</div><div class="line">$</div></pre></td></tr></table></figure>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://access.redhat.com/blogs/766093/posts/1976243" target="_blank" rel="external">New Red Hat Enterprise Linux 7 Security Feature: PrivateTmp</a></li>
+<li><a href="https://www.nginx.com/resources/wiki/start/topics/examples/systemd/" target="_blank" rel="external">NGINX systemd service file</a></li>
+<li><a href="https://www.phusionpassenger.com/library/config/nginx/reference/#passenger_instance_registry_dir" target="_blank" rel="external">Configuration reference for Passenger + Nginx</a></li>
+<li><a href="https://unix.stackexchange.com/questions/367008/why-is-socket-path-length-limited-to-a-hundred-chars" target="_blank" rel="external">Why is socket path length limited to a hundred chars?</a></li>
+<li><a href="http://llawlor.github.io/2016/03/05/phusion-passenger-nginx-notes.html" target="_blank" rel="external">Phusion Passenger &amp; Nginx with Systemd Notes</a></li>
+<li><a href="https://www.xncoding.com/2016/06/07/linux/systemd.html" target="_blank" rel="external">centos7上systemd详解</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> AWS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> EC2 </tag>
+            
+            <tag> Passenger </tag>
+            
+            <tag> Nginx </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[Macos下因为找不到libxml2而导致nokogiri安装失败的解决办法]]></title>
       <url>/2019/03/05/how-resolve-nokogiri-failed-by-xml2-on-macos/</url>
       <content type="html"><![CDATA[<p>今天要跑一个其他的rails项目，为了不污染原先的gemset。就重建了一个gemset, 但是bundle install的时候，安装nokogiri 1.8.4一直失败。<br>系统版本是Macos 10.13 High Sierra中, ruby版本是rvm安装的ruby2.3.0。</p>

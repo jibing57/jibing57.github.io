@@ -139,8 +139,8 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
-			<div class="date"> 2018-02-09 </div>
-			<div class="article-title"><a href="/2018/02/09/non-greedy-match-in-grep-on-macos/" >Macos下如何实现grep的非贪婪模式</a></div>						
+			<div class="date"> 2018-09-15 </div>
+			<div class="article-title"><a href="/2018/09/15/how-to-access-internal-by-ssh-tunnel/" >使用ssh隧道访问内网资源</a></div>						
 		</h3>
 	
 
@@ -149,13 +149,13 @@ var _hmt = _hmt || [];
   <div class="row">
 	
 	
-		<p>有时候需要使用正则的<code>非贪婪模式(non-greedy或者叫lazy模式)</code>来搜一些内容，但Macos系统自带的<code>grep</code>无法胜任。<br>Mac下的<code>grep</code>是BSD系的，不能使用-P参数来使用perl模式。Linux下的<code>GNU grep</code>就可以使用-P参数来支持非贪婪模式。</p>
-<p>MacOS自带的<code>grep</code>的示例:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">$ cat grep_on_macos.txt</div><div class="line">carl has a nice car. the car has four wheels.</div><div class="line">$</div><div class="line"># 支持普通正则</div><div class="line">$ grep -o &quot;car.*has&quot; grep_on_macos.txt</div><div class="line">carl has a nice car. the car has</div><div class="line">$</div><div class="line"># 不支持带?的非贪婪模式</div><div class="line">$ grep -o &quot;car.*?has&quot; grep_on_macos.txt</div><div class="line">$</div></pre></td></tr></table></figure>
-<p>此处记录两个可行的方法来解决该问题</p>
+		<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>日常开发过程中，会遇到一些情况需要和对端机构或公司进行联调。此时有可能会需要访问对端机构内部的一些网页或API。</p>
+<p>正规流程中，要访问内网，如果对端机构有VPN服务，应该是申请一个VPN来进行操作，这种方式比较安全可靠。但实际操作过程中，可能对端机构没有VPN服务，或者走VPN流程繁琐。此时如果你有对端机构中某个内网Linux机器的ssh登陆权限,而且该Linux机器可以可以访问相关网页或者API，则可以通过ssh tunnel的方式，临时来访问对端机构的内部资源。</p>
+<p>接下来，通过使用两台EC2来模拟内网环境,来介绍如何在Mac机器上使用ssh tunnel访问内网资源。</p>
+<h3 id="搭建说明"><a href="#搭建说明" class="headerlink" title="搭建说明"></a>搭建说明</h3><h4 id="搭建模拟用的EC2"><a href="#搭建模拟用的EC2" class="headerlink" title="搭建模拟用的EC2"></a>搭建模拟用的EC2</h4><p>首先，开启两台EC2，一台用来模拟ssh的跳板机(Jumpbox)，一台用来模拟内部网页服务器(HttpServer)。</p>
 	
 	</div>
-  <a type="button" href="/2018/02/09/non-greedy-match-in-grep-on-macos/#more" class="btn btn-default more">Read More</a>
+  <a type="button" href="/2018/09/15/how-to-access-internal-by-ssh-tunnel/#more" class="btn btn-default more">Read More</a>
 </div>
 
            
@@ -165,8 +165,8 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
-			<div class="date"> 2018-02-07 </div>
-			<div class="article-title"><a href="/2018/02/07/AWS-Certified-Solutions-Architect-Professional/" >AWS Certified Solutions Architect - Professional Road Map</a></div>						
+			<div class="date"> 2018-08-11 </div>
+			<div class="article-title"><a href="/2018/08/11/EB-warning-due-to-no-space-left-on-device-issue-on-EC2/" >由于EC2中no space left引起的EB警报</a></div>						
 		</h3>
 	
 
@@ -175,264 +175,216 @@ var _hmt = _hmt || [];
   <div class="row">
 	
 	
-		<h2 id="Official-AWS-Certification-Page"><a href="#Official-AWS-Certification-Page" class="headerlink" title="Official AWS Certification Page"></a>Official AWS Certification Page</h2><p>访问官网<a href="https://amazonaws-china.com/certification/certification-prep/" target="_blank" rel="external">AWS Certification</a></p>
+		<h3 id="问题现象"><a href="#问题现象" class="headerlink" title="问题现象"></a>问题现象</h3><p>周末早上突然收到大量Elastic Beanstalk的警报邮件，提示一个跑Rails的EB环境中有大量的请求是HTTP 5xx。</p>
+<p>登陆AWS Console查看相关Event，已经有持续的WARN提示有大量的HTTP 5xx请求。<br><img src="/images/AWS/EBNoSpaceLeft/amounts_of_5XX_on_EB_event.png" alt="amounts_of_5XX_on_EB_event"></p>
+<h3 id="解决过程"><a href="#解决过程" class="headerlink" title="解决过程"></a>解决过程</h3><p>使用EB console下载了各个Instanc的日志，仔细进行排查。</p>
+<p>最后在一个Instance的Rails log中发现有请求提示<code>No space left on device</code>。原来是Instance的磁盘满了，导致了部分需要写临时文件的请求失败了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">F, [2018-08-11T02:10:43.084147 #11559] FATAL -- :</div><div class="line">Errno::ENOSPC (No space left on device @ rb_sysopen - /var/app/current/tmp/cache/rack%3A%3Aattack%3A306790688%3Alocations%2Fip%3A46.229.168.8120180811-11559-4156fj):</div><div class="line">  app/middleware/catch_json_parse_errors.rb:8:in `call&apos;</div></pre></td></tr></table></figure>
+	
+	</div>
+  <a type="button" href="/2018/08/11/EB-warning-due-to-no-space-left-on-device-issue-on-EC2/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2018-05-21 </div>
+			<div class="article-title"><a href="/2018/05/21/ssh-key-Invalid-key-length-Error-on-Macos/" >macOS 10.13.2下SSH命令Invalid key length错误的原因</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>升级到Macos 10.13.2后，使用ssh以key方式登陆一个12年配置的服务器的时候，ssh命令报告了<code>Invalid key length</code>的错误。</p>
+<p>很是纳闷，服务器和本地的key都是配置好后就没动过的，key pair本身肯定没问题啊，怎么会报错了呢?</p>
+<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>Google了一下，发现是MacOS使用的OpenSSH版本升级到了7.6，小于1024bits的RSA keys已经不被支持了。</p>
+<p>使用<code>ssh-keygen</code>查看了一下public key，发现是1023bit的。所以ssh时候报了<code>Invalid key length</code>的错误。</p>
+	
+	</div>
+  <a type="button" href="/2018/05/21/ssh-key-Invalid-key-length-Error-on-Macos/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2018-05-10 </div>
+			<div class="article-title"><a href="/2018/05/10/how-to-write-NTFS-Deives-on-a-Mac-10.13/" >macOS 10.13 High Sierra读写NTFS移动硬盘</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>系统升级到10.13后，没用过移动硬盘，所以一直也没发现以前装的osxfuse+ntfs-3g在系统更新后已经失效了。结果么在要使用的时候发现悲剧了，在10.13中没法写NTFT格式的移动硬盘了。</p>
+<p>上网搜了一下，How-To Geek上面有一篇文章，详细讲述了Macos下挂载NTFS移动硬盘的几种方法,有收费方案也有免费方案，并比较了每个方案的优缺点。 虽然文章是基于macOS 10.12 Sierra的，但各个方案的优缺点同样适用于10.13。<a href="https://www.howtogeek.com/236055/how-to-write-to-ntfs-drives-on-a-mac/" target="_blank" rel="external">How to Write to NTFS Drives on a Mac</a></p>
+	
+	</div>
+  <a type="button" href="/2018/05/10/how-to-write-NTFS-Deives-on-a-Mac-10.13/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2018-04-25 </div>
+			<div class="article-title"><a href="/2018/04/25/command-line-tools-to-check-images-on-macos/" >Mac下几个处理图片的命令</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h3><p>Macos下，查看图片，默认就是使用Preview。Preview基本包含了普通人能用到的各种功能。<br>但有时候需要批量处理图片时，常规的GUI工具会显得不太方便，使用命令来操作能够更快捷高效。下面介绍几个Macos下和图片相关的几个命令。</p>
+<h3 id="查看图片尺寸"><a href="#查看图片尺寸" class="headerlink" title="查看图片尺寸"></a>查看图片尺寸</h3><h4 id="系统自带file命令"><a href="#系统自带file命令" class="headerlink" title="系统自带file命令"></a>系统自带file命令</h4><p>在命令行下查看图片的分辨率，可以直接使用Macos自带的file命令即可。<br>
+	
+	</div>
+  <a type="button" href="/2018/04/25/command-line-tools-to-check-images-on-macos/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2018-04-24 </div>
+			<div class="article-title"><a href="/2018/04/24/douban-image-403/" >豆瓣图片403问题</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="起由"><a href="#起由" class="headerlink" title="起由"></a>起由</h3><p>发布了一版blog到github上。偶然间发现<a href="/douban">豆瓣页面</a>中书的图片都无法显示了。打开Inspector调查了下，发现请求豆瓣图片的链接返回的都是403 Forbidden。<br><img src="/images/Hexo/douban_image_403.png" alt="douban_image_403.png"></p>
+<p>网上搜索了一下，可能的原因就是豆瓣为了封杀微信小程序在页面上直接请求豆瓣的图片，封杀了图片的外链。</p>
+<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>尝试着将豆瓣API返回的图片链接拷贝到浏览器中直接访问，发现可以加载图片，那估计豆瓣是通过检测HTTP Request中的referer Header来实现防盗链。</p>
+	
+	</div>
+  <a type="button" href="/2018/04/24/douban-image-403/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2018-04-21 </div>
+			<div class="article-title"><a href="/2018/04/21/aws-s3-master-permission/" >S3进阶系列(二) ——权限管理</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="什么是S3的权限管理"><a href="#什么是S3的权限管理" class="headerlink" title="什么是S3的权限管理"></a>什么是S3的权限管理</h3><p>S3的权限管理是任何使用S3的人都无法绕开的功能,决定了S3中的Object是否能够被访问。</p>
+<p>权限管理本质上解决了这么一个问题: 谁(Principal)能够在何种条件(condition)下被允许或拒绝(Effect)对哪些资源(Resource)做何种操作(Action)</p>
+	
+	</div>
+  <a type="button" href="/2018/04/21/aws-s3-master-permission/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2018-04-19 </div>
+			<div class="article-title"><a href="/2018/04/19/how-to-remove-the-passphrase-of-ssh-key/" >如何去除SSH key中的passphrase</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="去除passphrase的方法"><a href="#去除passphrase的方法" class="headerlink" title="去除passphrase的方法"></a>去除passphrase的方法</h3><p>使用<code>ssh-keygen</code>来重新设置一个空的passphrase, 就相当于去除了原来的passphrase, 答案来自<a href="https://stackoverflow.com/a/112409" target="_blank" rel="external">stackoverflow</a>, 回答者还很贴心的提示，输入的passphrase会被记录在~/.bash_history中，别忘记处理这个情况。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ssh-keygen -p [-P old_passphrase] [-N new_passphrase] [-f keyfile]</div></pre></td></tr></table></figure></p>
+	
+	</div>
+  <a type="button" href="/2018/04/19/how-to-remove-the-passphrase-of-ssh-key/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2018-04-18 </div>
+			<div class="article-title"><a href="/2018/04/18/aws-s3-master-basic/" >S3进阶系列(一) —— S3基础知识</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>S3是AWS服务最早推出的几项服务之一，也是使用最为频繁的几个AWS服务之一。官网文档以及网上文章零零散散看了不少,实际使用中也用过S3的大多数功能，但“纸上得来终觉浅，绝知此事要躬行”，决定给自己挖个坑，结合已读资料和实际使用经验，系统地来梳理一下S3的已有功能。</p>
+<p>本篇是第一篇,介绍一下S3的一些基础知识。希望能够坚持把这个系列写完。</p>
+	
+	</div>
+  <a type="button" href="/2018/04/18/aws-s3-master-basic/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2018-03-16 </div>
+			<div class="article-title"><a href="/2018/03/16/how-to-subscribe-RDS-event/" >订阅RDS事件</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>关于RDS状态的监控，除了常规的CloudWatch Metric以外。RDS还有一个事件机制，能够将RDS的事件通知到SNS。</p>
+<h3 id="RDS-Event简介"><a href="#RDS-Event简介" class="headerlink" title="RDS Event简介"></a>RDS Event简介</h3><h4 id="RDS-Event-Source-type"><a href="#RDS-Event-Source-type" class="headerlink" title="RDS Event - Source type"></a>RDS Event - Source type</h4><p>RDS的事件类型分为如下六大类:</p>
 <ul>
-<li>参加 AWS 培训课程</li>
-<li>查看考试指南和样题<ul>
-<li>了解考试涉及的概念并整体了解需要学习哪些内容, <a href="http://d0.awsstatic-china.com/Train%20&amp;%20Cert/docs/AWS_certified_solutions_architect_professional_blueprint.pdf" target="_blank" rel="external">AWS Certified Solutions Architect – Professional 考试指南</a> 相当于考试大纲, 必看,而且需要反复的看。因为学习过一阵后再来看Guide，会有更深的体会。</li>
-<li><a href="https://d0.awsstatic-china.com/training-and-certification/docs/AWS_certified_solutions_architect_professional_examsample.pdf" target="_blank" rel="external">考试样题</a>用于熟悉题目题型。几个样题都是大段大段的文字，实际考试题目中也有字数少的题目。但题目的阅读量绝对是比Asoocaiated的大得多。</li>
-</ul>
-</li>
-<li>练习试验<ul>
-<li>注册一个AWS全球账号，使用一年的免费额度结合Blueprint中的各个内容进行试验。</li>
-</ul>
-</li>
-<li>学习 AWS 白皮书<ul>
-<li>白皮书是纯英文的，每个白皮书篇幅都很长。</li>
-<li>在BluePrint的描述中，和AWS Certified Solutions Architect - Associate的白皮书列表相比，多了<strong>Defining Fault Tolerant Applications in the AWS Cloud</strong>这一份白皮书，官网找了一下，只有一个名字类似的名为<a href="https://d1.awsstatic.com/whitepapers/aws-building-fault-tolerant-applications.pdf" target="_blank" rel="external">Building Fault-Tolerant Applications on AWS</a>的白皮书，时间还是October 2011的。不管怎样，但愿好理念永不过时，还是整个念一遍吧。</li>
-</ul>
-</li>
-<li>查看 AWS 常见问题<ul>
-<li>官网推荐的FAQ都建议看完。</li>
-</ul>
-</li>
-<li>参加模拟考试<ul>
-<li>40美刀一次。是否值得因人而异。参加Professional的考试，肯定都已经经历过AWS Certified Solutions Architect – Associate的洗礼了, 因此熟悉考试界面肯定不是决定要参加模拟考试的目的。一个合理的理由是，可以提前熟悉一下Professional考题阅读难度, 为正式考试的时候做好心理准备。网上都说AWS Certified Solutions Architect – Professional这个考试最大的难度就是要在170分钟内阅读，理解77~80道字数不算少的题，然后选出最优的答案。网上一些母语是英语的老外都感慨阅读量比较大，何况是我们这种非英语系的国家的考生了。</li>
-</ul>
-</li>
-<li>报名考试并获得认证<ul>
-<li>登陆<a href="https://www.aws.training/certification" target="_blank" rel="external">https://www.aws.training/certification</a>注册进行考试</li>
-</ul>
-</li>
+<li>数据库实例(DB instance)</li>
+<li>数据库集群(DB cluster)</li>
+<li>数据库快照(DB snapshot)</li>
+<li>数据库集群快照(DB cluster snapshot)</li>
+<li>数据库安全组(DB security group)</li>
+<li>数据库参数组(DB parameter group)</li>
 </ul>
 	
 	</div>
-  <a type="button" href="/2018/02/07/AWS-Certified-Solutions-Architect-Professional/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2017-12-26 </div>
-			<div class="article-title"><a href="/2017/12/26/a-simple-elb-access-log-parser-by-ruby/" >A Simple ELB Access Log Parser By Ruby</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>工作时候，偶尔会有手动检查ELB Access Log的时候，下载下来的access log是空格隔开的，人眼将数值对应到字段名非常累。</p>
-<p>就顺手写了个Ruby的小程序来解析access log的内容，转换到csv格式。再使用Excel打开csv文件来进行查看。</p>
-<h3 id="用途"><a href="#用途" class="headerlink" title="用途"></a>用途</h3><p>读取access log日志，转换为csv。</p>
-<p>主要用于临时检查小数据量access log来定位问题。如果是基于access log来进行数据分析，还是需要结合RedShift来进行。</p>
-	
-	</div>
-  <a type="button" href="/2017/12/26/a-simple-elb-access-log-parser-by-ruby/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2017-12-25 </div>
-			<div class="article-title"><a href="/2017/12/25/shell-gist-to-get-http-5XX-code-from-ELB-access-log/" >shell gist to get http 5XX code from ELB access log</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>一个简陋的只是够用的shell小脚本，用来从S3中下载前一天的ELB access log，筛选出http code为5XX的日志，然后发送给某个指定的email地址。</p>
-<h3 id="变量设置"><a href="#变量设置" class="headerlink" title="变量设置"></a>变量设置</h3><p>设置下MAIL_TO和S3_BASE_PREFIX这两个变量，然后在有AWS CLI访问环境的机器上执行即可。</p>
-<ul>
-<li>MAIL_TO 如果有多个地址，可用空格隔开</li>
-<li>S3_BASE_PREFIX设置到Access log日志格式之前的prefix就行。</li>
-</ul>
-<p>比如完整的access log地址是: <code>s3://carl-elb-logs/AWSLogs/888888888888/elasticloadbalancing/ap-northeast-2/2017/12/24/704017765382_elasticloadbalancing_ap-northeast-2_ELB-carl_20171224T0120Z_13.125.86.136_5s9i5ef2.log</code></p>
-<p>那么S3_BASE_PREFIX设置为<code>s3://carl-elb-logs/AWSLogs/888888888888/elasticloadbalancing/ap-northeast-2</code>即可<br>
-	
-	</div>
-  <a type="button" href="/2017/12/25/shell-gist-to-get-http-5XX-code-from-ELB-access-log/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2017-12-25 </div>
-			<div class="article-title"><a href="/2017/12/25/how-to-add-shadow-of-images-in-freemind/" >在Freemind主题中开启图片阴影</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="添加图片阴影"><a href="#添加图片阴影" class="headerlink" title="添加图片阴影"></a>添加图片阴影</h3><p><a href="https://github.com/wzpan/hexo-theme-freemind" target="_blank" rel="external">hexo-theme-freemind</a>主题中，默认没有开启图片阴影。当图片的背景和文章的背景是同色的时候，有时会造成混淆，看不清楚哪部分是图片，哪部分是文章。</p>
-<p>打开源码看了一下，发现其实<a href="https://github.com/wzpan/hexo-theme-freemind" target="_blank" rel="external">hexo-theme-freemind</a>本身就已经支持图片shadow了。只是默认没有开启，而且也没有在README.md中提及。</p>
-<p>在<code>hexo-theme-freemind/layout/_partial/article.ejs</code>文件中有如下代码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;% if (item.shadow ) &#123; %&gt;</div><div class="line">   &lt;style type=&quot;text/css&quot;&gt;</div><div class="line">           img, video &#123;</div><div class="line">                -webkit-box-shadow:0 0 10px rgba(0, 0, 0, .5);</div><div class="line">                -moz-box-shadow:0 0 10px rgba(0, 0, 0, .5);</div><div class="line">                box-shadow:0 0 10px rgba(0, 0, 0, .5);</div><div class="line">           &#125;</div><div class="line">   &lt;/style&gt;</div><div class="line">&lt;% &#125; %&gt;</div></pre></td></tr></table></figure>
-	
-	</div>
-  <a type="button" href="/2017/12/25/how-to-add-shadow-of-images-in-freemind/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2017-12-22 </div>
-			<div class="article-title"><a href="/2017/12/22/what-is-Access-Logs-of-Classic-Load-Balancer/" >什么是传统负载均衡器的访问日志</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="什么是传统负载均衡器的Access-Logs"><a href="#什么是传统负载均衡器的Access-Logs" class="headerlink" title="什么是传统负载均衡器的Access Logs"></a>什么是传统负载均衡器的Access Logs</h3><p>Elastic Load Balancing 提供了Access Logs(访问日志)，Access Logs可记录下发送到负载均衡器的请求的详细信息。每个日志都包含固定格式的信息 (例如，收到请求的时间、客户端的 IP 地址、延迟、请求路径和服务器响应)。可以使用这些日志分析流量模式和进行Debug。</p>
-<p>Access Logs是ELB的一项可选功能，默认情况下是Disable的。启用后，ELB会将logs存储到指定的某个S3 Bucket中。</p>
-<h3 id="收费"><a href="#收费" class="headerlink" title="收费"></a>收费</h3><p>ELB的Access Logs本身是不需要额外的费用的，从ELB传输到S3的流量是免费的，但是S3的存储费用是需要支付的。<br>
-	
-	</div>
-  <a type="button" href="/2017/12/22/what-is-Access-Logs-of-Classic-Load-Balancer/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2017-12-20 </div>
-			<div class="article-title"><a href="/2017/12/20/How-to-add-staging-log-to-EB-logs/" >如何在Elastic Beanstalk的Rails环境中配置staging.log为可下载</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>新建了一个EB环境，来跑一个staging模式的rails。EB环境变量设置好后，部署成功。一系列测试都没问题，结果却在一个不起眼的地方出了点幺蛾子。</p>
-<p>Rails代码中，没有特殊配置config.logger,因此staging模式时，默认的输出日志为logs/staging.log, 但是在EB的Web console中尝试获取Full Logs后，在BundleLogs中发现没有staging.log。</p>
-<p>赶紧调查试验了一下，并将调查结果记录如下。</p>
-	
-	</div>
-  <a type="button" href="/2017/12/20/How-to-add-staging-log-to-EB-logs/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2017-12-20 </div>
-			<div class="article-title"><a href="/2017/12/20/expired-of-S3-RRS/" >S3 RRS价格注意点</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="S3-存储类型"><a href="#S3-存储类型" class="headerlink" title="S3 存储类型"></a>S3 存储类型</h3><p>S3 总共提供三种存储类型</p>
-<ul>
-<li>标准(Standard)</li>
-<li>标准-低频率访问(Standard - Infrequent Access)</li>
-<li>低冗余存储(Reduced Redundancy Storage)
-	
-	</div>
-  <a type="button" href="/2017/12/20/expired-of-S3-RRS/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2017-12-19 </div>
-			<div class="article-title"><a href="/2017/12/19/deep-dig-on-s3-bucket-permission-exam/" >深挖AWS S3的权限管理(实验篇)</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>在<a href="/2017/12/14/deep-dig-on-s3-bucket-permission/" title="深挖AWS S3的权限管理">深挖AWS S3的权限管理</a> 一文中介绍了AWS S3权限管理的三种方法。此处再通过几个实验来看下三种方法的使用方法。</p>
-<hr>
-<h3 id="实验前准备"><a href="#实验前准备" class="headerlink" title="实验前准备"></a>实验前准备</h3><h4 id="实验用相关账号介绍"><a href="#实验用相关账号介绍" class="headerlink" title="实验用相关账号介绍"></a>实验用相关账号介绍</h4><ul>
-<li>IAM User carl.shen - carl.shen有AdministratorAccess权限，用来上传图片到S3</li>
-<li>IAM User carl - 测试IAM User一号，初始没有任何权限</li>
-<li>IAM User shen - 测试IAM User二号，初始没有任何权限</li>
-<li>IAM Group S3Exam - 用来给IAM User carl和shen统一赋权限</li>
-</ul>
-<p>建好三个IAM账号，下载各自的Access key ID和Secret Access Key, 并设置好AWS CLI。AWS CLI多profile的设置方法可以参照 <a href="/2017/10/24/how-to-use-aws-cli-with-multi-user/" title="如何在aws cli中使用多个配置文件">如何在aws cli中使用多个配置文件</a><br>
-	
-	</div>
-  <a type="button" href="/2017/12/19/deep-dig-on-s3-bucket-permission-exam/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2017-12-14 </div>
-			<div class="article-title"><a href="/2017/12/14/deep-dig-on-s3-bucket-permission/" >深挖AWS S3的权限管理</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>AWS共有三种方式用来管理S3的访问权限</p>
-<ul>
-<li>IAM policy</li>
-<li>Bucket Policy</li>
-<li>S3 ACL</li>
-</ul>
-<p>此处深挖一下这三种访问控制的用法和区别</p>
-<h3 id="三种访问控制的介绍"><a href="#三种访问控制的介绍" class="headerlink" title="三种访问控制的介绍"></a>三种访问控制的介绍</h3><p>S3的三种访问控制如下:</p>
-<ul>
-<li>IAM Policy, 是基于用户层面的控制，attach to IAM实体(User, Role或Group),规定了谁能对哪些S3做什么操作</li>
-<li>Bucket Policy, 是基于Bucket层面的控制, attach to Bucket, 规定了哪些人能对我这个Bucket中的resource做什么操作。</li>
-<li>S3 ACL, 是基于Bucket或单个对象的，规定了谁能对我这个Bucket或对象做什么操作。</li>
-</ul>
-	
-	</div>
-  <a type="button" href="/2017/12/14/deep-dig-on-s3-bucket-permission/#more" class="btn btn-default more">Read More</a>
+  <a type="button" href="/2018/03/16/how-to-subscribe-RDS-event/#more" class="btn btn-default more">Read More</a>
 </div>
 
            
@@ -500,7 +452,7 @@ var _hmt = _hmt || [];
 		<h4>Categories</h4>
 		<ul class="tag_box inline list-unstyled">
 		
-			<li><a href="/categories/AWS/">AWS<span>27</span></a></li>
+			<li><a href="/categories/AWS/">AWS<span>32</span></a></li>
 		
 			<li><a href="/categories/AWS-Certified/">AWS Certified<span>3</span></a></li>
 		
@@ -508,9 +460,11 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/Code/">Code<span>5</span></a></li>
 		
+			<li><a href="/categories/Linux/">Linux<span>2</span></a></li>
+		
 			<li><a href="/categories/Shell/">Shell<span>8</span></a></li>
 		
-			<li><a href="/categories/Tools/">Tools<span>7</span></a></li>
+			<li><a href="/categories/Tools/">Tools<span>12</span></a></li>
 		
 		</ul>
 	</div>
@@ -521,48 +475,48 @@ var _hmt = _hmt || [];
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/Douban/">Douban<span>1</span></a></li>
+			<li><a href="/tags/Ruby/">Ruby<span>8</span></a></li>
 		
-			<li><a href="/tags/Failover/">Failover<span>1</span></a></li>
+			<li><a href="/tags/Hexo/">Hexo<span>5</span></a></li>
+		
+			<li><a href="/tags/AutoScaling/">AutoScaling<span>3</span></a></li>
+		
+			<li><a href="/tags/SSH/">SSH<span>3</span></a></li>
+		
+			<li><a href="/tags/Nodejs/">Nodejs<span>2</span></a></li>
+		
+			<li><a href="/tags/Firewall/">Firewall<span>1</span></a></li>
 		
 			<li><a href="/tags/Video/">Video<span>1</span></a></li>
 		
-			<li><a href="/tags/FFMPEG/">FFMPEG<span>1</span></a></li>
+			<li><a href="/tags/DynamoDB/">DynamoDB<span>1</span></a></li>
 		
-			<li><a href="/tags/EC2/">EC2<span>7</span></a></li>
+			<li><a href="/tags/MacOS/">MacOS<span>12</span></a></li>
 		
-			<li><a href="/tags/Github/">Github<span>2</span></a></li>
+			<li><a href="/tags/Image/">Image<span>1</span></a></li>
 		
-			<li><a href="/tags/Passenger/">Passenger<span>2</span></a></li>
+			<li><a href="/tags/Github/">Github<span>3</span></a></li>
 		
-			<li><a href="/tags/Network/">Network<span>1</span></a></li>
-		
-			<li><a href="/tags/Git/">Git<span>1</span></a></li>
-		
-			<li><a href="/tags/CodeCommit/">CodeCommit<span>1</span></a></li>
-		
-			<li><a href="/tags/AWS-CLI/">AWS CLI<span>5</span></a></li>
-		
-			<li><a href="/tags/AWS-SDK/">AWS SDK<span>2</span></a></li>
-		
-			<li><a href="/tags/AWS-Free-Tier/">AWS Free Tier<span>1</span></a></li>
-		
-			<li><a href="/tags/Solutions-Architect/">Solutions Architect<span>1</span></a></li>
-		
-			<li><a href="/tags/PostgreSQL/">PostgreSQL<span>1</span></a></li>
-		
-			<li><a href="/tags/AWS-Tools/">AWS Tools<span>1</span></a></li>
-		
-			<li><a href="/tags/Elastic-Load-Balancing/">Elastic Load Balancing<span>5</span></a></li>
-		
-			<li><a href="/tags/AWS-Deep-Dive/">AWS Deep Dive<span>2</span></a></li>
-		
-			<li><a href="/tags/HTTP/">HTTP<span>2</span></a></li>
+			<li><a href="/tags/Application-Load-Balancing/">Application Load Balancing<span>1</span></a></li>
 		
 			<li><a href="/tags/Nginx/">Nginx<span>4</span></a></li>
 		
+			<li><a href="/tags/Tips/">Tips<span>1</span></a></li>
 		
-		   <li><a href="/tags">...<span>42</span></a></li>
+			<li><a href="/tags/iOS/">iOS<span>1</span></a></li>
+		
+			<li><a href="/tags/IAM/">IAM<span>3</span></a></li>
+		
+			<li><a href="/tags/AWS-Tools/">AWS Tools<span>2</span></a></li>
+		
+			<li><a href="/tags/PostgreSQL/">PostgreSQL<span>1</span></a></li>
+		
+			<li><a href="/tags/RDS/">RDS<span>3</span></a></li>
+		
+			<li><a href="/tags/HTTP/">HTTP<span>4</span></a></li>
+		
+		
+		   <li><a href="/tags">...<span>47</span></a></li>
 		 
 		</ul>
 	</div>
@@ -575,23 +529,23 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
-        <a href="/2019/04/02/bbr-on-aws-ec2/" ><i class="fa fa-file-o"></i>AWS EC2中开启BBR</a>
+        <a href="/2019/05/28/how-to-deploy-hexo-to-aws-lightsail/" ><i class="fa fa-file-o"></i>how to deploy hexo to aws l...</a>
       </li>
     
       <li>
-        <a href="/2019/03/24/share-ShadowsocksX-NG-to-iOS/" ><i class="fa fa-file-o"></i>Mac下共享ShadowsocksX-NG的梯子给iOS</a>
+        <a href="/2019/05/21/how-to-direct-http-to-https-in-elasticbeanstalk-ruby-passenger-platform/" ><i class="fa fa-file-o"></i>Elastic Beanstalk Ruby Pass...</a>
       </li>
     
       <li>
-        <a href="/2019/03/21/ctrl-c-invalid-on-Centos-7/" ><i class="fa fa-file-o"></i>CentOS 7下Ctrl-C失效问题</a>
+        <a href="/2019/05/16/how-to-add-SSL-Certification-to-Elastic-Load-Balancer/" ><i class="fa fa-file-o"></i>如何在Elastic Load Balancer中添加...</a>
       </li>
     
       <li>
-        <a href="/2019/03/11/ways-to-support-public-s3-file-in-nginx/" ><i class="fa fa-file-o"></i>使用nginx处理S3静态资源</a>
+        <a href="/2019/05/10/how-to-change-office-UI-language-on-macos/" ><i class="fa fa-file-o"></i>在Mac下修改Office的界面显示语言</a>
       </li>
     
       <li>
-        <a href="/2019/03/10/passenger-status-not-work-on-CentOS-7/" ><i class="fa fa-file-o"></i>CentOS 7下passenger-status报错</a>
+        <a href="/2019/05/09/ffmpeg-command/" ><i class="fa fa-file-o"></i>ffmpeg command</a>
       </li>
     
   </ul>

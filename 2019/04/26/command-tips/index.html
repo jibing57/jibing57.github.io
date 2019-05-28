@@ -1,0 +1,347 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Command Tips | Recording</title>
+  <meta name="author" content="jibing57">
+  
+  <meta name="description" content="AWS, 阅读, Architecture, PostgreSQL">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Command Tips"/>
+  <meta property="og:site_name" content="Recording"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/css/themes/bootstrap.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/comment.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+  
+  <!-- analytics -->
+  
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-111771042-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?59d3e14cdc96877383afed646f44d216";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+</head>
+
+ <body>  
+  <nav id="main-nav" class="navbar  navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+	<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+       <a class="navbar-brand" href="/">Recording</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class="fa fa-archive"></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class="fa fa-folder"></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class="fa fa-tags"></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/douban" title="Douban">
+			  <i class="fa fa-book"></i>Douban
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header ">		
+			<h1 class="title "> Command Tips</h1>
+		</div>		
+	
+
+
+
+
+   <style type="text/css">
+           img, video {
+                -webkit-box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+                -moz-box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+                box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+           }
+   </style>
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
+
+	<!-- content -->
+	<div class="mypage">		
+	  		
+
+	  <h3 id="git-branch-不要分页"><a href="#git-branch-不要分页" class="headerlink" title="git branch 不要分页"></a>git branch 不要分页</h3><p>设置git branch不分页显示<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git config --global pager.branch false</div></pre></td></tr></table></figure></p>
+<hr>
+<h3 id="Macos下tree显示中文"><a href="#Macos下tree显示中文" class="headerlink" title="Macos下tree显示中文"></a>Macos下tree显示中文</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># 安装tree</div><div class="line">brew install tree`</div><div class="line"></div><div class="line"># 中文不乱码加参数 -N</div><div class="line">tree -N</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="CentoOS-7-最小化安装后可能需要的一些命令"><a href="#CentoOS-7-最小化安装后可能需要的一些命令" class="headerlink" title="CentoOS 7 最小化安装后可能需要的一些命令"></a>CentoOS 7 最小化安装后可能需要的一些命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">yum install wget curl</div><div class="line">yum install unzip</div><div class="line">yum install tree</div><div class="line">yum install net-tools</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="CentOS-7-中命令行UI编辑网口信息的命令"><a href="#CentOS-7-中命令行UI编辑网口信息的命令" class="headerlink" title="CentOS 7 中命令行UI编辑网口信息的命令"></a>CentOS 7 中命令行UI编辑网口信息的命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ yum install NetworkManager-tui</div><div class="line"></div><div class="line">$ nmtui</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="MacOS-ffplay只有声音没有图像"><a href="#MacOS-ffplay只有声音没有图像" class="headerlink" title="MacOS ffplay只有声音没有图像"></a>MacOS ffplay只有声音没有图像</h3><p>如果rtmp地址加了单引号，ffplay会偶尔抽风只播放声音而没有视频, 去掉单引号或者使用双引号代替<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># 可能会抽风，没有图像,只能解析音频信号</div><div class="line">ffplay &apos;rtmp://192.168.187.128/live/room8878&apos;</div><div class="line"></div><div class="line"># 去掉单引号或换用双引号，没发现过问题 </div><div class="line">ffplay rtmp://192.168.187.128/live/room8878</div><div class="line">ffplay &quot;rtmp://192.168.187.128/live/room8878&quot;</div></pre></td></tr></table></figure></p>
+<hr>
+<h3 id="grep-中将binary-file当做文本"><a href="#grep-中将binary-file当做文本" class="headerlink" title="grep 中将binary file当做文本"></a>grep 中将binary file当做文本</h3><p>grep加上<code>-a</code>参数，就可以将binary file当做text来对待.<br><code>man grep</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">-a, --text</div><div class="line">       Process a binary file as if it were text; this is equivalent to the --binary-files=text option.</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="MacOS下Betterzip-quicklook不起作用"><a href="#MacOS下Betterzip-quicklook不起作用" class="headerlink" title="MacOS下Betterzip quicklook不起作用"></a>MacOS下Betterzip quicklook不起作用</h3><p>BetterZipQL被集成到BetterZip中了，因此brew在<a href="https://github.com/Homebrew/homebrew-cask/pull/41954" target="_blank" rel="external">pull request 41954</a>中删除了BetterZipQL。<br>需要使用<code>brew cask install betterzip</code>来安装BetterZip。BetterZip是收费软件，30天免费试用。但官网上说Quick Look功能在试用期结束后，还是可以免费使用。<br><strong>如果安装完成后，发现quicklook功能没起作用，记得需要先在Application中打开一次BetterZip，别问我是怎么知道的。</strong></p>
+<hr>
+<h3 id="MacOS下QuickLook的路径"><a href="#MacOS下QuickLook的路径" class="headerlink" title="MacOS下QuickLook的路径"></a>MacOS下QuickLook的路径</h3><p>全局目录: <code>/Library/QuickLook/</code><br>用户目录: <code>~/Library/QuickLook/</code></p>
+<hr>
+<h3 id="CentOS-7下安装lspci"><a href="#CentOS-7下安装lspci" class="headerlink" title="CentOS 7下安装lspci"></a>CentOS 7下安装lspci</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># 安装lspci</div><div class="line">sudo yum install pciutils</div><div class="line"></div><div class="line"># 更新PCI ID list</div><div class="line">sudo update-pciids</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="rsync命令"><a href="#rsync命令" class="headerlink" title="rsync命令"></a>rsync命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># 密码方式</div><div class="line">rsync -P -a -z -e ssh /from/dir/ username@hostname:/to/dir/</div><div class="line"></div><div class="line"># identity file免密方式</div><div class="line">rsync -Pav -e &quot;ssh -i $HOME/.ssh/somekey&quot; username@hostname:/from/dir/ /to/dir/</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="CentOS中启用epel-repository"><a href="#CentOS中启用epel-repository" class="headerlink" title="CentOS中启用epel repository"></a>CentOS中启用epel repository</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum -y install epel-release</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="CentOS中systemctl常用命令小结"><a href="#CentOS中systemctl常用命令小结" class="headerlink" title="CentOS中systemctl常用命令小结"></a>CentOS中systemctl常用命令小结</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"># 启动服务</div><div class="line">systemctl start nginx</div><div class="line"></div><div class="line"># 停止服务</div><div class="line">systemctl stop nginx</div><div class="line"></div><div class="line"># 重启服务</div><div class="line">systemctl restart nginx</div><div class="line"></div><div class="line"># reload服务</div><div class="line">systemctl reload nginx</div><div class="line"></div><div class="line"># 列出服务状态</div><div class="line">systemctl status nginx</div><div class="line"></div><div class="line"># 开机启动服务类似于 chkconfig service on</div><div class="line">systemctl enable nginx</div><div class="line"></div><div class="line"># 开机停止服务，类似于chkconfig service off</div><div class="line">systemctl disable nginx</div><div class="line"></div><div class="line"># 查看服务是否开机启动</div><div class="line">systemctl is-enabled nginx</div><div class="line"></div><div class="line"># 查看所有服务状态</div><div class="line">systemctl list-unit-files --type=service</div><div class="line"></div><div class="line"># 查看当前运行的服务</div><div class="line">systemctl list-units --type service</div></pre></td></tr></table></figure>
+	  
+	</div>
+
+	<div>
+  	<center>
+	<div class="pagination">
+<ul class="pagination">
+	 
+				
+    	<li class="prev"><a href="/2019/04/26/manually-install-vmeare-tools-on-centos-7/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>Prev</a></li>
+  		
+
+        <li><a href="/archives"><i class="fa fa-archive"></i>Archive</a></li>
+
+		
+		   <li class="next"><a href="/2019/04/20/niu-x-resource/" class="alignright next">Next<i class="fa fa-arrow-circle-o-right"></i></a></li>         
+        
+	
+</ul>
+</div>
+
+    </center>
+	</div>
+
+    <!-- share -->
+    
+        
+    <div class="bdsharebuttonbox">
+        <a href="#" class="bds_more" data-cmd="more"></a>
+        <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+        <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+        <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+        <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+        <a href="#" class="bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+        <a href="#" class="bds_evernotecn" data-cmd="evernotecn" title="分享到印象笔记"></a>
+        <a href="#" class="bds_youdao" data-cmd="youdao" title="分享到有道云笔记"></a>
+        <a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+    </div>
+    <script>
+        window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"24"},"share":{}};
+        with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+    </script>
+
+
+        
+
+    
+	
+	<!-- comment -->
+	
+<section id="comment">
+  <h2 class="title">Comments</h2>
+  
+  	 <div id="disqus_thread">
+     <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  	 </div>
+  
+</section>
+
+
+	</div> <!-- col-md-9/col-md-12 -->
+		
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta">
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2019-04-26 13:22:40
+	</div>
+	
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
+	   <div id="toc" class="toc collapse in">
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#git-branch-不要分页"><span class="toc-article-text">git branch 不要分页</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#Macos下tree显示中文"><span class="toc-article-text">Macos下tree显示中文</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#CentoOS-7-最小化安装后可能需要的一些命令"><span class="toc-article-text">CentoOS 7 最小化安装后可能需要的一些命令</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#CentOS-7-中命令行UI编辑网口信息的命令"><span class="toc-article-text">CentOS 7 中命令行UI编辑网口信息的命令</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#MacOS-ffplay只有声音没有图像"><span class="toc-article-text">MacOS ffplay只有声音没有图像</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#grep-中将binary-file当做文本"><span class="toc-article-text">grep 中将binary file当做文本</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#MacOS下Betterzip-quicklook不起作用"><span class="toc-article-text">MacOS下Betterzip quicklook不起作用</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#MacOS下QuickLook的路径"><span class="toc-article-text">MacOS下QuickLook的路径</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#CentOS-7下安装lspci"><span class="toc-article-text">CentOS 7下安装lspci</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#rsync命令"><span class="toc-article-text">rsync命令</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#CentOS中启用epel-repository"><span class="toc-article-text">CentOS中启用epel repository</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#CentOS中systemctl常用命令小结"><span class="toc-article-text">CentOS中systemctl常用命令小结</span></a></li></ol>
+		</div>
+	
+	</div>
+
+	<!-- categories -->
+    
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>
+    <ul id="categorys" class="tag_box list-unstyled collapse in">
+          
+  <li>
+    <li><a href="/categories/Tools/">Tools<span>12</span></a></li>
+  </li>
+
+    </ul>
+	</div>
+	
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>
+    <ul id="tags" class="tag_box list-unstyled collapse in">
+	    
+  <li><a href="/tags/Linux/">Linux<span>12</span></a></li> <li><a href="/tags/MacOS/">MacOS<span>12</span></a></li>
+    </ul>
+	</div>
+	
+
+    <hr>
+
+</div><!-- col-md-3 -->
+
+	</div>
+		
+
+</div><!-- row -->
+
+<script type="text/javascript">
+var disqus_shortname = 'jibing57-blog';
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  &copy; 2019 jibing57
+  
+      with help from <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>.    
+</p> </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>

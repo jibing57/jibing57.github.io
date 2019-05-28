@@ -1,0 +1,335 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>ffmpeg command | Recording</title>
+  <meta name="author" content="jibing57">
+  
+  <meta name="description" content="AWS, 阅读, Architecture, PostgreSQL">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="ffmpeg command"/>
+  <meta property="og:site_name" content="Recording"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/css/themes/bootstrap.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/comment.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+  
+  <!-- analytics -->
+  
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-111771042-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?59d3e14cdc96877383afed646f44d216";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+</head>
+
+ <body>  
+  <nav id="main-nav" class="navbar  navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+	<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+       <a class="navbar-brand" href="/">Recording</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class="fa fa-archive"></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class="fa fa-folder"></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class="fa fa-tags"></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/douban" title="Douban">
+			  <i class="fa fa-book"></i>Douban
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header ">		
+			<h1 class="title "> ffmpeg command</h1>
+		</div>		
+	
+
+
+
+
+   <style type="text/css">
+           img, video {
+                -webkit-box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+                -moz-box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+                box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+           }
+   </style>
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
+
+	<!-- content -->
+	<div class="mypage">		
+	  		
+
+	  <h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>官网下载地址 <a href="https://ffmpeg.org/download.html" target="_blank" rel="external">Download FFmpeg</a></p>
+<ul>
+<li><p>Mac下安装<br>Mac下的话，推荐brew 安装<code>brew install ffmpeg</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">$ ffmpeg -version</div><div class="line">ffmpeg version 4.1.3 Copyright (c) 2000-2019 the FFmpeg developers</div><div class="line">built with Apple LLVM version 10.0.1 (clang-1001.0.46.3)</div><div class="line">configuration: --prefix=/usr/local/Cellar/ffmpeg/4.1.3 --enable-shared --enable-pthreads --enable-version3 --enable-hardcoded-tables --enable-avresample --cc=clang --host-cflags=&apos;-I/Library/Java/JavaVirtualMachines/openjdk-12.jdk/Contents/Home/include -I/Library/Java/JavaVirtualMachines/openjdk-12.jdk/Contents/Home/include/darwin&apos; --host-ldflags= --enable-ffplay --enable-gnutls --enable-gpl --enable-libaom --enable-libbluray --enable-libmp3lame --enable-libopus --enable-librubberband --enable-libsnappy --enable-libtesseract --enable-libtheora --enable-libvorbis --enable-libvpx --enable-libx264 --enable-libx265 --enable-libxvid --enable-lzma --enable-libfontconfig --enable-libfreetype --enable-frei0r --enable-libass --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenjpeg --enable-librtmp --enable-libspeex --enable-videotoolbox --disable-libjack --disable-indev=jack --enable-libaom --enable-libsoxr</div><div class="line">libavutil      56. 22.100 / 56. 22.100</div><div class="line">libavcodec     58. 35.100 / 58. 35.100</div><div class="line">libavformat    58. 20.100 / 58. 20.100</div><div class="line">libavdevice    58.  5.100 / 58.  5.100</div><div class="line">libavfilter     7. 40.101 /  7. 40.101</div><div class="line">libavresample   4.  0.  0 /  4.  0.  0</div><div class="line">libswscale      5.  3.100 /  5.  3.100</div><div class="line">libswresample   3.  3.100 /  3.  3.100</div><div class="line">libpostproc    55.  3.100 / 55.  3.100</div><div class="line">$</div></pre></td></tr></table></figure>
+</li>
+<li><p>Linux下安装<br>Linux下可以选择Static Builds，也可以选择package的安装方式<br>红帽系(Fedora, Redhat, CentOS)，可以使用yum源<a href="https://rpmfusion.org/" target="_blank" rel="external">RMP Fusion</a>来安装,  Static Builds的那个,没有启用全部功能，似乎不太灵光。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo yum localinstall --nogpgcheck https://download1.rpmfusion.org/free/el/rpmfusion-free-release-7.noarch.rpm https://download1.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-7.noarch.rpm</div><div class="line">sudo yum install ffmpeg</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="工作基本流程"><a href="#工作基本流程" class="headerlink" title="工作基本流程"></a>工作基本流程</h3><p><a href="https://ffmpeg.org/ffmpeg.html" target="_blank" rel="external">ffmpeg官网</a>图示的基本流程如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"> _______              ______________</div><div class="line">|       |            |              |</div><div class="line">| input |  demuxer   | encoded data |   decoder</div><div class="line">| file  | ---------&gt; | packets      | -----+</div><div class="line">|_______|            |______________|      |</div><div class="line">                                           v</div><div class="line">                                       _________</div><div class="line">                                      |         |</div><div class="line">                                      | decoded |</div><div class="line">                                      | frames  |</div><div class="line">                                      |_________|</div><div class="line"> ________             ______________       |</div><div class="line">|        |           |              |      |</div><div class="line">| output | &lt;-------- | encoded data | &lt;----+</div><div class="line">| file   |   muxer   | packets      |   encoder</div><div class="line">|________|           |______________|</div></pre></td></tr></table></figure></p>
+<ol>
+<li>输入文件经过分离器demuxer, 分离出编码的流，如视频流，音频流等</li>
+<li>各个流经过解码器decoder, 解码为原始的数据帧</li>
+<li>将原始帧按照命令指定的编码经过编码器encoder进行编码, 得到各个编码后的流。</li>
+<li>使用混流器muxer将多路的流合成一个整的文件</li>
+</ol>
+<p>一些概念:</p>
+<ol>
+<li>流（stream）：视频文件中，一般具有视频流与音频流，有的具有字幕流。它们需要不同的解码/编码器。想要混合/分离视频与音频，就需要混流/分流器。</li>
+<li>流复制（stream）：如果某种数据流的内容不需要任何改动，那么可以直接跳过该数据流的解码与编码步骤。分离出该数据流后，直接等待参与混流即可。</li>
+</ol>
+<h3 id="基础命令"><a href="#基础命令" class="headerlink" title="基础命令"></a>基础命令</h3><ol>
+<li><p>版本命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># 查看版本信息</div><div class="line">ffmpeg -version</div><div class="line"></div><div class="line"># 查看视频信息 -hide_banner用于隐藏ffmpeg自身的信息</div><div class="line">ffmpeg -hide_banner -i avenger.flv</div></pre></td></tr></table></figure>
+</li>
+<li><p>帮助命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"># ffmpeg 帮助</div><div class="line">ffmpeg -h  # 输出基础的选项</div><div class="line">ffmpeg -h long # 输出高级的工具选项</div><div class="line">ffmpeg -h full # 打印所有选项，包括编码器，解码器，分流器，混合器，滤镜等的共享和私有选项</div><div class="line"></div><div class="line"># 针对某个topic的help</div><div class="line">ffmpeg -h topic #输出某个topic信息, 例如 ffmpeg -h encoder=flv</div><div class="line"></div><div class="line">## decoder help</div><div class="line">ffmpeg -decoders # 查看支持的解码器列表</div><div class="line">ffmpeg -h decoder=flv # 查看解码器flv的详细信息</div><div class="line"></div><div class="line">## encoder help</div><div class="line">ffmpeg -encoders # 查看支持的编码器列表</div><div class="line">ffmpeg -h encoder=flv # 查看解码器flv的详细信息</div><div class="line"></div><div class="line">## demuxer help</div><div class="line">ffmpeg -formats  # 查看所有分流器和混合器的列表</div><div class="line">ffmpeg -h demuxer=flv  # 查看分流器flv的详细信息</div><div class="line"></div><div class="line">## muxer help</div><div class="line">ffmpeg -formats  # 查看所有分流器和混合器的列表</div><div class="line">ffmpeg -h muxer=flv  # 查看混合器flv的详细信息</div><div class="line"></div><div class="line">## filter help</div><div class="line">ffmpeg -filters  # 查看所有滤镜的列表</div><div class="line">ffmpeg -h filter=movie  # 查看滤镜movie的详细信息</div></pre></td></tr></table></figure>
+</li>
+<li><p>常用基础参数</p>
+</li>
+</ol>
+	  
+	</div>
+
+	<div>
+  	<center>
+	<div class="pagination">
+<ul class="pagination">
+	 
+				
+    	<li class="prev"><a href="/2019/05/10/how-to-change-office-UI-language-on-macos/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>Prev</a></li>
+  		
+
+        <li><a href="/archives"><i class="fa fa-archive"></i>Archive</a></li>
+
+		
+		   <li class="next"><a href="/2019/05/05/NIC-bonding-in-CentOS7/" class="alignright next">Next<i class="fa fa-arrow-circle-o-right"></i></a></li>         
+        
+	
+</ul>
+</div>
+
+    </center>
+	</div>
+
+    <!-- share -->
+    
+        
+    <div class="bdsharebuttonbox">
+        <a href="#" class="bds_more" data-cmd="more"></a>
+        <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+        <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+        <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+        <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+        <a href="#" class="bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+        <a href="#" class="bds_evernotecn" data-cmd="evernotecn" title="分享到印象笔记"></a>
+        <a href="#" class="bds_youdao" data-cmd="youdao" title="分享到有道云笔记"></a>
+        <a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+    </div>
+    <script>
+        window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"24"},"share":{}};
+        with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+    </script>
+
+
+        
+
+    
+	
+	<!-- comment -->
+	
+<section id="comment">
+  <h2 class="title">Comments</h2>
+  
+  	 <div id="disqus_thread">
+     <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  	 </div>
+  
+</section>
+
+
+	</div> <!-- col-md-9/col-md-12 -->
+		
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta">
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2019-05-09 17:20:05
+	</div>
+	
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
+	   <div id="toc" class="toc collapse in">
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#安装"><span class="toc-article-text">安装</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#工作基本流程"><span class="toc-article-text">工作基本流程</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#基础命令"><span class="toc-article-text">基础命令</span></a></li></ol>
+		</div>
+	
+	</div>
+
+	<!-- categories -->
+    
+
+	<!-- tags -->
+	
+
+    <hr>
+
+</div><!-- col-md-3 -->
+
+	</div>
+		
+
+</div><!-- row -->
+
+<script type="text/javascript">
+var disqus_shortname = 'jibing57-blog';
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  &copy; 2019 jibing57
+  
+      with help from <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>.    
+</p> </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>

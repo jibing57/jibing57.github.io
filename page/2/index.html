@@ -139,8 +139,8 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
-			<div class="date"> 2018-12-24 </div>
-			<div class="article-title"><a href="/2018/12/24/404-on-Scale-Up-of-ElasticBeanstalk/" >ElasticBeanstalk伸缩时偶发404的原因</a></div>						
+			<div class="date"> 2019-04-26 </div>
+			<div class="article-title"><a href="/2019/04/26/command-tips/" >Command Tips</a></div>						
 		</h3>
 	
 
@@ -149,17 +149,236 @@ var _hmt = _hmt || [];
   <div class="row">
 	
 	
-		<p>使用EB Passenger with Ruby部署rails时，如果是以默认配置启动，没有做对应的配置，在ASG Scale Up的时候，可能会有请求没法正常处理，返回404。</p>
-<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><ol>
-<li>EB中创建的ELB，默认是使用TCP:80的方式来检查Instance的健康状态的。</li>
-<li>ELB的<code>health check</code>的默认<code>Interval</code>是10 seconds，<code>Healthy threshold</code>是3 requests。</li>
-<li>当ASG Scale Up时，新建的Instance中Passenger在Rails APP部署完成之前就已经在监听80端口了。</li>
-<li>Passenger启动30秒之后，因为超过了<code>Healthy threshold * Interval</code>的时间, 并且每次检查都是OK的，ELB会判定Instance是可用的，就会将流量导入到该Instance中。</li>
-<li>但此时rails APP可能并没有部署完成(bundle install加上precompile，部署一个新的APP可能需要5分钟左右)，所以client会得到404的错误。</li>
+		<h3 id="git-branch-不要分页"><a href="#git-branch-不要分页" class="headerlink" title="git branch 不要分页"></a>git branch 不要分页</h3><p>设置git branch不分页显示<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git config --global pager.branch false</div></pre></td></tr></table></figure></p>
+<hr>
+<h3 id="Macos下tree显示中文"><a href="#Macos下tree显示中文" class="headerlink" title="Macos下tree显示中文"></a>Macos下tree显示中文</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># 安装tree</div><div class="line">brew install tree`</div><div class="line"></div><div class="line"># 中文不乱码加参数 -N</div><div class="line">tree -N</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="CentoOS-7-最小化安装后可能需要的一些命令"><a href="#CentoOS-7-最小化安装后可能需要的一些命令" class="headerlink" title="CentoOS 7 最小化安装后可能需要的一些命令"></a>CentoOS 7 最小化安装后可能需要的一些命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">yum install wget curl</div><div class="line">yum install unzip</div><div class="line">yum install tree</div><div class="line">yum install net-tools</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="CentOS-7-中命令行UI编辑网口信息的命令"><a href="#CentOS-7-中命令行UI编辑网口信息的命令" class="headerlink" title="CentOS 7 中命令行UI编辑网口信息的命令"></a>CentOS 7 中命令行UI编辑网口信息的命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ yum install NetworkManager-tui</div><div class="line"></div><div class="line">$ nmtui</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="MacOS-ffplay只有声音没有图像"><a href="#MacOS-ffplay只有声音没有图像" class="headerlink" title="MacOS ffplay只有声音没有图像"></a>MacOS ffplay只有声音没有图像</h3><p>如果rtmp地址加了单引号，ffplay会偶尔抽风只播放声音而没有视频, 去掉单引号或者使用双引号代替<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># 可能会抽风，没有图像,只能解析音频信号</div><div class="line">ffplay &apos;rtmp://192.168.187.128/live/room8878&apos;</div><div class="line"></div><div class="line"># 去掉单引号或换用双引号，没发现过问题 </div><div class="line">ffplay rtmp://192.168.187.128/live/room8878</div><div class="line">ffplay &quot;rtmp://192.168.187.128/live/room8878&quot;</div></pre></td></tr></table></figure></p>
+<hr>
+<h3 id="grep-中将binary-file当做文本"><a href="#grep-中将binary-file当做文本" class="headerlink" title="grep 中将binary file当做文本"></a>grep 中将binary file当做文本</h3><p>grep加上<code>-a</code>参数，就可以将binary file当做text来对待.<br><code>man grep</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">-a, --text</div><div class="line">       Process a binary file as if it were text; this is equivalent to the --binary-files=text option.</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="MacOS下Betterzip-quicklook不起作用"><a href="#MacOS下Betterzip-quicklook不起作用" class="headerlink" title="MacOS下Betterzip quicklook不起作用"></a>MacOS下Betterzip quicklook不起作用</h3><p>BetterZipQL被集成到BetterZip中了，因此brew在<a href="https://github.com/Homebrew/homebrew-cask/pull/41954" target="_blank" rel="external">pull request 41954</a>中删除了BetterZipQL。<br>需要使用<code>brew cask install betterzip</code>来安装BetterZip。BetterZip是收费软件，30天免费试用。但官网上说Quick Look功能在试用期结束后，还是可以免费使用。<br><strong>如果安装完成后，发现quicklook功能没起作用，记得需要先在Application中打开一次BetterZip，别问我是怎么知道的。</strong></p>
+<hr>
+<h3 id="MacOS下QuickLook的路径"><a href="#MacOS下QuickLook的路径" class="headerlink" title="MacOS下QuickLook的路径"></a>MacOS下QuickLook的路径</h3><p>全局目录: <code>/Library/QuickLook/</code><br>用户目录: <code>~/Library/QuickLook/</code></p>
+<hr>
+<h3 id="CentOS-7下安装lspci"><a href="#CentOS-7下安装lspci" class="headerlink" title="CentOS 7下安装lspci"></a>CentOS 7下安装lspci</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># 安装lspci</div><div class="line">sudo yum install pciutils</div><div class="line"></div><div class="line"># 更新PCI ID list</div><div class="line">sudo update-pciids</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="rsync命令"><a href="#rsync命令" class="headerlink" title="rsync命令"></a>rsync命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># 密码方式</div><div class="line">rsync -P -a -z -e ssh /from/dir/ username@hostname:/to/dir/</div><div class="line"></div><div class="line"># identity file免密方式</div><div class="line">rsync -Pav -e &quot;ssh -i $HOME/.ssh/somekey&quot; username@hostname:/from/dir/ /to/dir/</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="CentOS中启用epel-repository"><a href="#CentOS中启用epel-repository" class="headerlink" title="CentOS中启用epel repository"></a>CentOS中启用epel repository</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum -y install epel-release</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="CentOS中systemctl常用命令小结"><a href="#CentOS中systemctl常用命令小结" class="headerlink" title="CentOS中systemctl常用命令小结"></a>CentOS中systemctl常用命令小结</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"># 启动服务</div><div class="line">systemctl start nginx</div><div class="line"></div><div class="line"># 停止服务</div><div class="line">systemctl stop nginx</div><div class="line"></div><div class="line"># 重启服务</div><div class="line">systemctl restart nginx</div><div class="line"></div><div class="line"># reload服务</div><div class="line">systemctl reload nginx</div><div class="line"></div><div class="line"># 列出服务状态</div><div class="line">systemctl status nginx</div><div class="line"></div><div class="line"># 开机启动服务类似于 chkconfig service on</div><div class="line">systemctl enable nginx</div><div class="line"></div><div class="line"># 开机停止服务，类似于chkconfig service off</div><div class="line">systemctl disable nginx</div><div class="line"></div><div class="line"># 查看服务是否开机启动</div><div class="line">systemctl is-enabled nginx</div><div class="line"></div><div class="line"># 查看所有服务状态</div><div class="line">systemctl list-unit-files --type=service</div><div class="line"></div><div class="line"># 查看当前运行的服务</div><div class="line">systemctl list-units --type service</div></pre></td></tr></table></figure>
+
+	
+	</div>
+  <a type="button" href="/2019/04/26/command-tips/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2019-04-20 </div>
+			<div class="article-title"><a href="/2019/04/20/niu-x-resource/" >Niu-X resource</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>记录一些有用的网站，持续更新中。。</p>
+<hr>
+<h3 id="Linux-command"><a href="#Linux-command" class="headerlink" title="Linux-command"></a>Linux-command</h3><p>github地址: <a href="https://github.com/jaywcjlove/linux-command" target="_blank" rel="external">linux-command</a></p>
+<blockquote>
+<p>Linux命令大全搜索工具，内容包含Linux命令手册、详解、学习、搜集 </p>
+</blockquote>
+<p>比较系统的各个命令，期待有空时每个粗略一遍，需要时再来查询</p>
+	
+	</div>
+  <a type="button" href="/2019/04/20/niu-x-resource/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2019-04-20 </div>
+			<div class="article-title"><a href="/2019/04/20/firewall-cmd-basic-usage/" >firewall-cmd基本用法</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p><strong>还需要装个虚拟机，重新敲命令，拷贝输出内容或者截图</strong></p>
+<h3 id="安装和管理firewalld"><a href="#安装和管理firewalld" class="headerlink" title="安装和管理firewalld"></a>安装和管理firewalld</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"># 安装firewalld</div><div class="line">yum install firewalld firewall-config</div><div class="line"></div><div class="line">systemctl start  firewalld # 启动</div><div class="line">systemctl status firewalld # 或者 firewall-cmd --state 查看状态</div><div class="line">systemctl stop firewalld  # 停止</div><div class="line">systemctl enable firewalld # 开机自自动</div><div class="line">systemctl disable firewalld # 取消自启动</div><div class="line">systemctl list-unit-files | grep firewalld # 查看是否开机自启动</div></pre></td></tr></table></figure>
+<h3 id="基础命令"><a href="#基础命令" class="headerlink" title="基础命令"></a>基础命令</h3><p>一些常用的命令如下:</p>
+<ul>
+<li>查看防火墙状态<br>命令: <code>firewall-cmd --list-all</code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">$ sudo firewall-cmd --list-all</div><div class="line">public (active)</div><div class="line">  target: default</div><div class="line">  icmp-block-inversion: no</div><div class="line">  interfaces: ens33</div><div class="line">  sources:</div><div class="line">  services: ssh dhcpv6-client</div><div class="line">  ports:</div><div class="line">  protocols:</div><div class="line">  masquerade: no</div><div class="line">  forward-ports:</div><div class="line">  source-ports:</div><div class="line">  icmp-blocks:</div><div class="line">  rich rules:</div><div class="line"></div><div class="line">$</div></pre></td></tr></table></figure>
+</li>
+</ul>
+	
+	</div>
+  <a type="button" href="/2019/04/20/firewall-cmd-basic-usage/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2019-04-09 </div>
+			<div class="article-title"><a href="/2019/04/09/online-visual-paradigm/" >在线架构图工具Online Visual Paradigm</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>一个免费的在线画AWS架构图的网址<a href="https://online.visual-paradigm.com" target="_blank" rel="external">https://online.visual-paradigm.com</a>, 30天试用期内可以随时保存和下载源文件。过了试用期后，还可以使用，但无法保存和导出源文件。<br>visual-paradigm也有<a href="https://www.visual-paradigm.com/download/" target="_blank" rel="external">客户端</a>，30天免费试用。</p>
+<ul>
+<li>优势<ul>
+<li>集成了AWS各个服务的图标，</li>
+<li>有一些经典的架构模板，制作AWS架构图的时候会比较方便。</li>
+</ul>
+</li>
+<li>劣势<ul>
+<li>试用过后, 费用比较贵</li>
+</ul>
+</li>
+</ul>
+<h3 id="几个例子"><a href="#几个例子" class="headerlink" title="几个例子"></a>几个例子</h3><p>使用在线工具画的项目的架构图<br><img src="/images/AWS/Tools/architecture_diagram.png" alt="architecture_diagram.png"><br>
+	
+	</div>
+  <a type="button" href="/2019/04/09/online-visual-paradigm/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2019-04-08 </div>
+			<div class="article-title"><a href="/2019/04/08/some-command-to-parse-EB-logs/" >解析EB logs的一些Linux小命令</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>开启EB rotated log功能后，EB的日志将会被存储在EB对应bucket的<code>resources/environments/logs/logtype/environment-id/instance-id</code>路径下, 供后续查看。官网文档<a href="https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/using-features.logging.html" target="_blank" rel="external">Viewing Logs from Amazon EC2 Instances in Your Elastic Beanstalk Environment</a></p>
+<p>下面记录几个常用检查日志的小命令</p>
+<h3 id="使用exclue和include来获取部分日志"><a href="#使用exclue和include来获取部分日志" class="headerlink" title="使用exclue和include来获取部分日志"></a>使用exclue和include来获取部分日志</h3><p>开启EB的rotated log后，EB中的EC2会每小时将日志上传到S3中。以<code>Passenger with Ruby</code>的Platform为例，有production.log, access.log和passenger.log三种文件会被传到S3中，文件名格式:<code>文件路径</code>+<code>时间戳</code>+<code>gz</code>的格式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ ls *log1554688861.gz*</div><div class="line">_var_app_support_logs_rotated_access.log1554688861.gz  </div><div class="line">_var_app_support_logs_rotated_passenger.log1554688861.gz  </div><div class="line">_var_app_support_logs_rotated_production.log1554688861.gz</div><div class="line">$</div></pre></td></tr></table></figure>
+<p>Bucket下的日志，默认不会自动清理，日积月累,instance-id路径下的文件会越来越多，而目前aws cli的<code>s3 cp</code>或<code>s3 sync</code>,并没有提供根据创建时间的filter,有时候获取固定哪段时间的文件就不太方便。<br>
+	
+	</div>
+  <a type="button" href="/2019/04/08/some-command-to-parse-EB-logs/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2019-04-02 </div>
+			<div class="article-title"><a href="/2019/04/02/bbr-on-aws-ec2/" >AWS EC2中开启BBR</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>官网中关于如何在EC2中开启BBR的说明。<a href="https://aws.amazon.com/amazon-linux-ami/2017.09-release-notes/" target="_blank" rel="external">Amazon Linux AMI 2017.09 Release Notes</a></p>
+<h3 id="开启方法"><a href="#开启方法" class="headerlink" title="开启方法"></a>开启方法</h3><p>开启方法摘录如下:</p>
+<blockquote>
+<p>The Kernel has been updated to latest 4.9.y stable tree, new ENA driver 1.3.0 as well as support for TCP Bottleneck Bandwidth and RTT (BBR) which improve network performance.<br>BBR is not enabled by default. You can enable it on your EC2 Instance via:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">$ sudo modprobe tcp_bbr</div><div class="line"></div><div class="line">$ sudo modprobe sch_fq</div><div class="line"></div><div class="line">$ sudo sysctl -w net.ipv4.tcp_congestion_control=bbr</div><div class="line"></div><div class="line">Persistent configuration should look like:</div><div class="line"></div><div class="line">$ sudo su -</div><div class="line"></div><div class="line"># cat &lt;&lt;EOF&gt;&gt; /etc/sysconfig/modules/tcpcong.modules  </div><div class="line"></div><div class="line">&gt;#!/bin/bash</div><div class="line"></div><div class="line">&gt; exec /sbin/modprobe tcp_bbr &gt;/dev/null 2&gt;&amp;1</div><div class="line"></div><div class="line">&gt; exec /sbin/modprobe sch_fq &gt;/dev/null 2&gt;&amp;1</div><div class="line"></div><div class="line">&gt; EOF</div><div class="line"></div><div class="line"># chmod 755 /etc/sysconfig/modules/tcpcong.modules</div><div class="line"></div><div class="line"># echo &quot;net.ipv4.tcp_congestion_control = bbr&quot; &gt;&gt; /etc/sysctl.d/00-tcpcong.conf</div></pre></td></tr></table></figure>
+	
+	</div>
+  <a type="button" href="/2019/04/02/bbr-on-aws-ec2/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2019-03-24 </div>
+			<div class="article-title"><a href="/2019/03/24/share-ShadowsocksX-NG-to-iOS/" >Mac下共享ShadowsocksX-NG的梯子给iOS</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>提供一个Mac下共享<code>ShadowsocksX-NG</code>(小飞机)梯子给iPhone的方法。</p>
+<h3 id="Mac端设置"><a href="#Mac端设置" class="headerlink" title="Mac端设置"></a>Mac端设置</h3><p>打开小飞机的“偏好设置”，切换到HTTP一栏，其中的HTTP代理监听地址默认是127.0.0.1，将其改成0.0.0.0。保留默认的1087或改为自己想要设置的端口，并勾选“开启HTTP代理服务器”。<br><img src="/images/ShadowSock/shadowsock_http_proxy.png" alt="shadowsock_http_proxy.png"></p>
+<p>Terminal中输入<code>ifconfig</code>查看Mac的IP地址, 供iPhone设置时使用。此处是<code>192.168.3.18</code><br>
+	
+	</div>
+  <a type="button" href="/2019/03/24/share-ShadowsocksX-NG-to-iOS/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2019-03-21 </div>
+			<div class="article-title"><a href="/2019/03/21/ctrl-c-invalid-on-Centos-7/" >CentOS 7下Ctrl-C失效问题</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>rvm 1.29.4在CentOS 7上有一个bug，在Bash下，source了rvm后，执行Crtl+C时，无法终止shell命令。</p>
+<p>具体讨论在<a href="https://github.com/rvm/rvm/issues/4422" target="_blank" rel="external">Unable to pass SIGINT signal (control-C) on 1.29.4 </a>中。</p>
+<p>解决办法:</p>
+<ol>
+<li>在用户账号下强制使用trap设置回被改写的信号量INT QUIT</li>
+<li>升级rvm到1.29.4以上版本</li>
 </ol>
 	
 	</div>
-  <a type="button" href="/2018/12/24/404-on-Scale-Up-of-ElasticBeanstalk/#more" class="btn btn-default more">Read More</a>
+  <a type="button" href="/2019/03/21/ctrl-c-invalid-on-Centos-7/#more" class="btn btn-default more">Read More</a>
 </div>
 
            
@@ -169,8 +388,8 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
-			<div class="date"> 2018-12-17 </div>
-			<div class="article-title"><a href="/2018/12/17/how-to-handle-heap-out-of-memory-in-node/" >Node中heap out of memory的解决办法</a></div>						
+			<div class="date"> 2019-03-11 </div>
+			<div class="article-title"><a href="/2019/03/11/ways-to-support-public-s3-file-in-nginx/" >使用nginx处理S3静态资源</a></div>						
 		</h3>
 	
 
@@ -179,11 +398,23 @@ var _hmt = _hmt || [];
   <div class="row">
 	
 	
-		<h3 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h3><p>公司一个ReactOnRails的项目，之前一直都是跑的好好的。上次一个小修改后，发布预编译React代码的时候，屡次出现<code>FATAL ERROR: CALL_AND_RETRY_LAST Allocation failed - JavaScript heap out of memory</code> 的错误。</p>
-<h3 id="调查"><a href="#调查" class="headerlink" title="调查"></a>调查</h3><p>项目使用的是webpacker打包js代码，一开始是以为webpacker的问题，调查了一圈下来，最终发现是node中V8的限制。默认情况下，在64位系统下内存使用是有限制的，有一说是1.4GB，有一说是1.76GB。但在node官网搜了一圈也没找到明确说现在的限制是多少。</p>
+		<p>在网页或APP中，使用S3公开的静态资源，比如图片,小视频等。通常有这么几个常用的方式</p>
+<ul>
+<li>直接在页面中使用S3的public链接</li>
+<li>使用自己的域名，再在Web服务器侧redirect到S3的链接</li>
+<li>使用自己的域名，再在服务器上经过反向代理服务，获取S3内容后再返回给客户端或浏览器。</li>
+</ul>
+<p>在APP中，因为不需要考虑SEO，可以在页面或接口中直接返回S3的链接，APP直接访问S3资源，效率最高。<br>如果是网页，有时候为了SEO的需要，可能更多的会采用第二和第三种方式, 将资源经过服务器来中转一下。<br>下面介绍一下第二和第三种方式在Nginx侧的简单实现。</p>
+<h3 id="使用Nginx来redirect-S3的链接"><a href="#使用Nginx来redirect-S3的链接" class="headerlink" title="使用Nginx来redirect S3的链接"></a>使用Nginx来redirect S3的链接</h3><p>如下是一个简单的Nginx的配置的例子。基于以下几个前提</p>
+<ul>
+<li>测试域名为test.jibing57.com</li>
+<li>所有放在S3上的静态文件，在网站上都以<code>/s3_redirect</code>路径打头</li>
+<li>S3 Region为us-west-2, Bucket 为<code>s3-for-blog</code></li>
+<li>将<code>/s3_redirect</code>开头的文件redirect到真实的S3 URL中。</li>
+</ul>
 	
 	</div>
-  <a type="button" href="/2018/12/17/how-to-handle-heap-out-of-memory-in-node/#more" class="btn btn-default more">Read More</a>
+  <a type="button" href="/2019/03/11/ways-to-support-public-s3-file-in-nginx/#more" class="btn btn-default more">Read More</a>
 </div>
 
            
@@ -193,8 +424,8 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
-			<div class="date"> 2018-12-11 </div>
-			<div class="article-title"><a href="/2018/12/11/how-to-enable-cors-on-S3/" >在S3上开启CORS</a></div>						
+			<div class="date"> 2019-03-10 </div>
+			<div class="article-title"><a href="/2019/03/10/passenger-status-not-work-on-CentOS-7/" >CentOS 7下passenger-status报错</a></div>						
 		</h3>
 	
 
@@ -203,187 +434,13 @@ var _hmt = _hmt || [];
   <div class="row">
 	
 	
-		<p>在浏览器中使用AWS的SDK直接上传文件到S3时，需要在S3 Bucket上配置CORS才能成功上传，否则ajax请求会被浏览器拦截。</p>
-<h3 id="普通CORS访问配置"><a href="#普通CORS访问配置" class="headerlink" title="普通CORS访问配置"></a>普通CORS访问配置</h3><p>官方文档<a href="https://docs.aws.amazon.com/AmazonS3/latest/dev/cors.html#how-do-i-enable-cors" target="_blank" rel="external">Cross-Origin Resource Sharing (CORS)</a>中提供了开启CORS的范例，摘录如下:</p>
+		<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>CentOS 7中，执行<code>passenger-status</code>报了如下错误:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">ERROR: Phusion Passenger doesn&apos;t seem to be running. If you are sure that it is running, then the causes of this problem could be:</div><div class="line"></div><div class="line">1. You customized the instance registry directory using Apache&apos;s PassengerInstanceRegistryDir option, Nginx&apos;s passenger_instance_registry_dir option, or Phusion Passenger Standalone&apos;s --instance-registry-dir command line argument. If so, please set the environment variable PASSENGER_INSTANCE_REGISTRY_DIR to that directory and run passenger-status again.</div><div class="line">2. The instance directory has been removed by an operating system background service. Please set a different instance registry directory using Apache&apos;s PassengerInstanceRegistryDir option, Nginx&apos;s passenger_instance_registry_dir option, or Phusion Passenger Standalone&apos;s --instance-registry-dir command line argument.</div></pre></td></tr></table></figure>
+<p>而命令<code>passenger-memory-stats</code>可以正常工作。</p>
+<p>同样的问题，在Amazon Linux 2 AMI中也同样存在。</p>
 	
 	</div>
-  <a type="button" href="/2018/12/11/how-to-enable-cors-on-S3/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2018-11-27 </div>
-			<div class="article-title"><a href="/2018/11/27/nginx-with-dynamic-upstreams-to-ELB/" >如何配置Nginx的Dynamic Upstream指向ELB</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h3><p>公司有一个项目，部署有多个AWS环境，但由于一系列复杂的原因，需要先在账号A下备案的域名来使用在账号B中部署的服务，后续再将域名备案转到账号B中。<br>临时的解决办法就是在账号A下起一个Instance，通过Nginx反向代理到账号B的一个Classic ELB中。</p>
-<p>起初服务跑的很顺畅，后来一天突然服务不可用，页面显示504 Gateway Timeout，查看了Nginx的日志，发现有多条<code>upstream timed out (110: Connection timed out) while connecting to upstream</code>的错误日志。</p>
-	
-	</div>
-  <a type="button" href="/2018/11/27/nginx-with-dynamic-upstreams-to-ELB/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2018-11-15 </div>
-			<div class="article-title"><a href="/2018/11/15/a-way-to-install-ffmpeg-to-Amazon-Linux-and-ElasticBeanstalk/" >在Amazon Linux和Elastic Beanstalk中安装ffmpeg的方法</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>因为项目需要，需要在EC2和EB中安装FFMPEG来处理视频。 </p>
-<p>但Amazon Linux默认的yum源中没有FFMPEG，因此需要手动进行安装。</p>
-<p>网上有各种的安装方法，有使用Nux Dextop YUM的安装，也有直接使用Static Builds的方式。经过比较试验，最终决定使用Static Builds的方式进行安装，安装方法记录如下。 </p>
-	
-	</div>
-  <a type="button" href="/2018/11/15/a-way-to-install-ffmpeg-to-Amazon-Linux-and-ElasticBeanstalk/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2018-09-15 </div>
-			<div class="article-title"><a href="/2018/09/15/how-to-access-internal-by-ssh-tunnel/" >使用ssh隧道访问内网资源</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>日常开发过程中，会遇到一些情况需要和对端机构或公司进行联调。此时有可能会需要访问对端机构内部的一些网页或API。</p>
-<p>正规流程中，要访问内网，如果对端机构有VPN服务，应该是申请一个VPN来进行操作，这种方式比较安全可靠。但实际操作过程中，可能对端机构没有VPN服务，或者走VPN流程繁琐。此时如果你有对端机构中某个内网Linux机器的ssh登陆权限,而且该Linux机器可以可以访问相关网页或者API，则可以通过ssh tunnel的方式，临时来访问对端机构的内部资源。</p>
-<p>接下来，通过使用两台EC2来模拟内网环境,来介绍如何在Mac机器上使用ssh tunnel访问内网资源。</p>
-<h3 id="搭建说明"><a href="#搭建说明" class="headerlink" title="搭建说明"></a>搭建说明</h3><h4 id="搭建模拟用的EC2"><a href="#搭建模拟用的EC2" class="headerlink" title="搭建模拟用的EC2"></a>搭建模拟用的EC2</h4><p>首先，开启两台EC2，一台用来模拟ssh的跳板机(Jumpbox)，一台用来模拟内部网页服务器(HttpServer)。</p>
-	
-	</div>
-  <a type="button" href="/2018/09/15/how-to-access-internal-by-ssh-tunnel/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2018-08-11 </div>
-			<div class="article-title"><a href="/2018/08/11/EB-warning-due-to-no-space-left-on-device-issue-on-EC2/" >由于EC2中no space left引起的EB警报</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="问题现象"><a href="#问题现象" class="headerlink" title="问题现象"></a>问题现象</h3><p>周末早上突然收到大量Elastic Beanstalk的警报邮件，提示一个跑Rails的EB环境中有大量的请求是HTTP 5xx。</p>
-<p>登陆AWS Console查看相关Event，已经有持续的WARN提示有大量的HTTP 5xx请求。<br><img src="/images/AWS/EBNoSpaceLeft/amounts_of_5XX_on_EB_event.png" alt="amounts_of_5XX_on_EB_event"></p>
-<h3 id="解决过程"><a href="#解决过程" class="headerlink" title="解决过程"></a>解决过程</h3><p>使用EB console下载了各个Instanc的日志，仔细进行排查。</p>
-<p>最后在一个Instance的Rails log中发现有请求提示<code>No space left on device</code>。原来是Instance的磁盘满了，导致了部分需要写临时文件的请求失败了。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">F, [2018-08-11T02:10:43.084147 #11559] FATAL -- :</div><div class="line">Errno::ENOSPC (No space left on device @ rb_sysopen - /var/app/current/tmp/cache/rack%3A%3Aattack%3A306790688%3Alocations%2Fip%3A46.229.168.8120180811-11559-4156fj):</div><div class="line">  app/middleware/catch_json_parse_errors.rb:8:in `call&apos;</div></pre></td></tr></table></figure>
-	
-	</div>
-  <a type="button" href="/2018/08/11/EB-warning-due-to-no-space-left-on-device-issue-on-EC2/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2018-05-21 </div>
-			<div class="article-title"><a href="/2018/05/21/ssh-key-Invalid-key-length-Error-on-Macos/" >macOS 10.13.2下SSH命令Invalid key length错误的原因</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>升级到Macos 10.13.2后，使用ssh以key方式登陆一个12年配置的服务器的时候，ssh命令报告了<code>Invalid key length</code>的错误。</p>
-<p>很是纳闷，服务器和本地的key都是配置好后就没动过的，key pair本身肯定没问题啊，怎么会报错了呢?</p>
-<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>Google了一下，发现是MacOS使用的OpenSSH版本升级到了7.6，小于1024bits的RSA keys已经不被支持了。</p>
-<p>使用<code>ssh-keygen</code>查看了一下public key，发现是1023bit的。所以ssh时候报了<code>Invalid key length</code>的错误。</p>
-	
-	</div>
-  <a type="button" href="/2018/05/21/ssh-key-Invalid-key-length-Error-on-Macos/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2018-05-10 </div>
-			<div class="article-title"><a href="/2018/05/10/how-to-write-NTFS-Deives-on-a-Mac-10.13/" >macOS 10.13 High Sierra读写NTFS移动硬盘</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>系统升级到10.13后，没用过移动硬盘，所以一直也没发现以前装的osxfuse+ntfs-3g在系统更新后已经失效了。结果么在要使用的时候发现悲剧了，在10.13中没法写NTFT格式的移动硬盘了。</p>
-<p>上网搜了一下，How-To Geek上面有一篇文章，详细讲述了Macos下挂载NTFS移动硬盘的几种方法,有收费方案也有免费方案，并比较了每个方案的优缺点。 虽然文章是基于macOS 10.12 Sierra的，但各个方案的优缺点同样适用于10.13。<a href="https://www.howtogeek.com/236055/how-to-write-to-ntfs-drives-on-a-mac/" target="_blank" rel="external">How to Write to NTFS Drives on a Mac</a></p>
-	
-	</div>
-  <a type="button" href="/2018/05/10/how-to-write-NTFS-Deives-on-a-Mac-10.13/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2018-04-25 </div>
-			<div class="article-title"><a href="/2018/04/25/command-line-tools-to-check-images-on-macos/" >Mac下几个处理图片的命令</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h3><p>Macos下，查看图片，默认就是使用Preview。Preview基本包含了普通人能用到的各种功能。<br>但有时候需要批量处理图片时，常规的GUI工具会显得不太方便，使用命令来操作能够更快捷高效。下面介绍几个Macos下和图片相关的几个命令。</p>
-<h3 id="查看图片尺寸"><a href="#查看图片尺寸" class="headerlink" title="查看图片尺寸"></a>查看图片尺寸</h3><h4 id="系统自带file命令"><a href="#系统自带file命令" class="headerlink" title="系统自带file命令"></a>系统自带file命令</h4><p>在命令行下查看图片的分辨率，可以直接使用Macos自带的file命令即可。<br>
-	
-	</div>
-  <a type="button" href="/2018/04/25/command-line-tools-to-check-images-on-macos/#more" class="btn btn-default more">Read More</a>
+  <a type="button" href="/2019/03/10/passenger-status-not-work-on-CentOS-7/#more" class="btn btn-default more">Read More</a>
 </div>
 
            
@@ -451,7 +508,7 @@ var _hmt = _hmt || [];
 		<h4>Categories</h4>
 		<ul class="tag_box inline list-unstyled">
 		
-			<li><a href="/categories/AWS/">AWS<span>27</span></a></li>
+			<li><a href="/categories/AWS/">AWS<span>32</span></a></li>
 		
 			<li><a href="/categories/AWS-Certified/">AWS Certified<span>3</span></a></li>
 		
@@ -459,9 +516,11 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/Code/">Code<span>5</span></a></li>
 		
+			<li><a href="/categories/Linux/">Linux<span>2</span></a></li>
+		
 			<li><a href="/categories/Shell/">Shell<span>8</span></a></li>
 		
-			<li><a href="/categories/Tools/">Tools<span>7</span></a></li>
+			<li><a href="/categories/Tools/">Tools<span>12</span></a></li>
 		
 		</ul>
 	</div>
@@ -472,48 +531,48 @@ var _hmt = _hmt || [];
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/AWS-Tools/">AWS Tools<span>1</span></a></li>
+			<li><a href="/tags/RDS/">RDS<span>3</span></a></li>
 		
-			<li><a href="/tags/Rails/">Rails<span>3</span></a></li>
-		
-			<li><a href="/tags/AWS-CLI/">AWS CLI<span>5</span></a></li>
-		
-			<li><a href="/tags/Hexo/">Hexo<span>5</span></a></li>
-		
-			<li><a href="/tags/RVM/">RVM<span>1</span></a></li>
+			<li><a href="/tags/Office/">Office<span>1</span></a></li>
 		
 			<li><a href="/tags/AWS-SDK/">AWS SDK<span>2</span></a></li>
 		
-			<li><a href="/tags/AWS-Deep-Dive/">AWS Deep Dive<span>2</span></a></li>
+			<li><a href="/tags/Firewall/">Firewall<span>1</span></a></li>
 		
-			<li><a href="/tags/PostgreSQL/">PostgreSQL<span>1</span></a></li>
+			<li><a href="/tags/AutoScaling/">AutoScaling<span>3</span></a></li>
 		
 			<li><a href="/tags/EC2/">EC2<span>7</span></a></li>
 		
-			<li><a href="/tags/IAM/">IAM<span>2</span></a></li>
-		
-			<li><a href="/tags/AWS-Free-Tier/">AWS Free Tier<span>1</span></a></li>
-		
-			<li><a href="/tags/iOS/">iOS<span>1</span></a></li>
-		
-			<li><a href="/tags/Tips/">Tips<span>1</span></a></li>
-		
-			<li><a href="/tags/DynamoDB/">DynamoDB<span>1</span></a></li>
+			<li><a href="/tags/VMware/">VMware<span>2</span></a></li>
 		
 			<li><a href="/tags/Passenger/">Passenger<span>2</span></a></li>
 		
-			<li><a href="/tags/Git/">Git<span>1</span></a></li>
+			<li><a href="/tags/MacOS/">MacOS<span>12</span></a></li>
 		
-			<li><a href="/tags/Github/">Github<span>2</span></a></li>
+			<li><a href="/tags/Nginx/">Nginx<span>4</span></a></li>
+		
+			<li><a href="/tags/AWS-Tools/">AWS Tools<span>2</span></a></li>
+		
+			<li><a href="/tags/SSH/">SSH<span>3</span></a></li>
+		
+			<li><a href="/tags/CentOS/">CentOS<span>3</span></a></li>
 		
 			<li><a href="/tags/Image/">Image<span>1</span></a></li>
 		
-			<li><a href="/tags/Failover/">Failover<span>1</span></a></li>
+			<li><a href="/tags/S3/">S3<span>10</span></a></li>
 		
-			<li><a href="/tags/RDS/">RDS<span>3</span></a></li>
+			<li><a href="/tags/Douban/">Douban<span>1</span></a></li>
+		
+			<li><a href="/tags/RVM/">RVM<span>1</span></a></li>
+		
+			<li><a href="/tags/AWS-CLI/">AWS CLI<span>6</span></a></li>
+		
+			<li><a href="/tags/Elastic-Beanstalk/">Elastic Beanstalk<span>7</span></a></li>
+		
+			<li><a href="/tags/Tips/">Tips<span>1</span></a></li>
 		
 		
-		   <li><a href="/tags">...<span>42</span></a></li>
+		   <li><a href="/tags">...<span>47</span></a></li>
 		 
 		</ul>
 	</div>
@@ -526,23 +585,23 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
-        <a href="/2019/04/02/bbr-on-aws-ec2/" ><i class="fa fa-file-o"></i>AWS EC2中开启BBR</a>
+        <a href="/2019/05/28/how-to-deploy-hexo-to-aws-lightsail/" ><i class="fa fa-file-o"></i>how to deploy hexo to aws l...</a>
       </li>
     
       <li>
-        <a href="/2019/03/24/share-ShadowsocksX-NG-to-iOS/" ><i class="fa fa-file-o"></i>Mac下共享ShadowsocksX-NG的梯子给iOS</a>
+        <a href="/2019/05/21/how-to-direct-http-to-https-in-elasticbeanstalk-ruby-passenger-platform/" ><i class="fa fa-file-o"></i>Elastic Beanstalk Ruby Pass...</a>
       </li>
     
       <li>
-        <a href="/2019/03/21/ctrl-c-invalid-on-Centos-7/" ><i class="fa fa-file-o"></i>CentOS 7下Ctrl-C失效问题</a>
+        <a href="/2019/05/16/how-to-add-SSL-Certification-to-Elastic-Load-Balancer/" ><i class="fa fa-file-o"></i>如何在Elastic Load Balancer中添加...</a>
       </li>
     
       <li>
-        <a href="/2019/03/11/ways-to-support-public-s3-file-in-nginx/" ><i class="fa fa-file-o"></i>使用nginx处理S3静态资源</a>
+        <a href="/2019/05/10/how-to-change-office-UI-language-on-macos/" ><i class="fa fa-file-o"></i>在Mac下修改Office的界面显示语言</a>
       </li>
     
       <li>
-        <a href="/2019/03/10/passenger-status-not-work-on-CentOS-7/" ><i class="fa fa-file-o"></i>CentOS 7下passenger-status报错</a>
+        <a href="/2019/05/09/ffmpeg-command/" ><i class="fa fa-file-o"></i>ffmpeg command</a>
       </li>
     
   </ul>

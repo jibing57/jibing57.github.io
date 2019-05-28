@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.jibing57.com/"/>
-  <updated>2019-04-03T11:28:17.194Z</updated>
+  <updated>2019-05-28T12:10:25.735Z</updated>
   <id>http://www.jibing57.com/</id>
   
   <author>
@@ -17,11 +17,437 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>how to deploy hexo to aws lightsail</title>
+    <link href="http://www.jibing57.com/2019/05/28/how-to-deploy-hexo-to-aws-lightsail/"/>
+    <id>http://www.jibing57.com/2019/05/28/how-to-deploy-hexo-to-aws-lightsail/</id>
+    <published>2019-05-28T09:13:00.000Z</published>
+    <updated>2019-05-28T12:10:25.735Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;aws-lightsail安装步骤&quot;&gt;&lt;a href=&quot;#aws-lightsail安装步骤&quot; class=&quot;headerlink&quot; title=&quot;aws lightsail安装步骤&quot;&gt;&lt;/a&gt;aws lightsail安装步骤&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;安
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Elastic Beanstalk Ruby Passenger平台下设置HTTP重定向到HTTPS</title>
+    <link href="http://www.jibing57.com/2019/05/21/how-to-direct-http-to-https-in-elasticbeanstalk-ruby-passenger-platform/"/>
+    <id>http://www.jibing57.com/2019/05/21/how-to-direct-http-to-https-in-elasticbeanstalk-ruby-passenger-platform/</id>
+    <published>2019-05-21T13:12:23.000Z</published>
+    <updated>2019-05-21T06:58:21.016Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Elastic Beanstalk配置HTTPS后，接下来就需要配置HTTP请求redirect到HTTPS。&lt;br&gt;以前都是直接在application层面做redirect的。这次调查了一下在passenger层面来进行redirect的做法,记录在此。&lt;/p&gt;
+&lt;h3 id=&quot;Ruby平台基本信息&quot;&gt;&lt;a href=&quot;#Ruby平台基本信息&quot; class=&quot;headerlink&quot; title=&quot;Ruby平台基本信息:&quot;&gt;&lt;/a&gt;Ruby平台基本信息:&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;EB平台: &lt;code&gt;Passenger with Ruby 2.3 running on 64bit Amazon Linux/2.9.3&lt;/code&gt;&lt;ul&gt;
+&lt;li&gt;Ruby 2.3&lt;/li&gt;
+&lt;li&gt;Passenger模式&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;前端使用ALB进行负载均衡，和后端EC2之间端口对应关系:&lt;ul&gt;
+&lt;li&gt;ALB:443 -&amp;gt; EC2:80 (在ALB侧进行HTTPS terminate)&lt;/li&gt;
+&lt;li&gt;ALB:80 -&amp;gt; EC2:80&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;修改方法&quot;&gt;&lt;a href=&quot;#修改方法&quot; class=&quot;headerlink&quot; title=&quot;修改方法&quot;&gt;&lt;/a&gt;修改方法&lt;/h3&gt;&lt;p&gt;使用&lt;code&gt;.ebextension&lt;/code&gt;直接修改passenger的配置文件&lt;code&gt;/opt/elasticbeanstalk/support/conf/nginx_config.erb&lt;/code&gt;.&lt;br&gt;修改要点:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;动态请求http_x_forwarded_proto 不是https的，redirect为https&lt;/li&gt;
+&lt;li&gt;静态文件请求的http_x_forwarded_proto不是https的，redirect为https&lt;/li&gt;
+&lt;li&gt;来自ELB health check的请求还是直接返回请求，而不用redirect为https&lt;/li&gt;
+&lt;/ol&gt;
+    
+    </summary>
+    
+      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
+    
+    
+      <category term="Elastic Beanstalk" scheme="http://www.jibing57.com/tags/Elastic-Beanstalk/"/>
+    
+      <category term="HTTP" scheme="http://www.jibing57.com/tags/HTTP/"/>
+    
+      <category term="HTTPS" scheme="http://www.jibing57.com/tags/HTTPS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>如何在Elastic Load Balancer中添加SSL证书</title>
+    <link href="http://www.jibing57.com/2019/05/16/how-to-add-SSL-Certification-to-Elastic-Load-Balancer/"/>
+    <id>http://www.jibing57.com/2019/05/16/how-to-add-SSL-Certification-to-Elastic-Load-Balancer/</id>
+    <published>2019-05-16T13:51:28.000Z</published>
+    <updated>2019-05-16T09:03:19.676Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;上传方式&quot;&gt;&lt;a href=&quot;#上传方式&quot; class=&quot;headerlink&quot; title=&quot;上传方式&quot;&gt;&lt;/a&gt;上传方式&lt;/h3&gt;&lt;p&gt;AWS侧上传HTTPS证书有两种方式&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;使用 AWS Certificate Manager (ACM)生成，优点是免费，和aws其他服务集成性好，缺点是只能在AWS中使用&lt;/li&gt;
+&lt;li&gt;上传第三方证书到AWS Identity and Access Management (IAM) 中，优点是证书生成灵活，缺点是操作麻烦。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;中国区的AWS还没有ACM服务，因此只能使用IAM的方式来上传证书。&lt;/p&gt;
+&lt;h3 id=&quot;证书相关的一系列命令&quot;&gt;&lt;a href=&quot;#证书相关的一系列命令&quot; class=&quot;headerlink&quot; title=&quot;证书相关的一系列命令&quot;&gt;&lt;/a&gt;证书相关的一系列命令&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;证书上传命令&lt;br&gt;如果没有&lt;code&gt;certificate-chain&lt;/code&gt;，可以不传。&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ aws iam upload-server-certificate --server-certificate-name ExampleCertificate &lt;/div&gt;&lt;div class=&quot;line&quot;&gt;                                    --certificate-body file://Certificate.pem &lt;/div&gt;&lt;div class=&quot;line&quot;&gt;                                    --certificate-chain file://CertificateChain.pem &lt;/div&gt;&lt;div class=&quot;line&quot;&gt;                                    --private-key file://PrivateKey.pem&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;列出证书命令&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ aws iam list-server-certificates&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;获取证书信息命令&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ aws iam get-server-certificate --server-certificate-name ExampleCertificate&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;删除证书命令&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ aws iam delete-server-certificate --server-certificate-name ExampleCertificate&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+    
+    </summary>
+    
+      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
+    
+    
+      <category term="Elastic Load Balancing" scheme="http://www.jibing57.com/tags/Elastic-Load-Balancing/"/>
+    
+      <category term="IAM" scheme="http://www.jibing57.com/tags/IAM/"/>
+    
+      <category term="Application Load Balancing" scheme="http://www.jibing57.com/tags/Application-Load-Balancing/"/>
+    
+      <category term="HTTP" scheme="http://www.jibing57.com/tags/HTTP/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>在Mac下修改Office的界面显示语言</title>
+    <link href="http://www.jibing57.com/2019/05/10/how-to-change-office-UI-language-on-macos/"/>
+    <id>http://www.jibing57.com/2019/05/10/how-to-change-office-UI-language-on-macos/</id>
+    <published>2019-05-10T11:47:18.000Z</published>
+    <updated>2019-05-10T03:15:18.986Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;概述&quot;&gt;&lt;a href=&quot;#概述&quot; class=&quot;headerlink&quot; title=&quot;概述&quot;&gt;&lt;/a&gt;概述&lt;/h3&gt;&lt;p&gt;在Macos中，微软的Office套件的UI，是根据系统默认语言来设置的。系统是中文，Office就是中文UI，系统是英文，Office就是英文UI。微软并没有在Office的偏好设置中，设置一个可以切换语言的设置。&lt;br&gt;这让我这种想保持系统英文，Office中文的人感到很难受。&lt;br&gt;官网上搜了一圈，都没有找到可用的办法。功夫不负有心人，最终在office社区里面的这篇帖子提供了解决办法&lt;a href=&quot;https://answers.microsoft.com/en-us/msoffice/forum/msoffice_other-mso_mac-mso_mac2016/how-to-manually-change-the-language-used-in-office/abe2a9c1-f550-45de-9d0e-58b99f206c41?page=2&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;How to manually change the language used in Office for Mac 2016 without changing OS language?&lt;/a&gt;, 还是我最喜欢的命令行方式。虽然是15，16年的帖子，但是对应的方法，在最新版的Office(版本16.24-19041401)中仍然可用。&lt;/p&gt;
+&lt;h3 id=&quot;修改方法&quot;&gt;&lt;a href=&quot;#修改方法&quot; class=&quot;headerlink&quot; title=&quot;修改方法&quot;&gt;&lt;/a&gt;修改方法&lt;/h3&gt;&lt;p&gt;以work为例，记录相关命令如下:&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;10&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;11&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;12&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;# 修改word的语言&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;$ defaults write com.microsoft.Word AppleLanguages &amp;apos;(&amp;quot;zh-cn&amp;quot;)&amp;apos;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;# 读取word的设置, 可以看到多了一个AppleLanguages的选项。&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;$ defaults read com.microsoft.Word&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    ...&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    AppleLanguages =     (&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        &amp;quot;zh-cn&amp;quot;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    );&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    ...&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#125;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Tools" scheme="http://www.jibing57.com/categories/Tools/"/>
+    
+    
+      <category term="Office" scheme="http://www.jibing57.com/tags/Office/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ffmpeg command</title>
+    <link href="http://www.jibing57.com/2019/05/09/ffmpeg-command/"/>
+    <id>http://www.jibing57.com/2019/05/09/ffmpeg-command/</id>
+    <published>2019-05-09T09:20:05.000Z</published>
+    <updated>2019-05-23T06:34:46.742Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;安装&quot;&gt;&lt;a href=&quot;#安装&quot; class=&quot;headerlink&quot; title=&quot;安装&quot;&gt;&lt;/a&gt;安装&lt;/h3&gt;&lt;p&gt;官网下载地址 &lt;a href=&quot;https://ffmpeg.org/download.html&quot; target=&quot;_blank&quot; rel=
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>NIC bonding in CentOS7</title>
+    <link href="http://www.jibing57.com/2019/05/05/NIC-bonding-in-CentOS7/"/>
+    <id>http://www.jibing57.com/2019/05/05/NIC-bonding-in-CentOS7/</id>
+    <published>2019-05-05T07:55:58.000Z</published>
+    <updated>2019-05-07T03:12:00.408Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;设置NIC-bonding的例子&quot;&gt;&lt;a href=&quot;#设置NIC-bonding的例子&quot; class=&quot;headerlink&quot; title=&quot;设置NIC bonding的例子&quot;&gt;&lt;/a&gt;设置NIC bonding的例子&lt;/h3&gt;&lt;p&gt;如下例子基于VMWare F
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Macos下制作CentOS 7 USB启动盘</title>
+    <link href="http://www.jibing57.com/2019/05/01/way-to-make-centos7-bootable-usb-on-macos/"/>
+    <id>http://www.jibing57.com/2019/05/01/way-to-make-centos7-bootable-usb-on-macos/</id>
+    <published>2019-05-01T04:02:57.000Z</published>
+    <updated>2019-05-04T03:38:17.642Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;记录下在MacOS中制作Linux USB启动盘的操作步骤。&lt;/p&gt;
+&lt;h3 id=&quot;操作步骤&quot;&gt;&lt;a href=&quot;#操作步骤&quot; class=&quot;headerlink&quot; title=&quot;操作步骤&quot;&gt;&lt;/a&gt;操作步骤&lt;/h3&gt;&lt;h4 id=&quot;查看磁盘挂载分区&quot;&gt;&lt;a href=&quot;#查看磁盘挂载分区&quot; class=&quot;headerlink&quot; title=&quot;查看磁盘挂载分区&quot;&gt;&lt;/a&gt;查看磁盘挂载分区&lt;/h4&gt;&lt;p&gt;使用命令&lt;code&gt;diskutil list&lt;/code&gt;查看所在U盘的分区，找到U盘的挂载点，此处挂载点为&lt;code&gt;/dev/disk2&lt;/code&gt;&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ diskutil list&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;...&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;/dev/disk2 (external, physical):&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;   #:                       TYPE NAME                    SIZE       IDENTIFIER&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;   0:     FDisk_partition_scheme                        *31.0 GB    disk2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;   1:                 DOS_FAT_32 UNTITLED                31.0 GB    disk2s1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;$&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;h4 id=&quot;卸载U盘挂载&quot;&gt;&lt;a href=&quot;#卸载U盘挂载&quot; class=&quot;headerlink&quot; title=&quot;卸载U盘挂载&quot;&gt;&lt;/a&gt;卸载U盘挂载&lt;/h4&gt;&lt;p&gt;使用&lt;code&gt;diskutil unmountDisk&lt;/code&gt;命令，卸载U盘的挂载。&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ diskutil unmountDisk /dev/disk2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;Unmount of all volumes on disk2 was successful&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;$&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;如果不卸载挂载点就写入启动盘，则会提示&lt;code&gt;dd: /dev/disk2: Resource busy&lt;/code&gt;。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Linux" scheme="http://www.jibing57.com/categories/Linux/"/>
+    
+    
+      <category term="CentOS" scheme="http://www.jibing57.com/tags/CentOS/"/>
+    
+      <category term="MacOS" scheme="http://www.jibing57.com/tags/MacOS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>AWS Autuscaling的Scheduled Scaling(计划扩展)</title>
+    <link href="http://www.jibing57.com/2019/05/01/scheduled-action-of-aws-autoscaling/"/>
+    <id>http://www.jibing57.com/2019/05/01/scheduled-action-of-aws-autoscaling/</id>
+    <published>2019-05-01T02:49:04.000Z</published>
+    <updated>2019-05-01T03:55:22.111Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;介绍&quot;&gt;&lt;a href=&quot;#介绍&quot; class=&quot;headerlink&quot; title=&quot;介绍&quot;&gt;&lt;/a&gt;介绍&lt;/h3&gt;&lt;p&gt;除了用Alarm触发的Scaling Policy，AWS Autoscaling(ASG) 还提供了一个Scheduled Scaling(计划扩展)的功能。该功能主要用作一些流量可预测的情形。比如国外的Black Friday和国内6.18或双11这种活动时，就可以使用Scheduled Scaling来提前规划好机器数量。&lt;br&gt;详细说明和设置参见 AWS官方文档&lt;a href=&quot;https://docs.aws.amazon.com/autoscaling/ec2/userguide/schedule_time.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Scheduled Scaling for Amazon EC2 Auto Scaling&lt;/a&gt;。&lt;/p&gt;
+&lt;h3 id=&quot;例子&quot;&gt;&lt;a href=&quot;#例子&quot; class=&quot;headerlink&quot; title=&quot;例子&quot;&gt;&lt;/a&gt;例子&lt;/h3&gt;&lt;p&gt;举基于如下场景的一个例子&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;正常流量下，2台服务器就可以支撑。&lt;/li&gt;
+&lt;li&gt;周一到周五的早上8点~10点间是流量高峰期，此时需要4台服务器才能支撑对应的流量。&lt;/li&gt;
+&lt;li&gt;10点过后恢复正常流量。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;如上场景分解为2个Schedule Action&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;周一到周五每天早上8点，扩展服务器数量为4.&lt;/li&gt;
+&lt;li&gt;周一到周五每天早上10点，缩减服务器数量为2.&lt;/li&gt;
+&lt;/ol&gt;
+    
+    </summary>
+    
+      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
+    
+    
+      <category term="AutoScaling" scheme="http://www.jibing57.com/tags/AutoScaling/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MacOS上VMWare Fusion中如何给网口设置固定IP</title>
+    <link href="http://www.jibing57.com/2019/04/28/how-to-use-static-IP-in-VMWare-Fusion-on-Mac-OS-X/"/>
+    <id>http://www.jibing57.com/2019/04/28/how-to-use-static-IP-in-VMWare-Fusion-on-Mac-OS-X/</id>
+    <published>2019-04-28T13:29:09.000Z</published>
+    <updated>2019-04-29T02:19:53.506Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;介绍&quot;&gt;&lt;a href=&quot;#介绍&quot; class=&quot;headerlink&quot; title=&quot;介绍&quot;&gt;&lt;/a&gt;介绍&lt;/h3&gt;&lt;p&gt;VMWare Fusion中，虚拟机的网口使用NAT模式时，获取到的IP地址是通过DHCP动态分配的，不是固定分配的。每次开机虚拟机网口IP都有可能变动，SSH登录时每次要去查看，太不方便。&lt;br&gt;找了下如何设置固定IP的方法，记录如下。&lt;/p&gt;
+&lt;p&gt;在如下环境中可以设置成功:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;MacOS Version: 10.14.4 (18E226)&lt;/li&gt;
+&lt;li&gt;Vmware Fusion Version: 10.1.5 (10950653)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;步骤&quot;&gt;&lt;a href=&quot;#步骤&quot; class=&quot;headerlink&quot; title=&quot;步骤&quot;&gt;&lt;/a&gt;步骤&lt;/h3&gt;&lt;h4 id=&quot;1-获取虚拟主机的MAC地址&quot;&gt;&lt;a href=&quot;#1-获取虚拟主机的MAC地址&quot; class=&quot;headerlink&quot; title=&quot;1. 获取虚拟主机的MAC地址&quot;&gt;&lt;/a&gt;1. 获取虚拟主机的MAC地址&lt;/h4&gt;&lt;p&gt;默认安装下，所有的虚拟主机的Image都存放在&lt;code&gt;~/Documents/Virtual\ Machines.localized/&lt;/code&gt;下，以名为&lt;code&gt;CentOS 7 64bit&lt;/code&gt;的虚拟机为例。获取命令为:&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;cat ~/Documents/Virtual\ Machines.localized/CentOS\ 7\ 64bit.vmwarevm/CentOS\ 7\ 64bit.vmx | grep generatedAddress&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;找到对应网口的MAC地址, 本文中要绑定的网口&lt;code&gt;ethernet0&lt;/code&gt;的MAC地址为&lt;code&gt;00:0C:29:23:6E:CC&lt;/code&gt;。&lt;/p&gt;
+&lt;h4 id=&quot;2-设置静态IP&quot;&gt;&lt;a href=&quot;#2-设置静态IP&quot; class=&quot;headerlink&quot; title=&quot;2. 设置静态IP&quot;&gt;&lt;/a&gt;2. 设置静态IP&lt;/h4&gt;&lt;p&gt;打开配置文件&lt;code&gt;/Library/Preferences/VMware\ Fusion/vmnet8/dhcpd.conf&lt;/code&gt;, &lt;code&gt;vmnet8&lt;/code&gt;是VMWare用来设置NAT的虚拟网口，在MacOS下使用命令&lt;code&gt;ifconfig&lt;/code&gt;可以看到该虚拟网口。&lt;/p&gt;
+&lt;p&gt;在配置文件中可以看到DHCP的IP池为192.168.187.128 ~ 192.168.187.254(每个机器可能不同，以实际显示的为准)&lt;br&gt;
+    
+    </summary>
+    
+      <category term="Linux" scheme="http://www.jibing57.com/categories/Linux/"/>
+    
+    
+      <category term="Linux" scheme="http://www.jibing57.com/tags/Linux/"/>
+    
+      <category term="VMware" scheme="http://www.jibing57.com/tags/VMware/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Vmware Fusion中CentOS 7中安装Vmware Tools</title>
+    <link href="http://www.jibing57.com/2019/04/26/manually-install-vmeare-tools-on-centos-7/"/>
+    <id>http://www.jibing57.com/2019/04/26/manually-install-vmeare-tools-on-centos-7/</id>
+    <published>2019-04-26T13:07:10.000Z</published>
+    <updated>2019-04-26T07:59:16.464Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;安装步骤&quot;&gt;&lt;a href=&quot;#安装步骤&quot; class=&quot;headerlink&quot; title=&quot;安装步骤&quot;&gt;&lt;/a&gt;安装步骤&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;虚拟机状态栏中选择 &lt;strong&gt;虚拟机 &amp;gt; 安装Vmware Tools&lt;/strong&gt;&lt;br&gt;期间
+      
+    
+    </summary>
+    
+      <category term="Tools" scheme="http://www.jibing57.com/categories/Tools/"/>
+    
+    
+      <category term="Linux" scheme="http://www.jibing57.com/tags/Linux/"/>
+    
+      <category term="CentOS" scheme="http://www.jibing57.com/tags/CentOS/"/>
+    
+      <category term="VMware" scheme="http://www.jibing57.com/tags/VMware/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Command Tips</title>
+    <link href="http://www.jibing57.com/2019/04/26/command-tips/"/>
+    <id>http://www.jibing57.com/2019/04/26/command-tips/</id>
+    <published>2019-04-26T05:22:40.000Z</published>
+    <updated>2019-05-27T05:26:35.549Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;git-branch-不要分页&quot;&gt;&lt;a href=&quot;#git-branch-不要分页&quot; class=&quot;headerlink&quot; title=&quot;git branch 不要分页&quot;&gt;&lt;/a&gt;git branch 不要分页&lt;/h3&gt;&lt;p&gt;设置git branch不分页显示&lt;
+      
+    
+    </summary>
+    
+      <category term="Tools" scheme="http://www.jibing57.com/categories/Tools/"/>
+    
+    
+      <category term="Linux" scheme="http://www.jibing57.com/tags/Linux/"/>
+    
+      <category term="MacOS" scheme="http://www.jibing57.com/tags/MacOS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Niu-X resource</title>
+    <link href="http://www.jibing57.com/2019/04/20/niu-x-resource/"/>
+    <id>http://www.jibing57.com/2019/04/20/niu-x-resource/</id>
+    <published>2019-04-20T07:04:47.000Z</published>
+    <updated>2019-05-05T03:34:53.488Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;记录一些有用的网站，持续更新中。。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id=&quot;Linux-command&quot;&gt;&lt;a href=&quot;#Linux-command&quot; class=&quot;headerlink&quot; title=&quot;Linux-command&quot;&gt;&lt;/a&gt;Linux-command&lt;/h3&gt;&lt;p&gt;github地址: &lt;a href=&quot;https://github.com/jaywcjlove/linux-command&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;linux-command&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Linux命令大全搜索工具，内容包含Linux命令手册、详解、学习、搜集 &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;比较系统的各个命令，期待有空时每个粗略一遍，需要时再来查询&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Tools" scheme="http://www.jibing57.com/categories/Tools/"/>
+    
+    
+      <category term="Linux" scheme="http://www.jibing57.com/tags/Linux/"/>
+    
+      <category term="MacOS" scheme="http://www.jibing57.com/tags/MacOS/"/>
+    
+      <category term="Github" scheme="http://www.jibing57.com/tags/Github/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>firewall-cmd基本用法</title>
+    <link href="http://www.jibing57.com/2019/04/20/firewall-cmd-basic-usage/"/>
+    <id>http://www.jibing57.com/2019/04/20/firewall-cmd-basic-usage/</id>
+    <published>2019-04-20T01:49:23.000Z</published>
+    <updated>2019-05-08T02:37:04.363Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;strong&gt;还需要装个虚拟机，重新敲命令，拷贝输出内容或者截图&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&quot;安装和管理firewalld&quot;&gt;&lt;a href=&quot;#安装和管理firewalld&quot; class=&quot;headerlink&quot; title=&quot;安装和管理firewalld&quot;&gt;&lt;/a&gt;安装和管理firewalld&lt;/h3&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;# 安装firewalld&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;yum install firewalld firewall-config&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;systemctl start  firewalld # 启动&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;systemctl status firewalld # 或者 firewall-cmd --state 查看状态&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;systemctl stop firewalld  # 停止&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;systemctl enable firewalld # 开机自自动&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;systemctl disable firewalld # 取消自启动&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;systemctl list-unit-files | grep firewalld # 查看是否开机自启动&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h3 id=&quot;基础命令&quot;&gt;&lt;a href=&quot;#基础命令&quot; class=&quot;headerlink&quot; title=&quot;基础命令&quot;&gt;&lt;/a&gt;基础命令&lt;/h3&gt;&lt;p&gt;一些常用的命令如下:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;查看防火墙状态&lt;br&gt;命令: &lt;code&gt;firewall-cmd --list-all&lt;/code&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;10&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;11&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;12&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;13&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;14&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;15&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;16&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ sudo firewall-cmd --list-all&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;public (active)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  target: default&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  icmp-block-inversion: no&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  interfaces: ens33&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  sources:&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  services: ssh dhcpv6-client&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  ports:&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  protocols:&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  masquerade: no&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  forward-ports:&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  source-ports:&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  icmp-blocks:&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  rich rules:&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;$&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+    
+    </summary>
+    
+      <category term="Tools" scheme="http://www.jibing57.com/categories/Tools/"/>
+    
+    
+      <category term="Linux" scheme="http://www.jibing57.com/tags/Linux/"/>
+    
+      <category term="Firewall" scheme="http://www.jibing57.com/tags/Firewall/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>在线架构图工具Online Visual Paradigm</title>
+    <link href="http://www.jibing57.com/2019/04/09/online-visual-paradigm/"/>
+    <id>http://www.jibing57.com/2019/04/09/online-visual-paradigm/</id>
+    <published>2019-04-09T13:20:47.000Z</published>
+    <updated>2019-04-09T09:52:23.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;一个免费的在线画AWS架构图的网址&lt;a href=&quot;https://online.visual-paradigm.com&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://online.visual-paradigm.com&lt;/a&gt;, 30天试用期内可以随时保存和下载源文件。过了试用期后，还可以使用，但无法保存和导出源文件。&lt;br&gt;visual-paradigm也有&lt;a href=&quot;https://www.visual-paradigm.com/download/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;客户端&lt;/a&gt;，30天免费试用。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;优势&lt;ul&gt;
+&lt;li&gt;集成了AWS各个服务的图标，&lt;/li&gt;
+&lt;li&gt;有一些经典的架构模板，制作AWS架构图的时候会比较方便。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;劣势&lt;ul&gt;
+&lt;li&gt;试用过后, 费用比较贵&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;几个例子&quot;&gt;&lt;a href=&quot;#几个例子&quot; class=&quot;headerlink&quot; title=&quot;几个例子&quot;&gt;&lt;/a&gt;几个例子&lt;/h3&gt;&lt;p&gt;使用在线工具画的项目的架构图&lt;br&gt;&lt;img src=&quot;/images/AWS/Tools/architecture_diagram.png&quot; alt=&quot;architecture_diagram.png&quot;&gt;&lt;br&gt;
+    
+    </summary>
+    
+      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
+    
+    
+      <category term="AWS Tools" scheme="http://www.jibing57.com/tags/AWS-Tools/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>解析EB logs的一些Linux小命令</title>
+    <link href="http://www.jibing57.com/2019/04/08/some-command-to-parse-EB-logs/"/>
+    <id>http://www.jibing57.com/2019/04/08/some-command-to-parse-EB-logs/</id>
+    <published>2019-04-08T13:12:11.000Z</published>
+    <updated>2019-04-08T08:59:24.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;开启EB rotated log功能后，EB的日志将会被存储在EB对应bucket的&lt;code&gt;resources/environments/logs/logtype/environment-id/instance-id&lt;/code&gt;路径下, 供后续查看。官网文档&lt;a href=&quot;https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/using-features.logging.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Viewing Logs from Amazon EC2 Instances in Your Elastic Beanstalk Environment&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;下面记录几个常用检查日志的小命令&lt;/p&gt;
+&lt;h3 id=&quot;使用exclue和include来获取部分日志&quot;&gt;&lt;a href=&quot;#使用exclue和include来获取部分日志&quot; class=&quot;headerlink&quot; title=&quot;使用exclue和include来获取部分日志&quot;&gt;&lt;/a&gt;使用exclue和include来获取部分日志&lt;/h3&gt;&lt;p&gt;开启EB的rotated log后，EB中的EC2会每小时将日志上传到S3中。以&lt;code&gt;Passenger with Ruby&lt;/code&gt;的Platform为例，有production.log, access.log和passenger.log三种文件会被传到S3中，文件名格式:&lt;code&gt;文件路径&lt;/code&gt;+&lt;code&gt;时间戳&lt;/code&gt;+&lt;code&gt;gz&lt;/code&gt;的格式&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ ls *log1554688861.gz*&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;_var_app_support_logs_rotated_access.log1554688861.gz  &lt;/div&gt;&lt;div class=&quot;line&quot;&gt;_var_app_support_logs_rotated_passenger.log1554688861.gz  &lt;/div&gt;&lt;div class=&quot;line&quot;&gt;_var_app_support_logs_rotated_production.log1554688861.gz&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;$&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;Bucket下的日志，默认不会自动清理，日积月累,instance-id路径下的文件会越来越多，而目前aws cli的&lt;code&gt;s3 cp&lt;/code&gt;或&lt;code&gt;s3 sync&lt;/code&gt;,并没有提供根据创建时间的filter,有时候获取固定哪段时间的文件就不太方便。&lt;br&gt;
+    
+    </summary>
+    
+      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
+    
+    
+      <category term="Elastic Beanstalk" scheme="http://www.jibing57.com/tags/Elastic-Beanstalk/"/>
+    
+      <category term="S3" scheme="http://www.jibing57.com/tags/S3/"/>
+    
+      <category term="AWS CLI" scheme="http://www.jibing57.com/tags/AWS-CLI/"/>
+    
+      <category term="Linux" scheme="http://www.jibing57.com/tags/Linux/"/>
+    
+  </entry>
+  
+  <entry>
     <title>AWS EC2中开启BBR</title>
     <link href="http://www.jibing57.com/2019/04/02/bbr-on-aws-ec2/"/>
     <id>http://www.jibing57.com/2019/04/02/bbr-on-aws-ec2/</id>
     <published>2019-04-02T13:06:46.000Z</published>
-    <updated>2019-04-03T11:28:17.194Z</updated>
+    <updated>2019-04-03T11:28:17.000Z</updated>
     
     <summary type="html">
     
@@ -48,7 +474,7 @@
     <link href="http://www.jibing57.com/2019/03/24/share-ShadowsocksX-NG-to-iOS/"/>
     <id>http://www.jibing57.com/2019/03/24/share-ShadowsocksX-NG-to-iOS/</id>
     <published>2019-03-24T13:16:46.000Z</published>
-    <updated>2019-03-26T02:58:38.872Z</updated>
+    <updated>2019-03-26T02:58:38.000Z</updated>
     
     <summary type="html">
     
@@ -72,7 +498,7 @@
     <link href="http://www.jibing57.com/2019/03/21/ctrl-c-invalid-on-Centos-7/"/>
     <id>http://www.jibing57.com/2019/03/21/ctrl-c-invalid-on-Centos-7/</id>
     <published>2019-03-21T13:33:01.000Z</published>
-    <updated>2019-04-02T12:30:29.449Z</updated>
+    <updated>2019-04-02T12:30:29.000Z</updated>
     
     <summary type="html">
     
@@ -104,7 +530,7 @@
     <link href="http://www.jibing57.com/2019/03/11/ways-to-support-public-s3-file-in-nginx/"/>
     <id>http://www.jibing57.com/2019/03/11/ways-to-support-public-s3-file-in-nginx/</id>
     <published>2019-03-11T13:28:17.000Z</published>
-    <updated>2019-03-22T06:02:39.729Z</updated>
+    <updated>2019-03-22T06:02:39.000Z</updated>
     
     <summary type="html">
     
@@ -132,9 +558,9 @@
     
       <category term="Linux" scheme="http://www.jibing57.com/tags/Linux/"/>
     
-      <category term="Nginx" scheme="http://www.jibing57.com/tags/Nginx/"/>
-    
       <category term="HTTP" scheme="http://www.jibing57.com/tags/HTTP/"/>
+    
+      <category term="Nginx" scheme="http://www.jibing57.com/tags/Nginx/"/>
     
   </entry>
   
@@ -143,7 +569,7 @@
     <link href="http://www.jibing57.com/2019/03/10/passenger-status-not-work-on-CentOS-7/"/>
     <id>http://www.jibing57.com/2019/03/10/passenger-status-not-work-on-CentOS-7/</id>
     <published>2019-03-10T07:21:36.000Z</published>
-    <updated>2019-03-11T07:32:17.015Z</updated>
+    <updated>2019-03-11T07:32:17.000Z</updated>
     
     <summary type="html">
     
@@ -162,381 +588,6 @@
       <category term="Passenger" scheme="http://www.jibing57.com/tags/Passenger/"/>
     
       <category term="Nginx" scheme="http://www.jibing57.com/tags/Nginx/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Macos下因为找不到libxml2而导致nokogiri安装失败的解决办法</title>
-    <link href="http://www.jibing57.com/2019/03/05/how-resolve-nokogiri-failed-by-xml2-on-macos/"/>
-    <id>http://www.jibing57.com/2019/03/05/how-resolve-nokogiri-failed-by-xml2-on-macos/</id>
-    <published>2019-03-05T08:26:53.000Z</published>
-    <updated>2019-03-05T09:22:04.544Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;今天要跑一个其他的rails项目，为了不污染原先的gemset。就重建了一个gemset, 但是bundle install的时候，安装nokogiri 1.8.4一直失败。&lt;br&gt;系统版本是Macos 10.13 High Sierra中, ruby版本是rvm安装的ru
-      
-    
-    </summary>
-    
-      <category term="Code" scheme="http://www.jibing57.com/categories/Code/"/>
-    
-    
-      <category term="Ruby" scheme="http://www.jibing57.com/tags/Ruby/"/>
-    
-      <category term="Rails" scheme="http://www.jibing57.com/tags/Rails/"/>
-    
-      <category term="MacOS" scheme="http://www.jibing57.com/tags/MacOS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Nginx的HTTP Code444和307设置</title>
-    <link href="http://www.jibing57.com/2019/02/28/nginx_444_and_307/"/>
-    <id>http://www.jibing57.com/2019/02/28/nginx_444_and_307/</id>
-    <published>2019-02-28T13:50:59.000Z</published>
-    <updated>2019-03-07T12:33:09.938Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;nginx-444&quot;&gt;&lt;a href=&quot;#nginx-444&quot; class=&quot;headerlink&quot; title=&quot;nginx 444&quot;&gt;&lt;/a&gt;nginx 444&lt;/h3&gt;&lt;h4 id=&quot;介绍&quot;&gt;&lt;a href=&quot;#介绍&quot; class=&quot;headerlink&quot; title=&quot;介绍&quot;&gt;&lt;/a&gt;介绍&lt;/h4&gt;&lt;p&gt;当没有显式指定default server的时候，Nginx会使用第一个server来作为默认的响应server，即使请求的Host并没有匹配到server_name。&lt;br&gt;这是为了兼容老旧的一些不带Host的HTTP请求而做的设置。官文描述: &lt;a href=&quot;http://nginx.org/en/docs/http/request_processing.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;How nginx processes a request&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;此时可能存在一定的风险。如果有非备案的名解析到了你的Public IP上，而你的Web服务对该域名的请求有所响应的话，可能会导致Public IP被运营商封锁。&lt;/p&gt;
-&lt;h4 id=&quot;解决办法&quot;&gt;&lt;a href=&quot;#解决办法&quot; class=&quot;headerlink&quot; title=&quot;解决办法:&quot;&gt;&lt;/a&gt;解决办法:&lt;/h4&gt;&lt;p&gt;在nginx中添加一个default server，并在default server中设置&lt;code&gt;return 444;&lt;/code&gt;。此时Nginx就不会响应请求，除非请求的Host是配置的。&lt;br&gt;
-    
-    </summary>
-    
-      <category term="Tools" scheme="http://www.jibing57.com/categories/Tools/"/>
-    
-    
-      <category term="Nginx" scheme="http://www.jibing57.com/tags/Nginx/"/>
-    
-      <category term="HTTP" scheme="http://www.jibing57.com/tags/HTTP/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>AWS C5类型Instance的挂载点变更</title>
-    <link href="http://www.jibing57.com/2019/02/25/mount-point-changed-in-C5/"/>
-    <id>http://www.jibing57.com/2019/02/25/mount-point-changed-in-C5/</id>
-    <published>2019-02-25T13:55:30.000Z</published>
-    <updated>2019-02-26T07:47:36.448Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;问题点&quot;&gt;&lt;a href=&quot;#问题点&quot; class=&quot;headerlink&quot; title=&quot;问题点&quot;&gt;&lt;/a&gt;问题点&lt;/h3&gt;&lt;p&gt;一直使用的是Amazon自有的Amazon Linux，中国区的C5出来后，将原有的机器升级到C5的时候，发现额外挂载的磁盘没有挂载成功。&lt;/p&gt;
-&lt;p&gt;调查了一下，C5系列属于&lt;a href=&quot;https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-types.html#ec2-nitro-instances&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Nitro-based instance&lt;/a&gt;, EBS卷默认使用的是NVMe driver,设备名由原来C4的/dev/xvda1和/dev/xvdf变为了/dev/nvme[0-26]n1的格式。官网说明&lt;a href=&quot;https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/device_naming.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Device Naming on Linux Instances&lt;/a&gt;。&lt;/p&gt;
-&lt;p&gt;以前C4的机器中,/etc/fstab中设定的另外一块EBS的挂载点是/dev/xvdf, 所以导致了换用C5的时候，没能自动挂载。&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;# C4时的设置&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;/dev/xvdf   /mnt/data ext4  auto,nofail,defaults        1   2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;h3 id=&quot;解决办法&quot;&gt;&lt;a href=&quot;#解决办法&quot; class=&quot;headerlink&quot; title=&quot;解决办法&quot;&gt;&lt;/a&gt;解决办法&lt;/h3&gt;&lt;p&gt;&lt;code&gt;lsblk&lt;/code&gt;查看EBS的挂载路径，然后修改/etc/fstab。解决了问题。&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;/dev/nvme1n1 /mnt/data ext4  auto,nofail,defaults        1   2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-    
-    </summary>
-    
-      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
-    
-    
-      <category term="EC2" scheme="http://www.jibing57.com/tags/EC2/"/>
-    
-      <category term="Linux" scheme="http://www.jibing57.com/tags/Linux/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>ruby异常</title>
-    <link href="http://www.jibing57.com/2019/02/14/ruby-exception/"/>
-    <id>http://www.jibing57.com/2019/02/14/ruby-exception/</id>
-    <published>2019-02-14T12:04:12.000Z</published>
-    <updated>2019-02-15T06:37:48.724Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h3&gt;&lt;p&gt;有一个通知服务，需要使用&lt;a href=&quot;https://mandrill.com/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Mandrill&lt;/a&gt;的提供的邮件服务给客户发送邮件。开发时使用了&lt;a href=&quot;https://github.com/renz45/mandrill_mailer&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;mandrill_mailer&lt;/a&gt;这个GEM来实现和Mandrill服务的交互。&lt;/p&gt;
-&lt;p&gt;今天监控程序报警提及昨天的邮件发送量比平时低了不少。上线查了一下日志，发现是代码中一处exception没处理好,导致程序崩溃了。&lt;/p&gt;
-&lt;h3 id=&quot;分析&quot;&gt;&lt;a href=&quot;#分析&quot; class=&quot;headerlink&quot; title=&quot;分析&quot;&gt;&lt;/a&gt;分析&lt;/h3&gt;&lt;p&gt;Ruby 中捕获非指定类型的异常，会使用如下方式来捕获异常。&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;begin&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;rescue =&amp;gt; e&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;end&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-    
-    </summary>
-    
-      <category term="Code" scheme="http://www.jibing57.com/categories/Code/"/>
-    
-    
-      <category term="Ruby" scheme="http://www.jibing57.com/tags/Ruby/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>修改ElasticBeanstalk中Passenger的max-pool-size</title>
-    <link href="http://www.jibing57.com/2018/12/25/How-to-change-max-pool-size-of-passenger-on-ElasticBeanstalk/"/>
-    <id>http://www.jibing57.com/2018/12/25/How-to-change-max-pool-size-of-passenger-on-ElasticBeanstalk/</id>
-    <published>2018-12-25T09:37:24.000Z</published>
-    <updated>2018-12-27T07:02:05.228Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h3&gt;&lt;p&gt;在AWS Elastic Beanstalk中，如果选用Ruby with Passenger运行Rails时，会遇到一个问题，就是EB环境中的Passenger的max_pool_size是默认的6。如果EB中的Instance选用的是性能比较高的类型，只起6个Passenger进程会是一个巨大的浪费。下面介绍几个修改EB中Passenger max_pool_size参数的方法。&lt;/p&gt;
-&lt;h4 id=&quot;Passenger官方说明&quot;&gt;&lt;a href=&quot;#Passenger官方说明&quot; class=&quot;headerlink&quot; title=&quot;Passenger官方说明&quot;&gt;&lt;/a&gt;Passenger官方说明&lt;/h4&gt;&lt;p&gt;最新的官方&lt;a href=&quot;https://www.phusionpassenger.com/library/config/standalone/intro.html#location-of-passengerfile-json&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Introduction to configuring Passenger Standalone&lt;/a&gt;文档中，Passenger Standalone可以通过如下几种方式来修改启动参数&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;一、传递参数给启动命令&lt;code&gt;passenger start&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;二、使用环境变量(从5.0.22开始)&lt;/li&gt;
-&lt;li&gt;三、通过配置文件&lt;code&gt;Passengerfile.json&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-    
-    </summary>
-    
-      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
-    
-    
-      <category term="Elastic Beanstalk" scheme="http://www.jibing57.com/tags/Elastic-Beanstalk/"/>
-    
-      <category term="Passenger" scheme="http://www.jibing57.com/tags/Passenger/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>ElasticBeanstalk伸缩时偶发404的原因</title>
-    <link href="http://www.jibing57.com/2018/12/24/404-on-Scale-Up-of-ElasticBeanstalk/"/>
-    <id>http://www.jibing57.com/2018/12/24/404-on-Scale-Up-of-ElasticBeanstalk/</id>
-    <published>2018-12-24T12:45:51.000Z</published>
-    <updated>2018-12-25T09:19:31.850Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;使用EB Passenger with Ruby部署rails时，如果是以默认配置启动，没有做对应的配置，在ASG Scale Up的时候，可能会有请求没法正常处理，返回404。&lt;/p&gt;
-&lt;h3 id=&quot;原因&quot;&gt;&lt;a href=&quot;#原因&quot; class=&quot;headerlink&quot; title=&quot;原因&quot;&gt;&lt;/a&gt;原因&lt;/h3&gt;&lt;ol&gt;
-&lt;li&gt;EB中创建的ELB，默认是使用TCP:80的方式来检查Instance的健康状态的。&lt;/li&gt;
-&lt;li&gt;ELB的&lt;code&gt;health check&lt;/code&gt;的默认&lt;code&gt;Interval&lt;/code&gt;是10 seconds，&lt;code&gt;Healthy threshold&lt;/code&gt;是3 requests。&lt;/li&gt;
-&lt;li&gt;当ASG Scale Up时，新建的Instance中Passenger在Rails APP部署完成之前就已经在监听80端口了。&lt;/li&gt;
-&lt;li&gt;Passenger启动30秒之后，因为超过了&lt;code&gt;Healthy threshold * Interval&lt;/code&gt;的时间, 并且每次检查都是OK的，ELB会判定Instance是可用的，就会将流量导入到该Instance中。&lt;/li&gt;
-&lt;li&gt;但此时rails APP可能并没有部署完成(bundle install加上precompile，部署一个新的APP可能需要5分钟左右)，所以client会得到404的错误。&lt;/li&gt;
-&lt;/ol&gt;
-    
-    </summary>
-    
-      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
-    
-    
-      <category term="Elastic Beanstalk" scheme="http://www.jibing57.com/tags/Elastic-Beanstalk/"/>
-    
-      <category term="Elastic Load Balancing" scheme="http://www.jibing57.com/tags/Elastic-Load-Balancing/"/>
-    
-      <category term="AutoScaling" scheme="http://www.jibing57.com/tags/AutoScaling/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Node中heap out of memory的解决办法</title>
-    <link href="http://www.jibing57.com/2018/12/17/how-to-handle-heap-out-of-memory-in-node/"/>
-    <id>http://www.jibing57.com/2018/12/17/how-to-handle-heap-out-of-memory-in-node/</id>
-    <published>2018-12-17T14:27:31.000Z</published>
-    <updated>2018-12-23T06:22:55.542Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;背景介绍&quot;&gt;&lt;a href=&quot;#背景介绍&quot; class=&quot;headerlink&quot; title=&quot;背景介绍&quot;&gt;&lt;/a&gt;背景介绍&lt;/h3&gt;&lt;p&gt;公司一个ReactOnRails的项目，之前一直都是跑的好好的。上次一个小修改后，发布预编译React代码的时候，屡次出现&lt;code&gt;FATAL ERROR: CALL_AND_RETRY_LAST Allocation failed - JavaScript heap out of memory&lt;/code&gt; 的错误。&lt;/p&gt;
-&lt;h3 id=&quot;调查&quot;&gt;&lt;a href=&quot;#调查&quot; class=&quot;headerlink&quot; title=&quot;调查&quot;&gt;&lt;/a&gt;调查&lt;/h3&gt;&lt;p&gt;项目使用的是webpacker打包js代码，一开始是以为webpacker的问题，调查了一圈下来，最终发现是node中V8的限制。默认情况下，在64位系统下内存使用是有限制的，有一说是1.4GB，有一说是1.76GB。但在node官网搜了一圈也没找到明确说现在的限制是多少。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="Code" scheme="http://www.jibing57.com/categories/Code/"/>
-    
-    
-      <category term="Nodejs" scheme="http://www.jibing57.com/tags/Nodejs/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>在S3上开启CORS</title>
-    <link href="http://www.jibing57.com/2018/12/11/how-to-enable-cors-on-S3/"/>
-    <id>http://www.jibing57.com/2018/12/11/how-to-enable-cors-on-S3/</id>
-    <published>2018-12-11T11:33:25.000Z</published>
-    <updated>2018-12-11T15:36:54.345Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;在浏览器中使用AWS的SDK直接上传文件到S3时，需要在S3 Bucket上配置CORS才能成功上传，否则ajax请求会被浏览器拦截。&lt;/p&gt;
-&lt;h3 id=&quot;普通CORS访问配置&quot;&gt;&lt;a href=&quot;#普通CORS访问配置&quot; class=&quot;headerlink&quot; title=&quot;普通CORS访问配置&quot;&gt;&lt;/a&gt;普通CORS访问配置&lt;/h3&gt;&lt;p&gt;官方文档&lt;a href=&quot;https://docs.aws.amazon.com/AmazonS3/latest/dev/cors.html#how-do-i-enable-cors&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Cross-Origin Resource Sharing (CORS)&lt;/a&gt;中提供了开启CORS的范例，摘录如下:&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
-    
-    
-      <category term="S3" scheme="http://www.jibing57.com/tags/S3/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>如何配置Nginx的Dynamic Upstream指向ELB</title>
-    <link href="http://www.jibing57.com/2018/11/27/nginx-with-dynamic-upstreams-to-ELB/"/>
-    <id>http://www.jibing57.com/2018/11/27/nginx-with-dynamic-upstreams-to-ELB/</id>
-    <published>2018-11-27T13:36:48.000Z</published>
-    <updated>2018-12-23T12:16:40.890Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;起因&quot;&gt;&lt;a href=&quot;#起因&quot; class=&quot;headerlink&quot; title=&quot;起因&quot;&gt;&lt;/a&gt;起因&lt;/h3&gt;&lt;p&gt;公司有一个项目，部署有多个AWS环境，但由于一系列复杂的原因，需要先在账号A下备案的域名来使用在账号B中部署的服务，后续再将域名备案转到账号B中。&lt;br&gt;临时的解决办法就是在账号A下起一个Instance，通过Nginx反向代理到账号B的一个Classic ELB中。&lt;/p&gt;
-&lt;p&gt;起初服务跑的很顺畅，后来一天突然服务不可用，页面显示504 Gateway Timeout，查看了Nginx的日志，发现有多条&lt;code&gt;upstream timed out (110: Connection timed out) while connecting to upstream&lt;/code&gt;的错误日志。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
-    
-    
-      <category term="Elastic Load Balancing" scheme="http://www.jibing57.com/tags/Elastic-Load-Balancing/"/>
-    
-      <category term="Nginx" scheme="http://www.jibing57.com/tags/Nginx/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>在Amazon Linux和Elastic Beanstalk中安装ffmpeg的方法</title>
-    <link href="http://www.jibing57.com/2018/11/15/a-way-to-install-ffmpeg-to-Amazon-Linux-and-ElasticBeanstalk/"/>
-    <id>http://www.jibing57.com/2018/11/15/a-way-to-install-ffmpeg-to-Amazon-Linux-and-ElasticBeanstalk/</id>
-    <published>2018-11-15T12:34:53.000Z</published>
-    <updated>2018-11-17T03:27:39.860Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;因为项目需要，需要在EC2和EB中安装FFMPEG来处理视频。 &lt;/p&gt;
-&lt;p&gt;但Amazon Linux默认的yum源中没有FFMPEG，因此需要手动进行安装。&lt;/p&gt;
-&lt;p&gt;网上有各种的安装方法，有使用Nux Dextop YUM的安装，也有直接使用Static Builds的方式。经过比较试验，最终决定使用Static Builds的方式进行安装，安装方法记录如下。 &lt;/p&gt;
-    
-    </summary>
-    
-      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
-    
-    
-      <category term="Elastic Beanstalk" scheme="http://www.jibing57.com/tags/Elastic-Beanstalk/"/>
-    
-      <category term="EC2" scheme="http://www.jibing57.com/tags/EC2/"/>
-    
-      <category term="FFMPEG" scheme="http://www.jibing57.com/tags/FFMPEG/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>使用ssh隧道访问内网资源</title>
-    <link href="http://www.jibing57.com/2018/09/15/how-to-access-internal-by-ssh-tunnel/"/>
-    <id>http://www.jibing57.com/2018/09/15/how-to-access-internal-by-ssh-tunnel/</id>
-    <published>2018-09-15T06:31:21.000Z</published>
-    <updated>2018-09-16T07:03:13.813Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h3&gt;&lt;p&gt;日常开发过程中，会遇到一些情况需要和对端机构或公司进行联调。此时有可能会需要访问对端机构内部的一些网页或API。&lt;/p&gt;
-&lt;p&gt;正规流程中，要访问内网，如果对端机构有VPN服务，应该是申请一个VPN来进行操作，这种方式比较安全可靠。但实际操作过程中，可能对端机构没有VPN服务，或者走VPN流程繁琐。此时如果你有对端机构中某个内网Linux机器的ssh登陆权限,而且该Linux机器可以可以访问相关网页或者API，则可以通过ssh tunnel的方式，临时来访问对端机构的内部资源。&lt;/p&gt;
-&lt;p&gt;接下来，通过使用两台EC2来模拟内网环境,来介绍如何在Mac机器上使用ssh tunnel访问内网资源。&lt;/p&gt;
-&lt;h3 id=&quot;搭建说明&quot;&gt;&lt;a href=&quot;#搭建说明&quot; class=&quot;headerlink&quot; title=&quot;搭建说明&quot;&gt;&lt;/a&gt;搭建说明&lt;/h3&gt;&lt;h4 id=&quot;搭建模拟用的EC2&quot;&gt;&lt;a href=&quot;#搭建模拟用的EC2&quot; class=&quot;headerlink&quot; title=&quot;搭建模拟用的EC2&quot;&gt;&lt;/a&gt;搭建模拟用的EC2&lt;/h4&gt;&lt;p&gt;首先，开启两台EC2，一台用来模拟ssh的跳板机(Jumpbox)，一台用来模拟内部网页服务器(HttpServer)。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="Tools" scheme="http://www.jibing57.com/categories/Tools/"/>
-    
-    
-      <category term="EC2" scheme="http://www.jibing57.com/tags/EC2/"/>
-    
-      <category term="MacOS" scheme="http://www.jibing57.com/tags/MacOS/"/>
-    
-      <category term="SSH" scheme="http://www.jibing57.com/tags/SSH/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>由于EC2中no space left引起的EB警报</title>
-    <link href="http://www.jibing57.com/2018/08/11/EB-warning-due-to-no-space-left-on-device-issue-on-EC2/"/>
-    <id>http://www.jibing57.com/2018/08/11/EB-warning-due-to-no-space-left-on-device-issue-on-EC2/</id>
-    <published>2018-08-11T12:12:13.000Z</published>
-    <updated>2018-08-30T05:02:58.269Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;问题现象&quot;&gt;&lt;a href=&quot;#问题现象&quot; class=&quot;headerlink&quot; title=&quot;问题现象&quot;&gt;&lt;/a&gt;问题现象&lt;/h3&gt;&lt;p&gt;周末早上突然收到大量Elastic Beanstalk的警报邮件，提示一个跑Rails的EB环境中有大量的请求是HTTP 5xx。&lt;/p&gt;
-&lt;p&gt;登陆AWS Console查看相关Event，已经有持续的WARN提示有大量的HTTP 5xx请求。&lt;br&gt;&lt;img src=&quot;/images/AWS/EBNoSpaceLeft/amounts_of_5XX_on_EB_event.png&quot; alt=&quot;amounts_of_5XX_on_EB_event&quot;&gt;&lt;/p&gt;
-&lt;h3 id=&quot;解决过程&quot;&gt;&lt;a href=&quot;#解决过程&quot; class=&quot;headerlink&quot; title=&quot;解决过程&quot;&gt;&lt;/a&gt;解决过程&lt;/h3&gt;&lt;p&gt;使用EB console下载了各个Instanc的日志，仔细进行排查。&lt;/p&gt;
-&lt;p&gt;最后在一个Instance的Rails log中发现有请求提示&lt;code&gt;No space left on device&lt;/code&gt;。原来是Instance的磁盘满了，导致了部分需要写临时文件的请求失败了。&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;F, [2018-08-11T02:10:43.084147 #11559] FATAL -- :&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;Errno::ENOSPC (No space left on device @ rb_sysopen - /var/app/current/tmp/cache/rack%3A%3Aattack%3A306790688%3Alocations%2Fip%3A46.229.168.8120180811-11559-4156fj):&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  app/middleware/catch_json_parse_errors.rb:8:in `call&amp;apos;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-    
-    </summary>
-    
-      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
-    
-    
-      <category term="Elastic Beanstalk" scheme="http://www.jibing57.com/tags/Elastic-Beanstalk/"/>
-    
-      <category term="AutoScaling" scheme="http://www.jibing57.com/tags/AutoScaling/"/>
-    
-      <category term="EC2" scheme="http://www.jibing57.com/tags/EC2/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>macOS 10.13.2下SSH命令Invalid key length错误的原因</title>
-    <link href="http://www.jibing57.com/2018/05/21/ssh-key-Invalid-key-length-Error-on-Macos/"/>
-    <id>http://www.jibing57.com/2018/05/21/ssh-key-Invalid-key-length-Error-on-Macos/</id>
-    <published>2018-05-21T11:53:07.000Z</published>
-    <updated>2018-05-23T06:48:46.315Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;升级到Macos 10.13.2后，使用ssh以key方式登陆一个12年配置的服务器的时候，ssh命令报告了&lt;code&gt;Invalid key length&lt;/code&gt;的错误。&lt;/p&gt;
-&lt;p&gt;很是纳闷，服务器和本地的key都是配置好后就没动过的，key pair本身肯定没问题啊，怎么会报错了呢?&lt;/p&gt;
-&lt;h3 id=&quot;原因&quot;&gt;&lt;a href=&quot;#原因&quot; class=&quot;headerlink&quot; title=&quot;原因&quot;&gt;&lt;/a&gt;原因&lt;/h3&gt;&lt;p&gt;Google了一下，发现是MacOS使用的OpenSSH版本升级到了7.6，小于1024bits的RSA keys已经不被支持了。&lt;/p&gt;
-&lt;p&gt;使用&lt;code&gt;ssh-keygen&lt;/code&gt;查看了一下public key，发现是1023bit的。所以ssh时候报了&lt;code&gt;Invalid key length&lt;/code&gt;的错误。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="Shell" scheme="http://www.jibing57.com/categories/Shell/"/>
-    
-    
-      <category term="MacOS" scheme="http://www.jibing57.com/tags/MacOS/"/>
-    
-      <category term="SSH" scheme="http://www.jibing57.com/tags/SSH/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>macOS 10.13 High Sierra读写NTFS移动硬盘</title>
-    <link href="http://www.jibing57.com/2018/05/10/how-to-write-NTFS-Deives-on-a-Mac-10.13/"/>
-    <id>http://www.jibing57.com/2018/05/10/how-to-write-NTFS-Deives-on-a-Mac-10.13/</id>
-    <published>2018-05-10T12:30:07.000Z</published>
-    <updated>2018-05-14T06:55:13.357Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;系统升级到10.13后，没用过移动硬盘，所以一直也没发现以前装的osxfuse+ntfs-3g在系统更新后已经失效了。结果么在要使用的时候发现悲剧了，在10.13中没法写NTFT格式的移动硬盘了。&lt;/p&gt;
-&lt;p&gt;上网搜了一下，How-To Geek上面有一篇文章，详细讲述了Macos下挂载NTFS移动硬盘的几种方法,有收费方案也有免费方案，并比较了每个方案的优缺点。 虽然文章是基于macOS 10.12 Sierra的，但各个方案的优缺点同样适用于10.13。&lt;a href=&quot;https://www.howtogeek.com/236055/how-to-write-to-ntfs-drives-on-a-mac/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;How to Write to NTFS Drives on a Mac&lt;/a&gt;&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="Tools" scheme="http://www.jibing57.com/categories/Tools/"/>
-    
-    
-      <category term="MacOS" scheme="http://www.jibing57.com/tags/MacOS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Mac下几个处理图片的命令</title>
-    <link href="http://www.jibing57.com/2018/04/25/command-line-tools-to-check-images-on-macos/"/>
-    <id>http://www.jibing57.com/2018/04/25/command-line-tools-to-check-images-on-macos/</id>
-    <published>2018-04-25T14:49:01.000Z</published>
-    <updated>2018-04-27T08:11:54.020Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;简述&quot;&gt;&lt;a href=&quot;#简述&quot; class=&quot;headerlink&quot; title=&quot;简述&quot;&gt;&lt;/a&gt;简述&lt;/h3&gt;&lt;p&gt;Macos下，查看图片，默认就是使用Preview。Preview基本包含了普通人能用到的各种功能。&lt;br&gt;但有时候需要批量处理图片时，常规的GUI工具会显得不太方便，使用命令来操作能够更快捷高效。下面介绍几个Macos下和图片相关的几个命令。&lt;/p&gt;
-&lt;h3 id=&quot;查看图片尺寸&quot;&gt;&lt;a href=&quot;#查看图片尺寸&quot; class=&quot;headerlink&quot; title=&quot;查看图片尺寸&quot;&gt;&lt;/a&gt;查看图片尺寸&lt;/h3&gt;&lt;h4 id=&quot;系统自带file命令&quot;&gt;&lt;a href=&quot;#系统自带file命令&quot; class=&quot;headerlink&quot; title=&quot;系统自带file命令&quot;&gt;&lt;/a&gt;系统自带file命令&lt;/h4&gt;&lt;p&gt;在命令行下查看图片的分辨率，可以直接使用Macos自带的file命令即可。&lt;br&gt;
-    
-    </summary>
-    
-      <category term="Shell" scheme="http://www.jibing57.com/categories/Shell/"/>
-    
-    
-      <category term="MacOS" scheme="http://www.jibing57.com/tags/MacOS/"/>
-    
-      <category term="Image" scheme="http://www.jibing57.com/tags/Image/"/>
     
   </entry>
   

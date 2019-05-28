@@ -139,8 +139,8 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
-			<div class="date"> 2018-04-24 </div>
-			<div class="article-title"><a href="/2018/04/24/douban-image-403/" >豆瓣图片403问题</a></div>						
+			<div class="date"> 2019-03-05 </div>
+			<div class="article-title"><a href="/2019/03/05/how-resolve-nokogiri-failed-by-xml2-on-macos/" >Macos下因为找不到libxml2而导致nokogiri安装失败的解决办法</a></div>						
 		</h3>
 	
 
@@ -149,12 +149,18 @@ var _hmt = _hmt || [];
   <div class="row">
 	
 	
-		<h3 id="起由"><a href="#起由" class="headerlink" title="起由"></a>起由</h3><p>发布了一版blog到github上。偶然间发现<a href="/douban">豆瓣页面</a>中书的图片都无法显示了。打开Inspector调查了下，发现请求豆瓣图片的链接返回的都是403 Forbidden。<br><img src="/images/Hexo/douban_image_403.png" alt="douban_image_403.png"></p>
-<p>网上搜索了一下，可能的原因就是豆瓣为了封杀微信小程序在页面上直接请求豆瓣的图片，封杀了图片的外链。</p>
-<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>尝试着将豆瓣API返回的图片链接拷贝到浏览器中直接访问，发现可以加载图片，那估计豆瓣是通过检测HTTP Request中的referer Header来实现防盗链。</p>
+		<p>今天要跑一个其他的rails项目，为了不污染原先的gemset。就重建了一个gemset, 但是bundle install的时候，安装nokogiri 1.8.4一直失败。<br>系统版本是Macos 10.13 High Sierra中, ruby版本是rvm安装的ruby2.3.0。</p>
+<p>令人费解的是，同样在ruby2.3.0下的另一个gemset,nokogiri 1.8.2可以顺利安装。</p>
+<p>网上搜了一圈后，找到了解决办法。记录如下:</p>
+<p>设置bundle config，编译nokogiri时，使用系统xml2路径即可。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">bundle config build.nokogiri --use-system-libraries --with-xml2-include=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/usr/include/libxml2</div></pre></td></tr></table></figure>
+<p>还有一个更简单的方法，自动根据系统版本得到系统libxml2的路径</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">bundle config build.nokogiri --use-system-libraries=true --with-xml2-include=&quot;$(xcrun --show-sdk-path)&quot;/usr/include/libxml2</div></pre></td></tr></table></figure>
+<p>参考资料: <a href="https://github.com/sparklemotion/nokogiri/issues/1547" target="_blank" rel="external">Installation of nokogiri fail with bundle on macOS Sierra 10.12 </a></p>
+
 	
 	</div>
-  <a type="button" href="/2018/04/24/douban-image-403/#more" class="btn btn-default more">Read More</a>
+  <a type="button" href="/2019/03/05/how-resolve-nokogiri-failed-by-xml2-on-macos/#more" class="btn btn-default more">Read More</a>
 </div>
 
            
@@ -164,8 +170,8 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
-			<div class="date"> 2018-04-21 </div>
-			<div class="article-title"><a href="/2018/04/21/aws-s3-master-permission/" >S3进阶系列(二) ——权限管理</a></div>						
+			<div class="date"> 2019-02-28 </div>
+			<div class="article-title"><a href="/2019/02/28/nginx_444_and_307/" >Nginx的HTTP Code444和307设置</a></div>						
 		</h3>
 	
 
@@ -174,11 +180,12 @@ var _hmt = _hmt || [];
   <div class="row">
 	
 	
-		<h3 id="什么是S3的权限管理"><a href="#什么是S3的权限管理" class="headerlink" title="什么是S3的权限管理"></a>什么是S3的权限管理</h3><p>S3的权限管理是任何使用S3的人都无法绕开的功能,决定了S3中的Object是否能够被访问。</p>
-<p>权限管理本质上解决了这么一个问题: 谁(Principal)能够在何种条件(condition)下被允许或拒绝(Effect)对哪些资源(Resource)做何种操作(Action)</p>
+		<h3 id="nginx-444"><a href="#nginx-444" class="headerlink" title="nginx 444"></a>nginx 444</h3><h4 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h4><p>当没有显式指定default server的时候，Nginx会使用第一个server来作为默认的响应server，即使请求的Host并没有匹配到server_name。<br>这是为了兼容老旧的一些不带Host的HTTP请求而做的设置。官文描述: <a href="http://nginx.org/en/docs/http/request_processing.html" target="_blank" rel="external">How nginx processes a request</a></p>
+<p>此时可能存在一定的风险。如果有非备案的名解析到了你的Public IP上，而你的Web服务对该域名的请求有所响应的话，可能会导致Public IP被运营商封锁。</p>
+<h4 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法:"></a>解决办法:</h4><p>在nginx中添加一个default server，并在default server中设置<code>return 444;</code>。此时Nginx就不会响应请求，除非请求的Host是配置的。<br>
 	
 	</div>
-  <a type="button" href="/2018/04/21/aws-s3-master-permission/#more" class="btn btn-default more">Read More</a>
+  <a type="button" href="/2019/02/28/nginx_444_and_307/#more" class="btn btn-default more">Read More</a>
 </div>
 
            
@@ -188,8 +195,8 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
-			<div class="date"> 2018-04-19 </div>
-			<div class="article-title"><a href="/2018/04/19/how-to-remove-the-passphrase-of-ssh-key/" >如何去除SSH key中的passphrase</a></div>						
+			<div class="date"> 2019-02-25 </div>
+			<div class="article-title"><a href="/2019/02/25/mount-point-changed-in-C5/" >AWS C5类型Instance的挂载点变更</a></div>						
 		</h3>
 	
 
@@ -198,10 +205,15 @@ var _hmt = _hmt || [];
   <div class="row">
 	
 	
-		<h3 id="去除passphrase的方法"><a href="#去除passphrase的方法" class="headerlink" title="去除passphrase的方法"></a>去除passphrase的方法</h3><p>使用<code>ssh-keygen</code>来重新设置一个空的passphrase, 就相当于去除了原来的passphrase, 答案来自<a href="https://stackoverflow.com/a/112409" target="_blank" rel="external">stackoverflow</a>, 回答者还很贴心的提示，输入的passphrase会被记录在~/.bash_history中，别忘记处理这个情况。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ssh-keygen -p [-P old_passphrase] [-N new_passphrase] [-f keyfile]</div></pre></td></tr></table></figure></p>
+		<h3 id="问题点"><a href="#问题点" class="headerlink" title="问题点"></a>问题点</h3><p>一直使用的是Amazon自有的Amazon Linux，中国区的C5出来后，将原有的机器升级到C5的时候，发现额外挂载的磁盘没有挂载成功。</p>
+<p>调查了一下，C5系列属于<a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-types.html#ec2-nitro-instances" target="_blank" rel="external">Nitro-based instance</a>, EBS卷默认使用的是NVMe driver,设备名由原来C4的/dev/xvda1和/dev/xvdf变为了/dev/nvme[0-26]n1的格式。官网说明<a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/device_naming.html" target="_blank" rel="external">Device Naming on Linux Instances</a>。</p>
+<p>以前C4的机器中,/etc/fstab中设定的另外一块EBS的挂载点是/dev/xvdf, 所以导致了换用C5的时候，没能自动挂载。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># C4时的设置</div><div class="line">/dev/xvdf   /mnt/data ext4  auto,nofail,defaults        1   2</div></pre></td></tr></table></figure>
+<h3 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h3><p><code>lsblk</code>查看EBS的挂载路径，然后修改/etc/fstab。解决了问题。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/dev/nvme1n1 /mnt/data ext4  auto,nofail,defaults        1   2</div></pre></td></tr></table></figure>
 	
 	</div>
-  <a type="button" href="/2018/04/19/how-to-remove-the-passphrase-of-ssh-key/#more" class="btn btn-default more">Read More</a>
+  <a type="button" href="/2019/02/25/mount-point-changed-in-C5/#more" class="btn btn-default more">Read More</a>
 </div>
 
            
@@ -211,8 +223,8 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
-			<div class="date"> 2018-04-18 </div>
-			<div class="article-title"><a href="/2018/04/18/aws-s3-master-basic/" >S3进阶系列(一) —— S3基础知识</a></div>						
+			<div class="date"> 2019-02-14 </div>
+			<div class="article-title"><a href="/2019/02/14/ruby-exception/" >ruby异常</a></div>						
 		</h3>
 	
 
@@ -221,11 +233,13 @@ var _hmt = _hmt || [];
   <div class="row">
 	
 	
-		<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>S3是AWS服务最早推出的几项服务之一，也是使用最为频繁的几个AWS服务之一。官网文档以及网上文章零零散散看了不少,实际使用中也用过S3的大多数功能，但“纸上得来终觉浅，绝知此事要躬行”，决定给自己挖个坑，结合已读资料和实际使用经验，系统地来梳理一下S3的已有功能。</p>
-<p>本篇是第一篇,介绍一下S3的一些基础知识。希望能够坚持把这个系列写完。</p>
+		<h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>有一个通知服务，需要使用<a href="https://mandrill.com/" target="_blank" rel="external">Mandrill</a>的提供的邮件服务给客户发送邮件。开发时使用了<a href="https://github.com/renz45/mandrill_mailer" target="_blank" rel="external">mandrill_mailer</a>这个GEM来实现和Mandrill服务的交互。</p>
+<p>今天监控程序报警提及昨天的邮件发送量比平时低了不少。上线查了一下日志，发现是代码中一处exception没处理好,导致程序崩溃了。</p>
+<h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><p>Ruby 中捕获非指定类型的异常，会使用如下方式来捕获异常。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">begin</div><div class="line">rescue =&gt; e</div><div class="line">end</div></pre></td></tr></table></figure>
 	
 	</div>
-  <a type="button" href="/2018/04/18/aws-s3-master-basic/#more" class="btn btn-default more">Read More</a>
+  <a type="button" href="/2019/02/14/ruby-exception/#more" class="btn btn-default more">Read More</a>
 </div>
 
            
@@ -235,8 +249,8 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
-			<div class="date"> 2018-03-16 </div>
-			<div class="article-title"><a href="/2018/03/16/how-to-subscribe-RDS-event/" >订阅RDS事件</a></div>						
+			<div class="date"> 2018-12-25 </div>
+			<div class="article-title"><a href="/2018/12/25/How-to-change-max-pool-size-of-passenger-on-ElasticBeanstalk/" >修改ElasticBeanstalk中Passenger的max-pool-size</a></div>						
 		</h3>
 	
 
@@ -245,19 +259,16 @@ var _hmt = _hmt || [];
   <div class="row">
 	
 	
-		<p>关于RDS状态的监控，除了常规的CloudWatch Metric以外。RDS还有一个事件机制，能够将RDS的事件通知到SNS。</p>
-<h3 id="RDS-Event简介"><a href="#RDS-Event简介" class="headerlink" title="RDS Event简介"></a>RDS Event简介</h3><h4 id="RDS-Event-Source-type"><a href="#RDS-Event-Source-type" class="headerlink" title="RDS Event - Source type"></a>RDS Event - Source type</h4><p>RDS的事件类型分为如下六大类:</p>
+		<h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>在AWS Elastic Beanstalk中，如果选用Ruby with Passenger运行Rails时，会遇到一个问题，就是EB环境中的Passenger的max_pool_size是默认的6。如果EB中的Instance选用的是性能比较高的类型，只起6个Passenger进程会是一个巨大的浪费。下面介绍几个修改EB中Passenger max_pool_size参数的方法。</p>
+<h4 id="Passenger官方说明"><a href="#Passenger官方说明" class="headerlink" title="Passenger官方说明"></a>Passenger官方说明</h4><p>最新的官方<a href="https://www.phusionpassenger.com/library/config/standalone/intro.html#location-of-passengerfile-json" target="_blank" rel="external">Introduction to configuring Passenger Standalone</a>文档中，Passenger Standalone可以通过如下几种方式来修改启动参数</p>
 <ul>
-<li>数据库实例(DB instance)</li>
-<li>数据库集群(DB cluster)</li>
-<li>数据库快照(DB snapshot)</li>
-<li>数据库集群快照(DB cluster snapshot)</li>
-<li>数据库安全组(DB security group)</li>
-<li>数据库参数组(DB parameter group)</li>
+<li>一、传递参数给启动命令<code>passenger start</code></li>
+<li>二、使用环境变量(从5.0.22开始)</li>
+<li>三、通过配置文件<code>Passengerfile.json</code></li>
 </ul>
 	
 	</div>
-  <a type="button" href="/2018/03/16/how-to-subscribe-RDS-event/#more" class="btn btn-default more">Read More</a>
+  <a type="button" href="/2018/12/25/How-to-change-max-pool-size-of-passenger-on-ElasticBeanstalk/#more" class="btn btn-default more">Read More</a>
 </div>
 
            
@@ -267,8 +278,8 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
-			<div class="date"> 2018-03-15 </div>
-			<div class="article-title"><a href="/2018/03/15/how-to-set-chrome-to-use-google-with-NoCountryRedirect/" >在Chrome中设置Google搜索为NoCountryRedirect</a></div>						
+			<div class="date"> 2018-12-24 </div>
+			<div class="article-title"><a href="/2018/12/24/404-on-Scale-Up-of-ElasticBeanstalk/" >ElasticBeanstalk伸缩时偶发404的原因</a></div>						
 		</h3>
 	
 
@@ -277,89 +288,17 @@ var _hmt = _hmt || [];
   <div class="row">
 	
 	
-		<p>添加代理来科学上网时，使用Google进行搜索，Chrome浏览器默认会重定向到代理国所在的Google域名。比如<code>https://www.google.co.kr/</code>,<code>https://www.google.co.jp/</code>等, 已经在<code>www.google.com</code>登录的Google账号就还得重登, 极度烦躁。</p>
-<p>下面是几个固定使用<code>www.google.com</code>来进行搜索的方法</p>
-	
-	</div>
-  <a type="button" href="/2018/03/15/how-to-set-chrome-to-use-google-with-NoCountryRedirect/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2018-03-14 </div>
-			<div class="article-title"><a href="/2018/03/14/AWS-RDS-recovery-due-to-issue-with-underlying-hardware/" >AWS RDS recovery due to issue with underlying hardware</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>早上刚上班就收到一封主题为”RDS Notification Message”的订阅邮件，message内容为”Recovery of the DB instance has started. Recovery time will vary with the amount of data to be recovered”。</p>
-<p>上Web Console查看发生了什么事，发现RDS已经自我恢复完毕了。最新的Event消息提示为”Recovery of the DB instance is complete.”</p>
-<p><img src="/images/AWS/RDS/rds_recovery_event.png" alt="rds_recovery_event"></p>
-<p>提了Case询问了下，也在网上搜了一下，基本搞清楚了是怎么个回事，记录如下。</p>
-	
-	</div>
-  <a type="button" href="/2018/03/14/AWS-RDS-recovery-due-to-issue-with-underlying-hardware/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2018-03-12 </div>
-			<div class="article-title"><a href="/2018/03/12/how-to-handle-Retirement-Notification-Amazon-EC2-Instance-scheduled-for-retirement/" >EC2底层硬件Retirement的处理方法</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>AWS的EC2的实例是在物理机上虚拟化出来的，当承载EC2的物理机出现问题或者要退役时，AWS会发送一封主题为<strong>[Retirement Notification] Amazon EC2 Instance scheduled for retirement</strong>的email到AWS Account的注册邮箱中。</p>
-<p>以前多次收到过这类邮件，但提示的目标instance-ID都是AutoScaling中运行的EC2，而AutoScaling中的Instance自动伸缩不会影响业务，因此也从没有主动去处理过。</p>
-<p>这次突然收到通知邮件，说一台运行后台任务的Instance的underlying hardware hosting出问题了。在此记录一下相关的现象和解决方法。</p>
-	
-	</div>
-  <a type="button" href="/2018/03/12/how-to-handle-Retirement-Notification-Amazon-EC2-Instance-scheduled-for-retirement/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2018-02-11 </div>
-			<div class="article-title"><a href="/2018/02/11/a-way-to-use-csv-file-to-populate-the-database-by-rake-db-seed-on-rails/" >使用seed将csv格式的db文件导入DB</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>一段将csv格式的db文件导入对应表结构的代码。</p>
-<h3 id="前提要求"><a href="#前提要求" class="headerlink" title="前提要求"></a>前提要求</h3><ol>
-<li>csv文件名字和Model Class需要一一对应， 比如用户表users, Model中定义是<code>class User &lt; ActiveRecord::Base</code>, 那么csv文件名字得是user.csv</li>
-<li>csv文件需要有header,并且header名字需要同数据库中对应表的字段名相同</li>
+		<p>使用EB Passenger with Ruby部署rails时，如果是以默认配置启动，没有做对应的配置，在ASG Scale Up的时候，可能会有请求没法正常处理，返回404。</p>
+<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><ol>
+<li>EB中创建的ELB，默认是使用TCP:80的方式来检查Instance的健康状态的。</li>
+<li>ELB的<code>health check</code>的默认<code>Interval</code>是10 seconds，<code>Healthy threshold</code>是3 requests。</li>
+<li>当ASG Scale Up时，新建的Instance中Passenger在Rails APP部署完成之前就已经在监听80端口了。</li>
+<li>Passenger启动30秒之后，因为超过了<code>Healthy threshold * Interval</code>的时间, 并且每次检查都是OK的，ELB会判定Instance是可用的，就会将流量导入到该Instance中。</li>
+<li>但此时rails APP可能并没有部署完成(bundle install加上precompile，部署一个新的APP可能需要5分钟左右)，所以client会得到404的错误。</li>
 </ol>
 	
 	</div>
-  <a type="button" href="/2018/02/11/a-way-to-use-csv-file-to-populate-the-database-by-rake-db-seed-on-rails/#more" class="btn btn-default more">Read More</a>
+  <a type="button" href="/2018/12/24/404-on-Scale-Up-of-ElasticBeanstalk/#more" class="btn btn-default more">Read More</a>
 </div>
 
            
@@ -369,8 +308,8 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
-			<div class="date"> 2018-02-11 </div>
-			<div class="article-title"><a href="/2018/02/11/aws-s3-cli-to-backup-and-restore-bucket-acl/" >使用AWS CLI来备份和恢复S3 Bucket的ACL</a></div>						
+			<div class="date"> 2018-12-17 </div>
+			<div class="article-title"><a href="/2018/12/17/how-to-handle-heap-out-of-memory-in-node/" >Node中heap out of memory的解决办法</a></div>						
 		</h3>
 	
 
@@ -379,13 +318,84 @@ var _hmt = _hmt || [];
   <div class="row">
 	
 	
-		<p>S3 Bucket层面的权限管理，推荐使用Bucket Policy来管理，但可能会有一些遗留的S3 Bucket, 还使用着Bucket ACL来进行权限管理。</p>
-<p>在将Bucket ACl升级为Bucket Policy或者是更新Bucket ACL的时候，会有备份Bucket ACL的需求。此处介绍一下如何使用AWS CLI来备份和恢复Bucket的Bucket ACL。</p>
-<h3 id="备份-Bucket-ACL"><a href="#备份-Bucket-ACL" class="headerlink" title="备份 Bucket ACL"></a>备份 Bucket ACL</h3><p>使用CLI中s3api中的<a href="https://docs.aws.amazon.com/cli/latest/reference/s3api/get-bucket-acl.html" target="_blank" rel="external">get-bucket-acl</a>命令来保存bucket acl。</p>
-<h4 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">  get-bucket-acl</div><div class="line">--bucket &lt;value&gt;</div><div class="line">[--cli-input-json &lt;value&gt;]</div><div class="line">[--generate-cli-skeleton &lt;value&gt;]</div></pre></td></tr></table></figure>
+		<h3 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h3><p>公司一个ReactOnRails的项目，之前一直都是跑的好好的。上次一个小修改后，发布预编译React代码的时候，屡次出现<code>FATAL ERROR: CALL_AND_RETRY_LAST Allocation failed - JavaScript heap out of memory</code> 的错误。</p>
+<h3 id="调查"><a href="#调查" class="headerlink" title="调查"></a>调查</h3><p>项目使用的是webpacker打包js代码，一开始是以为webpacker的问题，调查了一圈下来，最终发现是node中V8的限制。默认情况下，在64位系统下内存使用是有限制的，有一说是1.4GB，有一说是1.76GB。但在node官网搜了一圈也没找到明确说现在的限制是多少。</p>
 	
 	</div>
-  <a type="button" href="/2018/02/11/aws-s3-cli-to-backup-and-restore-bucket-acl/#more" class="btn btn-default more">Read More</a>
+  <a type="button" href="/2018/12/17/how-to-handle-heap-out-of-memory-in-node/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2018-12-11 </div>
+			<div class="article-title"><a href="/2018/12/11/how-to-enable-cors-on-S3/" >在S3上开启CORS</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>在浏览器中使用AWS的SDK直接上传文件到S3时，需要在S3 Bucket上配置CORS才能成功上传，否则ajax请求会被浏览器拦截。</p>
+<h3 id="普通CORS访问配置"><a href="#普通CORS访问配置" class="headerlink" title="普通CORS访问配置"></a>普通CORS访问配置</h3><p>官方文档<a href="https://docs.aws.amazon.com/AmazonS3/latest/dev/cors.html#how-do-i-enable-cors" target="_blank" rel="external">Cross-Origin Resource Sharing (CORS)</a>中提供了开启CORS的范例，摘录如下:</p>
+	
+	</div>
+  <a type="button" href="/2018/12/11/how-to-enable-cors-on-S3/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2018-11-27 </div>
+			<div class="article-title"><a href="/2018/11/27/nginx-with-dynamic-upstreams-to-ELB/" >如何配置Nginx的Dynamic Upstream指向ELB</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h3><p>公司有一个项目，部署有多个AWS环境，但由于一系列复杂的原因，需要先在账号A下备案的域名来使用在账号B中部署的服务，后续再将域名备案转到账号B中。<br>临时的解决办法就是在账号A下起一个Instance，通过Nginx反向代理到账号B的一个Classic ELB中。</p>
+<p>起初服务跑的很顺畅，后来一天突然服务不可用，页面显示504 Gateway Timeout，查看了Nginx的日志，发现有多条<code>upstream timed out (110: Connection timed out) while connecting to upstream</code>的错误日志。</p>
+	
+	</div>
+  <a type="button" href="/2018/11/27/nginx-with-dynamic-upstreams-to-ELB/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2018-11-15 </div>
+			<div class="article-title"><a href="/2018/11/15/a-way-to-install-ffmpeg-to-Amazon-Linux-and-ElasticBeanstalk/" >在Amazon Linux和Elastic Beanstalk中安装ffmpeg的方法</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>因为项目需要，需要在EC2和EB中安装FFMPEG来处理视频。 </p>
+<p>但Amazon Linux默认的yum源中没有FFMPEG，因此需要手动进行安装。</p>
+<p>网上有各种的安装方法，有使用Nux Dextop YUM的安装，也有直接使用Static Builds的方式。经过比较试验，最终决定使用Static Builds的方式进行安装，安装方法记录如下。 </p>
+	
+	</div>
+  <a type="button" href="/2018/11/15/a-way-to-install-ffmpeg-to-Amazon-Linux-and-ElasticBeanstalk/#more" class="btn btn-default more">Read More</a>
 </div>
 
            
@@ -453,7 +463,7 @@ var _hmt = _hmt || [];
 		<h4>Categories</h4>
 		<ul class="tag_box inline list-unstyled">
 		
-			<li><a href="/categories/AWS/">AWS<span>27</span></a></li>
+			<li><a href="/categories/AWS/">AWS<span>32</span></a></li>
 		
 			<li><a href="/categories/AWS-Certified/">AWS Certified<span>3</span></a></li>
 		
@@ -461,9 +471,11 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/Code/">Code<span>5</span></a></li>
 		
+			<li><a href="/categories/Linux/">Linux<span>2</span></a></li>
+		
 			<li><a href="/categories/Shell/">Shell<span>8</span></a></li>
 		
-			<li><a href="/categories/Tools/">Tools<span>7</span></a></li>
+			<li><a href="/categories/Tools/">Tools<span>12</span></a></li>
 		
 		</ul>
 	</div>
@@ -474,48 +486,48 @@ var _hmt = _hmt || [];
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/AWS-CLI/">AWS CLI<span>5</span></a></li>
-		
-			<li><a href="/tags/SSH/">SSH<span>3</span></a></li>
-		
-			<li><a href="/tags/Sysops/">Sysops<span>1</span></a></li>
-		
-			<li><a href="/tags/AWS-SDK/">AWS SDK<span>2</span></a></li>
-		
-			<li><a href="/tags/Rails/">Rails<span>3</span></a></li>
-		
-			<li><a href="/tags/RVM/">RVM<span>1</span></a></li>
-		
-			<li><a href="/tags/FFMPEG/">FFMPEG<span>1</span></a></li>
-		
-			<li><a href="/tags/AWS-Deep-Dive/">AWS Deep Dive<span>2</span></a></li>
-		
-			<li><a href="/tags/HTTP/">HTTP<span>2</span></a></li>
-		
-			<li><a href="/tags/Video/">Video<span>1</span></a></li>
-		
-			<li><a href="/tags/Nodejs/">Nodejs<span>2</span></a></li>
-		
-			<li><a href="/tags/AWS-Free-Tier/">AWS Free Tier<span>1</span></a></li>
-		
 			<li><a href="/tags/CodeCommit/">CodeCommit<span>1</span></a></li>
 		
-			<li><a href="/tags/Network/">Network<span>1</span></a></li>
+			<li><a href="/tags/Elastic-Load-Balancing/">Elastic Load Balancing<span>6</span></a></li>
 		
 			<li><a href="/tags/PostgreSQL/">PostgreSQL<span>1</span></a></li>
 		
-			<li><a href="/tags/Elastic-Load-Balancing/">Elastic Load Balancing<span>5</span></a></li>
+			<li><a href="/tags/SSH/">SSH<span>3</span></a></li>
 		
-			<li><a href="/tags/IAM/">IAM<span>2</span></a></li>
+			<li><a href="/tags/MacOS/">MacOS<span>12</span></a></li>
 		
-			<li><a href="/tags/S3/">S3<span>9</span></a></li>
+			<li><a href="/tags/Rails/">Rails<span>3</span></a></li>
 		
-			<li><a href="/tags/iOS/">iOS<span>1</span></a></li>
+			<li><a href="/tags/DynamoDB/">DynamoDB<span>1</span></a></li>
 		
-			<li><a href="/tags/Ruby/">Ruby<span>8</span></a></li>
+			<li><a href="/tags/Application-Load-Balancing/">Application Load Balancing<span>1</span></a></li>
+		
+			<li><a href="/tags/CloudWatch/">CloudWatch<span>1</span></a></li>
+		
+			<li><a href="/tags/Sysops/">Sysops<span>1</span></a></li>
+		
+			<li><a href="/tags/EC2-User-Data/">EC2 User Data<span>1</span></a></li>
+		
+			<li><a href="/tags/Solutions-Architect/">Solutions Architect<span>1</span></a></li>
+		
+			<li><a href="/tags/Passenger/">Passenger<span>2</span></a></li>
+		
+			<li><a href="/tags/Nodejs/">Nodejs<span>2</span></a></li>
+		
+			<li><a href="/tags/Github/">Github<span>3</span></a></li>
+		
+			<li><a href="/tags/Network/">Network<span>1</span></a></li>
+		
+			<li><a href="/tags/Video/">Video<span>1</span></a></li>
+		
+			<li><a href="/tags/Firewall/">Firewall<span>1</span></a></li>
+		
+			<li><a href="/tags/VMware/">VMware<span>2</span></a></li>
+		
+			<li><a href="/tags/CentOS/">CentOS<span>3</span></a></li>
 		
 		
-		   <li><a href="/tags">...<span>42</span></a></li>
+		   <li><a href="/tags">...<span>47</span></a></li>
 		 
 		</ul>
 	</div>
@@ -528,23 +540,23 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
-        <a href="/2019/04/02/bbr-on-aws-ec2/" ><i class="fa fa-file-o"></i>AWS EC2中开启BBR</a>
+        <a href="/2019/05/28/how-to-deploy-hexo-to-aws-lightsail/" ><i class="fa fa-file-o"></i>how to deploy hexo to aws l...</a>
       </li>
     
       <li>
-        <a href="/2019/03/24/share-ShadowsocksX-NG-to-iOS/" ><i class="fa fa-file-o"></i>Mac下共享ShadowsocksX-NG的梯子给iOS</a>
+        <a href="/2019/05/21/how-to-direct-http-to-https-in-elasticbeanstalk-ruby-passenger-platform/" ><i class="fa fa-file-o"></i>Elastic Beanstalk Ruby Pass...</a>
       </li>
     
       <li>
-        <a href="/2019/03/21/ctrl-c-invalid-on-Centos-7/" ><i class="fa fa-file-o"></i>CentOS 7下Ctrl-C失效问题</a>
+        <a href="/2019/05/16/how-to-add-SSL-Certification-to-Elastic-Load-Balancer/" ><i class="fa fa-file-o"></i>如何在Elastic Load Balancer中添加...</a>
       </li>
     
       <li>
-        <a href="/2019/03/11/ways-to-support-public-s3-file-in-nginx/" ><i class="fa fa-file-o"></i>使用nginx处理S3静态资源</a>
+        <a href="/2019/05/10/how-to-change-office-UI-language-on-macos/" ><i class="fa fa-file-o"></i>在Mac下修改Office的界面显示语言</a>
       </li>
     
       <li>
-        <a href="/2019/03/10/passenger-status-not-work-on-CentOS-7/" ><i class="fa fa-file-o"></i>CentOS 7下passenger-status报错</a>
+        <a href="/2019/05/09/ffmpeg-command/" ><i class="fa fa-file-o"></i>ffmpeg command</a>
       </li>
     
   </ul>

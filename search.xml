@@ -3,6 +3,790 @@
   
     
     <entry>
+      <title><![CDATA[how to deploy hexo to aws lightsail]]></title>
+      <url>/2019/05/28/how-to-deploy-hexo-to-aws-lightsail/</url>
+      <content type="html"><![CDATA[<h3 id="aws-lightsail安装步骤"><a href="#aws-lightsail安装步骤" class="headerlink" title="aws lightsail安装步骤"></a>aws lightsail安装步骤</h3><ol>
+<li><p>安装Nginx<br>Amazon yum源中的nginx版本是1.14.1, 原生的1.14.1是带有一些已知安全漏洞的buggy版本, Amazon yum源中的版本不知道是不是bug fix的版本。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install nginx</div></pre></td></tr></table></figure>
+</li>
+<li><p>安装git</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install git</div></pre></td></tr></table></figure>
+</li>
+<li><p>配置nginx</p>
+</li>
+</ol>
+<p>以公网IP为<code>34.223.200.118</code>为例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"># 创建hexo的访问目录</div><div class="line">mkdir -p /opt/app/web/hexo</div><div class="line">chown -R nginx:nginx /opt/app/web</div><div class="line">chmod g+w /opt/app/web/hexo</div><div class="line"></div><div class="line"># 创建git账号</div><div class="line">mkdir -p /opt/app/git</div><div class="line">useradd git</div><div class="line">chown -R git:git /opt/app/git</div><div class="line"></div><div class="line"># 添加git到nginx组</div><div class="line">usermod -a -G nginx git</div><div class="line"></div><div class="line">sudo -u git bash</div><div class="line">cd /opt/app/git/</div><div class="line">git init --bare hexo.git</div><div class="line">创建git钩子</div><div class="line">vim /opt/app/git/hexo.git/hooks/post-receive</div><div class="line"></div><div class="line">#!/bin/bash</div><div class="line">git --work-tree=/opt/app/web/hexo --git-dir=/opt/app/git/hexo.git checkout -f</div><div class="line"></div><div class="line"># 添加可执行</div><div class="line">chmod +x /opt/app/git/hexo.git/hooks/post-receive</div><div class="line"></div><div class="line"></div><div class="line"># 修改nginx配置文件, 添加hexo的server</div><div class="line">vim /etc/nginx/conf.d/hexo.conf</div><div class="line">server &#123;</div><div class="line">      listen       80;</div><div class="line">      server_name  34.223.200.118;</div><div class="line">      root         /opt/app/web/hexo;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<h3 id="本地hexo设置"><a href="#本地hexo设置" class="headerlink" title="本地hexo设置"></a>本地hexo设置</h3><p>将本地常用的public key拷贝到git用户中, 再设置本地~/.ssh/config<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># 生成key </div><div class="line">ssh-keygen -f ./id_rsa_for_hexo_git</div><div class="line"></div><div class="line">拷贝公钥到服务器上git目录下</div><div class="line">mkdir .ssh</div><div class="line">chmod 700 .ssh</div><div class="line">echo &quot;ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDLnDz8jqjcOHylYxWO2Z2Krzut3xH+jducGU8pbUQTdf4MQXuR9qbLgvk9pEhStU+aXnzZ5oCG2o4Vo9HU1kxuVrv7sznvEmLO91yb+VGgzH8gHVwbNP0IqZ9ZgPKZAqOFx2fbfjlnur/8oO0HZzFGK9fDk1t1vijvE3fZAcee6q9SiqDy8sVqF7JwUVZCk8j0AoX4FYeB/MEx1Aqcsoug2N9QhUSpIcUjKrWZH84UXgNWUnK8s1bz1TByWk+g7mbpnVjcmfLnFjdIK/aZPUz1ZcKoQrgO0KRLhCqPTqGVaYq2oP2AybrmOlsMHZqZ5cDsSTyvgXMArrIPMVUkp9p7&quot; &gt;&gt; ~/.ssh/authorized_keys</div><div class="line">chmod 600 ~/.ssh/authorized_keys</div></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># 设置本地~/.ssh/config</div></pre></td></tr></table></figure>
+]]></content>
+      
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Elastic Beanstalk Ruby Passenger平台下设置HTTP重定向到HTTPS]]></title>
+      <url>/2019/05/21/how-to-direct-http-to-https-in-elasticbeanstalk-ruby-passenger-platform/</url>
+      <content type="html"><![CDATA[<p>Elastic Beanstalk配置HTTPS后，接下来就需要配置HTTP请求redirect到HTTPS。<br>以前都是直接在application层面做redirect的。这次调查了一下在passenger层面来进行redirect的做法,记录在此。</p>
+<h3 id="Ruby平台基本信息"><a href="#Ruby平台基本信息" class="headerlink" title="Ruby平台基本信息:"></a>Ruby平台基本信息:</h3><ul>
+<li>EB平台: <code>Passenger with Ruby 2.3 running on 64bit Amazon Linux/2.9.3</code><ul>
+<li>Ruby 2.3</li>
+<li>Passenger模式</li>
+</ul>
+</li>
+<li>前端使用ALB进行负载均衡，和后端EC2之间端口对应关系:<ul>
+<li>ALB:443 -&gt; EC2:80 (在ALB侧进行HTTPS terminate)</li>
+<li>ALB:80 -&gt; EC2:80</li>
+</ul>
+</li>
+</ul>
+<h3 id="修改方法"><a href="#修改方法" class="headerlink" title="修改方法"></a>修改方法</h3><p>使用<code>.ebextension</code>直接修改passenger的配置文件<code>/opt/elasticbeanstalk/support/conf/nginx_config.erb</code>.<br>修改要点:</p>
+<ol>
+<li>动态请求http_x_forwarded_proto 不是https的，redirect为https</li>
+<li>静态文件请求的http_x_forwarded_proto不是https的，redirect为https</li>
+<li>来自ELB health check的请求还是直接返回请求，而不用redirect为https</li>
+</ol>
+<a id="more"></a>
+<p>主要修改点如下:</p>
+<ul>
+<li><p>添加<code>location /</code>节点，判断<code>http_x_forwarded_proto</code>是否为https</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">set $redirect 0;</div><div class="line">location / &#123;</div><div class="line">    if ($http_x_forwarded_proto != &quot;https&quot;) &#123;</div><div class="line">      set $redirect 1;</div><div class="line">    &#125;</div><div class="line">    if ($http_user_agent ~* &quot;ELB-HealthChecker&quot;) &#123;</div><div class="line">      set $redirect 0;</div><div class="line">    &#125;</div><div class="line">    if ($redirect = 1) &#123;</div><div class="line">      return 301 https://$host$request_uri;</div><div class="line">    &#125;</div><div class="line">    passenger_enabled on;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>修改静态文件location，添加<code>http_x_forwarded_proto</code>的判断。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"># Rails asset pipeline support.</div><div class="line"># location ~ &quot;^/assets/.+-[0-9a-f]&#123;32&#125;\..+&quot; &#123;</div><div class="line">location ~ &quot;^/assets/.+-([0-9a-f]&#123;32&#125;|[0-9a-f]&#123;64&#125;)\..+&quot; &#123;</div><div class="line">    if ($http_x_forwarded_proto != &quot;https&quot;) &#123;</div><div class="line">      set $redirect 1;</div><div class="line">    &#125;</div><div class="line">    if ($http_user_agent ~* &quot;ELB-HealthChecker&quot;) &#123;</div><div class="line">      set $redirect 0;</div><div class="line">    &#125;</div><div class="line">    if ($redirect = 1) &#123;</div><div class="line">      return 301 https://$host$request_uri;</div><div class="line">    &#125;</div><div class="line">    error_page 490 = @static_asset;</div><div class="line">    error_page 491 = @dynamic_request;</div><div class="line">    recursive_error_pages on;</div><div class="line"></div><div class="line">    if (-f $request_filename) &#123;</div><div class="line">        return 490;</div><div class="line">    &#125;</div><div class="line">    if (!-f $request_filename) &#123;</div><div class="line">        return 491;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>完整配置参见<a href="https://github.com/jibing57/my-snippet/blob/master/AWS/ElasticBeanstalk/02_redirect_http_to_https/20-update-eb-config-for-http-redirect-to-https.config" target="_blank" rel="external">Github</a>。</p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://github.com/awsdocs/elastic-beanstalk-samples/tree/master/configuration-files/aws-provided/security-configuration/https-redirect/ruby-passenger/https-redirect-load-balanced-ruby-passenger" target="_blank" rel="external">Github awsdocs/elastic-beanstalk-samples</a></li>
+<li><a href="https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/configuring-https-httpredirect.html" target="_blank" rel="external">Configuring HTTP to HTTPS Redirection</a> </li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> AWS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Elastic Beanstalk </tag>
+            
+            <tag> HTTP </tag>
+            
+            <tag> HTTPS </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[如何在Elastic Load Balancer中添加SSL证书]]></title>
+      <url>/2019/05/16/how-to-add-SSL-Certification-to-Elastic-Load-Balancer/</url>
+      <content type="html"><![CDATA[<h3 id="上传方式"><a href="#上传方式" class="headerlink" title="上传方式"></a>上传方式</h3><p>AWS侧上传HTTPS证书有两种方式</p>
+<ul>
+<li>使用 AWS Certificate Manager (ACM)生成，优点是免费，和aws其他服务集成性好，缺点是只能在AWS中使用</li>
+<li>上传第三方证书到AWS Identity and Access Management (IAM) 中，优点是证书生成灵活，缺点是操作麻烦。</li>
+</ul>
+<p>中国区的AWS还没有ACM服务，因此只能使用IAM的方式来上传证书。</p>
+<h3 id="证书相关的一系列命令"><a href="#证书相关的一系列命令" class="headerlink" title="证书相关的一系列命令"></a>证书相关的一系列命令</h3><ol>
+<li><p>证书上传命令<br>如果没有<code>certificate-chain</code>，可以不传。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ aws iam upload-server-certificate --server-certificate-name ExampleCertificate </div><div class="line">                                    --certificate-body file://Certificate.pem </div><div class="line">                                    --certificate-chain file://CertificateChain.pem </div><div class="line">                                    --private-key file://PrivateKey.pem</div></pre></td></tr></table></figure>
+</li>
+<li><p>列出证书命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ aws iam list-server-certificates</div></pre></td></tr></table></figure>
+</li>
+<li><p>获取证书信息命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ aws iam get-server-certificate --server-certificate-name ExampleCertificate</div></pre></td></tr></table></figure>
+</li>
+<li><p>删除证书命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ aws iam delete-server-certificate --server-certificate-name ExampleCertificate</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<a id="more"></a>
+<h3 id="在EB中设置使用SSL证书"><a href="#在EB中设置使用SSL证书" class="headerlink" title="在EB中设置使用SSL证书"></a>在EB中设置使用SSL证书</h3><p>在EB中为ALB添加SSL证书的步骤如下:</p>
+<ol>
+<li>在EB中，点击[Configuration]-&gt;[Load balancer]打开Load balancer配置页面。</li>
+<li><p>点击Application Load Balancer右侧的Add listener，添加listener.<br><img src="/images/AWS/ALB/alb_setting_in_eb.png" alt="alb_setting_in_eb.png"></p>
+</li>
+<li><p>在Application Load Balancer Listener的添加页面中，设置如下, 再点击Add进行添加Listener.</p>
+<ul>
+<li>Port设为443</li>
+<li>Protocol选择HTTPS</li>
+<li>SSL certificate中选择IAM中上传的证书</li>
+<li>SSL policy可以自选，也可以留空<br><img src="/images/AWS/ALB/add_ssl_listener_in_eb.png" alt="add_ssl_listener_in_eb.png"></li>
+</ul>
+</li>
+<li><p>回到Load balancer配置页面，可以看到Application Load Balancer部分，多了刚设置的443 HTTPS的Listener。<br>并且EB会自动在Rules部分加上ALB 443端口到默认的target 80的rule, 还会在ALB所在的Security Group中自动添加允许443的inbound rules。<br><img src="/images/AWS/ALB/alb_auto_configure_in_eb.png" alt="alb_auto_configure_in_eb.png"></p>
+</li>
+<li><p>最后点击右下角的Apply按钮更新配置，或点击Continue后来检查更改。</p>
+</li>
+</ol>
+<h3 id="ALB中手动添加SSL证书"><a href="#ALB中手动添加SSL证书" class="headerlink" title="ALB中手动添加SSL证书"></a>ALB中手动添加SSL证书</h3><ol>
+<li><p>在EC2界面，左侧选择Load Balancers, 再选择要设置的Load Balance，下部tab切换至Listeners。<br><img src="/images/AWS/ALB/alb_on_ec2.png" alt="alb_on_ec2.png"></p>
+</li>
+<li><p>点击Add listener, 在listener添加页面中</p>
+<ul>
+<li>Protocol : port选择 HTTPS:443</li>
+<li>Default action中选择Forward to或者Redirect to一个已有的Target</li>
+<li>Default SSL certificate中，选择From IAM，再选择在IAM中upload的证书。<br>点击右上角Save进行保存。<br><img src="/images/AWS/ALB/ssl_listener_setting_on_ec2.png" alt="ssl_listener_setting_on_ec2.png"></li>
+</ul>
+</li>
+</ol>
+<p><strong>注意</strong>: <strong>如果443端口不通的话，记住检查一下ALB所在的Security Group中有没有开放443端口。</strong></p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://amazonaws-china.com/premiumsupport/knowledge-center/import-ssl-certificate-to-iam/?nc1=h_ls" target="_blank" rel="external">How can I upload and import an SSL certificate to AWS Identity and Access Management (IAM)?</a></li>
+<li><a href="https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/configuring-https-ssl-upload.html" target="_blank" rel="external">Upload a Certificate to IAM</a></li>
+<li><a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_server-certs.html" target="_blank" rel="external">Working with Server Certificates</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> AWS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Elastic Load Balancing </tag>
+            
+            <tag> IAM </tag>
+            
+            <tag> Application Load Balancing </tag>
+            
+            <tag> HTTP </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[在Mac下修改Office的界面显示语言]]></title>
+      <url>/2019/05/10/how-to-change-office-UI-language-on-macos/</url>
+      <content type="html"><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>在Macos中，微软的Office套件的UI，是根据系统默认语言来设置的。系统是中文，Office就是中文UI，系统是英文，Office就是英文UI。微软并没有在Office的偏好设置中，设置一个可以切换语言的设置。<br>这让我这种想保持系统英文，Office中文的人感到很难受。<br>官网上搜了一圈，都没有找到可用的办法。功夫不负有心人，最终在office社区里面的这篇帖子提供了解决办法<a href="https://answers.microsoft.com/en-us/msoffice/forum/msoffice_other-mso_mac-mso_mac2016/how-to-manually-change-the-language-used-in-office/abe2a9c1-f550-45de-9d0e-58b99f206c41?page=2" target="_blank" rel="external">How to manually change the language used in Office for Mac 2016 without changing OS language?</a>, 还是我最喜欢的命令行方式。虽然是15，16年的帖子，但是对应的方法，在最新版的Office(版本16.24-19041401)中仍然可用。</p>
+<h3 id="修改方法"><a href="#修改方法" class="headerlink" title="修改方法"></a>修改方法</h3><p>以work为例，记录相关命令如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"># 修改word的语言</div><div class="line">$ defaults write com.microsoft.Word AppleLanguages &apos;(&quot;zh-cn&quot;)&apos;</div><div class="line"></div><div class="line"># 读取word的设置, 可以看到多了一个AppleLanguages的选项。</div><div class="line">$ defaults read com.microsoft.Word</div><div class="line">&#123;</div><div class="line">    ...</div><div class="line">    AppleLanguages =     (</div><div class="line">        &quot;zh-cn&quot;</div><div class="line">    );</div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>重启word，可以看到word会提示中文的对话框”默认编辑语言已更改”.<br><img src="/images/Microsoft/Office/word_language_change.png" alt="word_language_change"></p>
+<p>每个office组件都是独立修改的，Excel和Powerpoint的修改命令如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">defaults write com.microsoft.Excel AppleLanguages &apos;(&quot;zh-cn&quot;)&apos;</div><div class="line">defaults write com.microsoft.Powerpoint AppleLanguages &apos;(&quot;zh-cn&quot;)&apos;</div></pre></td></tr></table></figure></p>
+<h3 id="Office字体对照关系"><a href="#Office字体对照关系" class="headerlink" title="Office字体对照关系"></a>Office字体对照关系</h3><p>摘录自简书上的一篇文章<a href="https://www.jianshu.com/p/8cf09c5144e2" target="_blank" rel="external">英文版 Mac 上 office 的中文字体</a>, 记录一下，以备不时之需。</p>
+<blockquote>
+<p>Mac下英文版Office中常用的中文字体的名字对照关系如下:</p>
+<ul>
+<li>华文细黑：STHeiti Light [STXihei]</li>
+<li>华文黑体：STHeiti</li>
+<li>华文楷体：STKaiti</li>
+<li>华文宋体：STSong</li>
+<li>华文仿宋：STFangsong</li>
+<li>俪黑 Pro：LiHei Pro Medium</li>
+<li>俪宋 Pro：LiSong Pro Light</li>
+<li>标楷体：BiauKai</li>
+<li>苹果俪中黑：Apple LiGothic Medium</li>
+<li>苹果俪细宋：Apple LiSung Light</li>
+</ul>
+<p>Windows的</p>
+<ul>
+<li>新细明体：PMingLiU</li>
+<li>细明体：MingLiU</li>
+<li>标楷体：DFKai-SB</li>
+<li>黑体：SimHei</li>
+<li>宋体：SimSun</li>
+<li>新宋体：NSimSun</li>
+<li>仿宋：FangSong</li>
+<li>楷体：KaiTi</li>
+<li>仿宋_GB2312：FangSong_GB2312</li>
+<li>楷体_GB2312：KaiTi_GB2312</li>
+<li>微软正黑体：Microsoft JhengHei</li>
+<li>微软雅黑体：Microsoft YaHei</li>
+</ul>
+</blockquote>
+<h3 id="小发现"><a href="#小发现" class="headerlink" title="小发现"></a>小发现</h3><p>查看<code>defaults read com.microsoft.Word</code>的时候，发现有一个名为<code>ChangeInstallLanguageState</code>的值，应该是用来记录总共更换过软件语言的次数的，为啥需要记录这个值呢？呵呵~~</p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://answers.microsoft.com/en-us/msoffice/forum/msoffice_other-mso_mac-mso_mac2016/how-to-manually-change-the-language-used-in-office/abe2a9c1-f550-45de-9d0e-58b99f206c41?page=2" target="_blank" rel="external">How to manually change the language used in Office for Mac 2016 without changing OS language?</a></li>
+<li><a href="https://www.jianshu.com/p/8cf09c5144e2" target="_blank" rel="external">英文版 Mac 上 office 的中文字体</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> Tools </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Office </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[ffmpeg command]]></title>
+      <url>/2019/05/09/ffmpeg-command/</url>
+      <content type="html"><![CDATA[<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>官网下载地址 <a href="https://ffmpeg.org/download.html" target="_blank" rel="external">Download FFmpeg</a></p>
+<ul>
+<li><p>Mac下安装<br>Mac下的话，推荐brew 安装<code>brew install ffmpeg</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">$ ffmpeg -version</div><div class="line">ffmpeg version 4.1.3 Copyright (c) 2000-2019 the FFmpeg developers</div><div class="line">built with Apple LLVM version 10.0.1 (clang-1001.0.46.3)</div><div class="line">configuration: --prefix=/usr/local/Cellar/ffmpeg/4.1.3 --enable-shared --enable-pthreads --enable-version3 --enable-hardcoded-tables --enable-avresample --cc=clang --host-cflags=&apos;-I/Library/Java/JavaVirtualMachines/openjdk-12.jdk/Contents/Home/include -I/Library/Java/JavaVirtualMachines/openjdk-12.jdk/Contents/Home/include/darwin&apos; --host-ldflags= --enable-ffplay --enable-gnutls --enable-gpl --enable-libaom --enable-libbluray --enable-libmp3lame --enable-libopus --enable-librubberband --enable-libsnappy --enable-libtesseract --enable-libtheora --enable-libvorbis --enable-libvpx --enable-libx264 --enable-libx265 --enable-libxvid --enable-lzma --enable-libfontconfig --enable-libfreetype --enable-frei0r --enable-libass --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenjpeg --enable-librtmp --enable-libspeex --enable-videotoolbox --disable-libjack --disable-indev=jack --enable-libaom --enable-libsoxr</div><div class="line">libavutil      56. 22.100 / 56. 22.100</div><div class="line">libavcodec     58. 35.100 / 58. 35.100</div><div class="line">libavformat    58. 20.100 / 58. 20.100</div><div class="line">libavdevice    58.  5.100 / 58.  5.100</div><div class="line">libavfilter     7. 40.101 /  7. 40.101</div><div class="line">libavresample   4.  0.  0 /  4.  0.  0</div><div class="line">libswscale      5.  3.100 /  5.  3.100</div><div class="line">libswresample   3.  3.100 /  3.  3.100</div><div class="line">libpostproc    55.  3.100 / 55.  3.100</div><div class="line">$</div></pre></td></tr></table></figure>
+</li>
+<li><p>Linux下安装<br>Linux下可以选择Static Builds，也可以选择package的安装方式<br>红帽系(Fedora, Redhat, CentOS)，可以使用yum源<a href="https://rpmfusion.org/" target="_blank" rel="external">RMP Fusion</a>来安装,  Static Builds的那个,没有启用全部功能，似乎不太灵光。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo yum localinstall --nogpgcheck https://download1.rpmfusion.org/free/el/rpmfusion-free-release-7.noarch.rpm https://download1.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-7.noarch.rpm</div><div class="line">sudo yum install ffmpeg</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="工作基本流程"><a href="#工作基本流程" class="headerlink" title="工作基本流程"></a>工作基本流程</h3><p><a href="https://ffmpeg.org/ffmpeg.html" target="_blank" rel="external">ffmpeg官网</a>图示的基本流程如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"> _______              ______________</div><div class="line">|       |            |              |</div><div class="line">| input |  demuxer   | encoded data |   decoder</div><div class="line">| file  | ---------&gt; | packets      | -----+</div><div class="line">|_______|            |______________|      |</div><div class="line">                                           v</div><div class="line">                                       _________</div><div class="line">                                      |         |</div><div class="line">                                      | decoded |</div><div class="line">                                      | frames  |</div><div class="line">                                      |_________|</div><div class="line"> ________             ______________       |</div><div class="line">|        |           |              |      |</div><div class="line">| output | &lt;-------- | encoded data | &lt;----+</div><div class="line">| file   |   muxer   | packets      |   encoder</div><div class="line">|________|           |______________|</div></pre></td></tr></table></figure></p>
+<ol>
+<li>输入文件经过分离器demuxer, 分离出编码的流，如视频流，音频流等</li>
+<li>各个流经过解码器decoder, 解码为原始的数据帧</li>
+<li>将原始帧按照命令指定的编码经过编码器encoder进行编码, 得到各个编码后的流。</li>
+<li>使用混流器muxer将多路的流合成一个整的文件</li>
+</ol>
+<p>一些概念:</p>
+<ol>
+<li>流（stream）：视频文件中，一般具有视频流与音频流，有的具有字幕流。它们需要不同的解码/编码器。想要混合/分离视频与音频，就需要混流/分流器。</li>
+<li>流复制（stream）：如果某种数据流的内容不需要任何改动，那么可以直接跳过该数据流的解码与编码步骤。分离出该数据流后，直接等待参与混流即可。</li>
+</ol>
+<h3 id="基础命令"><a href="#基础命令" class="headerlink" title="基础命令"></a>基础命令</h3><ol>
+<li><p>版本命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># 查看版本信息</div><div class="line">ffmpeg -version</div><div class="line"></div><div class="line"># 查看视频信息 -hide_banner用于隐藏ffmpeg自身的信息</div><div class="line">ffmpeg -hide_banner -i avenger.flv</div></pre></td></tr></table></figure>
+</li>
+<li><p>帮助命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"># ffmpeg 帮助</div><div class="line">ffmpeg -h  # 输出基础的选项</div><div class="line">ffmpeg -h long # 输出高级的工具选项</div><div class="line">ffmpeg -h full # 打印所有选项，包括编码器，解码器，分流器，混合器，滤镜等的共享和私有选项</div><div class="line"></div><div class="line"># 针对某个topic的help</div><div class="line">ffmpeg -h topic #输出某个topic信息, 例如 ffmpeg -h encoder=flv</div><div class="line"></div><div class="line">## decoder help</div><div class="line">ffmpeg -decoders # 查看支持的解码器列表</div><div class="line">ffmpeg -h decoder=flv # 查看解码器flv的详细信息</div><div class="line"></div><div class="line">## encoder help</div><div class="line">ffmpeg -encoders # 查看支持的编码器列表</div><div class="line">ffmpeg -h encoder=flv # 查看解码器flv的详细信息</div><div class="line"></div><div class="line">## demuxer help</div><div class="line">ffmpeg -formats  # 查看所有分流器和混合器的列表</div><div class="line">ffmpeg -h demuxer=flv  # 查看分流器flv的详细信息</div><div class="line"></div><div class="line">## muxer help</div><div class="line">ffmpeg -formats  # 查看所有分流器和混合器的列表</div><div class="line">ffmpeg -h muxer=flv  # 查看混合器flv的详细信息</div><div class="line"></div><div class="line">## filter help</div><div class="line">ffmpeg -filters  # 查看所有滤镜的列表</div><div class="line">ffmpeg -h filter=movie  # 查看滤镜movie的详细信息</div></pre></td></tr></table></figure>
+</li>
+<li><p>常用基础参数</p>
+</li>
+</ol>
+]]></content>
+      
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[NIC bonding in CentOS7]]></title>
+      <url>/2019/05/05/NIC-bonding-in-CentOS7/</url>
+      <content type="html"><![CDATA[<h3 id="设置NIC-bonding的例子"><a href="#设置NIC-bonding的例子" class="headerlink" title="设置NIC bonding的例子"></a>设置NIC bonding的例子</h3><p>如下例子基于VMWare Fusion 10.1.5下的CentOS 7.6。</p>
+<h3 id="开启内核bonding"><a href="#开启内核bonding" class="headerlink" title="开启内核bonding"></a>开启内核bonding</h3><p>为内核开启bonding功能<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">modprobe bonding</div></pre></td></tr></table></figure></p>
+<p>验证bonding是否开启<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># lsmod | grep bonding</div><div class="line">bonding               152656  0</div><div class="line">#</div></pre></td></tr></table></figure></p>
+<p>bonding的几种类型, 参见<a href="https://www.kernel.org/doc/Documentation/networking/bonding.txt" target="_blank" rel="external">https://www.kernel.org/doc/Documentation/networking/bonding.txt</a></p>
+<ul>
+<li>balance-rr or 0</li>
+<li>active-backup or 1</li>
+<li>balance-xor or 2</li>
+<li>broadcast or 3</li>
+<li>802.3ad or 4</li>
+<li>balance-tlb or 5</li>
+<li>balance-alb or 6</li>
+</ul>
+<h3 id="开启前网卡信息"><a href="#开启前网卡信息" class="headerlink" title="开启前网卡信息"></a>开启前网卡信息</h3><p>有ens33，ens37，ens38共三块物理网卡。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"># ip addr</div><div class="line">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000</div><div class="line">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</div><div class="line">    inet 127.0.0.1/8 scope host lo</div><div class="line">       valid_lft forever preferred_lft forever</div><div class="line">    inet6 ::1/128 scope host</div><div class="line">       valid_lft forever preferred_lft forever</div><div class="line">2: ens33: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000</div><div class="line">    link/ether 00:0c:29:23:6e:cc brd ff:ff:ff:ff:ff:ff</div><div class="line">    inet 192.168.187.100/24 brd 192.168.187.255 scope global noprefixroute dynamic ens33</div><div class="line">       valid_lft 1622sec preferred_lft 1622sec</div><div class="line">    inet6 fe80::1092:5557:4eb5:9694/64 scope link noprefixroute</div><div class="line">       valid_lft forever preferred_lft forever</div><div class="line">3: ens37: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000</div><div class="line">    link/ether 00:0c:29:23:6e:d6 brd ff:ff:ff:ff:ff:ff</div><div class="line">    inet 192.168.187.140/24 brd 192.168.187.255 scope global noprefixroute dynamic ens37</div><div class="line">       valid_lft 1623sec preferred_lft 1623sec</div><div class="line">    inet6 fe80::7457:5559:16fa:fa16/64 scope link noprefixroute</div><div class="line">       valid_lft forever preferred_lft forever</div><div class="line">4: ens38: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000</div><div class="line">    link/ether 00:0c:29:23:6e:e0 brd ff:ff:ff:ff:ff:ff</div><div class="line">    inet 192.168.187.139/24 brd 192.168.187.255 scope global noprefixroute dynamic ens38</div><div class="line">       valid_lft 1623sec preferred_lft 1623sec</div><div class="line">    inet6 fe80::aba:913a:efd0:22ba/64 scope link noprefixroute</div><div class="line">       valid_lft forever preferred_lft forever</div><div class="line">#</div></pre></td></tr></table></figure></p>
+<h3 id="新建bonding网口配置文件"><a href="#新建bonding网口配置文件" class="headerlink" title="新建bonding网口配置文件"></a>新建bonding网口配置文件</h3><p>在<code>/etc/sysconfig/network-scripts</code>中新建<code>ifcfg-bond0</code>配置文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"># cat ifcfg-bond0</div><div class="line">DEVICE=bond0</div><div class="line">TYPE=Bond</div><div class="line">NAME=bond0</div><div class="line">BONDING_MASTER=yes</div><div class="line">BOOTPROTO=none</div><div class="line">ONBOOT=yes</div><div class="line">IPADDR=192.168.187.110</div><div class="line">NETMASK=255.255.255.0</div><div class="line">GATEWAY=192.168.187.1</div><div class="line">BONDING_OPTS=&quot;mode=6 miimon=100&quot;</div><div class="line">#</div></pre></td></tr></table></figure>
+<h3 id="修改物理网卡信息"><a href="#修改物理网卡信息" class="headerlink" title="修改物理网卡信息"></a>修改物理网卡信息</h3><p><em>ens33</em> 修改为如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"># cat /etc/sysconfig/network-scripts/ifcfg-ens33 </div><div class="line">TYPE=Ethernet</div><div class="line">BOOTPROTO=none</div><div class="line">NAME=ens33</div><div class="line">DEVICE=ens33</div><div class="line">ONBOOT=yes</div><div class="line">HWADDR=&quot;00:0c:29:23:6e:cc&quot;</div><div class="line">MASTER=bond0</div><div class="line">SLAVE=yes</div><div class="line">#</div></pre></td></tr></table></figure></p>
+<p>创建或修改<em>ifcfg-ens37</em>的配置文件如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"># cat /etc/sysconfig/network-scripts/ifcfg-ens37</div><div class="line">TYPE=Ethernet</div><div class="line">BOOTPROTO=none</div><div class="line">NAME=ens37</div><div class="line">DEVICE=ens37</div><div class="line">ONBOOT=yes</div><div class="line">HWADDR=&quot;00:0c:29:23:6e:d6&quot;</div><div class="line">MASTER=bond0</div><div class="line">SLAVE=yes</div><div class="line">#</div></pre></td></tr></table></figure></p>
+<p>创建或修改<em>ifcfg-ens38</em>的配置文件如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"># cat /etc/sysconfig/network-scripts/ifcfg-ens38</div><div class="line">TYPE=Ethernet</div><div class="line">BOOTPROTO=none</div><div class="line">NAME=ens38</div><div class="line">DEVICE=ens38</div><div class="line">ONBOOT=yes</div><div class="line">HWADDR=&quot;00:0c:29:23:6e:e0&quot;</div><div class="line">MASTER=bond0</div><div class="line">SLAVE=yes</div><div class="line">#</div></pre></td></tr></table></figure></p>
+<h3 id="重启服务，使之生效"><a href="#重启服务，使之生效" class="headerlink" title="重启服务，使之生效"></a>重启服务，使之生效</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">systemctl restart network.service</div></pre></td></tr></table></figure>
+<h3 id="验证bonding是否生效"><a href="#验证bonding是否生效" class="headerlink" title="验证bonding是否生效"></a>验证bonding是否生效</h3><p>查看<code>/proc/net/bonding/bond0</code>中端口的绑定状态。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"># cat /proc/net/bonding/bond0</div><div class="line">Ethernet Channel Bonding Driver: v3.7.1 (April 27, 2011)</div><div class="line"></div><div class="line">Bonding Mode: transmit load balancing</div><div class="line">Primary Slave: None</div><div class="line">Currently Active Slave: ens33</div><div class="line">MII Status: up</div><div class="line">MII Polling Interval (ms): 100</div><div class="line">Up Delay (ms): 0</div><div class="line">Down Delay (ms): 0</div><div class="line"></div><div class="line">Slave Interface: ens33</div><div class="line">MII Status: up</div><div class="line">Speed: 1000 Mbps</div><div class="line">Duplex: full</div><div class="line">Link Failure Count: 0</div><div class="line">Permanent HW addr: 00:0c:29:23:6e:cc</div><div class="line">Slave queue ID: 0</div><div class="line"></div><div class="line">Slave Interface: ens37</div><div class="line">MII Status: up</div><div class="line">Speed: 1000 Mbps</div><div class="line">Duplex: full</div><div class="line">Link Failure Count: 0</div><div class="line">Permanent HW addr: 00:0c:29:23:6e:d6</div><div class="line">Slave queue ID: 0</div><div class="line"></div><div class="line">Slave Interface: ens38</div><div class="line">MII Status: up</div><div class="line">Speed: 1000 Mbps</div><div class="line">Duplex: full</div><div class="line">Link Failure Count: 0</div><div class="line">Permanent HW addr: 00:0c:29:23:6e:e0</div><div class="line">Slave queue ID: 0</div><div class="line">#</div></pre></td></tr></table></figure></p>
+<p><code>ip addr</code>输出中，可以看到<code>bond0</code>是MASTER，<code>ens33</code>,<code>ens37</code>,<code>ens38</code>都是SLAVE模式。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"># ip addr</div><div class="line">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000</div><div class="line">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</div><div class="line">    inet 127.0.0.1/8 scope host lo</div><div class="line">       valid_lft forever preferred_lft forever</div><div class="line">    inet6 ::1/128 scope host</div><div class="line">       valid_lft forever preferred_lft forever</div><div class="line">2: ens33: &lt;BROADCAST,MULTICAST,SLAVE,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast master bond0 state UP group default qlen 1000</div><div class="line">    link/ether 00:0c:29:23:6e:cc brd ff:ff:ff:ff:ff:ff</div><div class="line">3: ens37: &lt;BROADCAST,MULTICAST,SLAVE,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast master bond0 state UP group default qlen 1000</div><div class="line">    link/ether 00:0c:29:23:6e:d6 brd ff:ff:ff:ff:ff:ff</div><div class="line">4: ens38: &lt;BROADCAST,MULTICAST,SLAVE,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast master bond0 state UP group default qlen 1000</div><div class="line">    link/ether 00:0c:29:23:6e:e0 brd ff:ff:ff:ff:ff:ff</div><div class="line">9: bond0: &lt;BROADCAST,MULTICAST,MASTER,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default qlen 1000</div><div class="line">    link/ether 00:0c:29:23:6e:cc brd ff:ff:ff:ff:ff:ff</div><div class="line">    inet 192.168.187.100/24 brd 192.168.187.255 scope global noprefixroute bond0</div><div class="line">       valid_lft forever preferred_lft forever</div><div class="line">    inet6 fe80::20c:29ff:fe23:6ecc/64 scope link</div><div class="line">       valid_lft forever preferred_lft forever</div><div class="line">#</div></pre></td></tr></table></figure></p>
+<h3 id="效果测试"><a href="#效果测试" class="headerlink" title="效果测试"></a>效果测试</h3><h4 id="fault"><a href="#fault" class="headerlink" title="fault"></a>fault</h4><p>持续ping 192.168.187.100, 再依次down掉网口ens33，ens37，ens38。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">ip link set ens33 down 或 ifconfig ens33 down</div><div class="line">ip link set ens37 down 或 ifconfig ens37 down</div><div class="line">ip link set ens38 down 或 ifconfig ens38 down</div></pre></td></tr></table></figure>
+<p>只有当最后一个网口ens38 down掉后，ping 192.168.187.100才没有响应</p>
+<h4 id="网速测试"><a href="#网速测试" class="headerlink" title="网速测试"></a>网速测试</h4><p>使用iperf来进行测速试验。</p>
+<ol>
+<li>安装iperf<br>虚拟机CentOS 7中安装iperf,打开5001端口<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># 安装iperf</div><div class="line">yum install iperf</div><div class="line"># 开启5001端口</div><div class="line">firewall-cmd --add-port=5001/tcp --permanent</div><div class="line">firewall-cmd --reload</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>宿主机MacOS下安装iperf<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew install iperf</div></pre></td></tr></table></figure></p>
+<ol>
+<li>测试<br>测试命令，虚拟机CentOS 7上使用<code>iperf -s</code>开启服务，宿主机MacOS下使用<code>iperf -c 192.168.187.100</code>来进行测速<br>2.1 ens33,ens37,ens38都开启时<br>|测试次数|速度|<br>|–|–|<br>|1|2.05 Gbits/sec|<br>|2|2.22 Gbits/sec|<br>|3|2.06 Gbits/sec|</li>
+</ol>
+<p>2.2  关闭ens33，只有ens37，ens38开启时<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ifconfig ens33 down</div></pre></td></tr></table></figure></p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://tzclouds.com/2018/07/28/how-to-configure-network-bonding-in-rhel7-and-centos7/" target="_blank" rel="external">How to Configure Network Bonding in RHEL 7 and CentOS 7</a></li>
+<li><a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/networking_guide/sec-verifying_network_configuration_bonding_for_redundancy" target="_blank" rel="external">7.5. VERIFYING NETWORK CONFIGURATION BONDING FOR REDUNDANCY</a></li>
+</ul>
+]]></content>
+      
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Macos下制作CentOS 7 USB启动盘]]></title>
+      <url>/2019/05/01/way-to-make-centos7-bootable-usb-on-macos/</url>
+      <content type="html"><![CDATA[<p>记录下在MacOS中制作Linux USB启动盘的操作步骤。</p>
+<h3 id="操作步骤"><a href="#操作步骤" class="headerlink" title="操作步骤"></a>操作步骤</h3><h4 id="查看磁盘挂载分区"><a href="#查看磁盘挂载分区" class="headerlink" title="查看磁盘挂载分区"></a>查看磁盘挂载分区</h4><p>使用命令<code>diskutil list</code>查看所在U盘的分区，找到U盘的挂载点，此处挂载点为<code>/dev/disk2</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">$ diskutil list</div><div class="line">...</div><div class="line"></div><div class="line">/dev/disk2 (external, physical):</div><div class="line">   #:                       TYPE NAME                    SIZE       IDENTIFIER</div><div class="line">   0:     FDisk_partition_scheme                        *31.0 GB    disk2</div><div class="line">   1:                 DOS_FAT_32 UNTITLED                31.0 GB    disk2s1</div><div class="line"></div><div class="line">$</div></pre></td></tr></table></figure></p>
+<h4 id="卸载U盘挂载"><a href="#卸载U盘挂载" class="headerlink" title="卸载U盘挂载"></a>卸载U盘挂载</h4><p>使用<code>diskutil unmountDisk</code>命令，卸载U盘的挂载。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ diskutil unmountDisk /dev/disk2</div><div class="line">Unmount of all volumes on disk2 was successful</div><div class="line">$</div></pre></td></tr></table></figure></p>
+<p>如果不卸载挂载点就写入启动盘，则会提示<code>dd: /dev/disk2: Resource busy</code>。</p>
+<a id="more"></a>
+<h4 id="使用dd来来写入iso"><a href="#使用dd来来写入iso" class="headerlink" title="使用dd来来写入iso"></a>使用dd来来写入iso</h4><p>使用dd命令来将CentOS写入启动盘，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo dd if=~/carl_workSpace/software/os/CentOS-7-x86_64-DVD-1810.iso of=/dev/rdisk2 bs=1m</div></pre></td></tr></table></figure>
+<p><strong>注意:</strong></p>
+<ol>
+<li>此处<code>~/carl_workSpace/software/os/CentOS-7-x86_64-DVD-1810.iso</code>是我本地CentOS的路径，需要替换成实际的路径</li>
+<li><code>/dev/rdisk2</code>就是上面<code>diskutil list</code>列出的U盘挂载点, 并且注意，此处磁盘前面多了个<strong>r</strong>，是<code>rdisk2</code>，而不是<code>disk2</code>，<code>rdisk2</code>是<code>disk2</code>的原始盘，目的是可以更快速的写入。</li>
+</ol>
+<p>写入需要花费几分钟时间，期间可以使用CTRL + T来查看写入进度，显示如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">109+0 records in</div><div class="line">108+0 records out</div><div class="line">113246208 bytes transferred in 7.430910 secs (15239884 bytes/sec)</div></pre></td></tr></table></figure></p>
+<p>也可以使用<code>iostat</code>来查看磁盘写入进度<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">$ iostat -w 5</div><div class="line">              disk0               disk2       cpu    load average</div><div class="line">    KB/t  tps  MB/s     KB/t  tps  MB/s  us sy id   1m   5m   15m</div><div class="line">   42.68   14  0.58   849.97    0  0.00   7  4 89  3.84 3.42 2.67</div><div class="line">  450.16   15  6.50  1024.00    7  7.19   3  3 94  3.70 3.39 2.67</div><div class="line">   85.34  124 10.33  1024.00    9  8.80   6  4 90  3.64 3.39 2.67</div><div class="line"></div><div class="line">$</div></pre></td></tr></table></figure></p>
+<p>最终完成后，dd命令输出:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">4376+0 records in</div><div class="line">4376+0 records out</div><div class="line">4588568576 bytes transferred in 539.126637 secs (8511115 bytes/sec)</div></pre></td></tr></table></figure>
+<p>写入完成后，Macos会有一个提示框，提示“此电脑不能读取您插入的磁盘。”<br><img src="/images/Linux/disk_was_not_readable.png" alt="disk_was_not_readable.png"></p>
+<p>USB启动盘不能被Macos正常读取，但是可以用来被当作启动盘安装CentOS。</p>
+<p>使用<code>diskutil list</code>可以查看到此时U盘的分区信息。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">$ diskutil list</div><div class="line">...</div><div class="line">/dev/disk2 (external, physical):</div><div class="line">   #:                       TYPE NAME                    SIZE       IDENTIFIER</div><div class="line">   0:     FDisk_partition_scheme                        *31.0 GB    disk2</div><div class="line">   1:                       0xEF                         8.9 MB     disk2s2</div><div class="line"></div><div class="line">$</div></pre></td></tr></table></figure>
+<h4 id="弹出U盘"><a href="#弹出U盘" class="headerlink" title="弹出U盘"></a>弹出U盘</h4><p>使用“磁盘工具”APP或者命令<code>diskutil eject</code>弹出U盘。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">diskutil eject /dev/disk2</div></pre></td></tr></table></figure></p>
+<h3 id="延伸"><a href="#延伸" class="headerlink" title="延伸"></a>延伸</h3><h4 id="Macos中-dev-disk和-dev-rdisk的区别"><a href="#Macos中-dev-disk和-dev-rdisk的区别" class="headerlink" title="Macos中/dev/disk和/dev/rdisk的区别"></a>Macos中/dev/disk和/dev/rdisk的区别</h4><p>首先查看<code>man hdiutil</code>的描述:</p>
+<blockquote>
+<p>Since any /dev entry can be treated as a raw disk image, it is worth noting which devices can be accessed when and how.  /dev/rdisk nodes are character-special devices, but are “raw” in the BSD sense and force block-aligned I/O.  They are closer to the physical disk than the buffer cache.  /dev/disk nodes, on the other hand, are buffered block-special devices and are used primarily by the kernel’s filesystem code.</p>
+</blockquote>
+<p><code>/dev/rdisk</code>是原始读取模式，没有经过文件系统的文件缓存机制，因此速度比<code>/dev/disk</code>速度更快。</p>
+<p>下面以918M大小的<code>CentOS-7-x86_64-Minimal-1810.iso</code>为例来比较<code>/dev/rdisk</code>和<code>/dev/disk</code>的写入速度。两者的命令分别为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"># 写入/dev/rdisk的速度</div><div class="line">$ sudo dd if=CentOS-7-x86_64-Minimal-1810.iso of=/dev/rdisk2 bs=1m</div><div class="line">918+0 records in</div><div class="line">918+0 records out</div><div class="line">962592768 bytes transferred in 106.192945 secs (9064564 bytes/sec)</div><div class="line"></div><div class="line"># 写入/dev/disk的速度</div><div class="line">sudo dd if=CentOS-7-x86_64-Minimal-1810.iso of=/dev/disk2 bs=1m</div><div class="line">918+0 records in</div><div class="line">918+0 records out</div><div class="line">962592768 bytes transferred in 3016.605565 secs (319098 bytes/sec)</div></pre></td></tr></table></figure>
+<p>可以看到写入<code>/dev/rdisk</code>花费了106秒，而写入<code>/dev/disk</code>花费了3016秒, 差别巨大。</p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://cloudwrk.com/create-centos-7-bootable-usb-on-osx/" target="_blank" rel="external">CREATE CENTOS 7 BOOTABLE USB ON OSX</a></li>
+<li><a href="https://superuser.com/questions/631592/why-is-dev-rdisk-about-20-times-faster-than-dev-disk-in-mac-os-x" target="_blank" rel="external">Why is “/dev/rdisk” about 20 times faster than “/dev/disk” in Mac OS X</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> Linux </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> CentOS </tag>
+            
+            <tag> MacOS </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[AWS Autuscaling的Scheduled Scaling(计划扩展)]]></title>
+      <url>/2019/05/01/scheduled-action-of-aws-autoscaling/</url>
+      <content type="html"><![CDATA[<h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>除了用Alarm触发的Scaling Policy，AWS Autoscaling(ASG) 还提供了一个Scheduled Scaling(计划扩展)的功能。该功能主要用作一些流量可预测的情形。比如国外的Black Friday和国内6.18或双11这种活动时，就可以使用Scheduled Scaling来提前规划好机器数量。<br>详细说明和设置参见 AWS官方文档<a href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/schedule_time.html" target="_blank" rel="external">Scheduled Scaling for Amazon EC2 Auto Scaling</a>。</p>
+<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><p>举基于如下场景的一个例子</p>
+<ol>
+<li>正常流量下，2台服务器就可以支撑。</li>
+<li>周一到周五的早上8点~10点间是流量高峰期，此时需要4台服务器才能支撑对应的流量。</li>
+<li>10点过后恢复正常流量。</li>
+</ol>
+<p>如上场景分解为2个Schedule Action</p>
+<ol>
+<li>周一到周五每天早上8点，扩展服务器数量为4.</li>
+<li>周一到周五每天早上10点，缩减服务器数量为2.</li>
+</ol>
+<a id="more"></a>
+<h4 id="设置扩展"><a href="#设置扩展" class="headerlink" title="设置扩展"></a>设置扩展</h4><p>设置周一到周五的早上8点进行扩展<br>选中要设置的autoscaling组，点开[Scheduled Actions]的tab，点击Create Scheduled Action按钮。<br>设置如下:</p>
+<ul>
+<li>Name: 设为WorkdayMorningScalingOut</li>
+<li>Min: 设为4</li>
+<li>Max和Desired Capacity为空，即Scheduled Actions策略不会修改ASG的对应值</li>
+<li>Recurrence:<ul>
+<li>下拉菜单选择Cron</li>
+<li>时间填写 <code>0 0 * * 1-5</code> (Schedule Action中时间格式是按照UTC来设置的，因此北京时间8点，应该设置为UTC 0时)</li>
+</ul>
+</li>
+<li>Start Time和End Time可以留空。<br><img src="/images/AWS/ASG/workday_morning_scaling_out.png" alt="workday_morning_scaling_out.png"></li>
+</ul>
+<h4 id="设置缩减"><a href="#设置缩减" class="headerlink" title="设置缩减"></a>设置缩减</h4><p>设置周一到周五的早上10点进行缩减<br>选中要设置的autoscaling组，点开[Scheduled Actions]的tab，点击Create Scheduled Action按钮。<br>设置如下:</p>
+<ul>
+<li>Name: 起名为WorkdayMorningScalingIn</li>
+<li>Min: 设为2</li>
+<li>Max 为空</li>
+<li>Desired Capacity 设为2。(注意如果ASG有Scaling Policies，那么此处建议留空，从而让ASG使用Scaling Policies判定的Desired Capacity)</li>
+<li>Recurrence:<ul>
+<li>下拉菜单选择Cron</li>
+<li>时间填写 <code>0 2 * * 1-5</code> (Schedule Action中时间格式是按照UTC来设置的，因此北京时间10点，应该设置为UTC 2时)</li>
+</ul>
+</li>
+<li>Start Time和End Time可以留空。</li>
+</ul>
+<p><img src="/images/AWS/ASG/workday_morning_scaling_in.png" alt="workday_morning_scaling_in.png"></p>
+<h4 id="扩展列表"><a href="#扩展列表" class="headerlink" title="扩展列表"></a>扩展列表</h4><p>设置就好后，在列表中可以看到所设置的Scheduled Action。<br><img src="/images/AWS/ASG/schedule_action_list.png" alt="schedule_action_list.png"></p>
+<p><strong>注意点</strong></p>
+<ol>
+<li><strong>Schedule Action中时间格式是按照UTC来设置的，进行设置时，需要将北京时间-8来换算成UTC时间</strong></li>
+<li><strong>如果除了Scheduled Action以外，ASG还设置了Scaling Policies，那么设置Scheduled Action的时候，无论是扩展还是缩减，建议都只修改Min和Max，而将Desired Capacity都留空。这样可以让ASG使用Scaling Policies判定的Desired Capacity, 避免Scheduled Action和Scaling Policies之间有冲突。</strong></li>
+</ol>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/schedule_time.html" target="_blank" rel="external">Scheduled Scaling for Amazon EC2 Auto Scaling</a></li>
+<li><a href="https://mohankamaraj.wordpress.com/2016/08/10/auto-scaling-scheduled-scaling-using-cron-expression/" target="_blank" rel="external">Auto Scaling – Scheduled Scaling using CRON expression</a></li>
+<li><a href="https://amazonaws-china.com/premiumsupport/knowledge-center/auto-scaling-troubleshooting/" target="_blank" rel="external">How do I troubleshoot scaling issues with my Amazon EC2 Auto Scaling group?</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> AWS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> AutoScaling </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[MacOS上VMWare Fusion中如何给网口设置固定IP]]></title>
+      <url>/2019/04/28/how-to-use-static-IP-in-VMWare-Fusion-on-Mac-OS-X/</url>
+      <content type="html"><![CDATA[<h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>VMWare Fusion中，虚拟机的网口使用NAT模式时，获取到的IP地址是通过DHCP动态分配的，不是固定分配的。每次开机虚拟机网口IP都有可能变动，SSH登录时每次要去查看，太不方便。<br>找了下如何设置固定IP的方法，记录如下。</p>
+<p>在如下环境中可以设置成功:</p>
+<ul>
+<li>MacOS Version: 10.14.4 (18E226)</li>
+<li>Vmware Fusion Version: 10.1.5 (10950653)</li>
+</ul>
+<h3 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h3><h4 id="1-获取虚拟主机的MAC地址"><a href="#1-获取虚拟主机的MAC地址" class="headerlink" title="1. 获取虚拟主机的MAC地址"></a>1. 获取虚拟主机的MAC地址</h4><p>默认安装下，所有的虚拟主机的Image都存放在<code>~/Documents/Virtual\ Machines.localized/</code>下，以名为<code>CentOS 7 64bit</code>的虚拟机为例。获取命令为:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cat ~/Documents/Virtual\ Machines.localized/CentOS\ 7\ 64bit.vmwarevm/CentOS\ 7\ 64bit.vmx | grep generatedAddress</div></pre></td></tr></table></figure></p>
+<p>找到对应网口的MAC地址, 本文中要绑定的网口<code>ethernet0</code>的MAC地址为<code>00:0C:29:23:6E:CC</code>。</p>
+<h4 id="2-设置静态IP"><a href="#2-设置静态IP" class="headerlink" title="2. 设置静态IP"></a>2. 设置静态IP</h4><p>打开配置文件<code>/Library/Preferences/VMware\ Fusion/vmnet8/dhcpd.conf</code>, <code>vmnet8</code>是VMWare用来设置NAT的虚拟网口，在MacOS下使用命令<code>ifconfig</code>可以看到该虚拟网口。</p>
+<p>在配置文件中可以看到DHCP的IP池为192.168.187.128 ~ 192.168.187.254(每个机器可能不同，以实际显示的为准)<br><a id="more"></a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">subnet 192.168.187.0 netmask 255.255.255.0 &#123;</div><div class="line">	range 192.168.187.128 192.168.187.254;</div><div class="line">	option broadcast-address 192.168.187.255;</div><div class="line">	option domain-name-servers 192.168.187.2;</div><div class="line">	option domain-name localdomain;</div><div class="line">	default-lease-time 1800;                # default is 30 minutes</div><div class="line">	max-lease-time 7200;                    # default is 2 hours</div><div class="line">	option netbios-name-servers 192.168.187.2;</div><div class="line">	option routers 192.168.187.2;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>设置静态IP，需要避免使用DHCP的IP池中的IP段，也别使用网段的前几个IP，以防和VM管理IP起冲突，比如<code>192.168.187.1</code>,<code>192.168.187.2</code>就是默认被Fusion占用的。<br>此处以选取192.168.187.100为例。在配置文件末尾添加<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">host CentOS7_64bit&#123;</div><div class="line">    hardware ethernet 00:0C:29:23:6E:CC;</div><div class="line">    fixed-address  192.168.187.100;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><strong> 注意: 没有相关知识，不要擅自去修改<code>DO NOT MODIFY SECTION</code>之间的内容, 而是将自定义的配置添加到末尾。</strong></p>
+<h4 id="3-退出VMware-Fusion"><a href="#3-退出VMware-Fusion" class="headerlink" title="3. 退出VMware Fusion"></a>3. 退出VMware Fusion</h4><p>修改的配置，需要重启VMware Fusion才能生效。关闭所有虚拟机，Command + Q 退出VM Fusion。</p>
+<h4 id="4-检验设置"><a href="#4-检验设置" class="headerlink" title="4. 检验设置"></a>4. 检验设置</h4><p>重启VMware Fusion， 再启动虚拟机<code>CentOS 7 64bit</code>，可以看到MAC地址为<code>00:0c:29:23:6e:cc</code>的网口<code>ens33</code>的IP地址就是设定的<code>192.168.187.100</code>.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"># ifconfig</div><div class="line">ens33: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu 1500</div><div class="line">        inet 192.168.187.100  netmask 255.255.255.0  broadcast 192.168.187.255</div><div class="line">        inet6 fe80::1092:5557:4eb5:9694  prefixlen 64  scopeid 0x20&lt;link&gt;</div><div class="line">        ether 00:0c:29:23:6e:cc  txqueuelen 1000  (Ethernet)</div><div class="line">        RX packets 143  bytes 17120 (16.7 KiB)</div><div class="line">        RX errors 0  dropped 0  overruns 0  frame 0</div><div class="line">        TX packets 114  bytes 15575 (15.2 KiB)</div><div class="line">        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0</div><div class="line"></div><div class="line">        ...</div><div class="line">#</div></pre></td></tr></table></figure>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://willwarren.com/2015/04/02/set-static-ip-address-in-vmware-fusion-7/" target="_blank" rel="external">Set a Static IP Address in VMware Fusion 7</a> </li>
+<li><a href="https://gist.github.com/pjkelly/1068716" target="_blank" rel="external">How to setup your VMWare Fusion images to use static IP addresses on Mac OS X</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> Linux </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Linux </tag>
+            
+            <tag> VMware </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Vmware Fusion中CentOS 7中安装Vmware Tools]]></title>
+      <url>/2019/04/26/manually-install-vmeare-tools-on-centos-7/</url>
+      <content type="html"><![CDATA[<h3 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h3><ol>
+<li>虚拟机状态栏中选择 <strong>虚拟机 &gt; 安装Vmware Tools</strong><br>期间可能会报CDROM已经被占用等信息，选择还是挂载即可</li>
+<li><p>打开Terminal手动挂载CDROM, 如果已经挂载，则不需要挂载</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># 查看cdrom是否已经自动挂载</div><div class="line">mount | grep iso9660</div><div class="line"></div><div class="line"># 手动挂载cdrom</div><div class="line">mkdir /mnt/cdrom</div><div class="line">mount /dev/cdrom /mnt/cdrom</div></pre></td></tr></table></figure>
+</li>
+<li><p>拷贝cdrom内容到/tmp并安装<br>安装步骤:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"># 如果是CentOS最小化安装，则系统没有perl,gcc和kernel-devel，需要先安装</div><div class="line">yum install -y perl gcc make kernel-devel</div><div class="line"></div><div class="line"># 拷贝vmtools并安装</div><div class="line">cd /tmp/</div><div class="line">cp /mnt/cdrom/VMwareTools-x.x.x-yyyy.tar.gz ./</div><div class="line">tar xzvf VMwareTools-x.x.x-yyyy.tar.gz</div><div class="line">cd vmware-tools-distrib</div><div class="line"># 执行安装程序，没有特殊要求，一路回车即可</div><div class="line">bash ./vmware-install.pl</div><div class="line"></div><div class="line"># 清理文件</div><div class="line">rm -rf /tmp/VMwareTools-x.x.x-yyyy.tar.gz</div><div class="line">rm -rf /tmp/vmware-tools-distrib/</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://docs.vmware.com/en/VMware-Fusion/10.0/com.vmware.fusion.using.doc/GUID-08BB9465-D40A-4E16-9E15-8C016CC8166F.html" target="_blank" rel="external">Manually Installing VMware Tools on a Linux Virtual Machine</a></li>
+<li><a href="https://kb.vmware.com/s/article/1018414" target="_blank" rel="external">Installing VMware Tools in a Linux virtual machine using a Compiler (1018414)</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> Tools </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Linux </tag>
+            
+            <tag> CentOS </tag>
+            
+            <tag> VMware </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Command Tips]]></title>
+      <url>/2019/04/26/command-tips/</url>
+      <content type="html"><![CDATA[<h3 id="git-branch-不要分页"><a href="#git-branch-不要分页" class="headerlink" title="git branch 不要分页"></a>git branch 不要分页</h3><p>设置git branch不分页显示<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git config --global pager.branch false</div></pre></td></tr></table></figure></p>
+<hr>
+<h3 id="Macos下tree显示中文"><a href="#Macos下tree显示中文" class="headerlink" title="Macos下tree显示中文"></a>Macos下tree显示中文</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># 安装tree</div><div class="line">brew install tree`</div><div class="line"></div><div class="line"># 中文不乱码加参数 -N</div><div class="line">tree -N</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="CentoOS-7-最小化安装后可能需要的一些命令"><a href="#CentoOS-7-最小化安装后可能需要的一些命令" class="headerlink" title="CentoOS 7 最小化安装后可能需要的一些命令"></a>CentoOS 7 最小化安装后可能需要的一些命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">yum install wget curl</div><div class="line">yum install unzip</div><div class="line">yum install tree</div><div class="line">yum install net-tools</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="CentOS-7-中命令行UI编辑网口信息的命令"><a href="#CentOS-7-中命令行UI编辑网口信息的命令" class="headerlink" title="CentOS 7 中命令行UI编辑网口信息的命令"></a>CentOS 7 中命令行UI编辑网口信息的命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ yum install NetworkManager-tui</div><div class="line"></div><div class="line">$ nmtui</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="MacOS-ffplay只有声音没有图像"><a href="#MacOS-ffplay只有声音没有图像" class="headerlink" title="MacOS ffplay只有声音没有图像"></a>MacOS ffplay只有声音没有图像</h3><p>如果rtmp地址加了单引号，ffplay会偶尔抽风只播放声音而没有视频, 去掉单引号或者使用双引号代替<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># 可能会抽风，没有图像,只能解析音频信号</div><div class="line">ffplay &apos;rtmp://192.168.187.128/live/room8878&apos;</div><div class="line"></div><div class="line"># 去掉单引号或换用双引号，没发现过问题 </div><div class="line">ffplay rtmp://192.168.187.128/live/room8878</div><div class="line">ffplay &quot;rtmp://192.168.187.128/live/room8878&quot;</div></pre></td></tr></table></figure></p>
+<hr>
+<h3 id="grep-中将binary-file当做文本"><a href="#grep-中将binary-file当做文本" class="headerlink" title="grep 中将binary file当做文本"></a>grep 中将binary file当做文本</h3><p>grep加上<code>-a</code>参数，就可以将binary file当做text来对待.<br><code>man grep</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">-a, --text</div><div class="line">       Process a binary file as if it were text; this is equivalent to the --binary-files=text option.</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="MacOS下Betterzip-quicklook不起作用"><a href="#MacOS下Betterzip-quicklook不起作用" class="headerlink" title="MacOS下Betterzip quicklook不起作用"></a>MacOS下Betterzip quicklook不起作用</h3><p>BetterZipQL被集成到BetterZip中了，因此brew在<a href="https://github.com/Homebrew/homebrew-cask/pull/41954" target="_blank" rel="external">pull request 41954</a>中删除了BetterZipQL。<br>需要使用<code>brew cask install betterzip</code>来安装BetterZip。BetterZip是收费软件，30天免费试用。但官网上说Quick Look功能在试用期结束后，还是可以免费使用。<br><strong>如果安装完成后，发现quicklook功能没起作用，记得需要先在Application中打开一次BetterZip，别问我是怎么知道的。</strong></p>
+<hr>
+<h3 id="MacOS下QuickLook的路径"><a href="#MacOS下QuickLook的路径" class="headerlink" title="MacOS下QuickLook的路径"></a>MacOS下QuickLook的路径</h3><p>全局目录: <code>/Library/QuickLook/</code><br>用户目录: <code>~/Library/QuickLook/</code></p>
+<hr>
+<h3 id="CentOS-7下安装lspci"><a href="#CentOS-7下安装lspci" class="headerlink" title="CentOS 7下安装lspci"></a>CentOS 7下安装lspci</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># 安装lspci</div><div class="line">sudo yum install pciutils</div><div class="line"></div><div class="line"># 更新PCI ID list</div><div class="line">sudo update-pciids</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="rsync命令"><a href="#rsync命令" class="headerlink" title="rsync命令"></a>rsync命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># 密码方式</div><div class="line">rsync -P -a -z -e ssh /from/dir/ username@hostname:/to/dir/</div><div class="line"></div><div class="line"># identity file免密方式</div><div class="line">rsync -Pav -e &quot;ssh -i $HOME/.ssh/somekey&quot; username@hostname:/from/dir/ /to/dir/</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="CentOS中启用epel-repository"><a href="#CentOS中启用epel-repository" class="headerlink" title="CentOS中启用epel repository"></a>CentOS中启用epel repository</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum -y install epel-release</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="CentOS中systemctl常用命令小结"><a href="#CentOS中systemctl常用命令小结" class="headerlink" title="CentOS中systemctl常用命令小结"></a>CentOS中systemctl常用命令小结</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"># 启动服务</div><div class="line">systemctl start nginx</div><div class="line"></div><div class="line"># 停止服务</div><div class="line">systemctl stop nginx</div><div class="line"></div><div class="line"># 重启服务</div><div class="line">systemctl restart nginx</div><div class="line"></div><div class="line"># reload服务</div><div class="line">systemctl reload nginx</div><div class="line"></div><div class="line"># 列出服务状态</div><div class="line">systemctl status nginx</div><div class="line"></div><div class="line"># 开机启动服务类似于 chkconfig service on</div><div class="line">systemctl enable nginx</div><div class="line"></div><div class="line"># 开机停止服务，类似于chkconfig service off</div><div class="line">systemctl disable nginx</div><div class="line"></div><div class="line"># 查看服务是否开机启动</div><div class="line">systemctl is-enabled nginx</div><div class="line"></div><div class="line"># 查看所有服务状态</div><div class="line">systemctl list-unit-files --type=service</div><div class="line"></div><div class="line"># 查看当前运行的服务</div><div class="line">systemctl list-units --type service</div></pre></td></tr></table></figure>
+]]></content>
+      
+        <categories>
+            
+            <category> Tools </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Linux </tag>
+            
+            <tag> MacOS </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Niu-X resource]]></title>
+      <url>/2019/04/20/niu-x-resource/</url>
+      <content type="html"><![CDATA[<p>记录一些有用的网站，持续更新中。。</p>
+<hr>
+<h3 id="Linux-command"><a href="#Linux-command" class="headerlink" title="Linux-command"></a>Linux-command</h3><p>github地址: <a href="https://github.com/jaywcjlove/linux-command" target="_blank" rel="external">linux-command</a></p>
+<blockquote>
+<p>Linux命令大全搜索工具，内容包含Linux命令手册、详解、学习、搜集 </p>
+</blockquote>
+<p>比较系统的各个命令，期待有空时每个粗略一遍，需要时再来查询</p>
+<a id="more"></a>
+<hr>
+<h3 id="jaywcjlove-handbook"><a href="#jaywcjlove-handbook" class="headerlink" title="jaywcjlove-handbook"></a>jaywcjlove-handbook</h3><p>github地址: <a href="https://github.com/jaywcjlove/handbook" target="_blank" rel="external">jaywcjlove-handbook</a></p>
+<blockquote>
+<p>放置我的笔记、搜集、摘录、实践，保持好奇心。看文需谨慎，后果很严重</p>
+</blockquote>
+<p>保存了jaywcjlove的一些心得笔记, 有空时可以来翻一下</p>
+<hr>
+<h3 id="jaywcjlove-awesome-mac"><a href="#jaywcjlove-awesome-mac" class="headerlink" title="jaywcjlove-awesome-mac"></a>jaywcjlove-awesome-mac</h3><p>github地址: <a href="https://github.com/jaywcjlove/awesome-mac" target="_blank" rel="external">awesome-mac</a></p>
+<blockquote>
+<p> Now we have become very big, Different from the original idea. Collect premium software in various categories. <a href="https://git.io/macx" target="_blank" rel="external">https://git.io/macx</a></p>
+</blockquote>
+<p>Mac下各个APP的清单, <a href="https://github.com/jaywcjlove/awesome-mac/blob/master/README-zh.md" target="_blank" rel="external">中文版的列表</a></p>
+<p>已安装列表</p>
+<ul>
+<li></li>
+</ul>
+<hr>
+<h3 id="macbookpro笔记本维修拆机指南"><a href="#macbookpro笔记本维修拆机指南" class="headerlink" title="macbookpro笔记本维修拆机指南"></a>macbookpro笔记本维修拆机指南</h3><p>网址: <a href="https://zh.ifixit.com/Device/Mac_Laptop" target="_blank" rel="external">Mac 笔记本修理</a></p>
+<hr>
+<h3 id="AWS-架构图标"><a href="#AWS-架构图标" class="headerlink" title="AWS 架构图标"></a>AWS 架构图标</h3><p>网址: <a href="https://amazonaws-china.com/cn/architecture/icons/?from=groupmessage&amp;isappinstalled=0" target="_blank" rel="external">AWS 架构图标</a><br>包含了Microsoft PowerPoint的工具包和一些推荐的在线工具</p>
+<hr>
+<h3 id="MacOS下default-write的隐藏设置"><a href="#MacOS下default-write的隐藏设置" class="headerlink" title="MacOS下default write的隐藏设置"></a>MacOS下default write的隐藏设置</h3><p>网址: <a href="https://www.defaults-write.com/" target="_blank" rel="external">defaults-write.com</a><br>MacOS下一些系统设置，可以使用命令行来设置。超级方便，不用一个一个GUI点开来设置了，尤其是迁移到新机器时。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> Tools </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Linux </tag>
+            
+            <tag> MacOS </tag>
+            
+            <tag> Github </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[firewall-cmd基本用法]]></title>
+      <url>/2019/04/20/firewall-cmd-basic-usage/</url>
+      <content type="html"><![CDATA[<p><strong>还需要装个虚拟机，重新敲命令，拷贝输出内容或者截图</strong></p>
+<h3 id="安装和管理firewalld"><a href="#安装和管理firewalld" class="headerlink" title="安装和管理firewalld"></a>安装和管理firewalld</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"># 安装firewalld</div><div class="line">yum install firewalld firewall-config</div><div class="line"></div><div class="line">systemctl start  firewalld # 启动</div><div class="line">systemctl status firewalld # 或者 firewall-cmd --state 查看状态</div><div class="line">systemctl stop firewalld  # 停止</div><div class="line">systemctl enable firewalld # 开机自自动</div><div class="line">systemctl disable firewalld # 取消自启动</div><div class="line">systemctl list-unit-files | grep firewalld # 查看是否开机自启动</div></pre></td></tr></table></figure>
+<h3 id="基础命令"><a href="#基础命令" class="headerlink" title="基础命令"></a>基础命令</h3><p>一些常用的命令如下:</p>
+<ul>
+<li>查看防火墙状态<br>命令: <code>firewall-cmd --list-all</code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">$ sudo firewall-cmd --list-all</div><div class="line">public (active)</div><div class="line">  target: default</div><div class="line">  icmp-block-inversion: no</div><div class="line">  interfaces: ens33</div><div class="line">  sources:</div><div class="line">  services: ssh dhcpv6-client</div><div class="line">  ports:</div><div class="line">  protocols:</div><div class="line">  masquerade: no</div><div class="line">  forward-ports:</div><div class="line">  source-ports:</div><div class="line">  icmp-blocks:</div><div class="line">  rich rules:</div><div class="line"></div><div class="line">$</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<a id="more"></a>
+<ul>
+<li><p>列出支持的服务<br>命令: <code>firewall-cmd --get-services</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ sudo firewall-cmd --get-services</div><div class="line">RH-Satellite-6 amanda-client amanda-k5-client bacula bacula-client bgp bitcoin bitcoin-rpc bitcoin-testnet bitcoin-testnet-rpc ceph ceph-mon cfengine condor-collector ctdb dhcp dhcpv6 dhcpv6-client dns docker-registry docker-swarm dropbox-lansync elasticsearch freeipa-ldap freeipa-ldaps freeipa-replication freeipa-trust ftp ganglia-client ganglia-master git gre high-availability http https imap imaps ipp ipp-client ipsec irc ircs iscsi-target jenkins kadmin kerberos kibana klogin kpasswd kprop kshell ldap ldaps libvirt libvirt-tls managesieve mdns minidlna mongodb mosh mountd ms-wbt mssql murmur mysql nfs nfs3 nmea-0183 nrpe ntp openvpn ovirt-imageio ovirt-storageconsole ovirt-vmconsole pmcd pmproxy pmwebapi pmwebapis pop3 pop3s postgresql privoxy proxy-dhcp ptp pulseaudio puppetmaster quassel radius redis rpc-bind rsh rsyncd samba samba-client sane sip sips smtp smtp-submission smtps snmp snmptrap spideroak-lansync squid ssh syncthing syncthing-gui synergy syslog syslog-tls telnet tftp tftp-client tinc tor-socks transmission-client upnp-client vdsm vnc-server wbem-https xmpp-bosh xmpp-client xmpp-local xmpp-server zabbix-agent zabbix-server</div><div class="line">$</div></pre></td></tr></table></figure>
+</li>
+<li><p>添加某个服务<br>命令: <code>firewall-cmd --add-service=&lt;service&gt; --permanent</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo firewall-cmd --add-service=http --permanent</div></pre></td></tr></table></figure>
+</li>
+<li><p>删除某个服务<br>命令: <code>firewall-cmd --remove-service=&lt;service&gt;  --permanent</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo firewall-cmd --remove-service=dhcpv6-client  --permanent</div></pre></td></tr></table></figure>
+</li>
+<li><p>添加某个端口<br>命令: <code>firewall-cmd --add-port=&lt;portid&gt;[-&lt;portid&gt;]/&lt;protocol&gt; --permanent</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"># 添加rtmp端口</div><div class="line">$ sudo firewall-cmd --add-port=1935/tcp --permanent</div><div class="line">$ sudo firewall-cmd --reload</div><div class="line">$ sudo firewall-cmd --list-all</div><div class="line">public (active)</div><div class="line">  target: default</div><div class="line">  icmp-block-inversion: no</div><div class="line">  interfaces: ens33</div><div class="line">  sources:</div><div class="line">  services: ssh dhcpv6-client http</div><div class="line">  ports: 1935/tcp</div><div class="line">  protocols:</div><div class="line">  masquerade: no</div><div class="line">  forward-ports:</div><div class="line">  source-ports:</div><div class="line">  icmp-blocks:</div><div class="line">  rich rules:</div><div class="line">$</div></pre></td></tr></table></figure>
+</li>
+<li><p>删除某个端口<br>命令: <code>firewall-cmd --remove-port=&lt;portid&gt;[-&lt;portid&gt;]/&lt;protocol&gt; --permanent</code></p>
+</li>
+<li><p>重启防火墙<br>添加或删除服务和端口后，需要重新load防火墙，才能生效<br>命令: <code>firewall-cmd --reload</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo firewall-cmd --reload</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="自定义service文件"><a href="#自定义service文件" class="headerlink" title="自定义service文件"></a>自定义service文件</h3><h4 id="service文件介绍"><a href="#service文件介绍" class="headerlink" title="service文件介绍"></a>service文件介绍</h4><p>firewalld内置了一些常用的services，对应的配置文件保存在<code>/usr/lib/firewalld/services</code>中，使用命令<code>firewall-cmd --add-service=&lt;service&gt;</code>可以很方便地添加这些服务。</p>
+<p>很多情况下，我们要开放的端口不在这些预定义的服务中，此时有两个办法来实现</p>
+<ol>
+<li>使用<code>--add-port=&lt;portid&gt;[-&lt;portid&gt;]/&lt;protocol&gt;</code>来直接添加端口</li>
+<li>自建services配置文件，并添加到firewalld中</li>
+</ol>
+<p>推荐使用自建services的方式，使用services方式的优点</p>
+<ul>
+<li>一个配置文件对应一个服务，更清晰</li>
+<li>配置文件中,可以添加服务描述</li>
+<li>配置文件中,可以添加多个端口和协议，如预置的rsyncd.xml中，就同时添加了873端口的TCP和UDP协议。</li>
+</ul>
+<h4 id="自建service文件"><a href="#自建service文件" class="headerlink" title="自建service文件"></a>自建service文件</h4><p>firewalld用到的所有service配置文件的存放路径是<code>/usr/lib/firewalld/services</code>，但自建的service文件不要直接写入该目录，而应该在<code>/etc/firewalld/services/</code>中进行设置。</p>
+<p>下面是一个root下新建rtmp service的例子。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"># 拷贝/usr/lib/firewalld/services/ssh.xml文件到/etc/firewalld/services/中，命名为rtmp.xml</div><div class="line">cp /usr/lib/firewalld/services/ssh.xml /etc/firewalld/services/rtmp.xml</div><div class="line"></div><div class="line"># 修改/etc/firewalld/services/rtmp.xml为如下内容</div><div class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</div><div class="line">&lt;service&gt;</div><div class="line">  &lt;short&gt;RTMP&lt;/short&gt;</div><div class="line">  &lt;description&gt;Allow RTMP Streaming.&lt;/description&gt;</div><div class="line">  &lt;port protocol=&quot;tcp&quot; port=&quot;1935&quot;/&gt;</div><div class="line">&lt;/service&gt;</div><div class="line"></div><div class="line"># 重新reload firewalld</div><div class="line">firewall-cmd --reload</div><div class="line"></div><div class="line"># 重新查看可用的firewall service</div><div class="line">firewall-cmd --get-services</div><div class="line"></div><div class="line"># 添加服务</div><div class="line">firewall-cmd --add-service=rtmp --permanent</div><div class="line"></div><div class="line"># 重新reload firewalld</div><div class="line">firewall-cmd --reload</div><div class="line"></div><div class="line"># 查看防火墙状态，看rtmp是否已成功添加</div><div class="line">firewall-cmd --list-all</div></pre></td></tr></table></figure>
+<h3 id="端口转发"><a href="#端口转发" class="headerlink" title="端口转发"></a>端口转发</h3><h4 id="转发到本地"><a href="#转发到本地" class="headerlink" title="转发到本地"></a>转发到本地</h4><p>命令: <code>firewall-cmd --add-forward-port=port=&lt;portid&gt;[-&lt;portid&gt;]:proto=&lt;protocol&gt;[:toport=&lt;portid&gt;[-&lt;portid&gt;]][:toaddr=&lt;address&gt;[/&lt;mask&gt;]]</code><br>例子: 转发80端口流量到12345端口<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo firewall-cmd --zone=&quot;public&quot; --add-forward-port=port=80:proto=tcp:toport=12345</div></pre></td></tr></table></figure></p>
+<h4 id="转发到其他机器"><a href="#转发到其他机器" class="headerlink" title="转发到其他机器"></a>转发到其他机器</h4><p>转发到其他机器时，需要开启masquerade（伪装）功能。</p>
+<blockquote>
+<p>Masquerading will forward packets that are not directed to an IP address associated to the system itself onto the intended destination. The source IP address of the packets that are sent through our system will be changed to the IP address of our system, rather than the IP address of the original traffic source. Responses to these packets will then go through our system and the destination address will be modified so that the traffic will be sent back to the original host that initiated the traffic.</p>
+</blockquote>
+<p>使用<code>firewall-cmd --add-masquerade</code>开启masquerade。<br>例子: 转发本地80端口到IP 10.0.0.2上的8080端口中<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo firewall-cmd --add-forward-port=port=80:proto=tcp:toport=8080:toaddr=10.0.0.2</div></pre></td></tr></table></figure></p>
+<h3 id="Rich-rules细粒度控制"><a href="#Rich-rules细粒度控制" class="headerlink" title="Rich rules细粒度控制"></a>Rich rules细粒度控制</h3><p>FirewallD的Rich rules 可以提供更细粒度的控制。可以使用<code>man 5 firewalld.richlanguage</code>来查看rich rules的语法，</p>
+<p>例子:</p>
+<p>允许来自192.168.0.14的所有IPv4流量<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo firewall-cmd --add-rich-rule &apos;rule family=&quot;ipv4&quot; source address=192.168.0.14 accept&apos;</div></pre></td></tr></table></figure></p>
+<p>拒绝来自192.168.1.10的基于TCP的请求访问22端口, 也就是拒绝192.168.1.10进行ssh<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo firewall-cmd --add-rich-rule &apos;rule family=&quot;ipv4&quot; source address=&quot;192.168.1.10&quot; port port=22 protocol=tcp reject&apos;</div></pre></td></tr></table></figure></p>
+<p>只允许来自192.168.187.128/25的请求访问22端口，拒绝其余的ssh登录<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo firewall-cmd --remove-service=ssh</div><div class="line">sudo firewall-cmd --add-rich-rule=&quot;rule family=&quot;ipv4&quot; source address=&quot;192.168.187.128/25&quot; service name=&quot;ssh&quot; accept&quot; --permanent</div></pre></td></tr></table></figure></p>
+<p>允许来自10.1.0.3的TCP请求到80端口，并且转发到本地的6532端口。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo firewall-cmd --add-rich-rule &apos;rule family=ipv4 source address=10.1.0.3 forward-port port=80 protocol=tcp to-port=6532&apos;</div></pre></td></tr></table></figure></p>
+<p>将来自172.31.4.2的访问80端口的TCP请求转发到主机172.31.4.2的8080端口。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo firewall-cmd --add-masquerade</div><div class="line">sudo firewall-cmd --add-rich-rule &apos;rule family=ipv4 forward-port port=80 protocol=tcp to-port=8080 to-addr=172.31.4.2&apos;</div></pre></td></tr></table></figure></p>
+<p>列出所有的rich rules<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo firewall-cmd --list-rich-rules</div></pre></td></tr></table></figure></p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://www.linuxhelp.com/firewalld-commands-in-linux-with-examples" target="_blank" rel="external">FirewallD Command in Linux With Examples</a></li>
+<li><a href="https://www.linode.com/docs/security/firewalls/introduction-to-firewalld-on-centos/" target="_blank" rel="external">Introduction to FirewallD on CentOS</a></li>
+<li><a href="https://www.rootusers.com/how-to-use-firewalld-rich-rules-and-zones-for-filtering-and-nat/" target="_blank" rel="external">How To Use Firewalld Rich Rules And Zones For Filtering And NAT</a></li>
+<li><a href="https://wangchujiang.com/linux-command/c/firewall-cmd.html" target="_blank" rel="external">firewall-cmd</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> Tools </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Linux </tag>
+            
+            <tag> Firewall </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[在线架构图工具Online Visual Paradigm]]></title>
+      <url>/2019/04/09/online-visual-paradigm/</url>
+      <content type="html"><![CDATA[<p>一个免费的在线画AWS架构图的网址<a href="https://online.visual-paradigm.com" target="_blank" rel="external">https://online.visual-paradigm.com</a>, 30天试用期内可以随时保存和下载源文件。过了试用期后，还可以使用，但无法保存和导出源文件。<br>visual-paradigm也有<a href="https://www.visual-paradigm.com/download/" target="_blank" rel="external">客户端</a>，30天免费试用。</p>
+<ul>
+<li>优势<ul>
+<li>集成了AWS各个服务的图标，</li>
+<li>有一些经典的架构模板，制作AWS架构图的时候会比较方便。</li>
+</ul>
+</li>
+<li>劣势<ul>
+<li>试用过后, 费用比较贵</li>
+</ul>
+</li>
+</ul>
+<h3 id="几个例子"><a href="#几个例子" class="headerlink" title="几个例子"></a>几个例子</h3><p>使用在线工具画的项目的架构图<br><img src="/images/AWS/Tools/architecture_diagram.png" alt="architecture_diagram.png"><br><a id="more"></a></p>
+<p>网络拓扑图<br><img src="/images/AWS/Tools/network_topology.png" alt="network_topology"></p>
+<h3 id="自带模板预览"><a href="#自带模板预览" class="headerlink" title="自带模板预览"></a>自带模板预览</h3><p>网站自带的一些模板预览:</p>
+<p><img src="/images/AWS/Tools/template1.jpg" alt="template1.jpg"><br><img src="/images/AWS/Tools/template2.jpg" alt="template2.jpg"></p>
+]]></content>
+      
+        <categories>
+            
+            <category> AWS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> AWS Tools </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[解析EB logs的一些Linux小命令]]></title>
+      <url>/2019/04/08/some-command-to-parse-EB-logs/</url>
+      <content type="html"><![CDATA[<p>开启EB rotated log功能后，EB的日志将会被存储在EB对应bucket的<code>resources/environments/logs/logtype/environment-id/instance-id</code>路径下, 供后续查看。官网文档<a href="https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/using-features.logging.html" target="_blank" rel="external">Viewing Logs from Amazon EC2 Instances in Your Elastic Beanstalk Environment</a></p>
+<p>下面记录几个常用检查日志的小命令</p>
+<h3 id="使用exclue和include来获取部分日志"><a href="#使用exclue和include来获取部分日志" class="headerlink" title="使用exclue和include来获取部分日志"></a>使用exclue和include来获取部分日志</h3><p>开启EB的rotated log后，EB中的EC2会每小时将日志上传到S3中。以<code>Passenger with Ruby</code>的Platform为例，有production.log, access.log和passenger.log三种文件会被传到S3中，文件名格式:<code>文件路径</code>+<code>时间戳</code>+<code>gz</code>的格式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ ls *log1554688861.gz*</div><div class="line">_var_app_support_logs_rotated_access.log1554688861.gz  </div><div class="line">_var_app_support_logs_rotated_passenger.log1554688861.gz  </div><div class="line">_var_app_support_logs_rotated_production.log1554688861.gz</div><div class="line">$</div></pre></td></tr></table></figure>
+<p>Bucket下的日志，默认不会自动清理，日积月累,instance-id路径下的文件会越来越多，而目前aws cli的<code>s3 cp</code>或<code>s3 sync</code>,并没有提供根据创建时间的filter,有时候获取固定哪段时间的文件就不太方便。<br><a id="more"></a></p>
+<p>虽然<code>aws cli</code>没法直接精确地实现，但可以使用–exclude和–include参数，根据文件名字的命名规则来粗略地实现一下。<br>大概的命令如下:<br><code>aws s3 sync s3://${elasticbeanstalk-region-account-id}/resources/environments/logs/publish/${environment-id}/${instance-id}/ logs/ --exclude &quot;*&quot; --include &quot;*log1554[01234567]*&quot;</code></p>
+<p>其中</p>
+<ul>
+<li>elasticbeanstalk-region-account-id，environment-id，instance-id替换成实际环境的值</li>
+<li>首先使用–exclude “*”,不包含任何值</li>
+<li>再使用–include “*log1554[01234567]*“筛选出要的文件。include的匹配字串，需要根据实际时间和文件前缀进行修改。</li>
+</ul>
+<p>日期的字符串形式和timestamp形式的转换, Linux下可以使用<code>date</code>命令来进行转换。</p>
+<p><code>date -d &quot;@$TIMESTAMP&quot;</code>来将timestamp转换为字符串形式,<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ date -d @1554688861</div><div class="line">2019年 04月 08日 星期一 02:01:01 UTC</div><div class="line">$</div></pre></td></tr></table></figure></p>
+<p><code>date -d &#39;YYYY-MM-DDTHH:MM:SS&#39; +%s</code>，将字符形式的日期转为timestamp。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ date -d &apos;2019-04-08T02:01:01&apos; +%s</div><div class="line">1554688861</div><div class="line">$</div></pre></td></tr></table></figure></p>
+<h3 id="Linux-小命令"><a href="#Linux-小命令" class="headerlink" title="Linux 小命令"></a>Linux 小命令</h3><p>过滤出access log中4XX的请求<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">zgrep &apos; 4[0-9][0-9] [0-9]&apos; _var_app_support_logs_rotated_access.log1554*.gz &gt; 4xx_in_i-09bb7607be9f0c928.txt</div></pre></td></tr></table></figure></p>
+<p>筛选出4XX日志中第一级前缀最多的url</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cat 4xx_in_i-09bb7607be9f0c928.txt | awk &apos;&#123;print $6,$7&#125;&apos; | cut -d &apos;/&apos; -f 1,2 | sort | uniq -c | sort -n</div></pre></td></tr></table></figure>
+<p>筛选出4XX请求最密集的分钟数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cat 4xx_in_i-09bb7607be9f0c928.txt  | awk &apos;&#123;print $4&#125;&apos; | cut -d &apos;:&apos; -f 1,2,3 | sort | uniq -c | sort -n</div></pre></td></tr></table></figure></p>
+<p>筛选出某分钟内所有的access 日志<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">zgrep &apos;05/Apr/2019:00:42&apos; _var_app_support_logs_rotated_access.log1554*.gz</div></pre></td></tr></table></figure></p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/using-features.logging.html" target="_blank" rel="external">Viewing Logs from Amazon EC2 Instances in Your Elastic Beanstalk Environment</a></li>
+<li><a href="https://stackoverflow.com/questions/3249827/convert-unix-timestamp-to-a-date-string" target="_blank" rel="external">Convert Unix timestamp to a date string</a></li>
+<li><a href="https://stackoverflow.com/questions/26432050/bash-convert-string-to-timestamp" target="_blank" rel="external">Bash convert string to timestamp</a></li>
+<li><a href="https://docs.aws.amazon.com/cli/latest/reference/s3/index.html#use-of-exclude-and-include-filters" target="_blank" rel="external">S3</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> AWS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Elastic Beanstalk </tag>
+            
+            <tag> S3 </tag>
+            
+            <tag> AWS CLI </tag>
+            
+            <tag> Linux </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[AWS EC2中开启BBR]]></title>
       <url>/2019/04/02/bbr-on-aws-ec2/</url>
       <content type="html"><![CDATA[<p>官网中关于如何在EC2中开启BBR的说明。<a href="https://aws.amazon.com/amazon-linux-ami/2017.09-release-notes/" target="_blank" rel="external">Amazon Linux AMI 2017.09 Release Notes</a></p>
@@ -215,9 +999,9 @@
             
             <tag> Linux </tag>
             
-            <tag> Nginx </tag>
-            
             <tag> HTTP </tag>
+            
+            <tag> Nginx </tag>
             
         </tags>
         
@@ -323,6 +1107,8 @@
 <p>网上搜了一圈后，找到了解决办法。记录如下:</p>
 <p>设置bundle config，编译nokogiri时，使用系统xml2路径即可。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">bundle config build.nokogiri --use-system-libraries --with-xml2-include=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/usr/include/libxml2</div></pre></td></tr></table></figure>
+<p>还有一个更简单的方法，自动根据系统版本得到系统libxml2的路径</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">bundle config build.nokogiri --use-system-libraries=true --with-xml2-include=&quot;$(xcrun --show-sdk-path)&quot;/usr/include/libxml2</div></pre></td></tr></table></figure>
 <p>参考资料: <a href="https://github.com/sparklemotion/nokogiri/issues/1547" target="_blank" rel="external">Installation of nokogiri fail with bundle on macOS Sierra 10.12 </a></p>
 ]]></content>
       
@@ -399,9 +1185,9 @@
         
         <tags>
             
-            <tag> Nginx </tag>
-            
             <tag> HTTP </tag>
+            
+            <tag> Nginx </tag>
             
         </tags>
         
@@ -1607,11 +2393,11 @@
         
         <tags>
             
-            <tag> IAM </tag>
-            
             <tag> S3 </tag>
             
             <tag> AWS CLI </tag>
+            
+            <tag> IAM </tag>
             
         </tags>
         
@@ -2300,9 +3086,9 @@ You can wait for the scheduled retirement date - when the instance is stopped - 
         
         <tags>
             
-            <tag> MacOS </tag>
-            
             <tag> Linux </tag>
+            
+            <tag> MacOS </tag>
             
         </tags>
         
@@ -7821,9 +8607,9 @@ You can wait for the scheduled retirement date - when the instance is stopped - 
             
             <tag> RDS </tag>
             
-            <tag> AWS SDK </tag>
-            
             <tag> Ruby </tag>
+            
+            <tag> AWS SDK </tag>
             
             <tag> AWS CLI </tag>
             
@@ -8193,9 +8979,9 @@ You can wait for the scheduled retirement date - when the instance is stopped - 
         
         <tags>
             
-            <tag> MacOS </tag>
-            
             <tag> Linux </tag>
+            
+            <tag> MacOS </tag>
             
         </tags>
         

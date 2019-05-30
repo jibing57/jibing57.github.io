@@ -2,9 +2,9 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://www.jibing57.com/2019/05/28/how-to-deploy-hexo-to-aws-lightsail/</loc>
+    <loc>http://www.jibing57.com/2019/05/29/how-to-deploy-hexo-to-aws-lightsail/</loc>
     
-    <lastmod>2019-05-29T08:23:21.338Z</lastmod>
+    <lastmod>2019-05-30T05:35:19.442Z</lastmod>
     
   </url>
   
@@ -12,13 +12,6 @@
     <loc>http://www.jibing57.com/2019/04/26/command-tips/</loc>
     
     <lastmod>2019-05-27T05:26:35.549Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.jibing57.com/2019/05/09/ffmpeg-command/</loc>
-    
-    <lastmod>2019-05-23T06:34:46.742Z</lastmod>
     
   </url>
   
@@ -47,13 +40,6 @@
     <loc>http://www.jibing57.com/2019/04/20/firewall-cmd-basic-usage/</loc>
     
     <lastmod>2019-05-08T02:37:04.363Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.jibing57.com/2019/05/05/NIC-bonding-in-CentOS7/</loc>
-    
-    <lastmod>2019-05-07T03:12:00.408Z</lastmod>
     
   </url>
   
@@ -96,13 +82,6 @@
     <loc>http://www.jibing57.com/2019/03/05/how-resolve-nokogiri-failed-by-xml2-on-macos/</loc>
     
     <lastmod>2019-04-21T00:42:31.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.jibing57.com/2019/04/09/online-visual-paradigm/</loc>
-    
-    <lastmod>2019-04-09T09:52:23.000Z</lastmod>
     
   </url>
   
@@ -380,13 +359,6 @@
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2017/07/25/useful-website-of-aws/</loc>
-    
-    <lastmod>2017-12-25T07:09:03.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://www.jibing57.com/2017/10/29/ruby-paperclip-destroy-callback-nil/</loc>
     
     <lastmod>2017-12-25T07:09:03.000Z</lastmod>
@@ -394,14 +366,14 @@
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2017/10/30/how-to-use-post-link-on-hexo/</loc>
+    <loc>http://www.jibing57.com/2017/07/25/useful-website-of-aws/</loc>
     
-    <lastmod>2017-12-25T07:09:02.000Z</lastmod>
+    <lastmod>2017-12-25T07:09:03.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2017/12/12/how-to-write-multiline-to-file-by-shell/</loc>
+    <loc>http://www.jibing57.com/2017/11/29/how-to-enable-slow-query-on-aws-rds-postgresql/</loc>
     
     <lastmod>2017-12-25T07:09:02.000Z</lastmod>
     
@@ -415,13 +387,6 @@
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2017/11/29/how-to-enable-slow-query-on-aws-rds-postgresql/</loc>
-    
-    <lastmod>2017-12-25T07:09:02.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://www.jibing57.com/2017/07/25/how-to-read-text-on-macos/</loc>
     
     <lastmod>2017-12-25T07:09:02.000Z</lastmod>
@@ -429,14 +394,21 @@
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2017/12/20/How-to-add-staging-log-to-EB-logs/</loc>
+    <loc>http://www.jibing57.com/2017/12/12/how-to-write-multiline-to-file-by-shell/</loc>
     
-    <lastmod>2017-12-25T07:08:09.000Z</lastmod>
+    <lastmod>2017-12-25T07:09:02.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2017/12/19/deep-dig-on-s3-bucket-permission-exam/</loc>
+    <loc>http://www.jibing57.com/2017/10/30/how-to-use-post-link-on-hexo/</loc>
+    
+    <lastmod>2017-12-25T07:09:02.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.jibing57.com/2017/07/24/AWS-Certified-Developer/</loc>
     
     <lastmod>2017-12-25T07:08:09.000Z</lastmod>
     
@@ -444,6 +416,13 @@
   
   <url>
     <loc>http://www.jibing57.com/2017/12/20/expired-of-S3-RRS/</loc>
+    
+    <lastmod>2017-12-25T07:08:09.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.jibing57.com/2017/10/31/account-setting-by-aws/</loc>
     
     <lastmod>2017-12-25T07:08:09.000Z</lastmod>
     
@@ -464,14 +443,14 @@
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2017/10/31/account-setting-by-aws/</loc>
+    <loc>http://www.jibing57.com/2017/12/19/deep-dig-on-s3-bucket-permission-exam/</loc>
     
     <lastmod>2017-12-25T07:08:09.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2017/07/24/AWS-Certified-Developer/</loc>
+    <loc>http://www.jibing57.com/2017/12/20/How-to-add-staging-log-to-EB-logs/</loc>
     
     <lastmod>2017-12-25T07:08:09.000Z</lastmod>
     

@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.jibing57.com/"/>
-  <updated>2019-05-29T08:23:21.338Z</updated>
+  <updated>2019-05-30T05:35:19.442Z</updated>
   <id>http://www.jibing57.com/</id>
   
   <author>
@@ -17,22 +17,51 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>how to deploy hexo to aws lightsail</title>
-    <link href="http://www.jibing57.com/2019/05/28/how-to-deploy-hexo-to-aws-lightsail/"/>
-    <id>http://www.jibing57.com/2019/05/28/how-to-deploy-hexo-to-aws-lightsail/</id>
-    <published>2019-05-28T09:13:00.000Z</published>
-    <updated>2019-05-29T08:23:21.338Z</updated>
+    <title>将hexo部署到AWS的Lightsail</title>
+    <link href="http://www.jibing57.com/2019/05/29/how-to-deploy-hexo-to-aws-lightsail/"/>
+    <id>http://www.jibing57.com/2019/05/29/how-to-deploy-hexo-to-aws-lightsail/</id>
+    <published>2019-05-29T12:13:00.000Z</published>
+    <updated>2019-05-30T05:35:19.442Z</updated>
     
     <summary type="html">
     
-      
-      
-        &lt;h3 id=&quot;aws-lightsail安装步骤&quot;&gt;&lt;a href=&quot;#aws-lightsail安装步骤&quot; class=&quot;headerlink&quot; title=&quot;aws lightsail安装步骤&quot;&gt;&lt;/a&gt;aws lightsail安装步骤&lt;/h3&gt;&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;安
-      
+      &lt;h3 id=&quot;介绍&quot;&gt;&lt;a href=&quot;#介绍&quot; class=&quot;headerlink&quot; title=&quot;介绍&quot;&gt;&lt;/a&gt;介绍&lt;/h3&gt;&lt;p&gt;Github Pages的访问最近有些慢，感觉不太稳。最近正好买了台Lightsail，就考虑将blog丢到Lightsail上去, 试试Lightsail的访问速度。&lt;br&gt;整理了一下相关操作步骤，该步骤应该也同样适用于EC2。区别就是Lightsail默认配置了22和80端口是开放的。部署到EC2的话，需要自己设置Security Group开放22和80端口。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;步骤前提&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;本地已经有&lt;a href=&quot;https://hexo.io/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;hexo&lt;/a&gt;环境&lt;/li&gt;
+&lt;li&gt;有可用的&lt;a href=&quot;https://aws.amazon.com/lightsail/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Lightsail Instance&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;步骤中特定的信息，部署时可能需要根据自己实际情况进行修改&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Lightsail Instance相关:&lt;ul&gt;
+&lt;li&gt;AMI是原生的&lt;/li&gt;
+&lt;li&gt;Public IP是&lt;code&gt;54.203.178.195&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;博客目录&lt;code&gt;/opt/app/web/hexo&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;存放git库的账号名字为git, 博客git库代码存放目录:&lt;code&gt;/opt/app/git/hexo.git&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;本地信息&lt;ul&gt;
+&lt;li&gt;本地系统是&lt;code&gt;Macos 10.14.4&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;以identity key而不是密码形式登录远端服务器&lt;ul&gt;
+&lt;li&gt;此处在~/tmp/tmp/下新生成key，也可以按照实际要求修改为使用平时用的key&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
     
     </summary>
     
+      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
+    
+    
+      <category term="Hexo" scheme="http://www.jibing57.com/tags/Hexo/"/>
+    
+      <category term="Lightsail" scheme="http://www.jibing57.com/tags/Lightsail/"/>
+    
+      <category term="Nginx" scheme="http://www.jibing57.com/tags/Nginx/"/>
+    
+      <category term="Git" scheme="http://www.jibing57.com/tags/Git/"/>
     
   </entry>
   
@@ -141,44 +170,6 @@
     
     
       <category term="Office" scheme="http://www.jibing57.com/tags/Office/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>ffmpeg command</title>
-    <link href="http://www.jibing57.com/2019/05/09/ffmpeg-command/"/>
-    <id>http://www.jibing57.com/2019/05/09/ffmpeg-command/</id>
-    <published>2019-05-09T09:20:05.000Z</published>
-    <updated>2019-05-23T06:34:46.742Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h3 id=&quot;安装&quot;&gt;&lt;a href=&quot;#安装&quot; class=&quot;headerlink&quot; title=&quot;安装&quot;&gt;&lt;/a&gt;安装&lt;/h3&gt;&lt;p&gt;官网下载地址 &lt;a href=&quot;https://ffmpeg.org/download.html&quot; target=&quot;_blank&quot; rel=
-      
-    
-    </summary>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>NIC bonding in CentOS7</title>
-    <link href="http://www.jibing57.com/2019/05/05/NIC-bonding-in-CentOS7/"/>
-    <id>http://www.jibing57.com/2019/05/05/NIC-bonding-in-CentOS7/</id>
-    <published>2019-05-05T07:55:58.000Z</published>
-    <updated>2019-05-07T03:12:00.408Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h3 id=&quot;设置NIC-bonding的例子&quot;&gt;&lt;a href=&quot;#设置NIC-bonding的例子&quot; class=&quot;headerlink&quot; title=&quot;设置NIC bonding的例子&quot;&gt;&lt;/a&gt;设置NIC bonding的例子&lt;/h3&gt;&lt;p&gt;如下例子基于VMWare F
-      
-    
-    </summary>
-    
     
   </entry>
   
@@ -381,38 +372,6 @@
   </entry>
   
   <entry>
-    <title>在线架构图工具Online Visual Paradigm</title>
-    <link href="http://www.jibing57.com/2019/04/09/online-visual-paradigm/"/>
-    <id>http://www.jibing57.com/2019/04/09/online-visual-paradigm/</id>
-    <published>2019-04-09T13:20:47.000Z</published>
-    <updated>2019-04-09T09:52:23.000Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;一个免费的在线画AWS架构图的网址&lt;a href=&quot;https://online.visual-paradigm.com&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://online.visual-paradigm.com&lt;/a&gt;, 30天试用期内可以随时保存和下载源文件。过了试用期后，还可以使用，但无法保存和导出源文件。&lt;br&gt;visual-paradigm也有&lt;a href=&quot;https://www.visual-paradigm.com/download/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;客户端&lt;/a&gt;，30天免费试用。&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;优势&lt;ul&gt;
-&lt;li&gt;集成了AWS各个服务的图标，&lt;/li&gt;
-&lt;li&gt;有一些经典的架构模板，制作AWS架构图的时候会比较方便。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;劣势&lt;ul&gt;
-&lt;li&gt;试用过后, 费用比较贵&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&quot;几个例子&quot;&gt;&lt;a href=&quot;#几个例子&quot; class=&quot;headerlink&quot; title=&quot;几个例子&quot;&gt;&lt;/a&gt;几个例子&lt;/h3&gt;&lt;p&gt;使用在线工具画的项目的架构图&lt;br&gt;&lt;img src=&quot;/images/AWS/Tools/architecture_diagram.png&quot; alt=&quot;architecture_diagram.png&quot;&gt;&lt;br&gt;
-    
-    </summary>
-    
-      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
-    
-    
-      <category term="AWS Tools" scheme="http://www.jibing57.com/tags/AWS-Tools/"/>
-    
-  </entry>
-  
-  <entry>
     <title>解析EB logs的一些Linux小命令</title>
     <link href="http://www.jibing57.com/2019/04/08/some-command-to-parse-EB-logs/"/>
     <id>http://www.jibing57.com/2019/04/08/some-command-to-parse-EB-logs/</id>
@@ -588,6 +547,84 @@
       <category term="Passenger" scheme="http://www.jibing57.com/tags/Passenger/"/>
     
       <category term="Nginx" scheme="http://www.jibing57.com/tags/Nginx/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Macos下因为找不到libxml2而导致nokogiri安装失败的解决办法</title>
+    <link href="http://www.jibing57.com/2019/03/05/how-resolve-nokogiri-failed-by-xml2-on-macos/"/>
+    <id>http://www.jibing57.com/2019/03/05/how-resolve-nokogiri-failed-by-xml2-on-macos/</id>
+    <published>2019-03-05T08:26:53.000Z</published>
+    <updated>2019-04-21T00:42:31.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;今天要跑一个其他的rails项目，为了不污染原先的gemset。就重建了一个gemset, 但是bundle install的时候，安装nokogiri 1.8.4一直失败。&lt;br&gt;系统版本是Macos 10.13 High Sierra中, ruby版本是rvm安装的ru
+      
+    
+    </summary>
+    
+      <category term="Code" scheme="http://www.jibing57.com/categories/Code/"/>
+    
+    
+      <category term="Ruby" scheme="http://www.jibing57.com/tags/Ruby/"/>
+    
+      <category term="Rails" scheme="http://www.jibing57.com/tags/Rails/"/>
+    
+      <category term="MacOS" scheme="http://www.jibing57.com/tags/MacOS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Nginx的HTTP Code444和307设置</title>
+    <link href="http://www.jibing57.com/2019/02/28/nginx_444_and_307/"/>
+    <id>http://www.jibing57.com/2019/02/28/nginx_444_and_307/</id>
+    <published>2019-02-28T13:50:59.000Z</published>
+    <updated>2019-03-07T12:33:09.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;nginx-444&quot;&gt;&lt;a href=&quot;#nginx-444&quot; class=&quot;headerlink&quot; title=&quot;nginx 444&quot;&gt;&lt;/a&gt;nginx 444&lt;/h3&gt;&lt;h4 id=&quot;介绍&quot;&gt;&lt;a href=&quot;#介绍&quot; class=&quot;headerlink&quot; title=&quot;介绍&quot;&gt;&lt;/a&gt;介绍&lt;/h4&gt;&lt;p&gt;当没有显式指定default server的时候，Nginx会使用第一个server来作为默认的响应server，即使请求的Host并没有匹配到server_name。&lt;br&gt;这是为了兼容老旧的一些不带Host的HTTP请求而做的设置。官文描述: &lt;a href=&quot;http://nginx.org/en/docs/http/request_processing.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;How nginx processes a request&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;此时可能存在一定的风险。如果有非备案的名解析到了你的Public IP上，而你的Web服务对该域名的请求有所响应的话，可能会导致Public IP被运营商封锁。&lt;/p&gt;
+&lt;h4 id=&quot;解决办法&quot;&gt;&lt;a href=&quot;#解决办法&quot; class=&quot;headerlink&quot; title=&quot;解决办法:&quot;&gt;&lt;/a&gt;解决办法:&lt;/h4&gt;&lt;p&gt;在nginx中添加一个default server，并在default server中设置&lt;code&gt;return 444;&lt;/code&gt;。此时Nginx就不会响应请求，除非请求的Host是配置的。&lt;br&gt;
+    
+    </summary>
+    
+      <category term="Tools" scheme="http://www.jibing57.com/categories/Tools/"/>
+    
+    
+      <category term="HTTP" scheme="http://www.jibing57.com/tags/HTTP/"/>
+    
+      <category term="Nginx" scheme="http://www.jibing57.com/tags/Nginx/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>AWS C5类型Instance的挂载点变更</title>
+    <link href="http://www.jibing57.com/2019/02/25/mount-point-changed-in-C5/"/>
+    <id>http://www.jibing57.com/2019/02/25/mount-point-changed-in-C5/</id>
+    <published>2019-02-25T13:55:30.000Z</published>
+    <updated>2019-02-26T07:47:36.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;问题点&quot;&gt;&lt;a href=&quot;#问题点&quot; class=&quot;headerlink&quot; title=&quot;问题点&quot;&gt;&lt;/a&gt;问题点&lt;/h3&gt;&lt;p&gt;一直使用的是Amazon自有的Amazon Linux，中国区的C5出来后，将原有的机器升级到C5的时候，发现额外挂载的磁盘没有挂载成功。&lt;/p&gt;
+&lt;p&gt;调查了一下，C5系列属于&lt;a href=&quot;https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-types.html#ec2-nitro-instances&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Nitro-based instance&lt;/a&gt;, EBS卷默认使用的是NVMe driver,设备名由原来C4的/dev/xvda1和/dev/xvdf变为了/dev/nvme[0-26]n1的格式。官网说明&lt;a href=&quot;https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/device_naming.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Device Naming on Linux Instances&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;以前C4的机器中,/etc/fstab中设定的另外一块EBS的挂载点是/dev/xvdf, 所以导致了换用C5的时候，没能自动挂载。&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;# C4时的设置&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;/dev/xvdf   /mnt/data ext4  auto,nofail,defaults        1   2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h3 id=&quot;解决办法&quot;&gt;&lt;a href=&quot;#解决办法&quot; class=&quot;headerlink&quot; title=&quot;解决办法&quot;&gt;&lt;/a&gt;解决办法&lt;/h3&gt;&lt;p&gt;&lt;code&gt;lsblk&lt;/code&gt;查看EBS的挂载路径，然后修改/etc/fstab。解决了问题。&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;/dev/nvme1n1 /mnt/data ext4  auto,nofail,defaults        1   2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+    
+    </summary>
+    
+      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
+    
+    
+      <category term="EC2" scheme="http://www.jibing57.com/tags/EC2/"/>
+    
+      <category term="Linux" scheme="http://www.jibing57.com/tags/Linux/"/>
     
   </entry>
   

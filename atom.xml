@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.jibing57.com/"/>
-  <updated>2019-05-30T08:10:12.753Z</updated>
+  <updated>2019-05-30T05:35:19.442Z</updated>
   <id>https://www.jibing57.com/</id>
   
   <author>
@@ -15,29 +15,6 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title>change to use https of blog in lightsail</title>
-    <link href="https://www.jibing57.com/2019/05/30/change-to-use-https-of-blog-in-lightsail/"/>
-    <id>https://www.jibing57.com/2019/05/30/change-to-use-https-of-blog-in-lightsail/</id>
-    <published>2019-05-30T07:29:13.000Z</published>
-    <updated>2019-05-30T08:10:12.753Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;ol&gt;
-&lt;li&gt;&lt;p&gt;lightsail上开启443端口&lt;br&gt;&lt;img src=&quot;add_ssl_to_sg.png&quot; alt=&quot;add_ssl_to_sg.png&quot;&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;nginx configure&lt;/p&gt;
-&lt;figure class=&quot;h
-      
-    
-    </summary>
-    
-    
-  </entry>
   
   <entry>
     <title>将hexo部署到AWS的Lightsail</title>
@@ -540,9 +517,9 @@
     
       <category term="Linux" scheme="https://www.jibing57.com/tags/Linux/"/>
     
-      <category term="HTTP" scheme="https://www.jibing57.com/tags/HTTP/"/>
-    
       <category term="Nginx" scheme="https://www.jibing57.com/tags/Nginx/"/>
+    
+      <category term="HTTP" scheme="https://www.jibing57.com/tags/HTTP/"/>
     
   </entry>
   
@@ -618,9 +595,36 @@
       <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
     
     
+      <category term="Nginx" scheme="https://www.jibing57.com/tags/Nginx/"/>
+    
       <category term="HTTP" scheme="https://www.jibing57.com/tags/HTTP/"/>
     
-      <category term="Nginx" scheme="https://www.jibing57.com/tags/Nginx/"/>
+  </entry>
+  
+  <entry>
+    <title>AWS C5类型Instance的挂载点变更</title>
+    <link href="https://www.jibing57.com/2019/02/25/mount-point-changed-in-C5/"/>
+    <id>https://www.jibing57.com/2019/02/25/mount-point-changed-in-C5/</id>
+    <published>2019-02-25T13:55:30.000Z</published>
+    <updated>2019-02-26T07:47:36.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;问题点&quot;&gt;&lt;a href=&quot;#问题点&quot; class=&quot;headerlink&quot; title=&quot;问题点&quot;&gt;&lt;/a&gt;问题点&lt;/h3&gt;&lt;p&gt;一直使用的是Amazon自有的Amazon Linux，中国区的C5出来后，将原有的机器升级到C5的时候，发现额外挂载的磁盘没有挂载成功。&lt;/p&gt;
+&lt;p&gt;调查了一下，C5系列属于&lt;a href=&quot;https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-types.html#ec2-nitro-instances&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Nitro-based instance&lt;/a&gt;, EBS卷默认使用的是NVMe driver,设备名由原来C4的/dev/xvda1和/dev/xvdf变为了/dev/nvme[0-26]n1的格式。官网说明&lt;a href=&quot;https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/device_naming.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Device Naming on Linux Instances&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;以前C4的机器中,/etc/fstab中设定的另外一块EBS的挂载点是/dev/xvdf, 所以导致了换用C5的时候，没能自动挂载。&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;# C4时的设置&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;/dev/xvdf   /mnt/data ext4  auto,nofail,defaults        1   2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h3 id=&quot;解决办法&quot;&gt;&lt;a href=&quot;#解决办法&quot; class=&quot;headerlink&quot; title=&quot;解决办法&quot;&gt;&lt;/a&gt;解决办法&lt;/h3&gt;&lt;p&gt;&lt;code&gt;lsblk&lt;/code&gt;查看EBS的挂载路径，然后修改/etc/fstab。解决了问题。&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;/dev/nvme1n1 /mnt/data ext4  auto,nofail,defaults        1   2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+    
+    </summary>
+    
+      <category term="AWS" scheme="https://www.jibing57.com/categories/AWS/"/>
+    
+    
+      <category term="EC2" scheme="https://www.jibing57.com/tags/EC2/"/>
+    
+      <category term="Linux" scheme="https://www.jibing57.com/tags/Linux/"/>
     
   </entry>
   

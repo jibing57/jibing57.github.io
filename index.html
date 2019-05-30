@@ -267,46 +267,9 @@ var _hmt = _hmt || [];
 		
             
 		
-            
-		
         
         <!-- render other articles -->
         
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2019-05-30 </div>
-			<div class="article-title"><a href="/2019/05/30/change-to-use-https-of-blog-in-lightsail/" >change to use https of blog in lightsail</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<ol>
-<li><p>lightsail上开启443端口<br><img src="add_ssl_to_sg.png" alt="add_ssl_to_sg.png"></p>
-</li>
-<li><p>nginx configure</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">      listen       80;</div><div class="line">      server_name  www.jibing57.com;</div><div class="line">      return 301 https://$server_name$request_uri;</div><div class="line">&#125;</div><div class="line"></div><div class="line">server &#123;</div><div class="line">      listen	   443 ssl;</div><div class="line">      server_name  www.jibing57.com;</div><div class="line">      ssl_session_cache   shared:SSL:10m;</div><div class="line">      ssl_session_timeout 10m;</div><div class="line">      keepalive_timeout   70;</div><div class="line">      ssl_certificate     cert/www.jibing57.com.pem;</div><div class="line">      ssl_certificate_key cert/www.jibing57.com.key;</div><div class="line">      ssl_protocols       TLSv1 TLSv1.1 TLSv1.2;</div><div class="line">      ssl_ciphers         HIGH:!aNULL:!MD5;</div><div class="line"></div><div class="line">      # add Strict-Transport-Security to prevent man in the middle attacks</div><div class="line">      add_header Strict-Transport-Security &quot;max-age=31536000&quot; always;</div><div class="line"></div><div class="line">      # gzip</div><div class="line">      gzip on;</div><div class="line">      gzip_disable &quot;msie6&quot;;</div><div class="line"></div><div class="line">      gzip_vary on;</div><div class="line">      gzip_proxied any;</div><div class="line">      gzip_comp_level 6;</div><div class="line">      gzip_http_version 1.1;</div><div class="line">      gzip_min_length 256;</div><div class="line">      gzip_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript application/javascript application/vnd.ms-fontobject application/x-font-ttf font/opentype image/svg+xml image/x-icon;</div><div class="line"></div><div class="line"></div><div class="line">      root         /opt/app/web/hexo;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
-<li><a href="http://nginx.org/en/docs/http/configuring_https_servers.html" target="_blank" rel="external">Configuring HTTPS servers</a></li>
-<li><a href="https://serverfault.com/questions/67316/in-nginx-how-can-i-rewrite-all-http-requests-to-https-while-maintaining-sub-dom" target="_blank" rel="external">In Nginx, how can I rewrite all http requests to https while maintaining sub-domain?</a></li>
-<li></li>
-</ul>
-
-	
-	</div>
-  <a type="button" href="/2019/05/30/change-to-use-https-of-blog-in-lightsail/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
            
 			  
 	
@@ -635,6 +598,35 @@ var _hmt = _hmt || [];
 
            
 		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2019-04-20 </div>
+			<div class="article-title"><a href="/2019/04/20/niu-x-resource/" >Niu-X resource</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>记录一些有用的网站，持续更新中。。</p>
+<hr>
+<h3 id="Linux-command"><a href="#Linux-command" class="headerlink" title="Linux-command"></a>Linux-command</h3><p>github地址: <a href="https://github.com/jaywcjlove/linux-command" target="_blank" rel="external">linux-command</a></p>
+<blockquote>
+<p>Linux命令大全搜索工具，内容包含Linux命令手册、详解、学习、搜集 </p>
+</blockquote>
+<p>比较系统的各个命令，期待有空时每个粗略一遍，需要时再来查询</p>
+	
+	</div>
+  <a type="button" href="/2019/04/20/niu-x-resource/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
 
 		</div>
 
@@ -721,45 +713,45 @@ var _hmt = _hmt || [];
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/FFMPEG/">FFMPEG<span>1</span></a></li>
-		
-			<li><a href="/tags/CodeCommit/">CodeCommit<span>1</span></a></li>
-		
 			<li><a href="/tags/IAM/">IAM<span>3</span></a></li>
 		
-			<li><a href="/tags/Failover/">Failover<span>1</span></a></li>
+			<li><a href="/tags/Github/">Github<span>3</span></a></li>
 		
-			<li><a href="/tags/DynamoDB/">DynamoDB<span>1</span></a></li>
+			<li><a href="/tags/SSH/">SSH<span>3</span></a></li>
 		
-			<li><a href="/tags/VMware/">VMware<span>2</span></a></li>
+			<li><a href="/tags/AWS-Tools/">AWS Tools<span>1</span></a></li>
 		
-			<li><a href="/tags/EC2/">EC2<span>7</span></a></li>
+			<li><a href="/tags/AWS-SDK/">AWS SDK<span>2</span></a></li>
 		
-			<li><a href="/tags/MacOS/">MacOS<span>12</span></a></li>
+			<li><a href="/tags/Git/">Git<span>2</span></a></li>
 		
-			<li><a href="/tags/CloudWatch/">CloudWatch<span>1</span></a></li>
-		
-			<li><a href="/tags/AutoScaling/">AutoScaling<span>3</span></a></li>
-		
-			<li><a href="/tags/Nginx/">Nginx<span>5</span></a></li>
-		
-			<li><a href="/tags/Rails/">Rails<span>3</span></a></li>
-		
-			<li><a href="/tags/Solutions-Architect/">Solutions Architect<span>1</span></a></li>
-		
-			<li><a href="/tags/Lightsail/">Lightsail<span>1</span></a></li>
-		
-			<li><a href="/tags/Ruby/">Ruby<span>8</span></a></li>
-		
-			<li><a href="/tags/CentOS/">CentOS<span>3</span></a></li>
+			<li><a href="/tags/Application-Load-Balancing/">Application Load Balancing<span>1</span></a></li>
 		
 			<li><a href="/tags/Hexo/">Hexo<span>6</span></a></li>
 		
-			<li><a href="/tags/Passenger/">Passenger<span>2</span></a></li>
+			<li><a href="/tags/EC2-User-Data/">EC2 User Data<span>1</span></a></li>
+		
+			<li><a href="/tags/Douban/">Douban<span>1</span></a></li>
+		
+			<li><a href="/tags/AWS-CLI/">AWS CLI<span>6</span></a></li>
+		
+			<li><a href="/tags/Office/">Office<span>1</span></a></li>
+		
+			<li><a href="/tags/Failover/">Failover<span>1</span></a></li>
 		
 			<li><a href="/tags/Linux/">Linux<span>12</span></a></li>
 		
-			<li><a href="/tags/RVM/">RVM<span>1</span></a></li>
+			<li><a href="/tags/Firewall/">Firewall<span>1</span></a></li>
+		
+			<li><a href="/tags/AutoScaling/">AutoScaling<span>3</span></a></li>
+		
+			<li><a href="/tags/Rails/">Rails<span>3</span></a></li>
+		
+			<li><a href="/tags/Ruby/">Ruby<span>8</span></a></li>
+		
+			<li><a href="/tags/VMware/">VMware<span>2</span></a></li>
+		
+			<li><a href="/tags/HTTP/">HTTP<span>4</span></a></li>
 		
 		
 		   <li><a href="/tags">...<span>48</span></a></li>
@@ -775,10 +767,6 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
-        <a href="/2019/05/30/change-to-use-https-of-blog-in-lightsail/" ><i class="fa fa-file-o"></i>change to use https of blog...</a>
-      </li>
-    
-      <li>
         <a href="/2019/05/29/how-to-deploy-hexo-to-aws-lightsail/" ><i class="fa fa-file-o"></i>将hexo部署到AWS的Lightsail</a>
       </li>
     
@@ -792,6 +780,10 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2019/05/10/how-to-change-office-UI-language-on-macos/" ><i class="fa fa-file-o"></i>在Mac下修改Office的界面显示语言</a>
+      </li>
+    
+      <li>
+        <a href="/2019/05/01/way-to-make-centos7-bootable-usb-on-macos/" ><i class="fa fa-file-o"></i>Macos下制作CentOS 7 USB启动盘</a>
       </li>
     
   </ul>

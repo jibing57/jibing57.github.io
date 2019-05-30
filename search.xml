@@ -8550,9 +8550,9 @@ You can wait for the scheduled retirement date - when the instance is stopped - 
             
             <tag> Ruby </tag>
             
-            <tag> AWS CLI </tag>
-            
             <tag> AWS SDK </tag>
+            
+            <tag> AWS CLI </tag>
             
             <tag> PostgreSQL </tag>
             

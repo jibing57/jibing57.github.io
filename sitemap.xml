@@ -373,13 +373,6 @@
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2017/11/29/how-to-enable-slow-query-on-aws-rds-postgresql/</loc>
-    
-    <lastmod>2017-12-25T07:09:02.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://www.jibing57.com/2017/10/24/how-to-use-aws-cli-with-multi-user/</loc>
     
     <lastmod>2017-12-25T07:09:02.000Z</lastmod>
@@ -387,7 +380,7 @@
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2017/07/25/how-to-read-text-on-macos/</loc>
+    <loc>http://www.jibing57.com/2017/10/30/how-to-use-post-link-on-hexo/</loc>
     
     <lastmod>2017-12-25T07:09:02.000Z</lastmod>
     
@@ -401,7 +394,14 @@
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2017/10/30/how-to-use-post-link-on-hexo/</loc>
+    <loc>http://www.jibing57.com/2017/07/25/how-to-read-text-on-macos/</loc>
+    
+    <lastmod>2017-12-25T07:09:02.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.jibing57.com/2017/11/29/how-to-enable-slow-query-on-aws-rds-postgresql/</loc>
     
     <lastmod>2017-12-25T07:09:02.000Z</lastmod>
     
@@ -422,14 +422,7 @@
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2017/10/31/account-setting-by-aws/</loc>
-    
-    <lastmod>2017-12-25T07:08:09.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.jibing57.com/2017/10/31/hexo-bind-domain-to-github-pages/</loc>
+    <loc>http://www.jibing57.com/2017/12/19/deep-dig-on-s3-bucket-permission-exam/</loc>
     
     <lastmod>2017-12-25T07:08:09.000Z</lastmod>
     
@@ -443,7 +436,14 @@
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2017/12/19/deep-dig-on-s3-bucket-permission-exam/</loc>
+    <loc>http://www.jibing57.com/2017/10/31/account-setting-by-aws/</loc>
+    
+    <lastmod>2017-12-25T07:08:09.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.jibing57.com/2017/10/31/hexo-bind-domain-to-github-pages/</loc>
     
     <lastmod>2017-12-25T07:08:09.000Z</lastmod>
     

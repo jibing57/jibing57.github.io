@@ -5,9 +5,9 @@
   <subtitle>Recording, Sharing, TimeSaving -- 一切成本皆时间</subtitle>
   <link href="/atom.xml" rel="self"/>
   
-  <link href="http://www.jibing57.com/"/>
-  <updated>2019-05-30T05:35:19.442Z</updated>
-  <id>http://www.jibing57.com/</id>
+  <link href="https://www.jibing57.com/"/>
+  <updated>2019-05-30T08:10:12.753Z</updated>
+  <id>https://www.jibing57.com/</id>
   
   <author>
     <name>jibing57</name>
@@ -17,9 +17,32 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>change to use https of blog in lightsail</title>
+    <link href="https://www.jibing57.com/2019/05/30/change-to-use-https-of-blog-in-lightsail/"/>
+    <id>https://www.jibing57.com/2019/05/30/change-to-use-https-of-blog-in-lightsail/</id>
+    <published>2019-05-30T07:29:13.000Z</published>
+    <updated>2019-05-30T08:10:12.753Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;ol&gt;
+&lt;li&gt;&lt;p&gt;lightsail上开启443端口&lt;br&gt;&lt;img src=&quot;add_ssl_to_sg.png&quot; alt=&quot;add_ssl_to_sg.png&quot;&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;nginx configure&lt;/p&gt;
+&lt;figure class=&quot;h
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
     <title>将hexo部署到AWS的Lightsail</title>
-    <link href="http://www.jibing57.com/2019/05/29/how-to-deploy-hexo-to-aws-lightsail/"/>
-    <id>http://www.jibing57.com/2019/05/29/how-to-deploy-hexo-to-aws-lightsail/</id>
+    <link href="https://www.jibing57.com/2019/05/29/how-to-deploy-hexo-to-aws-lightsail/"/>
+    <id>https://www.jibing57.com/2019/05/29/how-to-deploy-hexo-to-aws-lightsail/</id>
     <published>2019-05-29T12:13:00.000Z</published>
     <updated>2019-05-30T05:35:19.442Z</updated>
     
@@ -52,23 +75,23 @@
     
     </summary>
     
-      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
+      <category term="AWS" scheme="https://www.jibing57.com/categories/AWS/"/>
     
     
-      <category term="Hexo" scheme="http://www.jibing57.com/tags/Hexo/"/>
+      <category term="Hexo" scheme="https://www.jibing57.com/tags/Hexo/"/>
     
-      <category term="Lightsail" scheme="http://www.jibing57.com/tags/Lightsail/"/>
+      <category term="Lightsail" scheme="https://www.jibing57.com/tags/Lightsail/"/>
     
-      <category term="Nginx" scheme="http://www.jibing57.com/tags/Nginx/"/>
+      <category term="Nginx" scheme="https://www.jibing57.com/tags/Nginx/"/>
     
-      <category term="Git" scheme="http://www.jibing57.com/tags/Git/"/>
+      <category term="Git" scheme="https://www.jibing57.com/tags/Git/"/>
     
   </entry>
   
   <entry>
     <title>Elastic Beanstalk Ruby Passenger平台下设置HTTP重定向到HTTPS</title>
-    <link href="http://www.jibing57.com/2019/05/21/how-to-direct-http-to-https-in-elasticbeanstalk-ruby-passenger-platform/"/>
-    <id>http://www.jibing57.com/2019/05/21/how-to-direct-http-to-https-in-elasticbeanstalk-ruby-passenger-platform/</id>
+    <link href="https://www.jibing57.com/2019/05/21/how-to-direct-http-to-https-in-elasticbeanstalk-ruby-passenger-platform/"/>
+    <id>https://www.jibing57.com/2019/05/21/how-to-direct-http-to-https-in-elasticbeanstalk-ruby-passenger-platform/</id>
     <published>2019-05-21T13:12:23.000Z</published>
     <updated>2019-05-21T06:58:21.016Z</updated>
     
@@ -96,21 +119,21 @@
     
     </summary>
     
-      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
+      <category term="AWS" scheme="https://www.jibing57.com/categories/AWS/"/>
     
     
-      <category term="Elastic Beanstalk" scheme="http://www.jibing57.com/tags/Elastic-Beanstalk/"/>
+      <category term="Elastic Beanstalk" scheme="https://www.jibing57.com/tags/Elastic-Beanstalk/"/>
     
-      <category term="HTTP" scheme="http://www.jibing57.com/tags/HTTP/"/>
+      <category term="HTTP" scheme="https://www.jibing57.com/tags/HTTP/"/>
     
-      <category term="HTTPS" scheme="http://www.jibing57.com/tags/HTTPS/"/>
+      <category term="HTTPS" scheme="https://www.jibing57.com/tags/HTTPS/"/>
     
   </entry>
   
   <entry>
     <title>如何在Elastic Load Balancer中添加SSL证书</title>
-    <link href="http://www.jibing57.com/2019/05/16/how-to-add-SSL-Certification-to-Elastic-Load-Balancer/"/>
-    <id>http://www.jibing57.com/2019/05/16/how-to-add-SSL-Certification-to-Elastic-Load-Balancer/</id>
+    <link href="https://www.jibing57.com/2019/05/16/how-to-add-SSL-Certification-to-Elastic-Load-Balancer/"/>
+    <id>https://www.jibing57.com/2019/05/16/how-to-add-SSL-Certification-to-Elastic-Load-Balancer/</id>
     <published>2019-05-16T13:51:28.000Z</published>
     <updated>2019-05-16T09:03:19.676Z</updated>
     
@@ -139,23 +162,23 @@
     
     </summary>
     
-      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
+      <category term="AWS" scheme="https://www.jibing57.com/categories/AWS/"/>
     
     
-      <category term="Elastic Load Balancing" scheme="http://www.jibing57.com/tags/Elastic-Load-Balancing/"/>
+      <category term="Elastic Load Balancing" scheme="https://www.jibing57.com/tags/Elastic-Load-Balancing/"/>
     
-      <category term="IAM" scheme="http://www.jibing57.com/tags/IAM/"/>
+      <category term="IAM" scheme="https://www.jibing57.com/tags/IAM/"/>
     
-      <category term="Application Load Balancing" scheme="http://www.jibing57.com/tags/Application-Load-Balancing/"/>
+      <category term="Application Load Balancing" scheme="https://www.jibing57.com/tags/Application-Load-Balancing/"/>
     
-      <category term="HTTP" scheme="http://www.jibing57.com/tags/HTTP/"/>
+      <category term="HTTP" scheme="https://www.jibing57.com/tags/HTTP/"/>
     
   </entry>
   
   <entry>
     <title>在Mac下修改Office的界面显示语言</title>
-    <link href="http://www.jibing57.com/2019/05/10/how-to-change-office-UI-language-on-macos/"/>
-    <id>http://www.jibing57.com/2019/05/10/how-to-change-office-UI-language-on-macos/</id>
+    <link href="https://www.jibing57.com/2019/05/10/how-to-change-office-UI-language-on-macos/"/>
+    <id>https://www.jibing57.com/2019/05/10/how-to-change-office-UI-language-on-macos/</id>
     <published>2019-05-10T11:47:18.000Z</published>
     <updated>2019-05-10T03:15:18.986Z</updated>
     
@@ -166,17 +189,17 @@
     
     </summary>
     
-      <category term="Tools" scheme="http://www.jibing57.com/categories/Tools/"/>
+      <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
     
     
-      <category term="Office" scheme="http://www.jibing57.com/tags/Office/"/>
+      <category term="Office" scheme="https://www.jibing57.com/tags/Office/"/>
     
   </entry>
   
   <entry>
     <title>Macos下制作CentOS 7 USB启动盘</title>
-    <link href="http://www.jibing57.com/2019/05/01/way-to-make-centos7-bootable-usb-on-macos/"/>
-    <id>http://www.jibing57.com/2019/05/01/way-to-make-centos7-bootable-usb-on-macos/</id>
+    <link href="https://www.jibing57.com/2019/05/01/way-to-make-centos7-bootable-usb-on-macos/"/>
+    <id>https://www.jibing57.com/2019/05/01/way-to-make-centos7-bootable-usb-on-macos/</id>
     <published>2019-05-01T04:02:57.000Z</published>
     <updated>2019-05-04T03:38:17.642Z</updated>
     
@@ -189,19 +212,19 @@
     
     </summary>
     
-      <category term="Linux" scheme="http://www.jibing57.com/categories/Linux/"/>
+      <category term="Linux" scheme="https://www.jibing57.com/categories/Linux/"/>
     
     
-      <category term="CentOS" scheme="http://www.jibing57.com/tags/CentOS/"/>
+      <category term="CentOS" scheme="https://www.jibing57.com/tags/CentOS/"/>
     
-      <category term="MacOS" scheme="http://www.jibing57.com/tags/MacOS/"/>
+      <category term="MacOS" scheme="https://www.jibing57.com/tags/MacOS/"/>
     
   </entry>
   
   <entry>
     <title>AWS Autuscaling的Scheduled Scaling(计划扩展)</title>
-    <link href="http://www.jibing57.com/2019/05/01/scheduled-action-of-aws-autoscaling/"/>
-    <id>http://www.jibing57.com/2019/05/01/scheduled-action-of-aws-autoscaling/</id>
+    <link href="https://www.jibing57.com/2019/05/01/scheduled-action-of-aws-autoscaling/"/>
+    <id>https://www.jibing57.com/2019/05/01/scheduled-action-of-aws-autoscaling/</id>
     <published>2019-05-01T02:49:04.000Z</published>
     <updated>2019-05-01T03:55:22.111Z</updated>
     
@@ -222,17 +245,17 @@
     
     </summary>
     
-      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
+      <category term="AWS" scheme="https://www.jibing57.com/categories/AWS/"/>
     
     
-      <category term="AutoScaling" scheme="http://www.jibing57.com/tags/AutoScaling/"/>
+      <category term="AutoScaling" scheme="https://www.jibing57.com/tags/AutoScaling/"/>
     
   </entry>
   
   <entry>
     <title>MacOS上VMWare Fusion中如何给网口设置固定IP</title>
-    <link href="http://www.jibing57.com/2019/04/28/how-to-use-static-IP-in-VMWare-Fusion-on-Mac-OS-X/"/>
-    <id>http://www.jibing57.com/2019/04/28/how-to-use-static-IP-in-VMWare-Fusion-on-Mac-OS-X/</id>
+    <link href="https://www.jibing57.com/2019/04/28/how-to-use-static-IP-in-VMWare-Fusion-on-Mac-OS-X/"/>
+    <id>https://www.jibing57.com/2019/04/28/how-to-use-static-IP-in-VMWare-Fusion-on-Mac-OS-X/</id>
     <published>2019-04-28T13:29:09.000Z</published>
     <updated>2019-04-29T02:19:53.506Z</updated>
     
@@ -251,19 +274,19 @@
     
     </summary>
     
-      <category term="Linux" scheme="http://www.jibing57.com/categories/Linux/"/>
+      <category term="Linux" scheme="https://www.jibing57.com/categories/Linux/"/>
     
     
-      <category term="Linux" scheme="http://www.jibing57.com/tags/Linux/"/>
+      <category term="Linux" scheme="https://www.jibing57.com/tags/Linux/"/>
     
-      <category term="VMware" scheme="http://www.jibing57.com/tags/VMware/"/>
+      <category term="VMware" scheme="https://www.jibing57.com/tags/VMware/"/>
     
   </entry>
   
   <entry>
     <title>Vmware Fusion中CentOS 7中安装Vmware Tools</title>
-    <link href="http://www.jibing57.com/2019/04/26/manually-install-vmeare-tools-on-centos-7/"/>
-    <id>http://www.jibing57.com/2019/04/26/manually-install-vmeare-tools-on-centos-7/</id>
+    <link href="https://www.jibing57.com/2019/04/26/manually-install-vmeare-tools-on-centos-7/"/>
+    <id>https://www.jibing57.com/2019/04/26/manually-install-vmeare-tools-on-centos-7/</id>
     <published>2019-04-26T13:07:10.000Z</published>
     <updated>2019-04-26T07:59:16.464Z</updated>
     
@@ -277,21 +300,21 @@
     
     </summary>
     
-      <category term="Tools" scheme="http://www.jibing57.com/categories/Tools/"/>
+      <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
     
     
-      <category term="Linux" scheme="http://www.jibing57.com/tags/Linux/"/>
+      <category term="Linux" scheme="https://www.jibing57.com/tags/Linux/"/>
     
-      <category term="CentOS" scheme="http://www.jibing57.com/tags/CentOS/"/>
+      <category term="CentOS" scheme="https://www.jibing57.com/tags/CentOS/"/>
     
-      <category term="VMware" scheme="http://www.jibing57.com/tags/VMware/"/>
+      <category term="VMware" scheme="https://www.jibing57.com/tags/VMware/"/>
     
   </entry>
   
   <entry>
     <title>Command Tips</title>
-    <link href="http://www.jibing57.com/2019/04/26/command-tips/"/>
-    <id>http://www.jibing57.com/2019/04/26/command-tips/</id>
+    <link href="https://www.jibing57.com/2019/04/26/command-tips/"/>
+    <id>https://www.jibing57.com/2019/04/26/command-tips/</id>
     <published>2019-04-26T05:22:40.000Z</published>
     <updated>2019-05-27T05:26:35.549Z</updated>
     
@@ -304,19 +327,19 @@
     
     </summary>
     
-      <category term="Tools" scheme="http://www.jibing57.com/categories/Tools/"/>
+      <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
     
     
-      <category term="Linux" scheme="http://www.jibing57.com/tags/Linux/"/>
+      <category term="Linux" scheme="https://www.jibing57.com/tags/Linux/"/>
     
-      <category term="MacOS" scheme="http://www.jibing57.com/tags/MacOS/"/>
+      <category term="MacOS" scheme="https://www.jibing57.com/tags/MacOS/"/>
     
   </entry>
   
   <entry>
     <title>Niu-X resource</title>
-    <link href="http://www.jibing57.com/2019/04/20/niu-x-resource/"/>
-    <id>http://www.jibing57.com/2019/04/20/niu-x-resource/</id>
+    <link href="https://www.jibing57.com/2019/04/20/niu-x-resource/"/>
+    <id>https://www.jibing57.com/2019/04/20/niu-x-resource/</id>
     <published>2019-04-20T07:04:47.000Z</published>
     <updated>2019-05-05T03:34:53.488Z</updated>
     
@@ -332,21 +355,21 @@
     
     </summary>
     
-      <category term="Tools" scheme="http://www.jibing57.com/categories/Tools/"/>
+      <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
     
     
-      <category term="Linux" scheme="http://www.jibing57.com/tags/Linux/"/>
+      <category term="Linux" scheme="https://www.jibing57.com/tags/Linux/"/>
     
-      <category term="MacOS" scheme="http://www.jibing57.com/tags/MacOS/"/>
+      <category term="MacOS" scheme="https://www.jibing57.com/tags/MacOS/"/>
     
-      <category term="Github" scheme="http://www.jibing57.com/tags/Github/"/>
+      <category term="Github" scheme="https://www.jibing57.com/tags/Github/"/>
     
   </entry>
   
   <entry>
     <title>firewall-cmd基本用法</title>
-    <link href="http://www.jibing57.com/2019/04/20/firewall-cmd-basic-usage/"/>
-    <id>http://www.jibing57.com/2019/04/20/firewall-cmd-basic-usage/</id>
+    <link href="https://www.jibing57.com/2019/04/20/firewall-cmd-basic-usage/"/>
+    <id>https://www.jibing57.com/2019/04/20/firewall-cmd-basic-usage/</id>
     <published>2019-04-20T01:49:23.000Z</published>
     <updated>2019-05-08T02:37:04.363Z</updated>
     
@@ -362,19 +385,19 @@
     
     </summary>
     
-      <category term="Tools" scheme="http://www.jibing57.com/categories/Tools/"/>
+      <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
     
     
-      <category term="Linux" scheme="http://www.jibing57.com/tags/Linux/"/>
+      <category term="Linux" scheme="https://www.jibing57.com/tags/Linux/"/>
     
-      <category term="Firewall" scheme="http://www.jibing57.com/tags/Firewall/"/>
+      <category term="Firewall" scheme="https://www.jibing57.com/tags/Firewall/"/>
     
   </entry>
   
   <entry>
     <title>解析EB logs的一些Linux小命令</title>
-    <link href="http://www.jibing57.com/2019/04/08/some-command-to-parse-EB-logs/"/>
-    <id>http://www.jibing57.com/2019/04/08/some-command-to-parse-EB-logs/</id>
+    <link href="https://www.jibing57.com/2019/04/08/some-command-to-parse-EB-logs/"/>
+    <id>https://www.jibing57.com/2019/04/08/some-command-to-parse-EB-logs/</id>
     <published>2019-04-08T13:12:11.000Z</published>
     <updated>2019-04-08T08:59:24.000Z</updated>
     
@@ -388,23 +411,23 @@
     
     </summary>
     
-      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
+      <category term="AWS" scheme="https://www.jibing57.com/categories/AWS/"/>
     
     
-      <category term="Elastic Beanstalk" scheme="http://www.jibing57.com/tags/Elastic-Beanstalk/"/>
+      <category term="Elastic Beanstalk" scheme="https://www.jibing57.com/tags/Elastic-Beanstalk/"/>
     
-      <category term="S3" scheme="http://www.jibing57.com/tags/S3/"/>
+      <category term="S3" scheme="https://www.jibing57.com/tags/S3/"/>
     
-      <category term="AWS CLI" scheme="http://www.jibing57.com/tags/AWS-CLI/"/>
+      <category term="AWS CLI" scheme="https://www.jibing57.com/tags/AWS-CLI/"/>
     
-      <category term="Linux" scheme="http://www.jibing57.com/tags/Linux/"/>
+      <category term="Linux" scheme="https://www.jibing57.com/tags/Linux/"/>
     
   </entry>
   
   <entry>
     <title>AWS EC2中开启BBR</title>
-    <link href="http://www.jibing57.com/2019/04/02/bbr-on-aws-ec2/"/>
-    <id>http://www.jibing57.com/2019/04/02/bbr-on-aws-ec2/</id>
+    <link href="https://www.jibing57.com/2019/04/02/bbr-on-aws-ec2/"/>
+    <id>https://www.jibing57.com/2019/04/02/bbr-on-aws-ec2/</id>
     <published>2019-04-02T13:06:46.000Z</published>
     <updated>2019-04-03T11:28:17.000Z</updated>
     
@@ -419,19 +442,19 @@
     
     </summary>
     
-      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
+      <category term="AWS" scheme="https://www.jibing57.com/categories/AWS/"/>
     
     
-      <category term="EC2" scheme="http://www.jibing57.com/tags/EC2/"/>
+      <category term="EC2" scheme="https://www.jibing57.com/tags/EC2/"/>
     
-      <category term="Network" scheme="http://www.jibing57.com/tags/Network/"/>
+      <category term="Network" scheme="https://www.jibing57.com/tags/Network/"/>
     
   </entry>
   
   <entry>
     <title>Mac下共享ShadowsocksX-NG的梯子给iOS</title>
-    <link href="http://www.jibing57.com/2019/03/24/share-ShadowsocksX-NG-to-iOS/"/>
-    <id>http://www.jibing57.com/2019/03/24/share-ShadowsocksX-NG-to-iOS/</id>
+    <link href="https://www.jibing57.com/2019/03/24/share-ShadowsocksX-NG-to-iOS/"/>
+    <id>https://www.jibing57.com/2019/03/24/share-ShadowsocksX-NG-to-iOS/</id>
     <published>2019-03-24T13:16:46.000Z</published>
     <updated>2019-03-26T02:58:38.000Z</updated>
     
@@ -443,19 +466,19 @@
     
     </summary>
     
-      <category term="Tools" scheme="http://www.jibing57.com/categories/Tools/"/>
+      <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
     
     
-      <category term="MacOS" scheme="http://www.jibing57.com/tags/MacOS/"/>
+      <category term="MacOS" scheme="https://www.jibing57.com/tags/MacOS/"/>
     
-      <category term="iOS" scheme="http://www.jibing57.com/tags/iOS/"/>
+      <category term="iOS" scheme="https://www.jibing57.com/tags/iOS/"/>
     
   </entry>
   
   <entry>
     <title>CentOS 7下Ctrl-C失效问题</title>
-    <link href="http://www.jibing57.com/2019/03/21/ctrl-c-invalid-on-Centos-7/"/>
-    <id>http://www.jibing57.com/2019/03/21/ctrl-c-invalid-on-Centos-7/</id>
+    <link href="https://www.jibing57.com/2019/03/21/ctrl-c-invalid-on-Centos-7/"/>
+    <id>https://www.jibing57.com/2019/03/21/ctrl-c-invalid-on-Centos-7/</id>
     <published>2019-03-21T13:33:01.000Z</published>
     <updated>2019-04-02T12:30:29.000Z</updated>
     
@@ -471,23 +494,23 @@
     
     </summary>
     
-      <category term="Shell" scheme="http://www.jibing57.com/categories/Shell/"/>
+      <category term="Shell" scheme="https://www.jibing57.com/categories/Shell/"/>
     
     
-      <category term="Ruby" scheme="http://www.jibing57.com/tags/Ruby/"/>
+      <category term="Ruby" scheme="https://www.jibing57.com/tags/Ruby/"/>
     
-      <category term="Linux" scheme="http://www.jibing57.com/tags/Linux/"/>
+      <category term="Linux" scheme="https://www.jibing57.com/tags/Linux/"/>
     
-      <category term="CentOS" scheme="http://www.jibing57.com/tags/CentOS/"/>
+      <category term="CentOS" scheme="https://www.jibing57.com/tags/CentOS/"/>
     
-      <category term="RVM" scheme="http://www.jibing57.com/tags/RVM/"/>
+      <category term="RVM" scheme="https://www.jibing57.com/tags/RVM/"/>
     
   </entry>
   
   <entry>
     <title>使用nginx处理S3静态资源</title>
-    <link href="http://www.jibing57.com/2019/03/11/ways-to-support-public-s3-file-in-nginx/"/>
-    <id>http://www.jibing57.com/2019/03/11/ways-to-support-public-s3-file-in-nginx/</id>
+    <link href="https://www.jibing57.com/2019/03/11/ways-to-support-public-s3-file-in-nginx/"/>
+    <id>https://www.jibing57.com/2019/03/11/ways-to-support-public-s3-file-in-nginx/</id>
     <published>2019-03-11T13:28:17.000Z</published>
     <updated>2019-03-22T06:02:39.000Z</updated>
     
@@ -510,23 +533,23 @@
     
     </summary>
     
-      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
+      <category term="AWS" scheme="https://www.jibing57.com/categories/AWS/"/>
     
     
-      <category term="S3" scheme="http://www.jibing57.com/tags/S3/"/>
+      <category term="S3" scheme="https://www.jibing57.com/tags/S3/"/>
     
-      <category term="Linux" scheme="http://www.jibing57.com/tags/Linux/"/>
+      <category term="Linux" scheme="https://www.jibing57.com/tags/Linux/"/>
     
-      <category term="HTTP" scheme="http://www.jibing57.com/tags/HTTP/"/>
+      <category term="HTTP" scheme="https://www.jibing57.com/tags/HTTP/"/>
     
-      <category term="Nginx" scheme="http://www.jibing57.com/tags/Nginx/"/>
+      <category term="Nginx" scheme="https://www.jibing57.com/tags/Nginx/"/>
     
   </entry>
   
   <entry>
     <title>CentOS 7下passenger-status报错</title>
-    <link href="http://www.jibing57.com/2019/03/10/passenger-status-not-work-on-CentOS-7/"/>
-    <id>http://www.jibing57.com/2019/03/10/passenger-status-not-work-on-CentOS-7/</id>
+    <link href="https://www.jibing57.com/2019/03/10/passenger-status-not-work-on-CentOS-7/"/>
+    <id>https://www.jibing57.com/2019/03/10/passenger-status-not-work-on-CentOS-7/</id>
     <published>2019-03-10T07:21:36.000Z</published>
     <updated>2019-03-11T07:32:17.000Z</updated>
     
@@ -539,21 +562,21 @@
     
     </summary>
     
-      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
+      <category term="AWS" scheme="https://www.jibing57.com/categories/AWS/"/>
     
     
-      <category term="EC2" scheme="http://www.jibing57.com/tags/EC2/"/>
+      <category term="EC2" scheme="https://www.jibing57.com/tags/EC2/"/>
     
-      <category term="Passenger" scheme="http://www.jibing57.com/tags/Passenger/"/>
+      <category term="Passenger" scheme="https://www.jibing57.com/tags/Passenger/"/>
     
-      <category term="Nginx" scheme="http://www.jibing57.com/tags/Nginx/"/>
+      <category term="Nginx" scheme="https://www.jibing57.com/tags/Nginx/"/>
     
   </entry>
   
   <entry>
     <title>Macos下因为找不到libxml2而导致nokogiri安装失败的解决办法</title>
-    <link href="http://www.jibing57.com/2019/03/05/how-resolve-nokogiri-failed-by-xml2-on-macos/"/>
-    <id>http://www.jibing57.com/2019/03/05/how-resolve-nokogiri-failed-by-xml2-on-macos/</id>
+    <link href="https://www.jibing57.com/2019/03/05/how-resolve-nokogiri-failed-by-xml2-on-macos/"/>
+    <id>https://www.jibing57.com/2019/03/05/how-resolve-nokogiri-failed-by-xml2-on-macos/</id>
     <published>2019-03-05T08:26:53.000Z</published>
     <updated>2019-04-21T00:42:31.000Z</updated>
     
@@ -566,21 +589,21 @@
     
     </summary>
     
-      <category term="Code" scheme="http://www.jibing57.com/categories/Code/"/>
+      <category term="Code" scheme="https://www.jibing57.com/categories/Code/"/>
     
     
-      <category term="Ruby" scheme="http://www.jibing57.com/tags/Ruby/"/>
+      <category term="Ruby" scheme="https://www.jibing57.com/tags/Ruby/"/>
     
-      <category term="Rails" scheme="http://www.jibing57.com/tags/Rails/"/>
+      <category term="Rails" scheme="https://www.jibing57.com/tags/Rails/"/>
     
-      <category term="MacOS" scheme="http://www.jibing57.com/tags/MacOS/"/>
+      <category term="MacOS" scheme="https://www.jibing57.com/tags/MacOS/"/>
     
   </entry>
   
   <entry>
     <title>Nginx的HTTP Code444和307设置</title>
-    <link href="http://www.jibing57.com/2019/02/28/nginx_444_and_307/"/>
-    <id>http://www.jibing57.com/2019/02/28/nginx_444_and_307/</id>
+    <link href="https://www.jibing57.com/2019/02/28/nginx_444_and_307/"/>
+    <id>https://www.jibing57.com/2019/02/28/nginx_444_and_307/</id>
     <published>2019-02-28T13:50:59.000Z</published>
     <updated>2019-03-07T12:33:09.000Z</updated>
     
@@ -592,39 +615,12 @@
     
     </summary>
     
-      <category term="Tools" scheme="http://www.jibing57.com/categories/Tools/"/>
+      <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
     
     
-      <category term="HTTP" scheme="http://www.jibing57.com/tags/HTTP/"/>
+      <category term="HTTP" scheme="https://www.jibing57.com/tags/HTTP/"/>
     
-      <category term="Nginx" scheme="http://www.jibing57.com/tags/Nginx/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>AWS C5类型Instance的挂载点变更</title>
-    <link href="http://www.jibing57.com/2019/02/25/mount-point-changed-in-C5/"/>
-    <id>http://www.jibing57.com/2019/02/25/mount-point-changed-in-C5/</id>
-    <published>2019-02-25T13:55:30.000Z</published>
-    <updated>2019-02-26T07:47:36.000Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;问题点&quot;&gt;&lt;a href=&quot;#问题点&quot; class=&quot;headerlink&quot; title=&quot;问题点&quot;&gt;&lt;/a&gt;问题点&lt;/h3&gt;&lt;p&gt;一直使用的是Amazon自有的Amazon Linux，中国区的C5出来后，将原有的机器升级到C5的时候，发现额外挂载的磁盘没有挂载成功。&lt;/p&gt;
-&lt;p&gt;调查了一下，C5系列属于&lt;a href=&quot;https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-types.html#ec2-nitro-instances&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Nitro-based instance&lt;/a&gt;, EBS卷默认使用的是NVMe driver,设备名由原来C4的/dev/xvda1和/dev/xvdf变为了/dev/nvme[0-26]n1的格式。官网说明&lt;a href=&quot;https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/device_naming.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Device Naming on Linux Instances&lt;/a&gt;。&lt;/p&gt;
-&lt;p&gt;以前C4的机器中,/etc/fstab中设定的另外一块EBS的挂载点是/dev/xvdf, 所以导致了换用C5的时候，没能自动挂载。&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;# C4时的设置&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;/dev/xvdf   /mnt/data ext4  auto,nofail,defaults        1   2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;h3 id=&quot;解决办法&quot;&gt;&lt;a href=&quot;#解决办法&quot; class=&quot;headerlink&quot; title=&quot;解决办法&quot;&gt;&lt;/a&gt;解决办法&lt;/h3&gt;&lt;p&gt;&lt;code&gt;lsblk&lt;/code&gt;查看EBS的挂载路径，然后修改/etc/fstab。解决了问题。&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;/dev/nvme1n1 /mnt/data ext4  auto,nofail,defaults        1   2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-    
-    </summary>
-    
-      <category term="AWS" scheme="http://www.jibing57.com/categories/AWS/"/>
-    
-    
-      <category term="EC2" scheme="http://www.jibing57.com/tags/EC2/"/>
-    
-      <category term="Linux" scheme="http://www.jibing57.com/tags/Linux/"/>
+      <category term="Nginx" scheme="https://www.jibing57.com/tags/Nginx/"/>
     
   </entry>
   

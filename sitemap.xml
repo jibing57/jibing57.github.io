@@ -2,490 +2,497 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://www.jibing57.com/2019/05/29/how-to-deploy-hexo-to-aws-lightsail/</loc>
+    <loc>https://www.jibing57.com/2019/05/30/change-to-use-https-of-blog-in-lightsail/</loc>
+    
+    <lastmod>2019-05-30T08:10:12.753Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.jibing57.com/2019/05/29/how-to-deploy-hexo-to-aws-lightsail/</loc>
     
     <lastmod>2019-05-30T05:35:19.442Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2019/04/26/command-tips/</loc>
+    <loc>https://www.jibing57.com/2019/04/26/command-tips/</loc>
     
     <lastmod>2019-05-27T05:26:35.549Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2019/05/21/how-to-direct-http-to-https-in-elasticbeanstalk-ruby-passenger-platform/</loc>
+    <loc>https://www.jibing57.com/2019/05/21/how-to-direct-http-to-https-in-elasticbeanstalk-ruby-passenger-platform/</loc>
     
     <lastmod>2019-05-21T06:58:21.016Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2019/05/16/how-to-add-SSL-Certification-to-Elastic-Load-Balancer/</loc>
+    <loc>https://www.jibing57.com/2019/05/16/how-to-add-SSL-Certification-to-Elastic-Load-Balancer/</loc>
     
     <lastmod>2019-05-16T09:03:19.676Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2019/05/10/how-to-change-office-UI-language-on-macos/</loc>
+    <loc>https://www.jibing57.com/2019/05/10/how-to-change-office-UI-language-on-macos/</loc>
     
     <lastmod>2019-05-10T03:15:18.986Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2019/04/20/firewall-cmd-basic-usage/</loc>
+    <loc>https://www.jibing57.com/2019/04/20/firewall-cmd-basic-usage/</loc>
     
     <lastmod>2019-05-08T02:37:04.363Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2019/04/20/niu-x-resource/</loc>
+    <loc>https://www.jibing57.com/2019/04/20/niu-x-resource/</loc>
     
     <lastmod>2019-05-05T03:34:53.488Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2019/05/01/way-to-make-centos7-bootable-usb-on-macos/</loc>
+    <loc>https://www.jibing57.com/2019/05/01/way-to-make-centos7-bootable-usb-on-macos/</loc>
     
     <lastmod>2019-05-04T03:38:17.642Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2019/05/01/scheduled-action-of-aws-autoscaling/</loc>
+    <loc>https://www.jibing57.com/2019/05/01/scheduled-action-of-aws-autoscaling/</loc>
     
     <lastmod>2019-05-01T03:55:22.111Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2019/04/28/how-to-use-static-IP-in-VMWare-Fusion-on-Mac-OS-X/</loc>
+    <loc>https://www.jibing57.com/2019/04/28/how-to-use-static-IP-in-VMWare-Fusion-on-Mac-OS-X/</loc>
     
     <lastmod>2019-04-29T02:19:53.506Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2019/04/26/manually-install-vmeare-tools-on-centos-7/</loc>
+    <loc>https://www.jibing57.com/2019/04/26/manually-install-vmeare-tools-on-centos-7/</loc>
     
     <lastmod>2019-04-26T07:59:16.464Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2019/03/05/how-resolve-nokogiri-failed-by-xml2-on-macos/</loc>
+    <loc>https://www.jibing57.com/2019/03/05/how-resolve-nokogiri-failed-by-xml2-on-macos/</loc>
     
     <lastmod>2019-04-21T00:42:31.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2019/04/08/some-command-to-parse-EB-logs/</loc>
+    <loc>https://www.jibing57.com/2019/04/08/some-command-to-parse-EB-logs/</loc>
     
     <lastmod>2019-04-08T08:59:24.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2019/04/02/bbr-on-aws-ec2/</loc>
+    <loc>https://www.jibing57.com/2019/04/02/bbr-on-aws-ec2/</loc>
     
     <lastmod>2019-04-03T11:28:17.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2019/03/21/ctrl-c-invalid-on-Centos-7/</loc>
+    <loc>https://www.jibing57.com/2019/03/21/ctrl-c-invalid-on-Centos-7/</loc>
     
     <lastmod>2019-04-02T12:30:29.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2019/03/24/share-ShadowsocksX-NG-to-iOS/</loc>
+    <loc>https://www.jibing57.com/2019/03/24/share-ShadowsocksX-NG-to-iOS/</loc>
     
     <lastmod>2019-03-26T02:58:38.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2019/03/11/ways-to-support-public-s3-file-in-nginx/</loc>
+    <loc>https://www.jibing57.com/2019/03/11/ways-to-support-public-s3-file-in-nginx/</loc>
     
     <lastmod>2019-03-22T06:02:39.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2019/03/10/passenger-status-not-work-on-CentOS-7/</loc>
+    <loc>https://www.jibing57.com/2019/03/10/passenger-status-not-work-on-CentOS-7/</loc>
     
     <lastmod>2019-03-11T07:32:17.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2019/02/28/nginx_444_and_307/</loc>
+    <loc>https://www.jibing57.com/2019/02/28/nginx_444_and_307/</loc>
     
     <lastmod>2019-03-07T12:33:09.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2019/02/25/mount-point-changed-in-C5/</loc>
+    <loc>https://www.jibing57.com/2019/02/25/mount-point-changed-in-C5/</loc>
     
     <lastmod>2019-02-26T07:47:36.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2019/02/14/ruby-exception/</loc>
+    <loc>https://www.jibing57.com/2019/02/14/ruby-exception/</loc>
     
     <lastmod>2019-02-15T06:37:48.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2018/12/25/How-to-change-max-pool-size-of-passenger-on-ElasticBeanstalk/</loc>
+    <loc>https://www.jibing57.com/2018/12/25/How-to-change-max-pool-size-of-passenger-on-ElasticBeanstalk/</loc>
     
     <lastmod>2018-12-27T07:02:05.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2018/12/24/404-on-Scale-Up-of-ElasticBeanstalk/</loc>
+    <loc>https://www.jibing57.com/2018/12/24/404-on-Scale-Up-of-ElasticBeanstalk/</loc>
     
     <lastmod>2018-12-25T09:19:31.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2018/11/27/nginx-with-dynamic-upstreams-to-ELB/</loc>
+    <loc>https://www.jibing57.com/2018/11/27/nginx-with-dynamic-upstreams-to-ELB/</loc>
     
     <lastmod>2018-12-23T12:16:40.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2018/12/17/how-to-handle-heap-out-of-memory-in-node/</loc>
+    <loc>https://www.jibing57.com/2018/12/17/how-to-handle-heap-out-of-memory-in-node/</loc>
     
     <lastmod>2018-12-23T06:22:55.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2018/02/07/AWS-Certified-Solutions-Architect-Professional/</loc>
+    <loc>https://www.jibing57.com/2018/02/07/AWS-Certified-Solutions-Architect-Professional/</loc>
     
     <lastmod>2018-12-20T02:01:20.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2018/12/11/how-to-enable-cors-on-S3/</loc>
+    <loc>https://www.jibing57.com/2018/12/11/how-to-enable-cors-on-S3/</loc>
     
     <lastmod>2018-12-11T15:36:54.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2018/11/15/a-way-to-install-ffmpeg-to-Amazon-Linux-and-ElasticBeanstalk/</loc>
+    <loc>https://www.jibing57.com/2018/11/15/a-way-to-install-ffmpeg-to-Amazon-Linux-and-ElasticBeanstalk/</loc>
     
     <lastmod>2018-11-17T03:27:39.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2018/09/15/how-to-access-internal-by-ssh-tunnel/</loc>
+    <loc>https://www.jibing57.com/2018/09/15/how-to-access-internal-by-ssh-tunnel/</loc>
     
     <lastmod>2018-09-16T07:03:13.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2017/12/26/a-simple-elb-access-log-parser-by-ruby/</loc>
+    <loc>https://www.jibing57.com/2017/12/26/a-simple-elb-access-log-parser-by-ruby/</loc>
     
     <lastmod>2018-09-04T11:39:01.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2017/07/17/How-to-get-subtitle-of-local-video/</loc>
+    <loc>https://www.jibing57.com/2017/07/17/How-to-get-subtitle-of-local-video/</loc>
     
     <lastmod>2018-09-04T06:50:02.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2017/10/24/how-to-use-aws-codecommit/</loc>
+    <loc>https://www.jibing57.com/2017/10/24/how-to-use-aws-codecommit/</loc>
     
     <lastmod>2018-09-04T05:51:21.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2017/07/17/hexo-github-blog/</loc>
+    <loc>https://www.jibing57.com/2017/07/17/hexo-github-blog/</loc>
     
     <lastmod>2018-08-30T05:32:02.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2018/08/11/EB-warning-due-to-no-space-left-on-device-issue-on-EC2/</loc>
+    <loc>https://www.jibing57.com/2018/08/11/EB-warning-due-to-no-space-left-on-device-issue-on-EC2/</loc>
     
     <lastmod>2018-08-30T05:02:58.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2018/05/21/ssh-key-Invalid-key-length-Error-on-Macos/</loc>
+    <loc>https://www.jibing57.com/2018/05/21/ssh-key-Invalid-key-length-Error-on-Macos/</loc>
     
     <lastmod>2018-05-23T06:48:46.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2018/05/10/how-to-write-NTFS-Deives-on-a-Mac-10.13/</loc>
+    <loc>https://www.jibing57.com/2018/05/10/how-to-write-NTFS-Deives-on-a-Mac-10.13/</loc>
     
     <lastmod>2018-05-14T06:55:13.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2018/04/25/command-line-tools-to-check-images-on-macos/</loc>
+    <loc>https://www.jibing57.com/2018/04/25/command-line-tools-to-check-images-on-macos/</loc>
     
     <lastmod>2018-04-27T08:11:54.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2018/04/24/douban-image-403/</loc>
+    <loc>https://www.jibing57.com/2018/04/24/douban-image-403/</loc>
     
     <lastmod>2018-04-25T02:37:13.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2018/04/21/aws-s3-master-permission/</loc>
+    <loc>https://www.jibing57.com/2018/04/21/aws-s3-master-permission/</loc>
     
     <lastmod>2018-04-23T02:59:55.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2018/04/18/aws-s3-master-basic/</loc>
+    <loc>https://www.jibing57.com/2018/04/18/aws-s3-master-basic/</loc>
     
     <lastmod>2018-04-20T03:22:02.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2018/04/19/how-to-remove-the-passphrase-of-ssh-key/</loc>
+    <loc>https://www.jibing57.com/2018/04/19/how-to-remove-the-passphrase-of-ssh-key/</loc>
     
     <lastmod>2018-04-19T08:15:06.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2018/03/16/how-to-subscribe-RDS-event/</loc>
+    <loc>https://www.jibing57.com/2018/03/16/how-to-subscribe-RDS-event/</loc>
     
     <lastmod>2018-03-19T02:40:03.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2018/03/15/how-to-set-chrome-to-use-google-with-NoCountryRedirect/</loc>
+    <loc>https://www.jibing57.com/2018/03/15/how-to-set-chrome-to-use-google-with-NoCountryRedirect/</loc>
     
     <lastmod>2018-03-15T06:48:36.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2018/03/14/AWS-RDS-recovery-due-to-issue-with-underlying-hardware/</loc>
+    <loc>https://www.jibing57.com/2018/03/14/AWS-RDS-recovery-due-to-issue-with-underlying-hardware/</loc>
     
     <lastmod>2018-03-15T03:19:52.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2018/03/12/how-to-handle-Retirement-Notification-Amazon-EC2-Instance-scheduled-for-retirement/</loc>
+    <loc>https://www.jibing57.com/2018/03/12/how-to-handle-Retirement-Notification-Amazon-EC2-Instance-scheduled-for-retirement/</loc>
     
     <lastmod>2018-03-12T14:19:11.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2018/02/11/aws-s3-cli-to-backup-and-restore-bucket-acl/</loc>
+    <loc>https://www.jibing57.com/2018/02/11/aws-s3-cli-to-backup-and-restore-bucket-acl/</loc>
     
     <lastmod>2018-02-11T10:08:02.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2018/02/11/a-way-to-use-csv-file-to-populate-the-database-by-rake-db-seed-on-rails/</loc>
+    <loc>https://www.jibing57.com/2018/02/11/a-way-to-use-csv-file-to-populate-the-database-by-rake-db-seed-on-rails/</loc>
     
     <lastmod>2018-02-11T10:05:51.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2018/02/09/non-greedy-match-in-grep-on-macos/</loc>
+    <loc>https://www.jibing57.com/2018/02/09/non-greedy-match-in-grep-on-macos/</loc>
     
     <lastmod>2018-02-09T09:16:23.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2017/08/03/date-command-on-Linux-and-Mac/</loc>
+    <loc>https://www.jibing57.com/2017/08/03/date-command-on-Linux-and-Mac/</loc>
     
     <lastmod>2018-02-09T08:21:01.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2017/12/22/what-is-Access-Logs-of-Classic-Load-Balancer/</loc>
+    <loc>https://www.jibing57.com/2017/12/22/what-is-Access-Logs-of-Classic-Load-Balancer/</loc>
     
     <lastmod>2017-12-26T02:57:19.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2017/12/25/shell-gist-to-get-http-5XX-code-from-ELB-access-log/</loc>
+    <loc>https://www.jibing57.com/2017/12/25/shell-gist-to-get-http-5XX-code-from-ELB-access-log/</loc>
     
     <lastmod>2017-12-26T02:56:44.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2017/10/29/ruby-paperclip-destroy-callback-nil/</loc>
+    <loc>https://www.jibing57.com/2017/10/29/ruby-paperclip-destroy-callback-nil/</loc>
     
     <lastmod>2017-12-25T07:09:03.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2017/07/25/useful-website-of-aws/</loc>
+    <loc>https://www.jibing57.com/2017/07/25/useful-website-of-aws/</loc>
     
     <lastmod>2017-12-25T07:09:03.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2017/10/24/how-to-use-aws-cli-with-multi-user/</loc>
+    <loc>https://www.jibing57.com/2017/07/25/how-to-read-text-on-macos/</loc>
     
     <lastmod>2017-12-25T07:09:02.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2017/10/30/how-to-use-post-link-on-hexo/</loc>
+    <loc>https://www.jibing57.com/2017/10/24/how-to-use-aws-cli-with-multi-user/</loc>
     
     <lastmod>2017-12-25T07:09:02.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2017/12/12/how-to-write-multiline-to-file-by-shell/</loc>
+    <loc>https://www.jibing57.com/2017/12/12/how-to-write-multiline-to-file-by-shell/</loc>
     
     <lastmod>2017-12-25T07:09:02.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2017/07/25/how-to-read-text-on-macos/</loc>
+    <loc>https://www.jibing57.com/2017/10/30/how-to-use-post-link-on-hexo/</loc>
     
     <lastmod>2017-12-25T07:09:02.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2017/11/29/how-to-enable-slow-query-on-aws-rds-postgresql/</loc>
+    <loc>https://www.jibing57.com/2017/11/29/how-to-enable-slow-query-on-aws-rds-postgresql/</loc>
     
     <lastmod>2017-12-25T07:09:02.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2017/07/24/AWS-Certified-Developer/</loc>
+    <loc>https://www.jibing57.com/2017/07/24/AWS-Certified-Developer/</loc>
     
     <lastmod>2017-12-25T07:08:09.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2017/12/20/expired-of-S3-RRS/</loc>
+    <loc>https://www.jibing57.com/2017/12/20/expired-of-S3-RRS/</loc>
     
     <lastmod>2017-12-25T07:08:09.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2017/12/19/deep-dig-on-s3-bucket-permission-exam/</loc>
+    <loc>https://www.jibing57.com/2017/10/31/hexo-bind-domain-to-github-pages/</loc>
     
     <lastmod>2017-12-25T07:08:09.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2017/12/14/deep-dig-on-s3-bucket-permission/</loc>
+    <loc>https://www.jibing57.com/2017/12/14/deep-dig-on-s3-bucket-permission/</loc>
     
     <lastmod>2017-12-25T07:08:09.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2017/10/31/account-setting-by-aws/</loc>
+    <loc>https://www.jibing57.com/2017/10/31/account-setting-by-aws/</loc>
     
     <lastmod>2017-12-25T07:08:09.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2017/10/31/hexo-bind-domain-to-github-pages/</loc>
+    <loc>https://www.jibing57.com/2017/12/19/deep-dig-on-s3-bucket-permission-exam/</loc>
     
     <lastmod>2017-12-25T07:08:09.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2017/12/20/How-to-add-staging-log-to-EB-logs/</loc>
+    <loc>https://www.jibing57.com/2017/12/20/How-to-add-staging-log-to-EB-logs/</loc>
     
     <lastmod>2017-12-25T07:08:09.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2017/12/04/AWS-Certified-Sysops-Administrator-Associate/</loc>
+    <loc>https://www.jibing57.com/2017/12/04/AWS-Certified-Sysops-Administrator-Associate/</loc>
     
     <lastmod>2017-12-25T07:05:45.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/2017/12/25/how-to-add-shadow-of-images-in-freemind/</loc>
+    <loc>https://www.jibing57.com/2017/12/25/how-to-add-shadow-of-images-in-freemind/</loc>
     
     <lastmod>2017-12-25T07:03:34.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/about/index.html</loc>
+    <loc>https://www.jibing57.com/about/index.html</loc>
     
     <lastmod>2017-12-14T06:32:47.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/tags/index.html</loc>
+    <loc>https://www.jibing57.com/tags/index.html</loc>
     
     <lastmod>2017-07-05T09:31:25.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.jibing57.com/categories/index.html</loc>
+    <loc>https://www.jibing57.com/categories/index.html</loc>
     
     <lastmod>2017-07-05T09:31:02.000Z</lastmod>
     

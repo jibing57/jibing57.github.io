@@ -139,6 +139,31 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
+			<div class="date"> 2018-03-12 </div>
+			<div class="article-title"><a href="/2018/03/12/how-to-handle-Retirement-Notification-Amazon-EC2-Instance-scheduled-for-retirement/" >EC2底层硬件Retirement的处理方法</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>AWS的EC2的实例是在物理机上虚拟化出来的，当承载EC2的物理机出现问题或者要退役时，AWS会发送一封主题为<strong>[Retirement Notification] Amazon EC2 Instance scheduled for retirement</strong>的email到AWS Account的注册邮箱中。</p>
+<p>以前多次收到过这类邮件，但提示的目标instance-ID都是AutoScaling中运行的EC2，而AutoScaling中的Instance自动伸缩不会影响业务，因此也从没有主动去处理过。</p>
+<p>这次突然收到通知邮件，说一台运行后台任务的Instance的underlying hardware hosting出问题了。在此记录一下相关的现象和解决方法。</p>
+	
+	</div>
+  <a type="button" href="/2018/03/12/how-to-handle-Retirement-Notification-Amazon-EC2-Instance-scheduled-for-retirement/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
 			<div class="date"> 2018-02-11 </div>
 			<div class="article-title"><a href="/2018/02/11/a-way-to-use-csv-file-to-populate-the-database-by-rake-db-seed-on-rails/" >使用seed将csv格式的db文件导入DB</a></div>						
 		</h3>
@@ -397,33 +422,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2017-12-20 </div>
-			<div class="article-title"><a href="/2017/12/20/expired-of-S3-RRS/" >S3 RRS价格注意点</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="S3-存储类型"><a href="#S3-存储类型" class="headerlink" title="S3 存储类型"></a>S3 存储类型</h3><p>S3 总共提供三种存储类型</p>
-<ul>
-<li>标准(Standard)</li>
-<li>标准-低频率访问(Standard - Infrequent Access)</li>
-<li>低冗余存储(Reduced Redundancy Storage)
-	
-	</div>
-  <a type="button" href="/2017/12/20/expired-of-S3-RRS/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -510,45 +508,45 @@ var _hmt = _hmt || [];
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/Linux/">Linux<span>12</span></a></li>
-		
-			<li><a href="/tags/Image/">Image<span>1</span></a></li>
-		
-			<li><a href="/tags/Douban/">Douban<span>1</span></a></li>
-		
-			<li><a href="/tags/Elastic-Load-Balancing/">Elastic Load Balancing<span>6</span></a></li>
-		
-			<li><a href="/tags/AWS-Free-Tier/">AWS Free Tier<span>1</span></a></li>
-		
-			<li><a href="/tags/Hexo/">Hexo<span>6</span></a></li>
-		
-			<li><a href="/tags/CloudWatch/">CloudWatch<span>1</span></a></li>
-		
-			<li><a href="/tags/Ruby/">Ruby<span>8</span></a></li>
-		
-			<li><a href="/tags/VMware/">VMware<span>2</span></a></li>
-		
-			<li><a href="/tags/Github/">Github<span>3</span></a></li>
-		
-			<li><a href="/tags/Application-Load-Balancing/">Application Load Balancing<span>1</span></a></li>
-		
-			<li><a href="/tags/AWS-CLI/">AWS CLI<span>6</span></a></li>
-		
-			<li><a href="/tags/Nginx/">Nginx<span>5</span></a></li>
-		
 			<li><a href="/tags/IAM/">IAM<span>3</span></a></li>
 		
-			<li><a href="/tags/EC2/">EC2<span>7</span></a></li>
+			<li><a href="/tags/SSH/">SSH<span>3</span></a></li>
+		
+			<li><a href="/tags/MacOS/">MacOS<span>12</span></a></li>
 		
 			<li><a href="/tags/CentOS/">CentOS<span>3</span></a></li>
 		
-			<li><a href="/tags/Firewall/">Firewall<span>1</span></a></li>
+			<li><a href="/tags/AutoScaling/">AutoScaling<span>3</span></a></li>
 		
-			<li><a href="/tags/Solutions-Architect/">Solutions Architect<span>1</span></a></li>
+			<li><a href="/tags/Tips/">Tips<span>1</span></a></li>
 		
-			<li><a href="/tags/Git/">Git<span>2</span></a></li>
+			<li><a href="/tags/Elastic-Beanstalk/">Elastic Beanstalk<span>7</span></a></li>
 		
-			<li><a href="/tags/AWS-SDK/">AWS SDK<span>2</span></a></li>
+			<li><a href="/tags/Video/">Video<span>1</span></a></li>
+		
+			<li><a href="/tags/S3/">S3<span>10</span></a></li>
+		
+			<li><a href="/tags/CodeCommit/">CodeCommit<span>1</span></a></li>
+		
+			<li><a href="/tags/RDS/">RDS<span>3</span></a></li>
+		
+			<li><a href="/tags/EC2-User-Data/">EC2 User Data<span>1</span></a></li>
+		
+			<li><a href="/tags/DynamoDB/">DynamoDB<span>1</span></a></li>
+		
+			<li><a href="/tags/AWS-CLI/">AWS CLI<span>6</span></a></li>
+		
+			<li><a href="/tags/Nodejs/">Nodejs<span>2</span></a></li>
+		
+			<li><a href="/tags/HTTP/">HTTP<span>4</span></a></li>
+		
+			<li><a href="/tags/PostgreSQL/">PostgreSQL<span>1</span></a></li>
+		
+			<li><a href="/tags/AWS-Tools/">AWS Tools<span>1</span></a></li>
+		
+			<li><a href="/tags/Douban/">Douban<span>1</span></a></li>
+		
+			<li><a href="/tags/Rails/">Rails<span>3</span></a></li>
 		
 		
 		   <li><a href="/tags">...<span>48</span></a></li>
@@ -564,6 +562,10 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2019/05/30/change-to-use-https-of-blog-in-lightsail/" ><i class="fa fa-file-o"></i>change to use https of blog...</a>
+      </li>
+    
+      <li>
         <a href="/2019/05/29/how-to-deploy-hexo-to-aws-lightsail/" ><i class="fa fa-file-o"></i>将hexo部署到AWS的Lightsail</a>
       </li>
     
@@ -577,10 +579,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2019/05/10/how-to-change-office-UI-language-on-macos/" ><i class="fa fa-file-o"></i>在Mac下修改Office的界面显示语言</a>
-      </li>
-    
-      <li>
-        <a href="/2019/05/01/way-to-make-centos7-bootable-usb-on-macos/" ><i class="fa fa-file-o"></i>Macos下制作CentOS 7 USB启动盘</a>
       </li>
     
   </ul>

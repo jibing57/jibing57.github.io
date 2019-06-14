@@ -139,6 +139,83 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
+			<div class="date"> 2017-12-22 </div>
+			<div class="article-title"><a href="/2017/12/22/what-is-Access-Logs-of-Classic-Load-Balancer/" >什么是传统负载均衡器的访问日志</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="什么是传统负载均衡器的Access-Logs"><a href="#什么是传统负载均衡器的Access-Logs" class="headerlink" title="什么是传统负载均衡器的Access Logs"></a>什么是传统负载均衡器的Access Logs</h3><p>Elastic Load Balancing 提供了Access Logs(访问日志)，Access Logs可记录下发送到负载均衡器的请求的详细信息。每个日志都包含固定格式的信息 (例如，收到请求的时间、客户端的 IP 地址、延迟、请求路径和服务器响应)。可以使用这些日志分析流量模式和进行Debug。</p>
+<p>Access Logs是ELB的一项可选功能，默认情况下是Disable的。启用后，ELB会将logs存储到指定的某个S3 Bucket中。</p>
+<h3 id="收费"><a href="#收费" class="headerlink" title="收费"></a>收费</h3><p>ELB的Access Logs本身是不需要额外的费用的，从ELB传输到S3的流量是免费的，但是S3的存储费用是需要支付的。<br>
+	
+	</div>
+  <a type="button" href="/2017/12/22/what-is-Access-Logs-of-Classic-Load-Balancer/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2017-12-20 </div>
+			<div class="article-title"><a href="/2017/12/20/How-to-add-staging-log-to-EB-logs/" >如何在Elastic Beanstalk的Rails环境中配置staging.log为可下载</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>新建了一个EB环境，来跑一个staging模式的rails。EB环境变量设置好后，部署成功。一系列测试都没问题，结果却在一个不起眼的地方出了点幺蛾子。</p>
+<p>Rails代码中，没有特殊配置config.logger,因此staging模式时，默认的输出日志为logs/staging.log, 但是在EB的Web console中尝试获取Full Logs后，在BundleLogs中发现没有staging.log。</p>
+<p>赶紧调查试验了一下，并将调查结果记录如下。</p>
+	
+	</div>
+  <a type="button" href="/2017/12/20/How-to-add-staging-log-to-EB-logs/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2017-12-20 </div>
+			<div class="article-title"><a href="/2017/12/20/expired-of-S3-RRS/" >S3 RRS价格注意点</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="S3-存储类型"><a href="#S3-存储类型" class="headerlink" title="S3 存储类型"></a>S3 存储类型</h3><p>S3 总共提供三种存储类型</p>
+<ul>
+<li>标准(Standard)</li>
+<li>标准-低频率访问(Standard - Infrequent Access)</li>
+<li>低冗余存储(Reduced Redundancy Storage)
+	
+	</div>
+  <a type="button" href="/2017/12/20/expired-of-S3-RRS/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
 			<div class="date"> 2017-12-19 </div>
 			<div class="article-title"><a href="/2017/12/19/deep-dig-on-s3-bucket-permission-exam/" >深挖AWS S3的权限管理(实验篇)</a></div>						
 		</h3>
@@ -360,81 +437,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2017-10-30 </div>
-			<div class="article-title"><a href="/2017/10/30/how-to-use-post-link-on-hexo/" >Hexo引用站内文章</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>写文章的时候，经常需要引用站内的其他文章，此时可以使用Hexo内置的<a href="https://hexo.io/zh-cn/docs/tag-plugins.html" target="_blank" rel="external">标签插件</a>（Tag Plugins）中的<code>post_link</code>来实现。</p>
-	
-	</div>
-  <a type="button" href="/2017/10/30/how-to-use-post-link-on-hexo/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2017-10-29 </div>
-			<div class="article-title"><a href="/2017/10/29/ruby-paperclip-destroy-callback-nil/" >Paperclip destroy的callback中attachment的各个attribute为nil的问题调查</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="问题点"><a href="#问题点" class="headerlink" title="问题点"></a>问题点</h3><p>Rails的Image的models中，使用了paperclip这个Gem来处理图片。近期需要添加一个功能，删除image后，需要向某个email地址发送一封邮件，告之某个图片已经被删除了。</p>
-<p>实际操作中，发现在无论函数是定义在before_destroy或after_destroy的callback中，attachment_file_name,attachment_file_size, attachment_content_type, attachment_updated_at的属性，取出来都是nil。</p>
-<p>调查了一下，现将结果汇总如下:<br>
-	
-	</div>
-  <a type="button" href="/2017/10/29/ruby-paperclip-destroy-callback-nil/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2017-10-24 </div>
-			<div class="article-title"><a href="/2017/10/24/how-to-use-aws-cli-with-multi-user/" >如何在aws cli中使用多个配置文件</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p><code>aws cli</code>使用中，可能会有在多个IAM账户中进行切换的需求，手动切换<code>~/.aws/</code>目录下的<code>config</code>和<code>credentials</code>是十分费力的事情。还好<code>aws cli</code>本身就可以支持多个aws credentials</p>
-<h3 id="配置多个profile"><a href="#配置多个profile" class="headerlink" title="配置多个profile"></a>配置多个profile</h3><p><code>aws configure</code>时，加上<code>--profile</code>参数来命名不同的账户, 依次输入access id, access key, region和output format。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ aws configure --profile user1</div><div class="line">$ aws configure --profile user2</div></pre></td></tr></table></figure>
-<p>此时生成的<code>config</code>和<code>credentials</code>文件中，会使用账户名来分割不同的配置</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">[carlshen@carl-macpro-lan ~]$ cat ~/.aws/config</div><div class="line">[profile user1]</div><div class="line">output = json</div><div class="line">region = us-west-2</div><div class="line">[profile user2]</div><div class="line">output = json</div><div class="line">region = ap-northeast-2</div><div class="line">[carlshen@carl-macpro-lan ~]$</div><div class="line">[carlshen@carl-macpro-lan ~]$ cat ~/.aws/credentials</div><div class="line">[user1]</div><div class="line">aws_access_key_id = AKIAXXXXXXXXXXXXXXXX</div><div class="line">aws_secret_access_key = XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</div><div class="line">[user2]</div><div class="line">aws_access_key_id = AKIAXXXXXXXXXXXXXXXX</div><div class="line">aws_secret_access_key = XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</div><div class="line">[carlshen@carl-macpro-lan ~]$</div></pre></td></tr></table></figure>
-	
-	</div>
-  <a type="button" href="/2017/10/24/how-to-use-aws-cli-with-multi-user/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -498,7 +500,7 @@ var _hmt = _hmt || [];
 		<h4>Categories</h4>
 		<ul class="tag_box inline list-unstyled">
 		
-			<li><a href="/categories/AWS/">AWS<span>32</span></a></li>
+			<li><a href="/categories/AWS/">AWS<span>33</span></a></li>
 		
 			<li><a href="/categories/AWS-Certified/">AWS Certified<span>3</span></a></li>
 		
@@ -506,11 +508,11 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/Code/">Code<span>5</span></a></li>
 		
-			<li><a href="/categories/Linux/">Linux<span>2</span></a></li>
+			<li><a href="/categories/Linux/">Linux<span>3</span></a></li>
 		
 			<li><a href="/categories/Shell/">Shell<span>8</span></a></li>
 		
-			<li><a href="/categories/Tools/">Tools<span>12</span></a></li>
+			<li><a href="/categories/Tools/">Tools<span>13</span></a></li>
 		
 		</ul>
 	</div>
@@ -521,48 +523,48 @@ var _hmt = _hmt || [];
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/AWS-Tools/">AWS Tools<span>1</span></a></li>
+			<li><a href="/tags/VMware/">VMware<span>2</span></a></li>
 		
-			<li><a href="/tags/AWS-SDK/">AWS SDK<span>2</span></a></li>
+			<li><a href="/tags/CentOS/">CentOS<span>4</span></a></li>
 		
-			<li><a href="/tags/Github/">Github<span>3</span></a></li>
+			<li><a href="/tags/Git/">Git<span>2</span></a></li>
 		
-			<li><a href="/tags/EC2/">EC2<span>7</span></a></li>
-		
-			<li><a href="/tags/Chrome/">Chrome<span>1</span></a></li>
-		
-			<li><a href="/tags/EC2-User-Data/">EC2 User Data<span>1</span></a></li>
-		
-			<li><a href="/tags/SSH/">SSH<span>3</span></a></li>
-		
-			<li><a href="/tags/CodeCommit/">CodeCommit<span>1</span></a></li>
+			<li><a href="/tags/DynamoDB/">DynamoDB<span>1</span></a></li>
 		
 			<li><a href="/tags/Nodejs/">Nodejs<span>2</span></a></li>
 		
-			<li><a href="/tags/Failover/">Failover<span>1</span></a></li>
-		
-			<li><a href="/tags/Passenger/">Passenger<span>2</span></a></li>
-		
-			<li><a href="/tags/Firewall/">Firewall<span>1</span></a></li>
-		
-			<li><a href="/tags/Elastic-Beanstalk/">Elastic Beanstalk<span>7</span></a></li>
-		
-			<li><a href="/tags/Linux/">Linux<span>12</span></a></li>
-		
-			<li><a href="/tags/Sysops/">Sysops<span>1</span></a></li>
-		
-			<li><a href="/tags/AWS-Deep-Dive/">AWS Deep Dive<span>2</span></a></li>
-		
-			<li><a href="/tags/S3/">S3<span>10</span></a></li>
-		
-			<li><a href="/tags/AWS-Free-Tier/">AWS Free Tier<span>1</span></a></li>
-		
-			<li><a href="/tags/RVM/">RVM<span>1</span></a></li>
+			<li><a href="/tags/AutoScaling/">AutoScaling<span>3</span></a></li>
 		
 			<li><a href="/tags/Application-Load-Balancing/">Application Load Balancing<span>1</span></a></li>
 		
+			<li><a href="/tags/IAM/">IAM<span>3</span></a></li>
 		
-		   <li><a href="/tags">...<span>48</span></a></li>
+			<li><a href="/tags/Sysops/">Sysops<span>1</span></a></li>
+		
+			<li><a href="/tags/HTTP/">HTTP<span>5</span></a></li>
+		
+			<li><a href="/tags/Chrome/">Chrome<span>1</span></a></li>
+		
+			<li><a href="/tags/RDS/">RDS<span>3</span></a></li>
+		
+			<li><a href="/tags/FFMPEG/">FFMPEG<span>1</span></a></li>
+		
+			<li><a href="/tags/iOS/">iOS<span>1</span></a></li>
+		
+			<li><a href="/tags/Linux/">Linux<span>12</span></a></li>
+		
+			<li><a href="/tags/Office/">Office<span>1</span></a></li>
+		
+			<li><a href="/tags/Firewall/">Firewall<span>1</span></a></li>
+		
+			<li><a href="/tags/Tips/">Tips<span>1</span></a></li>
+		
+			<li><a href="/tags/Failover/">Failover<span>1</span></a></li>
+		
+			<li><a href="/tags/PostgreSQL/">PostgreSQL<span>1</span></a></li>
+		
+		
+		   <li><a href="/tags">...<span>49</span></a></li>
 		 
 		</ul>
 	</div>
@@ -575,23 +577,23 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2019/06/11/a-tool-goaccess-to-process-web-log/" ><i class="fa fa-file-o"></i>GoAccess-一个处理web日志的工具</a>
+      </li>
+    
+      <li>
+        <a href="/2019/06/04/how-to-make-local-yum-repository-on-centos-7/" ><i class="fa fa-file-o"></i>CentOS 7下制作本地yum源</a>
+      </li>
+    
+      <li>
+        <a href="/2019/06/04/configure-https-for-hexo-blog-on-lightsail/" ><i class="fa fa-file-o"></i>在AWS Lightsail上给hexo blog配置...</a>
+      </li>
+    
+      <li>
         <a href="/2019/05/29/how-to-deploy-hexo-to-aws-lightsail/" ><i class="fa fa-file-o"></i>将hexo部署到AWS的Lightsail</a>
       </li>
     
       <li>
         <a href="/2019/05/21/how-to-direct-http-to-https-in-elasticbeanstalk-ruby-passenger-platform/" ><i class="fa fa-file-o"></i>Elastic Beanstalk Ruby Pass...</a>
-      </li>
-    
-      <li>
-        <a href="/2019/05/16/how-to-add-SSL-Certification-to-Elastic-Load-Balancer/" ><i class="fa fa-file-o"></i>如何在Elastic Load Balancer中添加...</a>
-      </li>
-    
-      <li>
-        <a href="/2019/05/10/how-to-change-office-UI-language-on-macos/" ><i class="fa fa-file-o"></i>在Mac下修改Office的界面显示语言</a>
-      </li>
-    
-      <li>
-        <a href="/2019/05/01/way-to-make-centos7-bootable-usb-on-macos/" ><i class="fa fa-file-o"></i>Macos下制作CentOS 7 USB启动盘</a>
       </li>
     
   </ul>

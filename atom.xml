@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.jibing57.com/"/>
-  <updated>2019-05-30T05:35:19.442Z</updated>
+  <updated>2019-06-12T07:00:26.047Z</updated>
   <id>https://www.jibing57.com/</id>
   
   <author>
@@ -15,6 +15,97 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>GoAccess-一个处理web日志的工具</title>
+    <link href="https://www.jibing57.com/2019/06/11/a-tool-goaccess-to-process-web-log/"/>
+    <id>https://www.jibing57.com/2019/06/11/a-tool-goaccess-to-process-web-log/</id>
+    <published>2019-06-11T05:58:15.000Z</published>
+    <updated>2019-06-12T07:00:26.047Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;GoAccess介绍&quot;&gt;&lt;a href=&quot;#GoAccess介绍&quot; class=&quot;headerlink&quot; title=&quot;GoAccess介绍&quot;&gt;&lt;/a&gt;GoAccess介绍&lt;/h3&gt;&lt;p&gt;GoAccess是一个开源的基于终端的快速日志分析器。&lt;br&gt;Github地址:&lt;a href=&quot;https://github.com/allinurl/goaccess&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/allinurl/goaccess&lt;/a&gt;&lt;br&gt;官网地址: &lt;a href=&quot;https://goaccess.io/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://goaccess.io/&lt;/a&gt;&lt;br&gt;说明文档: &lt;a href=&quot;https://goaccess.io/man&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://goaccess.io/man&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;通过自己配置，可以支持日志格式，默认已经集成的log格式&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Amazon CloudFront (Download Distribution).&lt;/li&gt;
+&lt;li&gt;Amazon Simple Storage Service (S3)&lt;/li&gt;
+&lt;li&gt;AWS Elastic Load Balancing&lt;/li&gt;
+&lt;li&gt;Combined Log Format (XLF/ELF) Apache | Nginx&lt;/li&gt;
+&lt;li&gt;Common Log Format (CLF) Apache&lt;/li&gt;
+&lt;li&gt;Google Cloud Storage.&lt;/li&gt;
+&lt;li&gt;Apache virtual hosts&lt;/li&gt;
+&lt;li&gt;Squid Native Format.&lt;/li&gt;
+&lt;li&gt;W3C format (IIS)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;安装&quot;&gt;&lt;a href=&quot;#安装&quot; class=&quot;headerlink&quot; title=&quot;安装&quot;&gt;&lt;/a&gt;安装&lt;/h3&gt;&lt;h4 id=&quot;MacOS下&quot;&gt;&lt;a href=&quot;#MacOS下&quot; class=&quot;headerlink&quot; title=&quot;MacOS下&quot;&gt;&lt;/a&gt;MacOS下&lt;/h4&gt;&lt;p&gt;使用brew来安装&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;brew install goaccess&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
+    
+    
+      <category term="Nginx" scheme="https://www.jibing57.com/tags/Nginx/"/>
+    
+      <category term="HTTP" scheme="https://www.jibing57.com/tags/HTTP/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>CentOS 7下制作本地yum源</title>
+    <link href="https://www.jibing57.com/2019/06/04/how-to-make-local-yum-repository-on-centos-7/"/>
+    <id>https://www.jibing57.com/2019/06/04/how-to-make-local-yum-repository-on-centos-7/</id>
+    <published>2019-06-04T13:00:51.000Z</published>
+    <updated>2019-06-11T09:18:16.812Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;CentOS 7 制作本地repository的方法, 适用于没有外网访问权限的CentOS 7的升级。&lt;br&gt;大概步骤:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;找一台系统版本相同，但是有外网访问权限的CentOS 7的机器&lt;/li&gt;
+&lt;li&gt;在这台机器上下载yum包，并制作本地repository&lt;/li&gt;
+&lt;li&gt;拷贝repository到内网机器&lt;/li&gt;
+&lt;li&gt;配置内网机器，从制作好的本地repository升级yum包
+    
+    </summary>
+    
+      <category term="Linux" scheme="https://www.jibing57.com/categories/Linux/"/>
+    
+    
+      <category term="CentOS" scheme="https://www.jibing57.com/tags/CentOS/"/>
+    
+      <category term="Yum" scheme="https://www.jibing57.com/tags/Yum/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>在AWS Lightsail上给hexo blog配置HTTPS</title>
+    <link href="https://www.jibing57.com/2019/06/04/configure-https-for-hexo-blog-on-lightsail/"/>
+    <id>https://www.jibing57.com/2019/06/04/configure-https-for-hexo-blog-on-lightsail/</id>
+    <published>2019-06-04T05:41:43.000Z</published>
+    <updated>2019-06-11T06:01:34.102Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;申请免费SSL证书&quot;&gt;&lt;a href=&quot;#申请免费SSL证书&quot; class=&quot;headerlink&quot; title=&quot;申请免费SSL证书&quot;&gt;&lt;/a&gt;申请免费SSL证书&lt;/h3&gt;&lt;p&gt;免费证书渠道:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;如果是万网的域名，可以使用阿里云的&lt;a h
+      
+    
+    </summary>
+    
+      <category term="AWS" scheme="https://www.jibing57.com/categories/AWS/"/>
+    
+    
+      <category term="Nginx" scheme="https://www.jibing57.com/tags/Nginx/"/>
+    
+      <category term="Hexo" scheme="https://www.jibing57.com/tags/Hexo/"/>
+    
+      <category term="Lightsail" scheme="https://www.jibing57.com/tags/Lightsail/"/>
+    
+  </entry>
   
   <entry>
     <title>将hexo部署到AWS的Lightsail</title>
@@ -55,11 +146,11 @@
       <category term="AWS" scheme="https://www.jibing57.com/categories/AWS/"/>
     
     
+      <category term="Nginx" scheme="https://www.jibing57.com/tags/Nginx/"/>
+    
       <category term="Hexo" scheme="https://www.jibing57.com/tags/Hexo/"/>
     
       <category term="Lightsail" scheme="https://www.jibing57.com/tags/Lightsail/"/>
-    
-      <category term="Nginx" scheme="https://www.jibing57.com/tags/Nginx/"/>
     
       <category term="Git" scheme="https://www.jibing57.com/tags/Git/"/>
     
@@ -144,11 +235,11 @@
     
       <category term="Elastic Load Balancing" scheme="https://www.jibing57.com/tags/Elastic-Load-Balancing/"/>
     
+      <category term="HTTP" scheme="https://www.jibing57.com/tags/HTTP/"/>
+    
       <category term="IAM" scheme="https://www.jibing57.com/tags/IAM/"/>
     
       <category term="Application Load Balancing" scheme="https://www.jibing57.com/tags/Application-Load-Balancing/"/>
-    
-      <category term="HTTP" scheme="https://www.jibing57.com/tags/HTTP/"/>
     
   </entry>
   
@@ -192,9 +283,9 @@
       <category term="Linux" scheme="https://www.jibing57.com/categories/Linux/"/>
     
     
-      <category term="CentOS" scheme="https://www.jibing57.com/tags/CentOS/"/>
-    
       <category term="MacOS" scheme="https://www.jibing57.com/tags/MacOS/"/>
+    
+      <category term="CentOS" scheme="https://www.jibing57.com/tags/CentOS/"/>
     
   </entry>
   
@@ -293,23 +384,24 @@
     <link href="https://www.jibing57.com/2019/04/26/command-tips/"/>
     <id>https://www.jibing57.com/2019/04/26/command-tips/</id>
     <published>2019-04-26T05:22:40.000Z</published>
-    <updated>2019-05-27T05:26:35.549Z</updated>
+    <updated>2019-06-14T10:21:13.378Z</updated>
     
     <summary type="html">
     
-      
-      
-        &lt;h3 id=&quot;git-branch-不要分页&quot;&gt;&lt;a href=&quot;#git-branch-不要分页&quot; class=&quot;headerlink&quot; title=&quot;git branch 不要分页&quot;&gt;&lt;/a&gt;git branch 不要分页&lt;/h3&gt;&lt;p&gt;设置git branch不分页显示&lt;
-      
+      &lt;h3 id=&quot;git-branch-不要分页&quot;&gt;&lt;a href=&quot;#git-branch-不要分页&quot; class=&quot;headerlink&quot; title=&quot;git branch 不要分页&quot;&gt;&lt;/a&gt;git branch 不要分页&lt;/h3&gt;&lt;p&gt;设置git branch不分页显示&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;git config --global pager.branch false&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id=&quot;Macos下tree显示中文&quot;&gt;&lt;a href=&quot;#Macos下tree显示中文&quot; class=&quot;headerlink&quot; title=&quot;Macos下tree显示中文&quot;&gt;&lt;/a&gt;Macos下tree显示中文&lt;/h3&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;# 安装tree&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;brew install tree`&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;# 中文不乱码加参数 -N&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;tree -N&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;hr&gt;
+&lt;h3 id=&quot;CentoOS-7-最小化安装后可能需要的一些命令&quot;&gt;&lt;a href=&quot;#CentoOS-7-最小化安装后可能需要的一些命令&quot; class=&quot;headerlink&quot; title=&quot;CentoOS 7 最小化安装后可能需要的一些命令&quot;&gt;&lt;/a&gt;CentoOS 7 最小化安装后可能需要的一些命令&lt;/h3&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;yum install wget curl&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;yum install unzip&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;yum install tree&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;yum install net-tools&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
     
     </summary>
     
       <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
     
     
-      <category term="Linux" scheme="https://www.jibing57.com/tags/Linux/"/>
-    
       <category term="MacOS" scheme="https://www.jibing57.com/tags/MacOS/"/>
+    
+      <category term="Linux" scheme="https://www.jibing57.com/tags/Linux/"/>
     
   </entry>
   
@@ -335,9 +427,9 @@
       <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
     
     
-      <category term="Linux" scheme="https://www.jibing57.com/tags/Linux/"/>
-    
       <category term="MacOS" scheme="https://www.jibing57.com/tags/MacOS/"/>
+    
+      <category term="Linux" scheme="https://www.jibing57.com/tags/Linux/"/>
     
       <category term="Github" scheme="https://www.jibing57.com/tags/Github/"/>
     
@@ -513,13 +605,13 @@
       <category term="AWS" scheme="https://www.jibing57.com/categories/AWS/"/>
     
     
-      <category term="S3" scheme="https://www.jibing57.com/tags/S3/"/>
-    
-      <category term="Linux" scheme="https://www.jibing57.com/tags/Linux/"/>
-    
       <category term="Nginx" scheme="https://www.jibing57.com/tags/Nginx/"/>
     
       <category term="HTTP" scheme="https://www.jibing57.com/tags/HTTP/"/>
+    
+      <category term="S3" scheme="https://www.jibing57.com/tags/S3/"/>
+    
+      <category term="Linux" scheme="https://www.jibing57.com/tags/Linux/"/>
     
   </entry>
   
@@ -547,84 +639,6 @@
       <category term="Passenger" scheme="https://www.jibing57.com/tags/Passenger/"/>
     
       <category term="Nginx" scheme="https://www.jibing57.com/tags/Nginx/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Macos下因为找不到libxml2而导致nokogiri安装失败的解决办法</title>
-    <link href="https://www.jibing57.com/2019/03/05/how-resolve-nokogiri-failed-by-xml2-on-macos/"/>
-    <id>https://www.jibing57.com/2019/03/05/how-resolve-nokogiri-failed-by-xml2-on-macos/</id>
-    <published>2019-03-05T08:26:53.000Z</published>
-    <updated>2019-04-21T00:42:31.000Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;今天要跑一个其他的rails项目，为了不污染原先的gemset。就重建了一个gemset, 但是bundle install的时候，安装nokogiri 1.8.4一直失败。&lt;br&gt;系统版本是Macos 10.13 High Sierra中, ruby版本是rvm安装的ru
-      
-    
-    </summary>
-    
-      <category term="Code" scheme="https://www.jibing57.com/categories/Code/"/>
-    
-    
-      <category term="Ruby" scheme="https://www.jibing57.com/tags/Ruby/"/>
-    
-      <category term="Rails" scheme="https://www.jibing57.com/tags/Rails/"/>
-    
-      <category term="MacOS" scheme="https://www.jibing57.com/tags/MacOS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Nginx的HTTP Code444和307设置</title>
-    <link href="https://www.jibing57.com/2019/02/28/nginx_444_and_307/"/>
-    <id>https://www.jibing57.com/2019/02/28/nginx_444_and_307/</id>
-    <published>2019-02-28T13:50:59.000Z</published>
-    <updated>2019-03-07T12:33:09.000Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;nginx-444&quot;&gt;&lt;a href=&quot;#nginx-444&quot; class=&quot;headerlink&quot; title=&quot;nginx 444&quot;&gt;&lt;/a&gt;nginx 444&lt;/h3&gt;&lt;h4 id=&quot;介绍&quot;&gt;&lt;a href=&quot;#介绍&quot; class=&quot;headerlink&quot; title=&quot;介绍&quot;&gt;&lt;/a&gt;介绍&lt;/h4&gt;&lt;p&gt;当没有显式指定default server的时候，Nginx会使用第一个server来作为默认的响应server，即使请求的Host并没有匹配到server_name。&lt;br&gt;这是为了兼容老旧的一些不带Host的HTTP请求而做的设置。官文描述: &lt;a href=&quot;http://nginx.org/en/docs/http/request_processing.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;How nginx processes a request&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;此时可能存在一定的风险。如果有非备案的名解析到了你的Public IP上，而你的Web服务对该域名的请求有所响应的话，可能会导致Public IP被运营商封锁。&lt;/p&gt;
-&lt;h4 id=&quot;解决办法&quot;&gt;&lt;a href=&quot;#解决办法&quot; class=&quot;headerlink&quot; title=&quot;解决办法:&quot;&gt;&lt;/a&gt;解决办法:&lt;/h4&gt;&lt;p&gt;在nginx中添加一个default server，并在default server中设置&lt;code&gt;return 444;&lt;/code&gt;。此时Nginx就不会响应请求，除非请求的Host是配置的。&lt;br&gt;
-    
-    </summary>
-    
-      <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
-    
-    
-      <category term="Nginx" scheme="https://www.jibing57.com/tags/Nginx/"/>
-    
-      <category term="HTTP" scheme="https://www.jibing57.com/tags/HTTP/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>AWS C5类型Instance的挂载点变更</title>
-    <link href="https://www.jibing57.com/2019/02/25/mount-point-changed-in-C5/"/>
-    <id>https://www.jibing57.com/2019/02/25/mount-point-changed-in-C5/</id>
-    <published>2019-02-25T13:55:30.000Z</published>
-    <updated>2019-02-26T07:47:36.000Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;问题点&quot;&gt;&lt;a href=&quot;#问题点&quot; class=&quot;headerlink&quot; title=&quot;问题点&quot;&gt;&lt;/a&gt;问题点&lt;/h3&gt;&lt;p&gt;一直使用的是Amazon自有的Amazon Linux，中国区的C5出来后，将原有的机器升级到C5的时候，发现额外挂载的磁盘没有挂载成功。&lt;/p&gt;
-&lt;p&gt;调查了一下，C5系列属于&lt;a href=&quot;https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-types.html#ec2-nitro-instances&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Nitro-based instance&lt;/a&gt;, EBS卷默认使用的是NVMe driver,设备名由原来C4的/dev/xvda1和/dev/xvdf变为了/dev/nvme[0-26]n1的格式。官网说明&lt;a href=&quot;https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/device_naming.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Device Naming on Linux Instances&lt;/a&gt;。&lt;/p&gt;
-&lt;p&gt;以前C4的机器中,/etc/fstab中设定的另外一块EBS的挂载点是/dev/xvdf, 所以导致了换用C5的时候，没能自动挂载。&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;# C4时的设置&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;/dev/xvdf   /mnt/data ext4  auto,nofail,defaults        1   2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;h3 id=&quot;解决办法&quot;&gt;&lt;a href=&quot;#解决办法&quot; class=&quot;headerlink&quot; title=&quot;解决办法&quot;&gt;&lt;/a&gt;解决办法&lt;/h3&gt;&lt;p&gt;&lt;code&gt;lsblk&lt;/code&gt;查看EBS的挂载路径，然后修改/etc/fstab。解决了问题。&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;/dev/nvme1n1 /mnt/data ext4  auto,nofail,defaults        1   2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-    
-    </summary>
-    
-      <category term="AWS" scheme="https://www.jibing57.com/categories/AWS/"/>
-    
-    
-      <category term="EC2" scheme="https://www.jibing57.com/tags/EC2/"/>
-    
-      <category term="Linux" scheme="https://www.jibing57.com/tags/Linux/"/>
     
   </entry>
   

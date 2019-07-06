@@ -3,6 +3,191 @@
   
     
     <entry>
+      <title><![CDATA[AWS EC2各个类型的网络性能的测试方法]]></title>
+      <url>/2019/07/06/how-to-check-network-throughput-on-aws-EC2/</url>
+      <content type="html"><![CDATA[<h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>在AWS中，不同类型的EC2 instance,拥有的网络带宽是不同的。</p>
+<p>让人犯糊的是，在<a href="https://amazonaws-china.com/ec2/instance-types/" target="_blank" rel="external">AWS EC2的介绍页面</a>中,并没有清晰的标明每种类型的Instance的带宽具体是多少？一些类型的Instance只是标注了网络性能(Network Performance)为<code>Up to 5</code>,<code>Low</code>,<code>Moderate</code>或者<code>High</code>。</p>
+<p>老外的<a href="https://cloudonaut.io/ec2-network-performance-cheat-sheet/" target="_blank" rel="external">EC2 Network Performance Cheat Sheet</a>这篇文章中，记录了作者使用<a href="(https://github.com/esnet/iperf)">iperf3</a>测试出来的各个Instance类型的带宽。如果选取类型的时候比较在意带宽，可以用来参考下。</p>
+<p>顺带介绍一下如何在AWS EC2中使用<a href="(https://github.com/esnet/iperf)">iperf3</a>来测试Instance带宽。如果确实有需要，就可以自己来进行测速。<br>测试环境如下:</p>
+<ul>
+<li>测试Region是美国Oregon</li>
+<li>使用两台m4.large的EC2，一台运行服务，一台用作客户端。</li>
+<li>介绍两种Amazon Linux的测试方法<ul>
+<li>Amazon Linux AMI 2018.03.0 (HVM), SSD Volume Type</li>
+<li>Amazon Linux 2 AMI (HVM), SSD Volume Type</li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<h3 id="Amazon-Linux-测速"><a href="#Amazon-Linux-测速" class="headerlink" title="Amazon Linux 测速"></a>Amazon Linux 测速</h3><h4 id="环境说明"><a href="#环境说明" class="headerlink" title="环境说明"></a>环境说明</h4><ul>
+<li>两台m4.large</li>
+<li>AMI为Amazon Linux AMI 2018.03.0 (HVM), SSD Volume Type</li>
+<li>两台Instance在同一个AZ中</li>
+</ul>
+<p><strong>试验中，iperf3监听5000端口，EC2对应的SG中需要开启端口5000</strong></p>
+<h4 id="安装测试"><a href="#安装测试" class="headerlink" title="安装测试"></a>安装测试</h4><p>登录作为Server的EC2，执行如下命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"># 安装系统更新和iperf3</div><div class="line">sudo yum update</div><div class="line">sudo yum-config-manager --enable epel</div><div class="line">sudo yum install iperf3</div><div class="line"></div><div class="line"># 在端口5000上开启iperf3</div><div class="line">sudo iperf3 -s -p 5000</div></pre></td></tr></table></figure></p>
+<p>登录作为client的EC2，执行如下命令:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># 安装系统更新和iperf3</div><div class="line">sudo yum update</div><div class="line">sudo yum-config-manager --enable epel</div><div class="line">sudo yum install iperf3</div></pre></td></tr></table></figure></p>
+<p>Client上执行命令来测速<code>iperf3 -c 172.31.20.28 -i 1 -t 5 --parallel 2 -p 5000</code></p>
+<ul>
+<li><code>-c 172.31.20.28</code> 代表client模式, 连接的服务器IP是172.31.20.28</li>
+<li><code>-i</code> 代表输出间隔为1秒</li>
+<li><code>-t</code> 代表持续5秒</li>
+<li><code>--parallel</code> 代表并行数为2</li>
+<li><code>-p</code> 代表连接服务器的5000端口。</li>
+</ul>
+<p><code>iperf3 -c 172.31.20.28 -i 1 -t 5 --parallel 2 -p 5000</code>的输出如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">[ec2-user@ip-172-31-31-88 ~]$ iperf3 -c 172.31.20.28 -i 1 -t 5 --parallel 2 -p 5000</div><div class="line">Connecting to host 172.31.20.28, port 5000</div><div class="line">[  4] local 172.31.31.88 port 41798 connected to 172.31.20.28 port 5000</div><div class="line">[  6] local 172.31.31.88 port 41800 connected to 172.31.20.28 port 5000</div><div class="line">[ ID] Interval           Transfer     Bandwidth       Retr  Cwnd</div><div class="line">[  4]   0.00-1.00   sec  72.6 MBytes   609 Mbits/sec    0    288 KBytes</div><div class="line">[  6]   0.00-1.00   sec  71.1 MBytes   596 Mbits/sec    0    288 KBytes</div><div class="line">[SUM]   0.00-1.00   sec   144 MBytes  1.21 Gbits/sec    0</div><div class="line">- - - - - - - - - - - - - - - - - - - - - - - - -</div><div class="line">[  4]   1.00-2.00   sec  54.2 MBytes   455 Mbits/sec    4    446 KBytes</div><div class="line">[  6]   1.00-2.00   sec  54.7 MBytes   459 Mbits/sec    3    454 KBytes</div><div class="line">[SUM]   1.00-2.00   sec   109 MBytes   913 Mbits/sec    7</div><div class="line">- - - - - - - - - - - - - - - - - - - - - - - - -</div><div class="line">[  4]   2.00-3.00   sec  26.2 MBytes   220 Mbits/sec    1    507 KBytes</div><div class="line">[  6]   2.00-3.00   sec  27.2 MBytes   228 Mbits/sec    1    524 KBytes</div><div class="line">[SUM]   2.00-3.00   sec  53.4 MBytes   448 Mbits/sec    2</div><div class="line">- - - - - - - - - - - - - - - - - - - - - - - - -</div><div class="line">[  4]   3.00-4.00   sec  24.0 MBytes   201 Mbits/sec    2    551 KBytes</div><div class="line">[  6]   3.00-4.00   sec  28.9 MBytes   243 Mbits/sec    1    542 KBytes</div><div class="line">[SUM]   3.00-4.00   sec  52.9 MBytes   444 Mbits/sec    3</div><div class="line">- - - - - - - - - - - - - - - - - - - - - - - - -</div><div class="line">[  4]   4.00-5.00   sec  33.1 MBytes   278 Mbits/sec    1    551 KBytes</div><div class="line">[  6]   4.00-5.00   sec  20.9 MBytes   175 Mbits/sec    4    428 KBytes</div><div class="line">[SUM]   4.00-5.00   sec  54.0 MBytes   453 Mbits/sec    5</div><div class="line">- - - - - - - - - - - - - - - - - - - - - - - - -</div><div class="line">[ ID] Interval           Transfer     Bandwidth       Retr</div><div class="line">[  4]   0.00-5.00   sec   210 MBytes   353 Mbits/sec    8             sender</div><div class="line">[  4]   0.00-5.00   sec   208 MBytes   348 Mbits/sec                  receiver</div><div class="line">[  6]   0.00-5.00   sec   203 MBytes   340 Mbits/sec    9             sender</div><div class="line">[  6]   0.00-5.00   sec   201 MBytes   337 Mbits/sec                  receiver</div><div class="line">[SUM]   0.00-5.00   sec   413 MBytes   693 Mbits/sec   17             sender</div><div class="line">[SUM]   0.00-5.00   sec   409 MBytes   686 Mbits/sec                  receiver</div><div class="line"></div><div class="line">iperf Done.</div><div class="line">[ec2-user@ip-172-31-31-88 ~]$</div></pre></td></tr></table></figure></p>
+<h3 id="Amazon-Linux-2测速"><a href="#Amazon-Linux-2测速" class="headerlink" title="Amazon Linux 2测速"></a>Amazon Linux 2测速</h3><h4 id="环境说明-1"><a href="#环境说明-1" class="headerlink" title="环境说明"></a>环境说明</h4><ul>
+<li>两台m4.large</li>
+<li>AMI为Amazon Linux 2 AMI (HVM), SSD Volume Type</li>
+<li>两台Instance在同一个AZ中</li>
+</ul>
+<p><strong>试验中，iperf3监听5000端口，EC2对应的SG中需要开启端口5000</strong></p>
+<h4 id="安装测试-1"><a href="#安装测试-1" class="headerlink" title="安装测试"></a>安装测试</h4><p>登录作为Server的EC2，执行如下命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"># 安装系统更新和iperf3</div><div class="line">sudo yum update -y</div><div class="line">sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm</div><div class="line">sudo yum install -y iperf3</div><div class="line"></div><div class="line"># 在端口5000上开启iperf3</div><div class="line">sudo iperf3 -s -p 5000</div></pre></td></tr></table></figure></p>
+<p>登录作为client的EC2，执行如下命令:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># 安装系统更新和iperf3</div><div class="line">sudo yum update -y</div><div class="line">sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm</div><div class="line">sudo yum install -y iperf3</div></pre></td></tr></table></figure></p>
+<p>Client上执行命令来测速<code>iperf3 -c 172.31.44.223 -i 1 -t 5 --parallel 2 -p 5000</code></p>
+<ul>
+<li><code>-c 172.31.44.223</code> 代表client模式, 连接的服务端IP地址是172.31.44.223</li>
+<li><code>-i</code> 代表输出间隔为1秒</li>
+<li><code>-t</code> 代表持续5秒</li>
+<li><code>--parallel</code> 代表并行数为2</li>
+<li><code>-p</code> 代表连接服务器的5000端口。</li>
+</ul>
+<p><code>iperf3 -c 172.31.44.223 -i 1 -t 5 --parallel 2 -p 5000</code>的输出如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">[ec2-user@ip-172-31-34-102 ~]$ iperf3 -c 172.31.44.223 -i 1 -t 5 --parallel 2 -p 5000</div><div class="line">Connecting to host 172.31.44.223, port 5000</div><div class="line">[  4] local 172.31.34.102 port 36994 connected to 172.31.44.223 port 5000</div><div class="line">[  6] local 172.31.34.102 port 36996 connected to 172.31.44.223 port 5000</div><div class="line">[ ID] Interval           Transfer     Bandwidth       Retr  Cwnd</div><div class="line">[  4]   0.00-1.00   sec  99.4 MBytes   834 Mbits/sec    5    612 KBytes</div><div class="line">[  6]   0.00-1.00   sec  99.3 MBytes   833 Mbits/sec    6    620 KBytes</div><div class="line">[SUM]   0.00-1.00   sec   199 MBytes  1.67 Gbits/sec   11</div><div class="line">- - - - - - - - - - - - - - - - - - - - - - - - -</div><div class="line">[  4]   1.00-2.00   sec  28.1 MBytes   236 Mbits/sec    0    787 KBytes</div><div class="line">[  6]   1.00-2.00   sec  27.3 MBytes   229 Mbits/sec    0    787 KBytes</div><div class="line">[SUM]   1.00-2.00   sec  55.4 MBytes   465 Mbits/sec    0</div><div class="line">- - - - - - - - - - - - - - - - - - - - - - - - -</div><div class="line">[  4]   2.00-3.00   sec  26.9 MBytes   226 Mbits/sec    1    699 KBytes</div><div class="line">[  6]   2.00-3.00   sec  26.2 MBytes   220 Mbits/sec    1    699 KBytes</div><div class="line">[SUM]   2.00-3.00   sec  53.1 MBytes   446 Mbits/sec    2</div><div class="line">- - - - - - - - - - - - - - - - - - - - - - - - -</div><div class="line">[  4]   3.00-4.00   sec  27.1 MBytes   227 Mbits/sec    1    603 KBytes</div><div class="line">[  6]   3.00-4.00   sec  26.1 MBytes   219 Mbits/sec    0    856 KBytes</div><div class="line">[SUM]   3.00-4.00   sec  53.2 MBytes   446 Mbits/sec    1</div><div class="line">- - - - - - - - - - - - - - - - - - - - - - - - -</div><div class="line">[  4]   4.00-5.00   sec  28.0 MBytes   235 Mbits/sec    1    559 KBytes</div><div class="line">[  6]   4.00-5.00   sec  26.5 MBytes   223 Mbits/sec    0    996 KBytes</div><div class="line">[SUM]   4.00-5.00   sec  54.5 MBytes   457 Mbits/sec    1</div><div class="line">- - - - - - - - - - - - - - - - - - - - - - - - -</div><div class="line">[ ID] Interval           Transfer     Bandwidth       Retr</div><div class="line">[  4]   0.00-5.00   sec   209 MBytes   351 Mbits/sec    8             sender</div><div class="line">[  4]   0.00-5.00   sec   207 MBytes   348 Mbits/sec                  receiver</div><div class="line">[  6]   0.00-5.00   sec   205 MBytes   345 Mbits/sec    7             sender</div><div class="line">[  6]   0.00-5.00   sec   203 MBytes   340 Mbits/sec                  receiver</div><div class="line">[SUM]   0.00-5.00   sec   415 MBytes   696 Mbits/sec   15             sender</div><div class="line">[SUM]   0.00-5.00   sec   410 MBytes   688 Mbits/sec                  receiver</div><div class="line"></div><div class="line">iperf Done.</div><div class="line">[ec2-user@ip-172-31-34-102 ~]$</div></pre></td></tr></table></figure></p>
+<h3 id="比较总结"><a href="#比较总结" class="headerlink" title="比较总结"></a>比较总结</h3><ul>
+<li>Amazon Linux是基于RHEL6的，Amazon Linux 2是基于RHEL 7的，两者的差别可以认为就类似于RHEL 6和RHEL 7。</li>
+<li>Amazon Linux 2中默认不带epel的yum源，需要自己安装。而Amazon Linux中默认带epel源，不过默认是disable的，需要用yum-config-manager enable一下。</li>
+<li>iperf3前一两秒会有一个burst，测试时间需要长一点，才能得到一个比较真实的测试结果。</li>
+<li>关于EC2网络带宽的猜想: 每个机型的带宽限制，应该是AWS在逻辑层面做的限制，而不是在物理硬件层面的限制。</li>
+</ul>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://www.linode.com/docs/networking/diagnostics/install-iperf-to-diagnose-network-speed-in-linux/" target="_blank" rel="external">Network Throughput Testing with iPerf</a></li>
+<li><a href="https://amazonaws-china.com/premiumsupport/knowledge-center/network-throughput-benchmark-linux-ec2/" target="_blank" rel="external">How do I benchmark network throughput between Amazon EC2 Linux instances in the same VPC?</a></li>
+<li><a href="https://amazonaws-china.com/premiumsupport/knowledge-center/ec2-enable-epel/" target="_blank" rel="external">How do I enable the EPEL repository for my Amazon EC2 instance running CentOS, RHEL, or Amazon Linux?</a></li>
+<li><a href="https://cloudonaut.io/ec2-network-performance-cheat-sheet/" target="_blank" rel="external">EC2 Network Performance Cheat Sheet</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> AWS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> EC2 </tag>
+            
+            <tag> Linux </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[关闭Mac系统中的自动拼写纠正功能]]></title>
+      <url>/2019/07/04/how-to-cancel-automatic-spelling-in-macos/</url>
+      <content type="html"><![CDATA[<p>Mac系统中输入英文字母的时候,有一些贴心的设置。拼写错误的时候，系统会自动纠正拼写错误。句子的首字母，会自动帮你设为大写。<br>对于写书来说，这些功能很是贴心，对于码农来说，这些功能有时候就显得很烦人。</p>
+<h3 id="关闭方法"><a href="#关闭方法" class="headerlink" title="关闭方法"></a>关闭方法</h3><p>在设置中，可以关闭自动纠正功能。[System preference] -&gt; [Keyboard] -&gt; [Text]</p>
+<p>下面三个选项前面的勾去掉即可。</p>
+<ul>
+<li>Correct spelling automatically</li>
+<li>Capitalize words automatically</li>
+<li>Add period with double-space</li>
+</ul>
+<a id="more"></a>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://blog.csdn.net/stc_XC/article/details/72814069" target="_blank" rel="external">OS X 自带输入法关闭首字母大写、拼写纠正、双空格变点号</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> Tools </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> MacOS </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[SACK Panic]]></title>
+      <url>/2019/06/24/SACK-Panic-in-CentOS-7/</url>
+      <content type="html"><![CDATA[<p>在2019-06-17，Netfilx爆出了FreeBSD and Linux系统中的内核上存在严重远程DoS漏洞，攻击者可以构造特定的SACK请求到目标服务器，引起服务器内核奔溃。<br>漏洞编号为: </p>
+<ul>
+<li><a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-11477" target="_blank" rel="external">CVE-2019-11477</a></li>
+<li><a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-11478" target="_blank" rel="external">CVE-2019-11478</a></li>
+<li><a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-11479" target="_blank" rel="external">CVE-2019-11479</a></li>
+</ul>
+<p>几家公司的通告如下:</p>
+<ul>
+<li><a href="https://github.com/Netflix/security-bulletins/blob/master/advisories/third-party/2019-001.md" target="_blank" rel="external">Netflix官方通告</a></li>
+<li><a href="https://access.redhat.com/security/vulnerabilities/tcpsack" target="_blank" rel="external">红帽公告</a></li>
+</ul>
+<a id="more"></a>
+<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>关于问题的原因，红帽官方描述如下:</p>
+<ul>
+<li><a href="https://access.redhat.com/security/vulnerabilities/tcpsack" target="_blank" rel="external">TCP SACK PANIC - Kernel vulnerabilities - CVE-2019-11477, CVE-2019-11478 &amp; CVE-2019-11479</a></li>
+</ul>
+<p>看英文吃力的同学，也可以看InfoQ的翻译</p>
+<ul>
+<li><a href="https://www.infoq.cn/article/gc3*ZGs49Tj5fHkh9frM" target="_blank" rel="external">Linux 内核被曝 TCP “SACK PANIC”漏洞，多家云服务商给出紧急修复建议</a></li>
+</ul>
+<p>SACK全称是Selective Acknowledgment，在<a href="http://tools.ietf.org/html/rfc2018" target="_blank" rel="external">RFC-2018</a>中被定义，目的是改善ACK的重传机制。<br>看RFC吃力的同学，可以看耗子叔的两篇关于TCP的文章</p>
+<ul>
+<li><a href="https://coolshell.cn/articles/11564.html" target="_blank" rel="external">TCP 的那些事儿（上）</a></li>
+<li><a href="https://coolshell.cn/articles/11609.html" target="_blank" rel="external">TCP 的那些事儿（下）</a></li>
+</ul>
+<h3 id="红帽系的检测工具"><a href="#红帽系的检测工具" class="headerlink" title="红帽系的检测工具"></a>红帽系的检测工具</h3><p>红帽给了一个脚本，可用于检测系统是否受这些漏洞影响。下载地址:</p>
+<ul>
+<li><a href="https://access.redhat.com/sites/default/files/cve-2019-11477--2019-06-17-1629.sh" target="_blank" rel="external">Determine if your system is vulnerable</a></li>
+</ul>
+<p>拷贝脚本到服务器上，sudo运行<br>如果系统是不被影响的，脚本输出为<code>This system is Not affected</code>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"># bash cve-2019-11477--2019-06-17-1629.sh</div><div class="line"></div><div class="line">This script (v1.0) is primarily designed to detect CVE-2019-11477 on supported</div><div class="line">Red Hat Enterprise Linux systems and kernel packages.</div><div class="line">Result may be inaccurate for other RPM based systems.</div><div class="line"></div><div class="line">Running kernel: 3.10.0-957.21.3.el7.x86_64</div><div class="line"></div><div class="line">This system is Not affected</div><div class="line"></div><div class="line"></div><div class="line">For more information about this vulnerability, see:</div><div class="line">https://access.redhat.com/security/vulnerabilities/tcpsack</div><div class="line">#</div></pre></td></tr></table></figure></p>
+<p>如果系统是受影响的，脚本输出为<code>This system is Vulnerable</code>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"># bash cve-2019-11477--2019-06-17-1629.sh</div><div class="line"></div><div class="line">This script (v1.0) is primarily designed to detect CVE-2019-11477 on supported</div><div class="line">Red Hat Enterprise Linux systems and kernel packages.</div><div class="line">Result may be inaccurate for other RPM based systems.</div><div class="line"></div><div class="line">Running kernel: 3.10.0-957.el7.x86_64</div><div class="line"></div><div class="line">This system is Vulnerable</div><div class="line"></div><div class="line">* Running kernel is vulnerable</div><div class="line"></div><div class="line">For more information about this vulnerability, see:</div><div class="line">https://access.redhat.com/security/vulnerabilities/tcpsack</div><div class="line">#</div></pre></td></tr></table></figure></p>
+<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><h4 id="升级Kernel"><a href="#升级Kernel" class="headerlink" title="升级Kernel"></a>升级Kernel</h4><p>漏洞发出后，红帽第一时间就发布了kernel-3.10.0-957.21.3的内核更新，CentOS在稍后也同步更新了Kernel补丁。升级命令如下:<br>在CentOS 7中，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># 升级kernel</div><div class="line">yum update kernel -y</div><div class="line"># 重启服务器</div><div class="line">reboot</div><div class="line"># 检查内核版本 </div><div class="line">uname -r</div></pre></td></tr></table></figure></p>
+<h4 id="禁用内核SACK"><a href="#禁用内核SACK" class="headerlink" title="禁用内核SACK"></a>禁用内核SACK</h4><p>如果服务器不方便直接重启，则可以先临时关闭sack。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># echo 0 &gt; /proc/sys/net/ipv4/tcp_sack</div><div class="line">或者</div><div class="line"># sysctl -w net.ipv4.tcp_sack=0</div></pre></td></tr></table></figure></p>
+<p>此时运行检测监本，提示<code>Running kernel is vulnerable</code>,<code>sysctl mitigation is applied</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"># bash cve-2019-11477--2019-06-17-1629.sh</div><div class="line"></div><div class="line">This script (v1.0) is primarily designed to detect CVE-2019-11477 on supported</div><div class="line">Red Hat Enterprise Linux systems and kernel packages.</div><div class="line">Result may be inaccurate for other RPM based systems.</div><div class="line"></div><div class="line">Running kernel: 3.10.0-957.el7.x86_64</div><div class="line"></div><div class="line">This system is Mitigated</div><div class="line"></div><div class="line">* Running kernel is vulnerable</div><div class="line">* sysctl mitigation is applied</div><div class="line"></div><div class="line">For more information about this vulnerability, see:</div><div class="line">https://access.redhat.com/security/vulnerabilities/tcpsack</div><div class="line">#</div></pre></td></tr></table></figure></p>
+<p>如果要重启后还是禁用tcp sack。则需要在<code>/etc/sysctl.d/</code>下建立配置文件，比如<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># vi /etc/sysctl.d/99-tcpsack.conf</div><div class="line"></div><div class="line">  # CVE-2019-11477 &amp; CVE-2019-11478</div><div class="line">  net.ipv4.tcp_sack=0</div></pre></td></tr></table></figure></p>
+<p>保存文件退出，重启后也会保持sack是禁用状态。</p>
+<h3 id="AWS侧应对"><a href="#AWS侧应对" class="headerlink" title="AWS侧应对"></a>AWS侧应对</h3><p>AWS的官方对此次SACK PANIC的通告以及各个服务的措施</p>
+<ul>
+<li><a href="https://amazonaws-china.com/security/security-bulletins/AWS-2019-005/" target="_blank" rel="external">Linux Kernel TCP SACK Denial of Service Issues</a></li>
+</ul>
+<p>各个受影响的服务以及对应的应对措施都有详细描述。<br>对于自己管控的EC2 Instance来说，如果使用了Amazon Linux and Amazon Linux 2，那么无论前面ELB类型是什么，都建议选择在合适的时间登录机器升级一下Kernel, 然后重启下。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo yum update kernel</div></pre></td></tr></table></figure></p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://github.com/Netflix/security-bulletins/blob/master/advisories/third-party/2019-001.md" target="_blank" rel="external">Netflix官方通告</a></li>
+<li><a href="https://access.redhat.com/security/vulnerabilities/tcpsack" target="_blank" rel="external">TCP SACK PANIC - Kernel vulnerabilities - CVE-2019-11477, CVE-2019-11478 &amp; CVE-2019-11479</a></li>
+<li><a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-11477" target="_blank" rel="external">CVE-2019-11477</a></li>
+<li><a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-11478" target="_blank" rel="external">CVE-2019-11478</a></li>
+<li><a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-11479" target="_blank" rel="external">CVE-2019-11479</a></li>
+<li><a href="https://community.centminmod.com/threads/kernel-tcp-sack-panic-security-update-cve-2019-11477-cve-2019-11478-cve-2019-11479.17763/" target="_blank" rel="external">Kernel TCP SACK PANIC Security Update CVE-2019-11477, CVE-2019-11478 &amp; CVE-2019-11479</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> Linux </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> CentOS </tag>
+            
+            <tag> Network </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[GoAccess-一个处理web日志的工具]]></title>
       <url>/2019/06/11/a-tool-goaccess-to-process-web-log/</url>
       <content type="html"><![CDATA[<h3 id="GoAccess介绍"><a href="#GoAccess介绍" class="headerlink" title="GoAccess介绍"></a>GoAccess介绍</h3><p>GoAccess是一个开源的基于终端的快速日志分析器。<br>Github地址:<a href="https://github.com/allinurl/goaccess" target="_blank" rel="external">https://github.com/allinurl/goaccess</a><br>官网地址: <a href="https://goaccess.io/" target="_blank" rel="external">https://goaccess.io/</a><br>说明文档: <a href="https://goaccess.io/man" target="_blank" rel="external">https://goaccess.io/man</a></p>
@@ -106,7 +291,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"># 拷贝download.tar.gz到目标机器上 /root/tmp/only_for_repository</div><div class="line"></div><div class="line"># 解压tar包</div><div class="line">tar xzvf download.tar.gz</div><div class="line"></div><div class="line"># 建立本地repository</div><div class="line">cd /etc/yum.repos.d</div><div class="line">cp CentOS-Media.repo local-custom.repo</div><div class="line">vim local-custom.repo</div><div class="line"></div><div class="line">[local-custom]</div><div class="line">name=CentOS-local-custom</div><div class="line">baseurl=file:///root/tmp/only_for_repository/download</div><div class="line">gpgcheck=1</div><div class="line">enabled=1</div><div class="line">gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7</div><div class="line"></div><div class="line"># 使用local custom reposiroty进行升级</div><div class="line">yum --disablerepo=\* --enablerepo=local-custom update</div></pre></td></tr></table></figure>
 </li>
 </ol>
-<h3 id="一些yum命令"><a href="#一些yum命令" class="headerlink" title="一些yum命令"></a>一些yum命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div></pre></td><td class="code"><pre><div class="line"># 查看yum repository</div><div class="line">yum repolist [enabled|disabled|all]</div><div class="line"></div><div class="line"># yum安装</div><div class="line">yum install ftp</div><div class="line"></div><div class="line"># yum更新</div><div class="line">yum update ftp</div><div class="line"></div><div class="line"># yum删除包</div><div class="line">yum remove ftp</div><div class="line"></div><div class="line"># yum 列出包</div><div class="line">yum list ftp # 某个包</div><div class="line">yum list installed # 列出已经安装的包</div><div class="line"></div><div class="line"># 搜索某个包</div><div class="line">yum search ftp</div><div class="line"></div><div class="line"># 查看包的信息</div><div class="line">yum info ftp</div><div class="line"></div><div class="line"># 查看可更新的包</div><div class="line">yum check-update</div><div class="line"></div><div class="line"># yum group 相关</div><div class="line">yum grouplist  # 列出所有组</div><div class="line">yum groupinstall &apos;虚拟化主机&apos;   # 按组安装，支持中文</div><div class="line">yum groupupdate &apos;虚拟化主机&apos;    # 按组更新</div><div class="line">yum groupremove &apos;虚拟化主机&apos;    # 安祖删除</div><div class="line"></div><div class="line"></div><div class="line"># yum 清理cache</div><div class="line">yum clean all</div><div class="line"></div><div class="line"># 查看yum操作记录</div><div class="line">yum history</div><div class="line"></div><div class="line"># 查看某个repository下的可用包, 以pgdg96为例</div><div class="line">yum --disablerepo=&quot;*&quot; --enablerepo=&quot;pgdg96&quot; list available</div><div class="line"></div><div class="line"># 查看某几个repository下的可用包,  repository之间用逗号隔开</div><div class="line">yum --disablerepo=&quot;*&quot; --enablerepo=&quot;pgdg96,epel&quot; list available</div><div class="line"></div><div class="line"># 只更新来自某个repository的package</div><div class="line">yum --disablerepo=&quot;*&quot; --enablerepo=&quot;pgdg96,epel&quot; update</div><div class="line"></div><div class="line"></div><div class="line"># yum security相关</div><div class="line">yum --security check-update  # 检查安全更新</div><div class="line">yum --security update        # 只更新安全补丁</div></pre></td></tr></table></figure>
+<h3 id="一些yum命令"><a href="#一些yum命令" class="headerlink" title="一些yum命令"></a>一些yum命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div></pre></td><td class="code"><pre><div class="line"># 查看yum repository</div><div class="line">yum repolist [enabled|disabled|all]</div><div class="line"></div><div class="line"># 启用某个yum repository</div><div class="line">1. yum-config-manager --enable repository_name # 或者到</div><div class="line">2. 到/etc/yum.repos.d目录下，找到要启动的repository的文件，修改enabled字段为1</div><div class="line"></div><div class="line"># 禁用某个yum repository</div><div class="line">1. yum-config-manager --disable repository_name</div><div class="line">2. 到/etc/yum.repos.d目录下，找到要启动的repository的文件，修改enabled字段为0</div><div class="line"></div><div class="line"># yum安装</div><div class="line">yum install ftp</div><div class="line"></div><div class="line"># yum更新</div><div class="line">yum update ftp</div><div class="line"></div><div class="line"># yum删除包</div><div class="line">yum remove ftp</div><div class="line"></div><div class="line"># yum 列出包</div><div class="line">yum list ftp # 某个包</div><div class="line">yum list installed # 列出已经安装的包</div><div class="line"></div><div class="line"># 搜索某个包</div><div class="line">yum search ftp</div><div class="line"></div><div class="line"># 查看包的信息</div><div class="line">yum info ftp</div><div class="line"></div><div class="line"># 查看可更新的包</div><div class="line">yum check-update</div><div class="line"></div><div class="line"># yum group 相关</div><div class="line">yum grouplist  # 列出所有组</div><div class="line">yum groupinstall &apos;虚拟化主机&apos;   # 按组安装，支持中文</div><div class="line">yum groupupdate &apos;虚拟化主机&apos;    # 按组更新</div><div class="line">yum groupremove &apos;虚拟化主机&apos;    # 安祖删除</div><div class="line"></div><div class="line"></div><div class="line"># yum 清理cache</div><div class="line">yum clean all</div><div class="line"></div><div class="line"># 查看yum操作记录</div><div class="line">yum history</div><div class="line"></div><div class="line"># 查看某个repository下的可用包, 以pgdg96为例</div><div class="line">yum --disablerepo=&quot;*&quot; --enablerepo=&quot;pgdg96&quot; list available</div><div class="line"></div><div class="line"># 查看某几个repository下的可用包,  repository之间用逗号隔开</div><div class="line">yum --disablerepo=&quot;*&quot; --enablerepo=&quot;pgdg96,epel&quot; list available</div><div class="line"></div><div class="line"># 只更新来自某个repository的package</div><div class="line">yum --disablerepo=&quot;*&quot; --enablerepo=&quot;pgdg96,epel&quot; update</div><div class="line"></div><div class="line"></div><div class="line"># yum security相关</div><div class="line">yum --security check-update  # 检查安全更新</div><div class="line">yum --security update        # 只更新安全补丁</div></pre></td></tr></table></figure>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
 <li><a href="https://access.redhat.com/solutions/1355683" target="_blank" rel="external">Need to set up yum repository for locally-mounted DVD on Red Hat Enterprise Linux 7 or later</a></li>
 <li><a href="https://access.redhat.com/solutions/10021" target="_blank" rel="external">Is it possible to limit yum so that it lists or installs only security updates?</a></li>
@@ -505,9 +690,9 @@
         
         <tags>
             
-            <tag> MacOS </tag>
-            
             <tag> CentOS </tag>
+            
+            <tag> MacOS </tag>
             
         </tags>
         
@@ -651,9 +836,9 @@
         
         <tags>
             
-            <tag> Linux </tag>
-            
             <tag> CentOS </tag>
+            
+            <tag> Linux </tag>
             
             <tag> VMware </tag>
             
@@ -696,6 +881,8 @@
 <p>Gemfile和Bundle情况, 修改Gemfile<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">source &apos;https://rubygems.org/&apos;</div></pre></td></tr></table></figure></p>
 <hr>
 <h3 id="rvm切换ruby安装源"><a href="#rvm切换ruby安装源" class="headerlink" title="rvm切换ruby安装源"></a>rvm切换ruby安装源</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># 用户级别</div><div class="line">echo &quot;ruby_url=https://cache.ruby-china.com/pub/ruby&quot; &gt;&gt; ~/.rvm/user/db</div><div class="line"></div><div class="line"># CentOS下系统级别</div><div class="line">echo &quot;ruby_url=https://cache.ruby-china.com/pub/ruby&quot; &gt;&gt; /usr/local/rvm/user/db</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="gitignore例子"><a href="#gitignore例子" class="headerlink" title="gitignore例子"></a>gitignore例子</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># Ignore Mac DS_Store files</div><div class="line">.DS_Store</div></pre></td></tr></table></figure>
 ]]></content>
       
         <categories>
@@ -1030,9 +1217,9 @@
             
             <tag> Ruby </tag>
             
-            <tag> Linux </tag>
-            
             <tag> CentOS </tag>
+            
+            <tag> Linux </tag>
             
             <tag> RVM </tag>
             
@@ -1114,11 +1301,11 @@
         
         <tags>
             
+            <tag> S3 </tag>
+            
             <tag> Nginx </tag>
             
             <tag> HTTP </tag>
-            
-            <tag> S3 </tag>
             
             <tag> Linux </tag>
             
@@ -2512,11 +2699,11 @@
         
         <tags>
             
-            <tag> IAM </tag>
-            
             <tag> S3 </tag>
             
             <tag> AWS CLI </tag>
+            
+            <tag> IAM </tag>
             
         </tags>
         

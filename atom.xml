@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.jibing57.com/"/>
-  <updated>2019-06-12T07:00:26.047Z</updated>
+  <updated>2019-07-06T07:28:40.959Z</updated>
   <id>https://www.jibing57.com/</id>
   
   <author>
@@ -15,6 +15,99 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>AWS EC2各个类型的网络性能的测试方法</title>
+    <link href="https://www.jibing57.com/2019/07/06/how-to-check-network-throughput-on-aws-EC2/"/>
+    <id>https://www.jibing57.com/2019/07/06/how-to-check-network-throughput-on-aws-EC2/</id>
+    <published>2019-07-06T02:49:06.000Z</published>
+    <updated>2019-07-06T07:28:40.959Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;介绍&quot;&gt;&lt;a href=&quot;#介绍&quot; class=&quot;headerlink&quot; title=&quot;介绍&quot;&gt;&lt;/a&gt;介绍&lt;/h3&gt;&lt;p&gt;在AWS中，不同类型的EC2 instance,拥有的网络带宽是不同的。&lt;/p&gt;
+&lt;p&gt;让人犯糊的是，在&lt;a href=&quot;https://amazonaws-china.com/ec2/instance-types/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;AWS EC2的介绍页面&lt;/a&gt;中,并没有清晰的标明每种类型的Instance的带宽具体是多少？一些类型的Instance只是标注了网络性能(Network Performance)为&lt;code&gt;Up to 5&lt;/code&gt;,&lt;code&gt;Low&lt;/code&gt;,&lt;code&gt;Moderate&lt;/code&gt;或者&lt;code&gt;High&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;老外的&lt;a href=&quot;https://cloudonaut.io/ec2-network-performance-cheat-sheet/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;EC2 Network Performance Cheat Sheet&lt;/a&gt;这篇文章中，记录了作者使用&lt;a href=&quot;(https://github.com/esnet/iperf)&quot;&gt;iperf3&lt;/a&gt;测试出来的各个Instance类型的带宽。如果选取类型的时候比较在意带宽，可以用来参考下。&lt;/p&gt;
+&lt;p&gt;顺带介绍一下如何在AWS EC2中使用&lt;a href=&quot;(https://github.com/esnet/iperf)&quot;&gt;iperf3&lt;/a&gt;来测试Instance带宽。如果确实有需要，就可以自己来进行测速。&lt;br&gt;测试环境如下:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;测试Region是美国Oregon&lt;/li&gt;
+&lt;li&gt;使用两台m4.large的EC2，一台运行服务，一台用作客户端。&lt;/li&gt;
+&lt;li&gt;介绍两种Amazon Linux的测试方法&lt;ul&gt;
+&lt;li&gt;Amazon Linux AMI 2018.03.0 (HVM), SSD Volume Type&lt;/li&gt;
+&lt;li&gt;Amazon Linux 2 AMI (HVM), SSD Volume Type&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+    
+    </summary>
+    
+      <category term="AWS" scheme="https://www.jibing57.com/categories/AWS/"/>
+    
+    
+      <category term="EC2" scheme="https://www.jibing57.com/tags/EC2/"/>
+    
+      <category term="Linux" scheme="https://www.jibing57.com/tags/Linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>关闭Mac系统中的自动拼写纠正功能</title>
+    <link href="https://www.jibing57.com/2019/07/04/how-to-cancel-automatic-spelling-in-macos/"/>
+    <id>https://www.jibing57.com/2019/07/04/how-to-cancel-automatic-spelling-in-macos/</id>
+    <published>2019-07-04T13:48:33.000Z</published>
+    <updated>2019-07-04T06:58:33.589Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Mac系统中输入英文字母的时候,有一些贴心的设置。拼写错误的时候，系统会自动纠正拼写错误。句子的首字母，会自动帮你设为大写。&lt;br&gt;对于写书来说，这些功能很是贴心，对于码农来说，这些功能有时候就显得很烦人。&lt;/p&gt;
+&lt;h3 id=&quot;关闭方法&quot;&gt;&lt;a href=&quot;#关闭方法&quot; class=&quot;headerlink&quot; title=&quot;关闭方法&quot;&gt;&lt;/a&gt;关闭方法&lt;/h3&gt;&lt;p&gt;在设置中，可以关闭自动纠正功能。[System preference] -&amp;gt; [Keyboard] -&amp;gt; [Text]&lt;/p&gt;
+&lt;p&gt;下面三个选项前面的勾去掉即可。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Correct spelling automatically&lt;/li&gt;
+&lt;li&gt;Capitalize words automatically&lt;/li&gt;
+&lt;li&gt;Add period with double-space&lt;/li&gt;
+&lt;/ul&gt;
+    
+    </summary>
+    
+      <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
+    
+    
+      <category term="MacOS" scheme="https://www.jibing57.com/tags/MacOS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>SACK Panic</title>
+    <link href="https://www.jibing57.com/2019/06/24/SACK-Panic-in-CentOS-7/"/>
+    <id>https://www.jibing57.com/2019/06/24/SACK-Panic-in-CentOS-7/</id>
+    <published>2019-06-24T13:43:40.000Z</published>
+    <updated>2019-06-25T05:45:49.702Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在2019-06-17，Netfilx爆出了FreeBSD and Linux系统中的内核上存在严重远程DoS漏洞，攻击者可以构造特定的SACK请求到目标服务器，引起服务器内核奔溃。&lt;br&gt;漏洞编号为: &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-11477&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;CVE-2019-11477&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-11478&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;CVE-2019-11478&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-11479&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;CVE-2019-11479&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;几家公司的通告如下:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/Netflix/security-bulletins/blob/master/advisories/third-party/2019-001.md&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Netflix官方通告&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://access.redhat.com/security/vulnerabilities/tcpsack&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;红帽公告&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+    
+    </summary>
+    
+      <category term="Linux" scheme="https://www.jibing57.com/categories/Linux/"/>
+    
+    
+      <category term="CentOS" scheme="https://www.jibing57.com/tags/CentOS/"/>
+    
+      <category term="Network" scheme="https://www.jibing57.com/tags/Network/"/>
+    
+  </entry>
   
   <entry>
     <title>GoAccess-一个处理web日志的工具</title>
@@ -56,7 +149,7 @@
     <link href="https://www.jibing57.com/2019/06/04/how-to-make-local-yum-repository-on-centos-7/"/>
     <id>https://www.jibing57.com/2019/06/04/how-to-make-local-yum-repository-on-centos-7/</id>
     <published>2019-06-04T13:00:51.000Z</published>
-    <updated>2019-06-11T09:18:16.812Z</updated>
+    <updated>2019-07-05T06:41:14.809Z</updated>
     
     <summary type="html">
     
@@ -283,9 +376,9 @@
       <category term="Linux" scheme="https://www.jibing57.com/categories/Linux/"/>
     
     
-      <category term="MacOS" scheme="https://www.jibing57.com/tags/MacOS/"/>
-    
       <category term="CentOS" scheme="https://www.jibing57.com/tags/CentOS/"/>
+    
+      <category term="MacOS" scheme="https://www.jibing57.com/tags/MacOS/"/>
     
   </entry>
   
@@ -371,9 +464,9 @@
       <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
     
     
-      <category term="Linux" scheme="https://www.jibing57.com/tags/Linux/"/>
-    
       <category term="CentOS" scheme="https://www.jibing57.com/tags/CentOS/"/>
+    
+      <category term="Linux" scheme="https://www.jibing57.com/tags/Linux/"/>
     
       <category term="VMware" scheme="https://www.jibing57.com/tags/VMware/"/>
     
@@ -384,7 +477,7 @@
     <link href="https://www.jibing57.com/2019/04/26/command-tips/"/>
     <id>https://www.jibing57.com/2019/04/26/command-tips/</id>
     <published>2019-04-26T05:22:40.000Z</published>
-    <updated>2019-06-14T10:21:13.378Z</updated>
+    <updated>2019-07-04T06:25:34.985Z</updated>
     
     <summary type="html">
     
@@ -541,104 +634,6 @@
       <category term="MacOS" scheme="https://www.jibing57.com/tags/MacOS/"/>
     
       <category term="iOS" scheme="https://www.jibing57.com/tags/iOS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>CentOS 7下Ctrl-C失效问题</title>
-    <link href="https://www.jibing57.com/2019/03/21/ctrl-c-invalid-on-Centos-7/"/>
-    <id>https://www.jibing57.com/2019/03/21/ctrl-c-invalid-on-Centos-7/</id>
-    <published>2019-03-21T13:33:01.000Z</published>
-    <updated>2019-04-02T12:30:29.000Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;rvm 1.29.4在CentOS 7上有一个bug，在Bash下，source了rvm后，执行Crtl+C时，无法终止shell命令。&lt;/p&gt;
-&lt;p&gt;具体讨论在&lt;a href=&quot;https://github.com/rvm/rvm/issues/4422&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Unable to pass SIGINT signal (control-C) on 1.29.4 &lt;/a&gt;中。&lt;/p&gt;
-&lt;p&gt;解决办法:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;在用户账号下强制使用trap设置回被改写的信号量INT QUIT&lt;/li&gt;
-&lt;li&gt;升级rvm到1.29.4以上版本&lt;/li&gt;
-&lt;/ol&gt;
-    
-    </summary>
-    
-      <category term="Shell" scheme="https://www.jibing57.com/categories/Shell/"/>
-    
-    
-      <category term="Ruby" scheme="https://www.jibing57.com/tags/Ruby/"/>
-    
-      <category term="Linux" scheme="https://www.jibing57.com/tags/Linux/"/>
-    
-      <category term="CentOS" scheme="https://www.jibing57.com/tags/CentOS/"/>
-    
-      <category term="RVM" scheme="https://www.jibing57.com/tags/RVM/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>使用nginx处理S3静态资源</title>
-    <link href="https://www.jibing57.com/2019/03/11/ways-to-support-public-s3-file-in-nginx/"/>
-    <id>https://www.jibing57.com/2019/03/11/ways-to-support-public-s3-file-in-nginx/</id>
-    <published>2019-03-11T13:28:17.000Z</published>
-    <updated>2019-03-22T06:02:39.000Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;在网页或APP中，使用S3公开的静态资源，比如图片,小视频等。通常有这么几个常用的方式&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;直接在页面中使用S3的public链接&lt;/li&gt;
-&lt;li&gt;使用自己的域名，再在Web服务器侧redirect到S3的链接&lt;/li&gt;
-&lt;li&gt;使用自己的域名，再在服务器上经过反向代理服务，获取S3内容后再返回给客户端或浏览器。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;在APP中，因为不需要考虑SEO，可以在页面或接口中直接返回S3的链接，APP直接访问S3资源，效率最高。&lt;br&gt;如果是网页，有时候为了SEO的需要，可能更多的会采用第二和第三种方式, 将资源经过服务器来中转一下。&lt;br&gt;下面介绍一下第二和第三种方式在Nginx侧的简单实现。&lt;/p&gt;
-&lt;h3 id=&quot;使用Nginx来redirect-S3的链接&quot;&gt;&lt;a href=&quot;#使用Nginx来redirect-S3的链接&quot; class=&quot;headerlink&quot; title=&quot;使用Nginx来redirect S3的链接&quot;&gt;&lt;/a&gt;使用Nginx来redirect S3的链接&lt;/h3&gt;&lt;p&gt;如下是一个简单的Nginx的配置的例子。基于以下几个前提&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;测试域名为test.jibing57.com&lt;/li&gt;
-&lt;li&gt;所有放在S3上的静态文件，在网站上都以&lt;code&gt;/s3_redirect&lt;/code&gt;路径打头&lt;/li&gt;
-&lt;li&gt;S3 Region为us-west-2, Bucket 为&lt;code&gt;s3-for-blog&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;将&lt;code&gt;/s3_redirect&lt;/code&gt;开头的文件redirect到真实的S3 URL中。&lt;/li&gt;
-&lt;/ul&gt;
-    
-    </summary>
-    
-      <category term="AWS" scheme="https://www.jibing57.com/categories/AWS/"/>
-    
-    
-      <category term="Nginx" scheme="https://www.jibing57.com/tags/Nginx/"/>
-    
-      <category term="HTTP" scheme="https://www.jibing57.com/tags/HTTP/"/>
-    
-      <category term="S3" scheme="https://www.jibing57.com/tags/S3/"/>
-    
-      <category term="Linux" scheme="https://www.jibing57.com/tags/Linux/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>CentOS 7下passenger-status报错</title>
-    <link href="https://www.jibing57.com/2019/03/10/passenger-status-not-work-on-CentOS-7/"/>
-    <id>https://www.jibing57.com/2019/03/10/passenger-status-not-work-on-CentOS-7/</id>
-    <published>2019-03-10T07:21:36.000Z</published>
-    <updated>2019-03-11T07:32:17.000Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;问题&quot;&gt;&lt;a href=&quot;#问题&quot; class=&quot;headerlink&quot; title=&quot;问题&quot;&gt;&lt;/a&gt;问题&lt;/h3&gt;&lt;p&gt;CentOS 7中，执行&lt;code&gt;passenger-status&lt;/code&gt;报了如下错误:&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;ERROR: Phusion Passenger doesn&amp;apos;t seem to be running. If you are sure that it is running, then the causes of this problem could be:&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;1. You customized the instance registry directory using Apache&amp;apos;s PassengerInstanceRegistryDir option, Nginx&amp;apos;s passenger_instance_registry_dir option, or Phusion Passenger Standalone&amp;apos;s --instance-registry-dir command line argument. If so, please set the environment variable PASSENGER_INSTANCE_REGISTRY_DIR to that directory and run passenger-status again.&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2. The instance directory has been removed by an operating system background service. Please set a different instance registry directory using Apache&amp;apos;s PassengerInstanceRegistryDir option, Nginx&amp;apos;s passenger_instance_registry_dir option, or Phusion Passenger Standalone&amp;apos;s --instance-registry-dir command line argument.&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;而命令&lt;code&gt;passenger-memory-stats&lt;/code&gt;可以正常工作。&lt;/p&gt;
-&lt;p&gt;同样的问题，在Amazon Linux 2 AMI中也同样存在。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="AWS" scheme="https://www.jibing57.com/categories/AWS/"/>
-    
-    
-      <category term="EC2" scheme="https://www.jibing57.com/tags/EC2/"/>
-    
-      <category term="Passenger" scheme="https://www.jibing57.com/tags/Passenger/"/>
-    
-      <category term="Nginx" scheme="https://www.jibing57.com/tags/Nginx/"/>
     
   </entry>
   

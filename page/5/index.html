@@ -139,6 +139,85 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
+			<div class="date"> 2018-04-19 </div>
+			<div class="article-title"><a href="/2018/04/19/how-to-remove-the-passphrase-of-ssh-key/" >如何去除SSH key中的passphrase</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="去除passphrase的方法"><a href="#去除passphrase的方法" class="headerlink" title="去除passphrase的方法"></a>去除passphrase的方法</h3><p>使用<code>ssh-keygen</code>来重新设置一个空的passphrase, 就相当于去除了原来的passphrase, 答案来自<a href="https://stackoverflow.com/a/112409" target="_blank" rel="external">stackoverflow</a>, 回答者还很贴心的提示，输入的passphrase会被记录在~/.bash_history中，别忘记处理这个情况。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ssh-keygen -p [-P old_passphrase] [-N new_passphrase] [-f keyfile]</div></pre></td></tr></table></figure></p>
+	
+	</div>
+  <a type="button" href="/2018/04/19/how-to-remove-the-passphrase-of-ssh-key/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2018-04-18 </div>
+			<div class="article-title"><a href="/2018/04/18/aws-s3-master-basic/" >S3进阶系列(一) —— S3基础知识</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>S3是AWS服务最早推出的几项服务之一，也是使用最为频繁的几个AWS服务之一。官网文档以及网上文章零零散散看了不少,实际使用中也用过S3的大多数功能，但“纸上得来终觉浅，绝知此事要躬行”，决定给自己挖个坑，结合已读资料和实际使用经验，系统地来梳理一下S3的已有功能。</p>
+<p>本篇是第一篇,介绍一下S3的一些基础知识。希望能够坚持把这个系列写完。</p>
+	
+	</div>
+  <a type="button" href="/2018/04/18/aws-s3-master-basic/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2018-03-16 </div>
+			<div class="article-title"><a href="/2018/03/16/how-to-subscribe-RDS-event/" >订阅RDS事件</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>关于RDS状态的监控，除了常规的CloudWatch Metric以外。RDS还有一个事件机制，能够将RDS的事件通知到SNS。</p>
+<h3 id="RDS-Event简介"><a href="#RDS-Event简介" class="headerlink" title="RDS Event简介"></a>RDS Event简介</h3><h4 id="RDS-Event-Source-type"><a href="#RDS-Event-Source-type" class="headerlink" title="RDS Event - Source type"></a>RDS Event - Source type</h4><p>RDS的事件类型分为如下六大类:</p>
+<ul>
+<li>数据库实例(DB instance)</li>
+<li>数据库集群(DB cluster)</li>
+<li>数据库快照(DB snapshot)</li>
+<li>数据库集群快照(DB cluster snapshot)</li>
+<li>数据库安全组(DB security group)</li>
+<li>数据库参数组(DB parameter group)</li>
+</ul>
+	
+	</div>
+  <a type="button" href="/2018/03/16/how-to-subscribe-RDS-event/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
 			<div class="date"> 2018-03-15 </div>
 			<div class="article-title"><a href="/2018/03/15/how-to-set-chrome-to-use-google-with-NoCountryRedirect/" >在Chrome中设置Google搜索为NoCountryRedirect</a></div>						
 		</h3>
@@ -340,88 +419,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2017-12-26 </div>
-			<div class="article-title"><a href="/2017/12/26/a-simple-elb-access-log-parser-by-ruby/" >A Simple ELB Access Log Parser By Ruby</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>工作时候，偶尔会有手动检查ELB Access Log的时候，下载下来的access log是空格隔开的，人眼将数值对应到字段名非常累。</p>
-<p>就顺手写了个Ruby的小程序来解析access log的内容，转换到csv格式。再使用Excel打开csv文件来进行查看。</p>
-<h3 id="用途"><a href="#用途" class="headerlink" title="用途"></a>用途</h3><p>读取access log日志，转换为csv。</p>
-<p>主要用于临时检查小数据量access log来定位问题。如果是基于access log来进行数据分析，还是需要结合RedShift来进行。</p>
-	
-	</div>
-  <a type="button" href="/2017/12/26/a-simple-elb-access-log-parser-by-ruby/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2017-12-25 </div>
-			<div class="article-title"><a href="/2017/12/25/shell-gist-to-get-http-5XX-code-from-ELB-access-log/" >shell gist to get http 5XX code from ELB access log</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>一个简陋的只是够用的shell小脚本，用来从S3中下载前一天的ELB access log，筛选出http code为5XX的日志，然后发送给某个指定的email地址。</p>
-<h3 id="变量设置"><a href="#变量设置" class="headerlink" title="变量设置"></a>变量设置</h3><p>设置下MAIL_TO和S3_BASE_PREFIX这两个变量，然后在有AWS CLI访问环境的机器上执行即可。</p>
-<ul>
-<li>MAIL_TO 如果有多个地址，可用空格隔开</li>
-<li>S3_BASE_PREFIX设置到Access log日志格式之前的prefix就行。</li>
-</ul>
-<p>比如完整的access log地址是: <code>s3://carl-elb-logs/AWSLogs/888888888888/elasticloadbalancing/ap-northeast-2/2017/12/24/704017765382_elasticloadbalancing_ap-northeast-2_ELB-carl_20171224T0120Z_13.125.86.136_5s9i5ef2.log</code></p>
-<p>那么S3_BASE_PREFIX设置为<code>s3://carl-elb-logs/AWSLogs/888888888888/elasticloadbalancing/ap-northeast-2</code>即可<br>
-	
-	</div>
-  <a type="button" href="/2017/12/25/shell-gist-to-get-http-5XX-code-from-ELB-access-log/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2017-12-25 </div>
-			<div class="article-title"><a href="/2017/12/25/how-to-add-shadow-of-images-in-freemind/" >在Freemind主题中开启图片阴影</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="添加图片阴影"><a href="#添加图片阴影" class="headerlink" title="添加图片阴影"></a>添加图片阴影</h3><p><a href="https://github.com/wzpan/hexo-theme-freemind" target="_blank" rel="external">hexo-theme-freemind</a>主题中，默认没有开启图片阴影。当图片的背景和文章的背景是同色的时候，有时会造成混淆，看不清楚哪部分是图片，哪部分是文章。</p>
-<p>打开源码看了一下，发现其实<a href="https://github.com/wzpan/hexo-theme-freemind" target="_blank" rel="external">hexo-theme-freemind</a>本身就已经支持图片shadow了。只是默认没有开启，而且也没有在README.md中提及。</p>
-<p>在<code>hexo-theme-freemind/layout/_partial/article.ejs</code>文件中有如下代码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;% if (item.shadow ) &#123; %&gt;</div><div class="line">   &lt;style type=&quot;text/css&quot;&gt;</div><div class="line">           img, video &#123;</div><div class="line">                -webkit-box-shadow:0 0 10px rgba(0, 0, 0, .5);</div><div class="line">                -moz-box-shadow:0 0 10px rgba(0, 0, 0, .5);</div><div class="line">                box-shadow:0 0 10px rgba(0, 0, 0, .5);</div><div class="line">           &#125;</div><div class="line">   &lt;/style&gt;</div><div class="line">&lt;% &#125; %&gt;</div></pre></td></tr></table></figure>
-	
-	</div>
-  <a type="button" href="/2017/12/25/how-to-add-shadow-of-images-in-freemind/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -485,7 +482,7 @@ var _hmt = _hmt || [];
 		<h4>Categories</h4>
 		<ul class="tag_box inline list-unstyled">
 		
-			<li><a href="/categories/AWS/">AWS<span>33</span></a></li>
+			<li><a href="/categories/AWS/">AWS<span>34</span></a></li>
 		
 			<li><a href="/categories/AWS-Certified/">AWS Certified<span>3</span></a></li>
 		
@@ -493,11 +490,11 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/Code/">Code<span>5</span></a></li>
 		
-			<li><a href="/categories/Linux/">Linux<span>3</span></a></li>
+			<li><a href="/categories/Linux/">Linux<span>4</span></a></li>
 		
 			<li><a href="/categories/Shell/">Shell<span>8</span></a></li>
 		
-			<li><a href="/categories/Tools/">Tools<span>13</span></a></li>
+			<li><a href="/categories/Tools/">Tools<span>14</span></a></li>
 		
 		</ul>
 	</div>
@@ -508,45 +505,45 @@ var _hmt = _hmt || [];
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/CodeCommit/">CodeCommit<span>1</span></a></li>
+			<li><a href="/tags/Network/">Network<span>2</span></a></li>
 		
-			<li><a href="/tags/MacOS/">MacOS<span>12</span></a></li>
-		
-			<li><a href="/tags/Git/">Git<span>2</span></a></li>
-		
-			<li><a href="/tags/Failover/">Failover<span>1</span></a></li>
-		
-			<li><a href="/tags/Passenger/">Passenger<span>2</span></a></li>
-		
-			<li><a href="/tags/Ruby/">Ruby<span>8</span></a></li>
+			<li><a href="/tags/HTTPS/">HTTPS<span>1</span></a></li>
 		
 			<li><a href="/tags/AWS-Free-Tier/">AWS Free Tier<span>1</span></a></li>
 		
-			<li><a href="/tags/VMware/">VMware<span>2</span></a></li>
+			<li><a href="/tags/Office/">Office<span>1</span></a></li>
 		
-			<li><a href="/tags/FFMPEG/">FFMPEG<span>1</span></a></li>
+			<li><a href="/tags/Video/">Video<span>1</span></a></li>
 		
-			<li><a href="/tags/IAM/">IAM<span>3</span></a></li>
-		
-			<li><a href="/tags/PostgreSQL/">PostgreSQL<span>1</span></a></li>
-		
-			<li><a href="/tags/Rails/">Rails<span>3</span></a></li>
-		
-			<li><a href="/tags/Nodejs/">Nodejs<span>2</span></a></li>
-		
-			<li><a href="/tags/Elastic-Beanstalk/">Elastic Beanstalk<span>7</span></a></li>
+			<li><a href="/tags/AWS-CLI/">AWS CLI<span>6</span></a></li>
 		
 			<li><a href="/tags/AWS-SDK/">AWS SDK<span>2</span></a></li>
 		
-			<li><a href="/tags/Github/">Github<span>3</span></a></li>
+			<li><a href="/tags/RVM/">RVM<span>1</span></a></li>
 		
-			<li><a href="/tags/AutoScaling/">AutoScaling<span>3</span></a></li>
+			<li><a href="/tags/Sysops/">Sysops<span>1</span></a></li>
 		
-			<li><a href="/tags/Linux/">Linux<span>12</span></a></li>
+			<li><a href="/tags/RDS/">RDS<span>3</span></a></li>
 		
-			<li><a href="/tags/Nginx/">Nginx<span>7</span></a></li>
+			<li><a href="/tags/SSH/">SSH<span>3</span></a></li>
 		
-			<li><a href="/tags/HTTPS/">HTTPS<span>1</span></a></li>
+			<li><a href="/tags/Linux/">Linux<span>13</span></a></li>
+		
+			<li><a href="/tags/Rails/">Rails<span>3</span></a></li>
+		
+			<li><a href="/tags/DynamoDB/">DynamoDB<span>1</span></a></li>
+		
+			<li><a href="/tags/Git/">Git<span>2</span></a></li>
+		
+			<li><a href="/tags/iOS/">iOS<span>1</span></a></li>
+		
+			<li><a href="/tags/Image/">Image<span>1</span></a></li>
+		
+			<li><a href="/tags/Tips/">Tips<span>1</span></a></li>
+		
+			<li><a href="/tags/EC2/">EC2<span>8</span></a></li>
+		
+			<li><a href="/tags/IAM/">IAM<span>3</span></a></li>
 		
 		
 		   <li><a href="/tags">...<span>49</span></a></li>
@@ -562,23 +559,23 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2019/07/06/how-to-check-network-throughput-on-aws-EC2/" ><i class="fa fa-file-o"></i>AWS EC2各个类型的网络性能的测试方法</a>
+      </li>
+    
+      <li>
+        <a href="/2019/07/04/how-to-cancel-automatic-spelling-in-macos/" ><i class="fa fa-file-o"></i>关闭Mac系统中的自动拼写纠正功能</a>
+      </li>
+    
+      <li>
+        <a href="/2019/06/24/SACK-Panic-in-CentOS-7/" ><i class="fa fa-file-o"></i>SACK Panic</a>
+      </li>
+    
+      <li>
         <a href="/2019/06/11/a-tool-goaccess-to-process-web-log/" ><i class="fa fa-file-o"></i>GoAccess-一个处理web日志的工具</a>
       </li>
     
       <li>
         <a href="/2019/06/04/how-to-make-local-yum-repository-on-centos-7/" ><i class="fa fa-file-o"></i>CentOS 7下制作本地yum源</a>
-      </li>
-    
-      <li>
-        <a href="/2019/06/04/configure-https-for-hexo-blog-on-lightsail/" ><i class="fa fa-file-o"></i>在AWS Lightsail上给hexo blog配置...</a>
-      </li>
-    
-      <li>
-        <a href="/2019/05/29/how-to-deploy-hexo-to-aws-lightsail/" ><i class="fa fa-file-o"></i>将hexo部署到AWS的Lightsail</a>
-      </li>
-    
-      <li>
-        <a href="/2019/05/21/how-to-direct-http-to-https-in-elasticbeanstalk-ruby-passenger-platform/" ><i class="fa fa-file-o"></i>Elastic Beanstalk Ruby Pass...</a>
       </li>
     
   </ul>

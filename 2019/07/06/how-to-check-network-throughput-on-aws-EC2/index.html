@@ -1,0 +1,383 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>AWS EC2各个类型的网络性能的测试方法 | Recording</title>
+  <meta name="author" content="jibing57">
+  
+  <meta name="description" content="AWS, 阅读, Architecture, PostgreSQL">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="AWS EC2各个类型的网络性能的测试方法"/>
+  <meta property="og:site_name" content="Recording"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/css/themes/bootstrap.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/comment.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+  
+  <!-- analytics -->
+  
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-111771042-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?59d3e14cdc96877383afed646f44d216";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+</head>
+
+ <body>  
+  <nav id="main-nav" class="navbar  navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+	<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+       <a class="navbar-brand" href="/">Recording</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class="fa fa-archive"></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class="fa fa-folder"></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class="fa fa-tags"></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/douban" title="Douban">
+			  <i class="fa fa-book"></i>Douban
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header ">		
+			<h1 class="title "> AWS EC2各个类型的网络性能的测试方法</h1>
+		</div>		
+	
+
+
+
+
+   <style type="text/css">
+           img, video {
+                -webkit-box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+                -moz-box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+                box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+           }
+   </style>
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
+
+	<!-- content -->
+	<div class="mypage">		
+	  		
+
+	  <h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>在AWS中，不同类型的EC2 instance,拥有的网络带宽是不同的。</p>
+<p>让人犯糊的是，在<a href="https://amazonaws-china.com/ec2/instance-types/" target="_blank" rel="external">AWS EC2的介绍页面</a>中,并没有清晰的标明每种类型的Instance的带宽具体是多少？一些类型的Instance只是标注了网络性能(Network Performance)为<code>Up to 5</code>,<code>Low</code>,<code>Moderate</code>或者<code>High</code>。</p>
+<p>老外的<a href="https://cloudonaut.io/ec2-network-performance-cheat-sheet/" target="_blank" rel="external">EC2 Network Performance Cheat Sheet</a>这篇文章中，记录了作者使用<a href="(https://github.com/esnet/iperf)">iperf3</a>测试出来的各个Instance类型的带宽。如果选取类型的时候比较在意带宽，可以用来参考下。</p>
+<p>顺带介绍一下如何在AWS EC2中使用<a href="(https://github.com/esnet/iperf)">iperf3</a>来测试Instance带宽。如果确实有需要，就可以自己来进行测速。<br>测试环境如下:</p>
+<ul>
+<li>测试Region是美国Oregon</li>
+<li>使用两台m4.large的EC2，一台运行服务，一台用作客户端。</li>
+<li>介绍两种Amazon Linux的测试方法<ul>
+<li>Amazon Linux AMI 2018.03.0 (HVM), SSD Volume Type</li>
+<li>Amazon Linux 2 AMI (HVM), SSD Volume Type</li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<h3 id="Amazon-Linux-测速"><a href="#Amazon-Linux-测速" class="headerlink" title="Amazon Linux 测速"></a>Amazon Linux 测速</h3><h4 id="环境说明"><a href="#环境说明" class="headerlink" title="环境说明"></a>环境说明</h4><ul>
+<li>两台m4.large</li>
+<li>AMI为Amazon Linux AMI 2018.03.0 (HVM), SSD Volume Type</li>
+<li>两台Instance在同一个AZ中</li>
+</ul>
+<p><strong>试验中，iperf3监听5000端口，EC2对应的SG中需要开启端口5000</strong></p>
+<h4 id="安装测试"><a href="#安装测试" class="headerlink" title="安装测试"></a>安装测试</h4><p>登录作为Server的EC2，执行如下命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"># 安装系统更新和iperf3</div><div class="line">sudo yum update</div><div class="line">sudo yum-config-manager --enable epel</div><div class="line">sudo yum install iperf3</div><div class="line"></div><div class="line"># 在端口5000上开启iperf3</div><div class="line">sudo iperf3 -s -p 5000</div></pre></td></tr></table></figure></p>
+<p>登录作为client的EC2，执行如下命令:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># 安装系统更新和iperf3</div><div class="line">sudo yum update</div><div class="line">sudo yum-config-manager --enable epel</div><div class="line">sudo yum install iperf3</div></pre></td></tr></table></figure></p>
+<p>Client上执行命令来测速<code>iperf3 -c 172.31.20.28 -i 1 -t 5 --parallel 2 -p 5000</code></p>
+<ul>
+<li><code>-c 172.31.20.28</code> 代表client模式, 连接的服务器IP是172.31.20.28</li>
+<li><code>-i</code> 代表输出间隔为1秒</li>
+<li><code>-t</code> 代表持续5秒</li>
+<li><code>--parallel</code> 代表并行数为2</li>
+<li><code>-p</code> 代表连接服务器的5000端口。</li>
+</ul>
+<p><code>iperf3 -c 172.31.20.28 -i 1 -t 5 --parallel 2 -p 5000</code>的输出如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">[ec2-user@ip-172-31-31-88 ~]$ iperf3 -c 172.31.20.28 -i 1 -t 5 --parallel 2 -p 5000</div><div class="line">Connecting to host 172.31.20.28, port 5000</div><div class="line">[  4] local 172.31.31.88 port 41798 connected to 172.31.20.28 port 5000</div><div class="line">[  6] local 172.31.31.88 port 41800 connected to 172.31.20.28 port 5000</div><div class="line">[ ID] Interval           Transfer     Bandwidth       Retr  Cwnd</div><div class="line">[  4]   0.00-1.00   sec  72.6 MBytes   609 Mbits/sec    0    288 KBytes</div><div class="line">[  6]   0.00-1.00   sec  71.1 MBytes   596 Mbits/sec    0    288 KBytes</div><div class="line">[SUM]   0.00-1.00   sec   144 MBytes  1.21 Gbits/sec    0</div><div class="line">- - - - - - - - - - - - - - - - - - - - - - - - -</div><div class="line">[  4]   1.00-2.00   sec  54.2 MBytes   455 Mbits/sec    4    446 KBytes</div><div class="line">[  6]   1.00-2.00   sec  54.7 MBytes   459 Mbits/sec    3    454 KBytes</div><div class="line">[SUM]   1.00-2.00   sec   109 MBytes   913 Mbits/sec    7</div><div class="line">- - - - - - - - - - - - - - - - - - - - - - - - -</div><div class="line">[  4]   2.00-3.00   sec  26.2 MBytes   220 Mbits/sec    1    507 KBytes</div><div class="line">[  6]   2.00-3.00   sec  27.2 MBytes   228 Mbits/sec    1    524 KBytes</div><div class="line">[SUM]   2.00-3.00   sec  53.4 MBytes   448 Mbits/sec    2</div><div class="line">- - - - - - - - - - - - - - - - - - - - - - - - -</div><div class="line">[  4]   3.00-4.00   sec  24.0 MBytes   201 Mbits/sec    2    551 KBytes</div><div class="line">[  6]   3.00-4.00   sec  28.9 MBytes   243 Mbits/sec    1    542 KBytes</div><div class="line">[SUM]   3.00-4.00   sec  52.9 MBytes   444 Mbits/sec    3</div><div class="line">- - - - - - - - - - - - - - - - - - - - - - - - -</div><div class="line">[  4]   4.00-5.00   sec  33.1 MBytes   278 Mbits/sec    1    551 KBytes</div><div class="line">[  6]   4.00-5.00   sec  20.9 MBytes   175 Mbits/sec    4    428 KBytes</div><div class="line">[SUM]   4.00-5.00   sec  54.0 MBytes   453 Mbits/sec    5</div><div class="line">- - - - - - - - - - - - - - - - - - - - - - - - -</div><div class="line">[ ID] Interval           Transfer     Bandwidth       Retr</div><div class="line">[  4]   0.00-5.00   sec   210 MBytes   353 Mbits/sec    8             sender</div><div class="line">[  4]   0.00-5.00   sec   208 MBytes   348 Mbits/sec                  receiver</div><div class="line">[  6]   0.00-5.00   sec   203 MBytes   340 Mbits/sec    9             sender</div><div class="line">[  6]   0.00-5.00   sec   201 MBytes   337 Mbits/sec                  receiver</div><div class="line">[SUM]   0.00-5.00   sec   413 MBytes   693 Mbits/sec   17             sender</div><div class="line">[SUM]   0.00-5.00   sec   409 MBytes   686 Mbits/sec                  receiver</div><div class="line"></div><div class="line">iperf Done.</div><div class="line">[ec2-user@ip-172-31-31-88 ~]$</div></pre></td></tr></table></figure></p>
+<h3 id="Amazon-Linux-2测速"><a href="#Amazon-Linux-2测速" class="headerlink" title="Amazon Linux 2测速"></a>Amazon Linux 2测速</h3><h4 id="环境说明-1"><a href="#环境说明-1" class="headerlink" title="环境说明"></a>环境说明</h4><ul>
+<li>两台m4.large</li>
+<li>AMI为Amazon Linux 2 AMI (HVM), SSD Volume Type</li>
+<li>两台Instance在同一个AZ中</li>
+</ul>
+<p><strong>试验中，iperf3监听5000端口，EC2对应的SG中需要开启端口5000</strong></p>
+<h4 id="安装测试-1"><a href="#安装测试-1" class="headerlink" title="安装测试"></a>安装测试</h4><p>登录作为Server的EC2，执行如下命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"># 安装系统更新和iperf3</div><div class="line">sudo yum update -y</div><div class="line">sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm</div><div class="line">sudo yum install -y iperf3</div><div class="line"></div><div class="line"># 在端口5000上开启iperf3</div><div class="line">sudo iperf3 -s -p 5000</div></pre></td></tr></table></figure></p>
+<p>登录作为client的EC2，执行如下命令:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># 安装系统更新和iperf3</div><div class="line">sudo yum update -y</div><div class="line">sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm</div><div class="line">sudo yum install -y iperf3</div></pre></td></tr></table></figure></p>
+<p>Client上执行命令来测速<code>iperf3 -c 172.31.44.223 -i 1 -t 5 --parallel 2 -p 5000</code></p>
+<ul>
+<li><code>-c 172.31.44.223</code> 代表client模式, 连接的服务端IP地址是172.31.44.223</li>
+<li><code>-i</code> 代表输出间隔为1秒</li>
+<li><code>-t</code> 代表持续5秒</li>
+<li><code>--parallel</code> 代表并行数为2</li>
+<li><code>-p</code> 代表连接服务器的5000端口。</li>
+</ul>
+<p><code>iperf3 -c 172.31.44.223 -i 1 -t 5 --parallel 2 -p 5000</code>的输出如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">[ec2-user@ip-172-31-34-102 ~]$ iperf3 -c 172.31.44.223 -i 1 -t 5 --parallel 2 -p 5000</div><div class="line">Connecting to host 172.31.44.223, port 5000</div><div class="line">[  4] local 172.31.34.102 port 36994 connected to 172.31.44.223 port 5000</div><div class="line">[  6] local 172.31.34.102 port 36996 connected to 172.31.44.223 port 5000</div><div class="line">[ ID] Interval           Transfer     Bandwidth       Retr  Cwnd</div><div class="line">[  4]   0.00-1.00   sec  99.4 MBytes   834 Mbits/sec    5    612 KBytes</div><div class="line">[  6]   0.00-1.00   sec  99.3 MBytes   833 Mbits/sec    6    620 KBytes</div><div class="line">[SUM]   0.00-1.00   sec   199 MBytes  1.67 Gbits/sec   11</div><div class="line">- - - - - - - - - - - - - - - - - - - - - - - - -</div><div class="line">[  4]   1.00-2.00   sec  28.1 MBytes   236 Mbits/sec    0    787 KBytes</div><div class="line">[  6]   1.00-2.00   sec  27.3 MBytes   229 Mbits/sec    0    787 KBytes</div><div class="line">[SUM]   1.00-2.00   sec  55.4 MBytes   465 Mbits/sec    0</div><div class="line">- - - - - - - - - - - - - - - - - - - - - - - - -</div><div class="line">[  4]   2.00-3.00   sec  26.9 MBytes   226 Mbits/sec    1    699 KBytes</div><div class="line">[  6]   2.00-3.00   sec  26.2 MBytes   220 Mbits/sec    1    699 KBytes</div><div class="line">[SUM]   2.00-3.00   sec  53.1 MBytes   446 Mbits/sec    2</div><div class="line">- - - - - - - - - - - - - - - - - - - - - - - - -</div><div class="line">[  4]   3.00-4.00   sec  27.1 MBytes   227 Mbits/sec    1    603 KBytes</div><div class="line">[  6]   3.00-4.00   sec  26.1 MBytes   219 Mbits/sec    0    856 KBytes</div><div class="line">[SUM]   3.00-4.00   sec  53.2 MBytes   446 Mbits/sec    1</div><div class="line">- - - - - - - - - - - - - - - - - - - - - - - - -</div><div class="line">[  4]   4.00-5.00   sec  28.0 MBytes   235 Mbits/sec    1    559 KBytes</div><div class="line">[  6]   4.00-5.00   sec  26.5 MBytes   223 Mbits/sec    0    996 KBytes</div><div class="line">[SUM]   4.00-5.00   sec  54.5 MBytes   457 Mbits/sec    1</div><div class="line">- - - - - - - - - - - - - - - - - - - - - - - - -</div><div class="line">[ ID] Interval           Transfer     Bandwidth       Retr</div><div class="line">[  4]   0.00-5.00   sec   209 MBytes   351 Mbits/sec    8             sender</div><div class="line">[  4]   0.00-5.00   sec   207 MBytes   348 Mbits/sec                  receiver</div><div class="line">[  6]   0.00-5.00   sec   205 MBytes   345 Mbits/sec    7             sender</div><div class="line">[  6]   0.00-5.00   sec   203 MBytes   340 Mbits/sec                  receiver</div><div class="line">[SUM]   0.00-5.00   sec   415 MBytes   696 Mbits/sec   15             sender</div><div class="line">[SUM]   0.00-5.00   sec   410 MBytes   688 Mbits/sec                  receiver</div><div class="line"></div><div class="line">iperf Done.</div><div class="line">[ec2-user@ip-172-31-34-102 ~]$</div></pre></td></tr></table></figure></p>
+<h3 id="比较总结"><a href="#比较总结" class="headerlink" title="比较总结"></a>比较总结</h3><ul>
+<li>Amazon Linux是基于RHEL6的，Amazon Linux 2是基于RHEL 7的，两者的差别可以认为就类似于RHEL 6和RHEL 7。</li>
+<li>Amazon Linux 2中默认不带epel的yum源，需要自己安装。而Amazon Linux中默认带epel源，不过默认是disable的，需要用yum-config-manager enable一下。</li>
+<li>iperf3前一两秒会有一个burst，测试时间需要长一点，才能得到一个比较真实的测试结果。</li>
+<li>关于EC2网络带宽的猜想: 每个机型的带宽限制，应该是AWS在逻辑层面做的限制，而不是在物理硬件层面的限制。</li>
+</ul>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://www.linode.com/docs/networking/diagnostics/install-iperf-to-diagnose-network-speed-in-linux/" target="_blank" rel="external">Network Throughput Testing with iPerf</a></li>
+<li><a href="https://amazonaws-china.com/premiumsupport/knowledge-center/network-throughput-benchmark-linux-ec2/" target="_blank" rel="external">How do I benchmark network throughput between Amazon EC2 Linux instances in the same VPC?</a></li>
+<li><a href="https://amazonaws-china.com/premiumsupport/knowledge-center/ec2-enable-epel/" target="_blank" rel="external">How do I enable the EPEL repository for my Amazon EC2 instance running CentOS, RHEL, or Amazon Linux?</a></li>
+<li><a href="https://cloudonaut.io/ec2-network-performance-cheat-sheet/" target="_blank" rel="external">EC2 Network Performance Cheat Sheet</a></li>
+</ul>
+	  
+	</div>
+
+	<div>
+  	<center>
+	<div class="pagination">
+<ul class="pagination">
+	 
+		
+          <li class="prev disabled"><a><i class="fa fa-arrow-circle-o-left"></i>Prev</a></li>
+        
+
+        <li><a href="/archives"><i class="fa fa-archive"></i>Archive</a></li>
+
+		
+		   <li class="next"><a href="/2019/07/04/how-to-cancel-automatic-spelling-in-macos/" class="alignright next">Next<i class="fa fa-arrow-circle-o-right"></i></a></li>         
+        
+	
+</ul>
+</div>
+
+    </center>
+	</div>
+
+    <!-- share -->
+    
+        
+    <div class="bdsharebuttonbox">
+        <a href="#" class="bds_more" data-cmd="more"></a>
+        <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+        <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+        <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+        <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+        <a href="#" class="bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+        <a href="#" class="bds_evernotecn" data-cmd="evernotecn" title="分享到印象笔记"></a>
+        <a href="#" class="bds_youdao" data-cmd="youdao" title="分享到有道云笔记"></a>
+        <a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+    </div>
+    <script>
+        window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"24"},"share":{}};
+        with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+    </script>
+
+
+        
+
+    
+	
+	<!-- comment -->
+	
+<section id="comment">
+  <h2 class="title">Comments</h2>
+  
+  	 <div id="disqus_thread">
+     <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  	 </div>
+  
+</section>
+
+
+	</div> <!-- col-md-9/col-md-12 -->
+		
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta">
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2019-07-06
+	</div>
+	
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
+	   <div id="toc" class="toc collapse in">
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#介绍"><span class="toc-article-text">介绍</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#Amazon-Linux-测速"><span class="toc-article-text">Amazon Linux 测速</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#环境说明"><span class="toc-article-text">环境说明</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#安装测试"><span class="toc-article-text">安装测试</span></a></li></ol></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#Amazon-Linux-2测速"><span class="toc-article-text">Amazon Linux 2测速</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#环境说明-1"><span class="toc-article-text">环境说明</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#安装测试-1"><span class="toc-article-text">安装测试</span></a></li></ol></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#比较总结"><span class="toc-article-text">比较总结</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#Reference"><span class="toc-article-text">Reference</span></a></li></ol>
+		</div>
+	
+	</div>
+
+	<!-- categories -->
+    
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>
+    <ul id="categorys" class="tag_box list-unstyled collapse in">
+          
+  <li>
+    <li><a href="/categories/AWS/">AWS<span>34</span></a></li>
+  </li>
+
+    </ul>
+	</div>
+	
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>
+    <ul id="tags" class="tag_box list-unstyled collapse in">
+	    
+  <li><a href="/tags/EC2/">EC2<span>8</span></a></li> <li><a href="/tags/Linux/">Linux<span>13</span></a></li>
+    </ul>
+	</div>
+	
+
+    <hr>
+
+</div><!-- col-md-3 -->
+
+	</div>
+		
+
+</div><!-- row -->
+
+<script type="text/javascript">
+var disqus_shortname = 'jibing57-blog';
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  &copy; 2019 jibing57
+  
+      with help from <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>.    
+</p> </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>

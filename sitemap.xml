@@ -2,6 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://www.jibing57.com/2019/09/24/backup-tools-borgbackup/</loc>
+    
+    <lastmod>2019-09-24T08:52:11.527Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.jibing57.com/2019/06/04/how-to-make-local-yum-repository-on-centos-7/</loc>
+    
+    <lastmod>2019-09-24T03:00:49.117Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.jibing57.com/2019/04/26/command-tips/</loc>
+    
+    <lastmod>2019-09-11T09:02:55.679Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.jibing57.com/2019/07/24/setlocale-LC-CTYPE-cannot-change-locale-UTF-8-issue-when-ssh-to-linux-in-Mac/</loc>
+    
+    <lastmod>2019-07-24T05:30:46.608Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.jibing57.com/2019/07/06/how-to-check-network-throughput-on-aws-EC2/</loc>
     
     <lastmod>2019-07-06T07:28:40.959Z</lastmod>
@@ -9,23 +37,9 @@
   </url>
   
   <url>
-    <loc>https://www.jibing57.com/2019/06/04/how-to-make-local-yum-repository-on-centos-7/</loc>
-    
-    <lastmod>2019-07-05T06:41:14.809Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://www.jibing57.com/2019/07/04/how-to-cancel-automatic-spelling-in-macos/</loc>
     
     <lastmod>2019-07-04T06:58:33.589Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.jibing57.com/2019/04/26/command-tips/</loc>
-    
-    <lastmod>2019-07-04T06:25:34.985Z</lastmod>
     
   </url>
   
@@ -401,13 +415,6 @@
   </url>
   
   <url>
-    <loc>https://www.jibing57.com/2017/10/29/ruby-paperclip-destroy-callback-nil/</loc>
-    
-    <lastmod>2017-12-25T07:09:03.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://www.jibing57.com/2017/07/25/useful-website-of-aws/</loc>
     
     <lastmod>2017-12-25T07:09:03.000Z</lastmod>
@@ -415,28 +422,14 @@
   </url>
   
   <url>
-    <loc>https://www.jibing57.com/2017/07/25/how-to-read-text-on-macos/</loc>
+    <loc>https://www.jibing57.com/2017/10/29/ruby-paperclip-destroy-callback-nil/</loc>
     
-    <lastmod>2017-12-25T07:09:02.000Z</lastmod>
+    <lastmod>2017-12-25T07:09:03.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://www.jibing57.com/2017/12/12/how-to-write-multiline-to-file-by-shell/</loc>
-    
-    <lastmod>2017-12-25T07:09:02.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.jibing57.com/2017/10/30/how-to-use-post-link-on-hexo/</loc>
-    
-    <lastmod>2017-12-25T07:09:02.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.jibing57.com/2017/10/24/how-to-use-aws-cli-with-multi-user/</loc>
     
     <lastmod>2017-12-25T07:09:02.000Z</lastmod>
     
@@ -450,6 +443,27 @@
   </url>
   
   <url>
+    <loc>https://www.jibing57.com/2017/10/24/how-to-use-aws-cli-with-multi-user/</loc>
+    
+    <lastmod>2017-12-25T07:09:02.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.jibing57.com/2017/07/25/how-to-read-text-on-macos/</loc>
+    
+    <lastmod>2017-12-25T07:09:02.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.jibing57.com/2017/10/30/how-to-use-post-link-on-hexo/</loc>
+    
+    <lastmod>2017-12-25T07:09:02.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.jibing57.com/2017/07/24/AWS-Certified-Developer/</loc>
     
     <lastmod>2017-12-25T07:08:09.000Z</lastmod>
@@ -457,7 +471,7 @@
   </url>
   
   <url>
-    <loc>https://www.jibing57.com/2017/12/20/expired-of-S3-RRS/</loc>
+    <loc>https://www.jibing57.com/2017/10/31/hexo-bind-domain-to-github-pages/</loc>
     
     <lastmod>2017-12-25T07:08:09.000Z</lastmod>
     
@@ -471,13 +485,6 @@
   </url>
   
   <url>
-    <loc>https://www.jibing57.com/2017/12/19/deep-dig-on-s3-bucket-permission-exam/</loc>
-    
-    <lastmod>2017-12-25T07:08:09.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://www.jibing57.com/2017/10/31/account-setting-by-aws/</loc>
     
     <lastmod>2017-12-25T07:08:09.000Z</lastmod>
@@ -485,7 +492,14 @@
   </url>
   
   <url>
-    <loc>https://www.jibing57.com/2017/10/31/hexo-bind-domain-to-github-pages/</loc>
+    <loc>https://www.jibing57.com/2017/12/19/deep-dig-on-s3-bucket-permission-exam/</loc>
+    
+    <lastmod>2017-12-25T07:08:09.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.jibing57.com/2017/12/20/expired-of-S3-RRS/</loc>
     
     <lastmod>2017-12-25T07:08:09.000Z</lastmod>
     

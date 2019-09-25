@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.jibing57.com/"/>
-  <updated>2019-07-06T07:28:40.959Z</updated>
+  <updated>2019-09-24T08:52:11.527Z</updated>
   <id>https://www.jibing57.com/</id>
   
   <author>
@@ -15,6 +15,65 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>BorgBackup -- 基于命令行的增量备份工具</title>
+    <link href="https://www.jibing57.com/2019/09/24/backup-tools-borgbackup/"/>
+    <id>https://www.jibing57.com/2019/09/24/backup-tools-borgbackup/</id>
+    <published>2019-09-24T13:43:38.000Z</published>
+    <updated>2019-09-24T08:52:11.527Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;a href=&quot;https://www.borgbackup.org/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;BorgBackup&lt;/a&gt;(简称 Borg)是一款基于命令行的增量备份工具。Github地址:&lt;a href=&quot;https://github.com/borgbackup/borg&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/borgbackup/borg&lt;/a&gt;&lt;br&gt;官网上所述的优势如下:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Space efficient storage of backups. - 高效存储&lt;/li&gt;
+&lt;li&gt;Secure, authenticated encryption. - 可加密&lt;/li&gt;
+&lt;li&gt;Compression: LZ4, zlib, LZMA, zstd (since borg 1.1.4). - 支持多种压缩算法&lt;/li&gt;
+&lt;li&gt;Mountable backups with FUSE. - 可使用FUSE异地本非&lt;/li&gt;
+&lt;li&gt;Easy installation on multiple platforms: Linux, macOS, BSD, … - 支持多个平台&lt;/li&gt;
+&lt;li&gt;Free software (BSD license). - 开源&lt;/li&gt;
+&lt;li&gt;Backed by a large and active open source community.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;CentOS下安装&quot;&gt;&lt;a href=&quot;#CentOS下安装&quot; class=&quot;headerlink&quot; title=&quot;CentOS下安装&quot;&gt;&lt;/a&gt;CentOS下安装&lt;/h3&gt;&lt;p&gt;borgbackup在EPEL中已有提供，CentOS 7下使用如下命令安装:&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;yum install -y borgbackup&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
+    
+    
+      <category term="CentOS" scheme="https://www.jibing57.com/tags/CentOS/"/>
+    
+      <category term="Linux" scheme="https://www.jibing57.com/tags/Linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>在Mac下远程登录Linux时,提示cannot change locale (UTF-8) No such file or directory</title>
+    <link href="https://www.jibing57.com/2019/07/24/setlocale-LC-CTYPE-cannot-change-locale-UTF-8-issue-when-ssh-to-linux-in-Mac/"/>
+    <id>https://www.jibing57.com/2019/07/24/setlocale-LC-CTYPE-cannot-change-locale-UTF-8-issue-when-ssh-to-linux-in-Mac/</id>
+    <published>2019-07-24T13:06:54.000Z</published>
+    <updated>2019-07-24T05:30:46.608Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;问题描述&quot;&gt;&lt;a href=&quot;#问题描述&quot; class=&quot;headerlink&quot; title=&quot;问题描述&quot;&gt;&lt;/a&gt;问题描述&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Mac下设置第一语言为English&lt;/li&gt;
+&lt;li&gt;在Terminal或者iTerm2上登录远端Linux时
+      
+    
+    </summary>
+    
+      <category term="Linux" scheme="https://www.jibing57.com/categories/Linux/"/>
+    
+    
+      <category term="MacOS" scheme="https://www.jibing57.com/tags/MacOS/"/>
+    
+      <category term="SSH" scheme="https://www.jibing57.com/tags/SSH/"/>
+    
+  </entry>
   
   <entry>
     <title>AWS EC2各个类型的网络性能的测试方法</title>
@@ -149,7 +208,7 @@
     <link href="https://www.jibing57.com/2019/06/04/how-to-make-local-yum-repository-on-centos-7/"/>
     <id>https://www.jibing57.com/2019/06/04/how-to-make-local-yum-repository-on-centos-7/</id>
     <published>2019-06-04T13:00:51.000Z</published>
-    <updated>2019-07-05T06:41:14.809Z</updated>
+    <updated>2019-09-24T03:00:49.117Z</updated>
     
     <summary type="html">
     
@@ -477,7 +536,7 @@
     <link href="https://www.jibing57.com/2019/04/26/command-tips/"/>
     <id>https://www.jibing57.com/2019/04/26/command-tips/</id>
     <published>2019-04-26T05:22:40.000Z</published>
-    <updated>2019-07-04T06:25:34.985Z</updated>
+    <updated>2019-09-11T09:02:55.679Z</updated>
     
     <summary type="html">
     
@@ -583,57 +642,6 @@
       <category term="AWS CLI" scheme="https://www.jibing57.com/tags/AWS-CLI/"/>
     
       <category term="Linux" scheme="https://www.jibing57.com/tags/Linux/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>AWS EC2中开启BBR</title>
-    <link href="https://www.jibing57.com/2019/04/02/bbr-on-aws-ec2/"/>
-    <id>https://www.jibing57.com/2019/04/02/bbr-on-aws-ec2/</id>
-    <published>2019-04-02T13:06:46.000Z</published>
-    <updated>2019-04-03T11:28:17.000Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;官网中关于如何在EC2中开启BBR的说明。&lt;a href=&quot;https://aws.amazon.com/amazon-linux-ami/2017.09-release-notes/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Amazon Linux AMI 2017.09 Release Notes&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&quot;开启方法&quot;&gt;&lt;a href=&quot;#开启方法&quot; class=&quot;headerlink&quot; title=&quot;开启方法&quot;&gt;&lt;/a&gt;开启方法&lt;/h3&gt;&lt;p&gt;开启方法摘录如下:&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;The Kernel has been updated to latest 4.9.y stable tree, new ENA driver 1.3.0 as well as support for TCP Bottleneck Bandwidth and RTT (BBR) which improve network performance.&lt;br&gt;BBR is not enabled by default. You can enable it on your EC2 Instance via:&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;10&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;11&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;12&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;13&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;14&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;15&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;16&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;17&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;18&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;19&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;20&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;21&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;22&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;23&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ sudo modprobe tcp_bbr&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;$ sudo modprobe sch_fq&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;$ sudo sysctl -w net.ipv4.tcp_congestion_control=bbr&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;Persistent configuration should look like:&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;$ sudo su -&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;# cat &amp;lt;&amp;lt;EOF&amp;gt;&amp;gt; /etc/sysconfig/modules/tcpcong.modules  &lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;gt;#!/bin/bash&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;gt; exec /sbin/modprobe tcp_bbr &amp;gt;/dev/null 2&amp;gt;&amp;amp;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;gt; exec /sbin/modprobe sch_fq &amp;gt;/dev/null 2&amp;gt;&amp;amp;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;gt; EOF&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;# chmod 755 /etc/sysconfig/modules/tcpcong.modules&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;# echo &amp;quot;net.ipv4.tcp_congestion_control = bbr&amp;quot; &amp;gt;&amp;gt; /etc/sysctl.d/00-tcpcong.conf&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-    
-    </summary>
-    
-      <category term="AWS" scheme="https://www.jibing57.com/categories/AWS/"/>
-    
-    
-      <category term="EC2" scheme="https://www.jibing57.com/tags/EC2/"/>
-    
-      <category term="Network" scheme="https://www.jibing57.com/tags/Network/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Mac下共享ShadowsocksX-NG的梯子给iOS</title>
-    <link href="https://www.jibing57.com/2019/03/24/share-ShadowsocksX-NG-to-iOS/"/>
-    <id>https://www.jibing57.com/2019/03/24/share-ShadowsocksX-NG-to-iOS/</id>
-    <published>2019-03-24T13:16:46.000Z</published>
-    <updated>2019-03-26T02:58:38.000Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;提供一个Mac下共享&lt;code&gt;ShadowsocksX-NG&lt;/code&gt;(小飞机)梯子给iPhone的方法。&lt;/p&gt;
-&lt;h3 id=&quot;Mac端设置&quot;&gt;&lt;a href=&quot;#Mac端设置&quot; class=&quot;headerlink&quot; title=&quot;Mac端设置&quot;&gt;&lt;/a&gt;Mac端设置&lt;/h3&gt;&lt;p&gt;打开小飞机的“偏好设置”，切换到HTTP一栏，其中的HTTP代理监听地址默认是127.0.0.1，将其改成0.0.0.0。保留默认的1087或改为自己想要设置的端口，并勾选“开启HTTP代理服务器”。&lt;br&gt;&lt;img src=&quot;/images/ShadowSock/shadowsock_http_proxy.png&quot; alt=&quot;shadowsock_http_proxy.png&quot;&gt;&lt;/p&gt;
-&lt;p&gt;Terminal中输入&lt;code&gt;ifconfig&lt;/code&gt;查看Mac的IP地址, 供iPhone设置时使用。此处是&lt;code&gt;192.168.3.18&lt;/code&gt;&lt;br&gt;
-    
-    </summary>
-    
-      <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
-    
-    
-      <category term="MacOS" scheme="https://www.jibing57.com/tags/MacOS/"/>
-    
-      <category term="iOS" scheme="https://www.jibing57.com/tags/iOS/"/>
     
   </entry>
   

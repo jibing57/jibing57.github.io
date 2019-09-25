@@ -1,0 +1,347 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>BorgBackup -- 基于命令行的增量备份工具 | Recording</title>
+  <meta name="author" content="jibing57">
+  
+  <meta name="description" content="AWS, 阅读, Architecture, PostgreSQL">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="BorgBackup -- 基于命令行的增量备份工具"/>
+  <meta property="og:site_name" content="Recording"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/css/themes/bootstrap.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/comment.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+  
+  <!-- analytics -->
+  
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-111771042-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?59d3e14cdc96877383afed646f44d216";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+</head>
+
+ <body>  
+  <nav id="main-nav" class="navbar  navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+	<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+       <a class="navbar-brand" href="/">Recording</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class="fa fa-archive"></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class="fa fa-folder"></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class="fa fa-tags"></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/douban" title="Douban">
+			  <i class="fa fa-book"></i>Douban
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header ">		
+			<h1 class="title "> BorgBackup -- 基于命令行的增量备份工具</h1>
+		</div>		
+	
+
+
+
+
+   <style type="text/css">
+           img, video {
+                -webkit-box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+                -moz-box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+                box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+           }
+   </style>
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
+
+	<!-- content -->
+	<div class="mypage">		
+	  		
+
+	  <p><a href="https://www.borgbackup.org/" target="_blank" rel="external">BorgBackup</a>(简称 Borg)是一款基于命令行的增量备份工具。Github地址:<a href="https://github.com/borgbackup/borg" target="_blank" rel="external">https://github.com/borgbackup/borg</a><br>官网上所述的优势如下:</p>
+<ul>
+<li>Space efficient storage of backups. - 高效存储</li>
+<li>Secure, authenticated encryption. - 可加密</li>
+<li>Compression: LZ4, zlib, LZMA, zstd (since borg 1.1.4). - 支持多种压缩算法</li>
+<li>Mountable backups with FUSE. - 可使用FUSE异地本非</li>
+<li>Easy installation on multiple platforms: Linux, macOS, BSD, … - 支持多个平台</li>
+<li>Free software (BSD license). - 开源</li>
+<li>Backed by a large and active open source community.</li>
+</ul>
+<h3 id="CentOS下安装"><a href="#CentOS下安装" class="headerlink" title="CentOS下安装"></a>CentOS下安装</h3><p>borgbackup在EPEL中已有提供，CentOS 7下使用如下命令安装:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm</div><div class="line">yum install -y borgbackup</div></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<h3 id="简单使用"><a href="#简单使用" class="headerlink" title="简单使用"></a>简单使用</h3><p>BorgBackup备份有两层概念,分为repository和archive, 顾名思义，repository就是一个备份仓库，archive就是每次备份。每次备份时，工具会检查各个archive，只备份有变动的数据。</p>
+<p>BorgBackup几个基本的命令如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">borg init -- 初始化一个仓库</div><div class="line">borg create -- 创建一个archive到仓库中</div><div class="line">borg list -- 列出所有的仓库或者某个仓库中某个archive的内容</div><div class="line">borg extract -- 还原某个archive</div><div class="line">borg delete -- 手动删除某个archive</div><div class="line">borg config -- 获取或者设置某个配置</div></pre></td></tr></table></figure></p>
+<p>一个简单的备份和恢复的流程如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div></pre></td><td class="code"><pre><div class="line"># 创建仓库存储目录</div><div class="line">$ mkdir -p /opt/backup/</div><div class="line"></div><div class="line"># 新建仓库</div><div class="line">$ borg init --encryption=repokey /opt/backup/borg_sample</div><div class="line"></div><div class="line"></div><div class="line"># 创建测试备份内容</div><div class="line"># 会被修改的文件file_change.txt，不会被修改的文件file_static.txt，二进制大文件random.dump</div><div class="line">$ mkdir -p /opt/data</div><div class="line">$ cd /opt/data</div><div class="line">$ echo &quot;here is the first line of file 1&quot; &gt;&gt; file_change.txt</div><div class="line">$ echo &quot;here is the static file&quot; &gt;&gt; file_static.txt</div><div class="line">$ dd if=/dev/urandom of=random.dump bs=10M count=10</div><div class="line">10+0 records in</div><div class="line">10+0 records out</div><div class="line">104857600 bytes (105 MB) copied, 0.950948 s, 110 MB/s</div><div class="line">$</div><div class="line"></div><div class="line"># 第一次备份</div><div class="line">$ borg create --stats /opt/backup/borg_sample::first /opt/data/</div><div class="line">------------------------------------------------------------------------------</div><div class="line">Archive name: first</div><div class="line">Archive fingerprint: 92bf20bca7a1d620d92f831e763601ca63ff951944de81146332ad12e93bb787</div><div class="line">Time (start): Tue, 2019-09-24 04:06:51</div><div class="line">Time (end):   Tue, 2019-09-24 04:06:52</div><div class="line">Duration: 0.82 seconds</div><div class="line">Number of files: 3</div><div class="line">Utilization of max. archive size: 0%</div><div class="line">------------------------------------------------------------------------------</div><div class="line">                       Original size      Compressed size    Deduplicated size</div><div class="line">This archive:              104.86 MB            105.27 MB            105.27 MB</div><div class="line">All archives:              104.86 MB            105.27 MB            105.27 MB</div><div class="line"></div><div class="line">                       Unique chunks         Total chunks</div><div class="line">Chunk index:                      48                   48</div><div class="line">------------------------------------------------------------------------------</div><div class="line">$</div><div class="line"></div><div class="line"># 修改备份内容,修改file_change.txt， 新增file_new.txt，新增random_2.dump</div><div class="line">$ cd /opt/data</div><div class="line">$ echo &quot;here is the second line of file 1&quot; &gt;&gt; file_change.txt</div><div class="line">$ echo &quot;here is new file for second backup&quot; &gt;&gt; file_new.txt</div><div class="line">$ dd if=/dev/urandom of=random_2.dump bs=10M count=10</div><div class="line"></div><div class="line">10+0 records in</div><div class="line">10+0 records out</div><div class="line">104857600 bytes (105 MB) copied, 0.599837 s, 175 MB/s</div><div class="line">$</div><div class="line"></div><div class="line"># 第二次备份</div><div class="line">$ borg create --stats /opt/backup/borg_sample::second /opt/data/</div><div class="line">------------------------------------------------------------------------------</div><div class="line">Archive name: second</div><div class="line">Archive fingerprint: a423a94e8a8f4352e72c0951e6a408f4f4f6d5f362518dcbcba77b9005dafa12</div><div class="line">Time (start): Tue, 2019-09-24 04:10:55</div><div class="line">Time (end):   Tue, 2019-09-24 04:10:56</div><div class="line">Duration: 1.26 seconds</div><div class="line">Number of files: 5</div><div class="line">Utilization of max. archive size: 0%</div><div class="line">------------------------------------------------------------------------------</div><div class="line">                       Original size      Compressed size    Deduplicated size</div><div class="line">This archive:              209.72 MB            210.55 MB            105.28 MB</div><div class="line">All archives:              314.58 MB            315.82 MB            210.55 MB</div><div class="line"></div><div class="line">                       Unique chunks         Total chunks</div><div class="line">Chunk index:                      92                  137</div><div class="line">------------------------------------------------------------------------------</div><div class="line">$</div><div class="line"></div><div class="line"># 列出所有的备份</div><div class="line">$ borg list /opt/backup/borg_sample/</div><div class="line"></div><div class="line">first                                Tue, 2019-09-24 04:06:51 [92bf20bca7a1d620d92f831e763601ca63ff951944de81146332ad12e93bb787]</div><div class="line">second                               Tue, 2019-09-24 04:10:55 [a423a94e8a8f4352e72c0951e6a408f4f4f6d5f362518dcbcba77b9005dafa12]</div><div class="line">$</div><div class="line"></div><div class="line"># 列出第一次备份的内容</div><div class="line">$ borg list /opt/backup/borg_sample::first</div><div class="line">drwxr-xr-x root   root          0 Tue, 2019-09-24 04:03:45 opt/data</div><div class="line">-rw-r--r-- root   root         33 Tue, 2019-09-24 04:03:45 opt/data/file_change.txt</div><div class="line">-rw-r--r-- root   root         24 Tue, 2019-09-24 04:03:45 opt/data/file_static.txt</div><div class="line">-rw-r--r-- root   root   104857600 Tue, 2019-09-24 04:03:46 opt/data/random.dump</div><div class="line">$</div><div class="line"></div><div class="line"># 将第一次备份导出, 查看file_change.txt内容，只包含第一次的内容</div><div class="line">$ mkdir -p /opt/restore/first</div><div class="line">$ cd /opt/restore/first</div><div class="line">$ borg extract --list /opt/backup/borg_sample::first</div><div class="line">opt/data</div><div class="line">opt/data/file_change.txt</div><div class="line">opt/data/file_static.txt</div><div class="line">opt/data/random.dump</div><div class="line">$</div><div class="line">$ cat opt/data/file_change.txt</div><div class="line">here is the first line of file 1</div><div class="line">$</div><div class="line"></div><div class="line"></div><div class="line"># 将第二次备份导出, 查看file_change.txt内容，其中包含了第二次新增加的内容</div><div class="line"># 也包含了第一次新增的file_new.txt和random_2.dump</div><div class="line">$ mkdir -p /opt/restore/second</div><div class="line">$ cd /opt/restore/second</div><div class="line">$ borg extract --list /opt/backup/borg_sample::second</div><div class="line">opt/data</div><div class="line">opt/data/file_change.txt</div><div class="line">opt/data/file_static.txt</div><div class="line">opt/data/random.dump</div><div class="line">opt/data/file_new.txt</div><div class="line">opt/data/random_2.dump</div><div class="line">$</div><div class="line">$ cat opt/data/file_change.txt</div><div class="line">here is the first line of file 1</div><div class="line">here is the second line of file 1</div><div class="line">$</div><div class="line"></div><div class="line"># 第一次备份是100M,第二次是200M, 但由于是增量备份的，random.dump没有改变，因此仓库的总容量只有200M</div><div class="line">$ du -sh /opt/backup/borg_sample/</div><div class="line">201M	/opt/backup/borg_sample/</div><div class="line">$</div><div class="line"></div><div class="line"># 删除第一次备份，恢复第二次的备份</div><div class="line"># 可以看到再第一次和第二次备份中都有的file_static.txt和random.dump都可以恢复出来。</div><div class="line"># 恢复出来的数据和之前恢复的数据是一样的</div><div class="line">$ borg delete /opt/backup/borg_sample::first</div><div class="line">$ borg list /opt/backup/borg_sample</div><div class="line">second                               Tue, 2019-09-24 04:10:55 [a423a94e8a8f4352e72c0951e6a408f4f4f6d5f362518dcbcba77b9005dafa12]</div><div class="line">$</div><div class="line">$ mkdir -p /opt/restore/second_back</div><div class="line">$ cd /opt/restore/second_back</div><div class="line">$ borg extract --list /opt/backup/borg_sample::second</div><div class="line">opt/data</div><div class="line">opt/data/file_change.txt</div><div class="line">opt/data/file_static.txt</div><div class="line">opt/data/random.dump</div><div class="line">opt/data/file_new.txt</div><div class="line">opt/data/random_2.dump</div><div class="line">$</div><div class="line">$ diff -r /opt/restore/second /opt/restore/second_back</div><div class="line">$</div><div class="line">$ cat opt/data/file_change.txt</div><div class="line">here is the first line of file 1</div><div class="line">here is the second line of file 1</div><div class="line">$</div><div class="line">$ cat opt/data/file_static.txt</div><div class="line">here is the static file</div><div class="line">$</div></pre></td></tr></table></figure></p>
+<h3 id="自动备份"><a href="#自动备份" class="headerlink" title="自动备份"></a>自动备份</h3><p>官网上的一个自动备份的shell脚本<a href="https://borgbackup.readthedocs.io/en/stable/quickstart.html#automating-backups" target="_blank" rel="external">automating-backups</a><br>可按照实际使用要求进行修改。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div></pre></td><td class="code"><pre><div class="line">#!/bin/sh</div><div class="line"></div><div class="line"># Setting this, so the repo does not need to be given on the commandline:</div><div class="line">export BORG_REPO=ssh://username@example.com:2022/~/backup/main</div><div class="line"></div><div class="line"># Setting this, so you won&apos;t be asked for your repository passphrase:</div><div class="line">export BORG_PASSPHRASE=&apos;XYZl0ngandsecurepa_55_phrasea&amp;&amp;123&apos;</div><div class="line"># or this to ask an external program to supply the passphrase:</div><div class="line">export BORG_PASSCOMMAND=&apos;pass show backup&apos;</div><div class="line"></div><div class="line"># some helpers and error handling:</div><div class="line">info() &#123; printf &quot;\n%s %s\n\n&quot; &quot;$( date )&quot; &quot;$*&quot; &gt;&amp;2; &#125;</div><div class="line">trap &apos;echo $( date ) Backup interrupted &gt;&amp;2; exit 2&apos; INT TERM</div><div class="line"></div><div class="line">info &quot;Starting backup&quot;</div><div class="line"></div><div class="line"># Backup the most important directories into an archive named after</div><div class="line"># the machine this script is currently running on:</div><div class="line"></div><div class="line">borg create                         \</div><div class="line">    --verbose                       \</div><div class="line">    --filter AME                    \</div><div class="line">    --list                          \</div><div class="line">    --stats                         \</div><div class="line">    --show-rc                       \</div><div class="line">    --compression lz4               \</div><div class="line">    --exclude-caches                \</div><div class="line">    --exclude &apos;/home/*/.cache/*&apos;    \</div><div class="line">    --exclude &apos;/var/cache/*&apos;        \</div><div class="line">    --exclude &apos;/var/tmp/*&apos;          \</div><div class="line">                                    \</div><div class="line">    ::&apos;&#123;hostname&#125;-&#123;now&#125;&apos;            \</div><div class="line">    /etc                            \</div><div class="line">    /home                           \</div><div class="line">    /root                           \</div><div class="line">    /var                            \</div><div class="line"></div><div class="line">backup_exit=$?</div><div class="line"></div><div class="line">info &quot;Pruning repository&quot;</div><div class="line"></div><div class="line"># Use the `prune` subcommand to maintain 7 daily, 4 weekly and 6 monthly</div><div class="line"># archives of THIS machine. The &apos;&#123;hostname&#125;-&apos; prefix is very important to</div><div class="line"># limit prune&apos;s operation to this machine&apos;s archives and not apply to</div><div class="line"># other machines&apos; archives also:</div><div class="line"></div><div class="line">borg prune                          \</div><div class="line">    --list                          \</div><div class="line">    --prefix &apos;&#123;hostname&#125;-&apos;          \</div><div class="line">    --show-rc                       \</div><div class="line">    --keep-daily    7               \</div><div class="line">    --keep-weekly   4               \</div><div class="line">    --keep-monthly  6               \</div><div class="line"></div><div class="line">prune_exit=$?</div><div class="line"></div><div class="line"># use highest exit code as global exit code</div><div class="line">global_exit=$(( backup_exit &gt; prune_exit ? backup_exit : prune_exit ))</div><div class="line"></div><div class="line">if [ $&#123;global_exit&#125; -eq 0 ]; then</div><div class="line">    info &quot;Backup and Prune finished successfully&quot;</div><div class="line">elif [ $&#123;global_exit&#125; -eq 1 ]; then</div><div class="line">    info &quot;Backup and/or Prune finished with warnings&quot;</div><div class="line">else</div><div class="line">    info &quot;Backup and/or Prune finished with errors&quot;</div><div class="line">fi</div><div class="line"></div><div class="line">exit $&#123;global_exit&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="详细使用"><a href="#详细使用" class="headerlink" title="详细使用"></a>详细使用</h3><p>各个命令更细化的命令，官网文档中有非常详细的描述<a href="https://borgbackup.readthedocs.io/en/stable/usage/general.html" target="_blank" rel="external">https://borgbackup.readthedocs.io/en/stable/usage/general.html</a></p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://www.reddit.com/r/linux/comments/69lm87/is_borg_backup_suitable_for_the_production/" target="_blank" rel="external">Reddit上关于BorgBackup的一些讨论</a></li>
+<li><a href="https://www.borgbackup.org/" target="_blank" rel="external">BorgBackup官网</a></li>
+<li><a href="https://github.com/borgbackup/borg" target="_blank" rel="external">BorgBackup Github地址</a></li>
+<li><a href="https://wzyboy.im/post/1106.html" target="_blank" rel="external">BorgBackup —— 增量备份方案</a></li>
+<li><a href="http://lee.kometo.com/archives/1225" target="_blank" rel="external">Linux的备份方案比选及Borg部署的关键技术</a></li>
+</ul>
+	  
+	</div>
+
+	<div>
+  	<center>
+	<div class="pagination">
+<ul class="pagination">
+	 
+		
+          <li class="prev disabled"><a><i class="fa fa-arrow-circle-o-left"></i>Prev</a></li>
+        
+
+        <li><a href="/archives"><i class="fa fa-archive"></i>Archive</a></li>
+
+		
+		   <li class="next"><a href="/2019/07/24/setlocale-LC-CTYPE-cannot-change-locale-UTF-8-issue-when-ssh-to-linux-in-Mac/" class="alignright next">Next<i class="fa fa-arrow-circle-o-right"></i></a></li>         
+        
+	
+</ul>
+</div>
+
+    </center>
+	</div>
+
+    <!-- share -->
+    
+        
+    <div class="bdsharebuttonbox">
+        <a href="#" class="bds_more" data-cmd="more"></a>
+        <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+        <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+        <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+        <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+        <a href="#" class="bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+        <a href="#" class="bds_evernotecn" data-cmd="evernotecn" title="分享到印象笔记"></a>
+        <a href="#" class="bds_youdao" data-cmd="youdao" title="分享到有道云笔记"></a>
+        <a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+    </div>
+    <script>
+        window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"24"},"share":{}};
+        with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+    </script>
+
+
+        
+
+    
+	
+	<!-- comment -->
+	
+<section id="comment">
+  <h2 class="title">Comments</h2>
+  
+  	 <div id="disqus_thread">
+     <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  	 </div>
+  
+</section>
+
+
+	</div> <!-- col-md-9/col-md-12 -->
+		
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta">
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2019-09-24
+	</div>
+	
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
+	   <div id="toc" class="toc collapse in">
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#CentOS下安装"><span class="toc-article-text">CentOS下安装</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#简单使用"><span class="toc-article-text">简单使用</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#自动备份"><span class="toc-article-text">自动备份</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#详细使用"><span class="toc-article-text">详细使用</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#Reference"><span class="toc-article-text">Reference</span></a></li></ol>
+		</div>
+	
+	</div>
+
+	<!-- categories -->
+    
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>
+    <ul id="categorys" class="tag_box list-unstyled collapse in">
+          
+  <li>
+    <li><a href="/categories/Tools/">Tools<span>15</span></a></li>
+  </li>
+
+    </ul>
+	</div>
+	
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>
+    <ul id="tags" class="tag_box list-unstyled collapse in">
+	    
+  <li><a href="/tags/CentOS/">CentOS<span>6</span></a></li> <li><a href="/tags/Linux/">Linux<span>14</span></a></li>
+    </ul>
+	</div>
+	
+
+    <hr>
+
+</div><!-- col-md-3 -->
+
+	</div>
+		
+
+</div><!-- row -->
+
+<script type="text/javascript">
+var disqus_shortname = 'jibing57-blog';
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  &copy; 2019 jibing57
+  
+      with help from <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>.    
+</p> </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>

@@ -139,6 +139,72 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
+			<div class="date"> 2019-05-16 </div>
+			<div class="article-title"><a href="/2019/05/16/how-to-add-SSL-Certification-to-Elastic-Load-Balancer/" >如何在Elastic Load Balancer中添加SSL证书</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="上传方式"><a href="#上传方式" class="headerlink" title="上传方式"></a>上传方式</h3><p>AWS侧上传HTTPS证书有两种方式</p>
+<ul>
+<li>使用 AWS Certificate Manager (ACM)生成，优点是免费，和aws其他服务集成性好，缺点是只能在AWS中使用</li>
+<li>上传第三方证书到AWS Identity and Access Management (IAM) 中，优点是证书生成灵活，缺点是操作麻烦。</li>
+</ul>
+<p>中国区的AWS还没有ACM服务，因此只能使用IAM的方式来上传证书。</p>
+<h3 id="证书相关的一系列命令"><a href="#证书相关的一系列命令" class="headerlink" title="证书相关的一系列命令"></a>证书相关的一系列命令</h3><ol>
+<li><p>证书上传命令<br>如果没有<code>certificate-chain</code>，可以不传。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ aws iam upload-server-certificate --server-certificate-name ExampleCertificate </div><div class="line">                                    --certificate-body file://Certificate.pem </div><div class="line">                                    --certificate-chain file://CertificateChain.pem </div><div class="line">                                    --private-key file://PrivateKey.pem</div></pre></td></tr></table></figure>
+</li>
+<li><p>列出证书命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ aws iam list-server-certificates</div></pre></td></tr></table></figure>
+</li>
+<li><p>获取证书信息命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ aws iam get-server-certificate --server-certificate-name ExampleCertificate</div></pre></td></tr></table></figure>
+</li>
+<li><p>删除证书命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ aws iam delete-server-certificate --server-certificate-name ExampleCertificate</div></pre></td></tr></table></figure>
+</li>
+</ol>
+	
+	</div>
+  <a type="button" href="/2019/05/16/how-to-add-SSL-Certification-to-Elastic-Load-Balancer/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2019-05-10 </div>
+			<div class="article-title"><a href="/2019/05/10/how-to-change-office-UI-language-on-macos/" >在Mac下修改Office的界面显示语言</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>在Macos中，微软的Office套件的UI，是根据系统默认语言来设置的。系统是中文，Office就是中文UI，系统是英文，Office就是英文UI。微软并没有在Office的偏好设置中，设置一个可以切换语言的设置。<br>这让我这种想保持系统英文，Office中文的人感到很难受。<br>官网上搜了一圈，都没有找到可用的办法。功夫不负有心人，最终在office社区里面的这篇帖子提供了解决办法<a href="https://answers.microsoft.com/en-us/msoffice/forum/msoffice_other-mso_mac-mso_mac2016/how-to-manually-change-the-language-used-in-office/abe2a9c1-f550-45de-9d0e-58b99f206c41?page=2" target="_blank" rel="external">How to manually change the language used in Office for Mac 2016 without changing OS language?</a>, 还是我最喜欢的命令行方式。虽然是15，16年的帖子，但是对应的方法，在最新版的Office(版本16.24-19041401)中仍然可用。</p>
+<h3 id="修改方法"><a href="#修改方法" class="headerlink" title="修改方法"></a>修改方法</h3><p>以work为例，记录相关命令如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"># 修改word的语言</div><div class="line">$ defaults write com.microsoft.Word AppleLanguages &apos;(&quot;zh-cn&quot;)&apos;</div><div class="line"></div><div class="line"># 读取word的设置, 可以看到多了一个AppleLanguages的选项。</div><div class="line">$ defaults read com.microsoft.Word</div><div class="line">&#123;</div><div class="line">    ...</div><div class="line">    AppleLanguages =     (</div><div class="line">        &quot;zh-cn&quot;</div><div class="line">    );</div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+	
+	</div>
+  <a type="button" href="/2019/05/10/how-to-change-office-UI-language-on-macos/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
 			<div class="date"> 2019-05-01 </div>
 			<div class="article-title"><a href="/2019/05/01/way-to-make-centos7-bootable-usb-on-macos/" >Macos下制作CentOS 7 USB启动盘</a></div>						
 		</h3>
@@ -374,59 +440,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2019-04-02 </div>
-			<div class="article-title"><a href="/2019/04/02/bbr-on-aws-ec2/" >AWS EC2中开启BBR</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>官网中关于如何在EC2中开启BBR的说明。<a href="https://aws.amazon.com/amazon-linux-ami/2017.09-release-notes/" target="_blank" rel="external">Amazon Linux AMI 2017.09 Release Notes</a></p>
-<h3 id="开启方法"><a href="#开启方法" class="headerlink" title="开启方法"></a>开启方法</h3><p>开启方法摘录如下:</p>
-<blockquote>
-<p>The Kernel has been updated to latest 4.9.y stable tree, new ENA driver 1.3.0 as well as support for TCP Bottleneck Bandwidth and RTT (BBR) which improve network performance.<br>BBR is not enabled by default. You can enable it on your EC2 Instance via:</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">$ sudo modprobe tcp_bbr</div><div class="line"></div><div class="line">$ sudo modprobe sch_fq</div><div class="line"></div><div class="line">$ sudo sysctl -w net.ipv4.tcp_congestion_control=bbr</div><div class="line"></div><div class="line">Persistent configuration should look like:</div><div class="line"></div><div class="line">$ sudo su -</div><div class="line"></div><div class="line"># cat &lt;&lt;EOF&gt;&gt; /etc/sysconfig/modules/tcpcong.modules  </div><div class="line"></div><div class="line">&gt;#!/bin/bash</div><div class="line"></div><div class="line">&gt; exec /sbin/modprobe tcp_bbr &gt;/dev/null 2&gt;&amp;1</div><div class="line"></div><div class="line">&gt; exec /sbin/modprobe sch_fq &gt;/dev/null 2&gt;&amp;1</div><div class="line"></div><div class="line">&gt; EOF</div><div class="line"></div><div class="line"># chmod 755 /etc/sysconfig/modules/tcpcong.modules</div><div class="line"></div><div class="line"># echo &quot;net.ipv4.tcp_congestion_control = bbr&quot; &gt;&gt; /etc/sysctl.d/00-tcpcong.conf</div></pre></td></tr></table></figure>
-	
-	</div>
-  <a type="button" href="/2019/04/02/bbr-on-aws-ec2/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2019-03-24 </div>
-			<div class="article-title"><a href="/2019/03/24/share-ShadowsocksX-NG-to-iOS/" >Mac下共享ShadowsocksX-NG的梯子给iOS</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>提供一个Mac下共享<code>ShadowsocksX-NG</code>(小飞机)梯子给iPhone的方法。</p>
-<h3 id="Mac端设置"><a href="#Mac端设置" class="headerlink" title="Mac端设置"></a>Mac端设置</h3><p>打开小飞机的“偏好设置”，切换到HTTP一栏，其中的HTTP代理监听地址默认是127.0.0.1，将其改成0.0.0.0。保留默认的1087或改为自己想要设置的端口，并勾选“开启HTTP代理服务器”。<br><img src="/images/ShadowSock/shadowsock_http_proxy.png" alt="shadowsock_http_proxy.png"></p>
-<p>Terminal中输入<code>ifconfig</code>查看Mac的IP地址, 供iPhone设置时使用。此处是<code>192.168.3.18</code><br>
-	
-	</div>
-  <a type="button" href="/2019/03/24/share-ShadowsocksX-NG-to-iOS/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -498,11 +511,11 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/Code/">Code<span>5</span></a></li>
 		
-			<li><a href="/categories/Linux/">Linux<span>4</span></a></li>
+			<li><a href="/categories/Linux/">Linux<span>5</span></a></li>
 		
 			<li><a href="/categories/Shell/">Shell<span>8</span></a></li>
 		
-			<li><a href="/categories/Tools/">Tools<span>14</span></a></li>
+			<li><a href="/categories/Tools/">Tools<span>15</span></a></li>
 		
 		</ul>
 	</div>
@@ -513,45 +526,45 @@ var _hmt = _hmt || [];
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/DynamoDB/">DynamoDB<span>1</span></a></li>
+			<li><a href="/tags/Passenger/">Passenger<span>2</span></a></li>
 		
-			<li><a href="/tags/Video/">Video<span>1</span></a></li>
+			<li><a href="/tags/MacOS/">MacOS<span>14</span></a></li>
 		
-			<li><a href="/tags/CloudWatch/">CloudWatch<span>1</span></a></li>
-		
-			<li><a href="/tags/CodeCommit/">CodeCommit<span>1</span></a></li>
-		
-			<li><a href="/tags/Linux/">Linux<span>13</span></a></li>
-		
-			<li><a href="/tags/Github/">Github<span>3</span></a></li>
-		
-			<li><a href="/tags/AWS-Tools/">AWS Tools<span>1</span></a></li>
+			<li><a href="/tags/AWS-CLI/">AWS CLI<span>6</span></a></li>
 		
 			<li><a href="/tags/AWS-Deep-Dive/">AWS Deep Dive<span>2</span></a></li>
 		
-			<li><a href="/tags/AutoScaling/">AutoScaling<span>3</span></a></li>
+			<li><a href="/tags/CentOS/">CentOS<span>6</span></a></li>
 		
-			<li><a href="/tags/iOS/">iOS<span>1</span></a></li>
+			<li><a href="/tags/Ruby/">Ruby<span>8</span></a></li>
 		
-			<li><a href="/tags/EC2-User-Data/">EC2 User Data<span>1</span></a></li>
+			<li><a href="/tags/PostgreSQL/">PostgreSQL<span>1</span></a></li>
 		
-			<li><a href="/tags/IAM/">IAM<span>3</span></a></li>
+			<li><a href="/tags/Chrome/">Chrome<span>1</span></a></li>
 		
-			<li><a href="/tags/S3/">S3<span>10</span></a></li>
-		
-			<li><a href="/tags/Application-Load-Balancing/">Application Load Balancing<span>1</span></a></li>
-		
-			<li><a href="/tags/Hexo/">Hexo<span>7</span></a></li>
-		
-			<li><a href="/tags/SSH/">SSH<span>3</span></a></li>
-		
-			<li><a href="/tags/AWS-Free-Tier/">AWS Free Tier<span>1</span></a></li>
-		
-			<li><a href="/tags/VMware/">VMware<span>2</span></a></li>
+			<li><a href="/tags/AWS-Tools/">AWS Tools<span>1</span></a></li>
 		
 			<li><a href="/tags/Yum/">Yum<span>1</span></a></li>
 		
 			<li><a href="/tags/Firewall/">Firewall<span>1</span></a></li>
+		
+			<li><a href="/tags/Video/">Video<span>1</span></a></li>
+		
+			<li><a href="/tags/Nodejs/">Nodejs<span>2</span></a></li>
+		
+			<li><a href="/tags/Hexo/">Hexo<span>7</span></a></li>
+		
+			<li><a href="/tags/AutoScaling/">AutoScaling<span>3</span></a></li>
+		
+			<li><a href="/tags/AWS-Free-Tier/">AWS Free Tier<span>1</span></a></li>
+		
+			<li><a href="/tags/SSH/">SSH<span>4</span></a></li>
+		
+			<li><a href="/tags/Failover/">Failover<span>1</span></a></li>
+		
+			<li><a href="/tags/HTTP/">HTTP<span>5</span></a></li>
+		
+			<li><a href="/tags/CodeCommit/">CodeCommit<span>1</span></a></li>
 		
 		
 		   <li><a href="/tags">...<span>49</span></a></li>
@@ -567,6 +580,14 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2019/09/24/backup-tools-borgbackup/" ><i class="fa fa-file-o"></i>BorgBackup -- 基于命令行的增量备份工具</a>
+      </li>
+    
+      <li>
+        <a href="/2019/07/24/setlocale-LC-CTYPE-cannot-change-locale-UTF-8-issue-when-ssh-to-linux-in-Mac/" ><i class="fa fa-file-o"></i>在Mac下远程登录Linux时,提示cannot ch...</a>
+      </li>
+    
+      <li>
         <a href="/2019/07/06/how-to-check-network-throughput-on-aws-EC2/" ><i class="fa fa-file-o"></i>AWS EC2各个类型的网络性能的测试方法</a>
       </li>
     
@@ -576,14 +597,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2019/06/24/SACK-Panic-in-CentOS-7/" ><i class="fa fa-file-o"></i>SACK Panic</a>
-      </li>
-    
-      <li>
-        <a href="/2019/06/11/a-tool-goaccess-to-process-web-log/" ><i class="fa fa-file-o"></i>GoAccess-一个处理web日志的工具</a>
-      </li>
-    
-      <li>
-        <a href="/2019/06/04/how-to-make-local-yum-repository-on-centos-7/" ><i class="fa fa-file-o"></i>CentOS 7下制作本地yum源</a>
       </li>
     
   </ul>

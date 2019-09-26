@@ -779,7 +779,7 @@
     </entry>
     
     <entry>
-      <title><![CDATA[AWS Autuscaling的Scheduled Scaling(计划扩展)]]></title>
+      <title><![CDATA[AWS Autoscaling的Scheduled Scaling(计划扩展)]]></title>
       <url>/2019/05/01/scheduled-action-of-aws-autoscaling/</url>
       <content type="html"><![CDATA[<h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>除了用Alarm触发的Scaling Policy，AWS Autoscaling(ASG) 还提供了一个Scheduled Scaling(计划扩展)的功能。该功能主要用作一些流量可预测的情形。比如国外的Black Friday和国内6.18或双11这种活动时，就可以使用Scheduled Scaling来提前规划好机器数量。<br>详细说明和设置参见 AWS官方文档<a href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/schedule_time.html" target="_blank" rel="external">Scheduled Scaling for Amazon EC2 Auto Scaling</a>。</p>
 <h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><p>举基于如下场景的一个例子</p>
@@ -969,6 +969,8 @@
 <h3 id="CentOS下安装nslookup"><a href="#CentOS下安装nslookup" class="headerlink" title="CentOS下安装nslookup"></a>CentOS下安装nslookup</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">yum install bind-utils</div><div class="line">yum provides &apos;*bin/nslookup&apos;</div></pre></td></tr></table></figure>
 <hr>
 <h3 id="列出Linux下目录的文件数"><a href="#列出Linux下目录的文件数" class="headerlink" title="列出Linux下目录的文件数"></a>列出Linux下目录的文件数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">find DIR_NAME -type f | wc -l</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="Linux下几个获取出口公网IP的命令"><a href="#Linux下几个获取出口公网IP的命令" class="headerlink" title="Linux下几个获取出口公网IP的命令"></a>Linux下几个获取出口公网IP的命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">dig TXT +short o-o.myaddr.l.google.com @ns1.google.com | awk -F&apos;&quot;&apos; &apos;&#123; print $2&#125;&apos;</div><div class="line">curl -sSL https://ip.cn</div><div class="line">curl myip.ipip.net</div></pre></td></tr></table></figure>
 ]]></content>
       
         <categories>
@@ -980,9 +982,9 @@
         
         <tags>
             
-            <tag> MacOS </tag>
-            
             <tag> Linux </tag>
+            
+            <tag> MacOS </tag>
             
         </tags>
         
@@ -1032,9 +1034,9 @@
         
         <tags>
             
-            <tag> MacOS </tag>
-            
             <tag> Linux </tag>
+            
+            <tag> MacOS </tag>
             
             <tag> Github </tag>
             
@@ -3478,9 +3480,9 @@ You can wait for the scheduled retirement date - when the instance is stopped - 
         
         <tags>
             
-            <tag> MacOS </tag>
-            
             <tag> Linux </tag>
+            
+            <tag> MacOS </tag>
             
         </tags>
         
@@ -9001,9 +9003,9 @@ You can wait for the scheduled retirement date - when the instance is stopped - 
             
             <tag> Ruby </tag>
             
-            <tag> AWS CLI </tag>
-            
             <tag> AWS SDK </tag>
+            
+            <tag> AWS CLI </tag>
             
             <tag> PostgreSQL </tag>
             
@@ -9371,9 +9373,9 @@ You can wait for the scheduled retirement date - when the instance is stopped - 
         
         <tags>
             
-            <tag> MacOS </tag>
-            
             <tag> Linux </tag>
+            
+            <tag> MacOS </tag>
             
         </tags>
         

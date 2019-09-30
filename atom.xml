@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.jibing57.com/"/>
-  <updated>2019-09-24T08:52:11.527Z</updated>
+  <updated>2019-09-30T06:07:41.157Z</updated>
   <id>https://www.jibing57.com/</id>
   
   <author>
@@ -15,6 +15,63 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>设置AirPort Express时获取不到设备信息的解决方案</title>
+    <link href="https://www.jibing57.com/2019/09/30/apple-airport-express-access-unexpected-error-occurred/"/>
+    <id>https://www.jibing57.com/2019/09/30/apple-airport-express-access-unexpected-error-occurred/</id>
+    <published>2019-09-30T12:48:55.000Z</published>
+    <updated>2019-09-30T06:07:41.157Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;问题&quot;&gt;&lt;a href=&quot;#问题&quot; class=&quot;headerlink&quot; title=&quot;问题&quot;&gt;&lt;/a&gt;问题&lt;/h3&gt;&lt;p&gt;设置新airport express，使用AirPort Utility获取设备信息时，提示”An unexpected error occurred try again”。&lt;/p&gt;
+&lt;h3 id=&quot;解决方法&quot;&gt;&lt;a href=&quot;#解决方法&quot; class=&quot;headerlink&quot; title=&quot;解决方法&quot;&gt;&lt;/a&gt;解决方法&lt;/h3&gt;&lt;p&gt;解决办法如下:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;打开系统设置”System Preferences”，选择网络”Network”&lt;/li&gt;
+&lt;li&gt;左侧选择连接设备的网络，”Wi-Fi”或者有线网络, 点击右下角的”Advanced..”&lt;/li&gt;
+&lt;li&gt;选择”TCP/IP”的tab&lt;/li&gt;
+&lt;li&gt;在”Configure IPv6”页面，选择”Link-local only”&lt;/li&gt;
+&lt;li&gt;点击”OK”和”Apply”&lt;/li&gt;
+&lt;/ol&gt;
+    
+    </summary>
+    
+      <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
+    
+    
+      <category term="MacOS" scheme="https://www.jibing57.com/tags/MacOS/"/>
+    
+      <category term="Network" scheme="https://www.jibing57.com/tags/Network/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ssh设置私钥登录后还是提示需要输入密码</title>
+    <link href="https://www.jibing57.com/2019/09/29/still-password-when-setting-public-key-ssh-authorization/"/>
+    <id>https://www.jibing57.com/2019/09/29/still-password-when-setting-public-key-ssh-authorization/</id>
+    <published>2019-09-29T12:43:26.000Z</published>
+    <updated>2019-09-29T07:37:28.807Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;问题描述&quot;&gt;&lt;a href=&quot;#问题描述&quot; class=&quot;headerlink&quot; title=&quot;问题描述&quot;&gt;&lt;/a&gt;问题描述&lt;/h3&gt;&lt;p&gt;在客户机器上配置好使用key免密登录后，尝试使用私钥登录，却被提示还是需要密码。&lt;br&gt;检查了一圈服务器上&lt;code&gt;~/.ssh/&lt;/code&gt;, &lt;code&gt;~/.ssh/authorized_keys&lt;/code&gt;的权限, 权限设置都没有问题。&lt;br&gt;可登录时还是提示需要输入密码。只能一步一步来检查调试&lt;/p&gt;
+&lt;h3 id=&quot;解决步骤&quot;&gt;&lt;a href=&quot;#解决步骤&quot; class=&quot;headerlink&quot; title=&quot;解决步骤&quot;&gt;&lt;/a&gt;解决步骤&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;首先尝试在客户端ssh时加上-vv参数来输出debug信息, 看是否有明显的错误信息。&lt;br&gt;debug输出如下&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;debug1: SSH2_MSG_EXT_INFO received&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;debug1: kex_input_ext_info: server-sig-algs=&amp;lt;ssh-ed25519,ssh-rsa,rsa-sha2-256,rsa-sha2-512,ssh-dss,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521&amp;gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;debug2: service_accept: ssh-userauth&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;debug1: SSH2_MSG_SERVICE_ACCEPT received&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;debug1: Authentications that can continue: publickey,password,keyboard-interactive&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;debug1: Next authentication method: publickey&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;debug1: Trying private key: /home/deployer/.ssh/id_rsa_sync&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;debug2: we sent a publickey packet, wait for reply&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;debug1: Authentications that can continue: publickey,password,keyboard-interactive&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;在正常情况下，&lt;code&gt;Trying private key: /home/deployer/.ssh/id_rsa_sync&lt;/code&gt;之后，应该是提示密钥验证成功&lt;code&gt;Authentication succeeded (publickey).&lt;/code&gt;并登录到服务器上。&lt;br&gt;这边是直接提示&lt;code&gt;Authentications that can continue: publickey,password,keyboard-interactive&lt;/code&gt;，表示没有成功。&lt;br&gt;
+    
+    </summary>
+    
+      <category term="Linux" scheme="https://www.jibing57.com/categories/Linux/"/>
+    
+    
+      <category term="CentOS" scheme="https://www.jibing57.com/tags/CentOS/"/>
+    
+      <category term="SSH" scheme="https://www.jibing57.com/tags/SSH/"/>
+    
+  </entry>
   
   <entry>
     <title>BorgBackup -- 基于命令行的增量备份工具</title>
@@ -162,9 +219,9 @@
       <category term="Linux" scheme="https://www.jibing57.com/categories/Linux/"/>
     
     
-      <category term="CentOS" scheme="https://www.jibing57.com/tags/CentOS/"/>
-    
       <category term="Network" scheme="https://www.jibing57.com/tags/Network/"/>
+    
+      <category term="CentOS" scheme="https://www.jibing57.com/tags/CentOS/"/>
     
   </entry>
   
@@ -435,9 +492,9 @@
       <category term="Linux" scheme="https://www.jibing57.com/categories/Linux/"/>
     
     
-      <category term="CentOS" scheme="https://www.jibing57.com/tags/CentOS/"/>
-    
       <category term="MacOS" scheme="https://www.jibing57.com/tags/MacOS/"/>
+    
+      <category term="CentOS" scheme="https://www.jibing57.com/tags/CentOS/"/>
     
   </entry>
   
@@ -551,9 +608,9 @@
       <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
     
     
-      <category term="Linux" scheme="https://www.jibing57.com/tags/Linux/"/>
-    
       <category term="MacOS" scheme="https://www.jibing57.com/tags/MacOS/"/>
+    
+      <category term="Linux" scheme="https://www.jibing57.com/tags/Linux/"/>
     
   </entry>
   
@@ -579,69 +636,11 @@
       <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
     
     
-      <category term="Linux" scheme="https://www.jibing57.com/tags/Linux/"/>
-    
       <category term="MacOS" scheme="https://www.jibing57.com/tags/MacOS/"/>
     
+      <category term="Linux" scheme="https://www.jibing57.com/tags/Linux/"/>
+    
       <category term="Github" scheme="https://www.jibing57.com/tags/Github/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>firewall-cmd基本用法</title>
-    <link href="https://www.jibing57.com/2019/04/20/firewall-cmd-basic-usage/"/>
-    <id>https://www.jibing57.com/2019/04/20/firewall-cmd-basic-usage/</id>
-    <published>2019-04-20T01:49:23.000Z</published>
-    <updated>2019-05-08T02:37:04.363Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;&lt;strong&gt;还需要装个虚拟机，重新敲命令，拷贝输出内容或者截图&lt;/strong&gt;&lt;/p&gt;
-&lt;h3 id=&quot;安装和管理firewalld&quot;&gt;&lt;a href=&quot;#安装和管理firewalld&quot; class=&quot;headerlink&quot; title=&quot;安装和管理firewalld&quot;&gt;&lt;/a&gt;安装和管理firewalld&lt;/h3&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;# 安装firewalld&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;yum install firewalld firewall-config&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;systemctl start  firewalld # 启动&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;systemctl status firewalld # 或者 firewall-cmd --state 查看状态&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;systemctl stop firewalld  # 停止&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;systemctl enable firewalld # 开机自自动&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;systemctl disable firewalld # 取消自启动&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;systemctl list-unit-files | grep firewalld # 查看是否开机自启动&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;h3 id=&quot;基础命令&quot;&gt;&lt;a href=&quot;#基础命令&quot; class=&quot;headerlink&quot; title=&quot;基础命令&quot;&gt;&lt;/a&gt;基础命令&lt;/h3&gt;&lt;p&gt;一些常用的命令如下:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;查看防火墙状态&lt;br&gt;命令: &lt;code&gt;firewall-cmd --list-all&lt;/code&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;10&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;11&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;12&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;13&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;14&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;15&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;16&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ sudo firewall-cmd --list-all&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;public (active)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  target: default&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  icmp-block-inversion: no&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  interfaces: ens33&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  sources:&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  services: ssh dhcpv6-client&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  ports:&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  protocols:&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  masquerade: no&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  forward-ports:&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  source-ports:&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  icmp-blocks:&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  rich rules:&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;$&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-    
-    </summary>
-    
-      <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
-    
-    
-      <category term="Linux" scheme="https://www.jibing57.com/tags/Linux/"/>
-    
-      <category term="Firewall" scheme="https://www.jibing57.com/tags/Firewall/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>解析EB logs的一些Linux小命令</title>
-    <link href="https://www.jibing57.com/2019/04/08/some-command-to-parse-EB-logs/"/>
-    <id>https://www.jibing57.com/2019/04/08/some-command-to-parse-EB-logs/</id>
-    <published>2019-04-08T13:12:11.000Z</published>
-    <updated>2019-04-08T08:59:24.000Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;开启EB rotated log功能后，EB的日志将会被存储在EB对应bucket的&lt;code&gt;resources/environments/logs/logtype/environment-id/instance-id&lt;/code&gt;路径下, 供后续查看。官网文档&lt;a href=&quot;https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/using-features.logging.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Viewing Logs from Amazon EC2 Instances in Your Elastic Beanstalk Environment&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;下面记录几个常用检查日志的小命令&lt;/p&gt;
-&lt;h3 id=&quot;使用exclue和include来获取部分日志&quot;&gt;&lt;a href=&quot;#使用exclue和include来获取部分日志&quot; class=&quot;headerlink&quot; title=&quot;使用exclue和include来获取部分日志&quot;&gt;&lt;/a&gt;使用exclue和include来获取部分日志&lt;/h3&gt;&lt;p&gt;开启EB的rotated log后，EB中的EC2会每小时将日志上传到S3中。以&lt;code&gt;Passenger with Ruby&lt;/code&gt;的Platform为例，有production.log, access.log和passenger.log三种文件会被传到S3中，文件名格式:&lt;code&gt;文件路径&lt;/code&gt;+&lt;code&gt;时间戳&lt;/code&gt;+&lt;code&gt;gz&lt;/code&gt;的格式&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ ls *log1554688861.gz*&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;_var_app_support_logs_rotated_access.log1554688861.gz  &lt;/div&gt;&lt;div class=&quot;line&quot;&gt;_var_app_support_logs_rotated_passenger.log1554688861.gz  &lt;/div&gt;&lt;div class=&quot;line&quot;&gt;_var_app_support_logs_rotated_production.log1554688861.gz&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;$&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;Bucket下的日志，默认不会自动清理，日积月累,instance-id路径下的文件会越来越多，而目前aws cli的&lt;code&gt;s3 cp&lt;/code&gt;或&lt;code&gt;s3 sync&lt;/code&gt;,并没有提供根据创建时间的filter,有时候获取固定哪段时间的文件就不太方便。&lt;br&gt;
-    
-    </summary>
-    
-      <category term="AWS" scheme="https://www.jibing57.com/categories/AWS/"/>
-    
-    
-      <category term="Elastic Beanstalk" scheme="https://www.jibing57.com/tags/Elastic-Beanstalk/"/>
-    
-      <category term="S3" scheme="https://www.jibing57.com/tags/S3/"/>
-    
-      <category term="AWS CLI" scheme="https://www.jibing57.com/tags/AWS-CLI/"/>
-    
-      <category term="Linux" scheme="https://www.jibing57.com/tags/Linux/"/>
     
   </entry>
   

@@ -3,6 +3,93 @@
   
     
     <entry>
+      <title><![CDATA[设置AirPort Express时获取不到设备信息的解决方案]]></title>
+      <url>/2019/09/30/apple-airport-express-access-unexpected-error-occurred/</url>
+      <content type="html"><![CDATA[<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>设置新airport express，使用AirPort Utility获取设备信息时，提示”An unexpected error occurred try again”。</p>
+<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><p>解决办法如下:</p>
+<ol>
+<li>打开系统设置”System Preferences”，选择网络”Network”</li>
+<li>左侧选择连接设备的网络，”Wi-Fi”或者有线网络, 点击右下角的”Advanced..”</li>
+<li>选择”TCP/IP”的tab</li>
+<li>在”Configure IPv6”页面，选择”Link-local only”</li>
+<li>点击”OK”和”Apply”</li>
+</ol>
+<a id="more"></a>
+<p><img src="/images/Apple/network_setting.jpg" alt="network_setting"></p>
+<p>在AirPort Utility中，就可以获取airport express的信息，从而进行设置了。</p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://www.howtoisolve.com/airport-express-unexpected-error-occurred-solved/" target="_blank" rel="external">Airport express an unexpected error has occurred Mojave: Here’s Solved</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> Tools </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> MacOS </tag>
+            
+            <tag> Network </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[ssh设置私钥登录后还是提示需要输入密码]]></title>
+      <url>/2019/09/29/still-password-when-setting-public-key-ssh-authorization/</url>
+      <content type="html"><![CDATA[<h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><p>在客户机器上配置好使用key免密登录后，尝试使用私钥登录，却被提示还是需要密码。<br>检查了一圈服务器上<code>~/.ssh/</code>, <code>~/.ssh/authorized_keys</code>的权限, 权限设置都没有问题。<br>可登录时还是提示需要输入密码。只能一步一步来检查调试</p>
+<h3 id="解决步骤"><a href="#解决步骤" class="headerlink" title="解决步骤"></a>解决步骤</h3><ul>
+<li>首先尝试在客户端ssh时加上-vv参数来输出debug信息, 看是否有明显的错误信息。<br>debug输出如下<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">debug1: SSH2_MSG_EXT_INFO received</div><div class="line">debug1: kex_input_ext_info: server-sig-algs=&lt;ssh-ed25519,ssh-rsa,rsa-sha2-256,rsa-sha2-512,ssh-dss,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521&gt;</div><div class="line">debug2: service_accept: ssh-userauth</div><div class="line">debug1: SSH2_MSG_SERVICE_ACCEPT received</div><div class="line">debug1: Authentications that can continue: publickey,password,keyboard-interactive</div><div class="line">debug1: Next authentication method: publickey</div><div class="line">debug1: Trying private key: /home/deployer/.ssh/id_rsa_sync</div><div class="line">debug2: we sent a publickey packet, wait for reply</div><div class="line">debug1: Authentications that can continue: publickey,password,keyboard-interactive</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>在正常情况下，<code>Trying private key: /home/deployer/.ssh/id_rsa_sync</code>之后，应该是提示密钥验证成功<code>Authentication succeeded (publickey).</code>并登录到服务器上。<br>这边是直接提示<code>Authentications that can continue: publickey,password,keyboard-interactive</code>，表示没有成功。<br><a id="more"></a></p>
+<ul>
+<li>client侧没有得到有效线索，转而到服务器侧查看日志<br>查看了<code>/var/log/secure</code>和<code>/var/log/messages</code>后，发现<code>/var/log/messages</code>中有一处关键信息<code>User deployer not allowed because account is locked</code>。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">... sshd[14230]: User deployer not allowed because account is locked</div><div class="line">... sshd[14230]: Connection closed by invalid user deployer 192.168.101.192 port 44832 [preauth]</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>发现客户服务器的sshd_config中配置了<code>UsePAM no</code>, 而建立deployer用户时也没有设置密码，导致了拒绝ssh链接。</p>
+<ul>
+<li>两个解决方法</li>
+</ul>
+<ol>
+<li>修改sshd_config中UsePAM为yes</li>
+<li>为账号deployer加一个密码<code>passwd deployer</code></li>
+</ol>
+<p>限于不能修改客户机器的配置，采用了方法2.为deployer设置密码后，就可以使用私钥无密码登录了。</p>
+<h3 id="总结几个免密登录失败的可能情况"><a href="#总结几个免密登录失败的可能情况" class="headerlink" title="总结几个免密登录失败的可能情况"></a>总结几个免密登录失败的可能情况</h3><ol>
+<li>权限问题: <code>~/.ssh</code>需要设为700，<code>.ssh/authorized_keys</code>需要设为600</li>
+<li>用户被锁定了。查看sshd_config的PAM配置和/etc/shadow中用户密码设置</li>
+<li>SELINUX权限限制 </li>
+</ol>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://github.com/camptocamp/puppet-accounts/issues/35" target="_blank" rel="external">User username not allowed because account is locked</a></li>
+<li><a href="https://unix.stackexchange.com/questions/193066/how-to-unlock-account-for-public-key-ssh-authorization-but-not-for-password-aut" target="_blank" rel="external">How to unlock account for public key ssh authorization, but not for password authorization?</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> Linux </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> CentOS </tag>
+            
+            <tag> SSH </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[BorgBackup -- 基于命令行的增量备份工具]]></title>
       <url>/2019/09/24/backup-tools-borgbackup/</url>
       <content type="html"><![CDATA[<p><a href="https://www.borgbackup.org/" target="_blank" rel="external">BorgBackup</a>(简称 Borg)是一款基于命令行的增量备份工具。Github地址:<a href="https://github.com/borgbackup/borg" target="_blank" rel="external">https://github.com/borgbackup/borg</a><br>官网上所述的优势如下:</p>
@@ -259,9 +346,9 @@
         
         <tags>
             
-            <tag> CentOS </tag>
-            
             <tag> Network </tag>
+            
+            <tag> CentOS </tag>
             
         </tags>
         
@@ -770,9 +857,9 @@
         
         <tags>
             
-            <tag> CentOS </tag>
-            
             <tag> MacOS </tag>
+            
+            <tag> CentOS </tag>
             
         </tags>
         
@@ -982,9 +1069,9 @@
         
         <tags>
             
-            <tag> Linux </tag>
-            
             <tag> MacOS </tag>
+            
+            <tag> Linux </tag>
             
         </tags>
         
@@ -1034,9 +1121,9 @@
         
         <tags>
             
-            <tag> Linux </tag>
-            
             <tag> MacOS </tag>
+            
+            <tag> Linux </tag>
             
             <tag> Github </tag>
             
@@ -3480,9 +3567,9 @@ You can wait for the scheduled retirement date - when the instance is stopped - 
         
         <tags>
             
-            <tag> Linux </tag>
-            
             <tag> MacOS </tag>
+            
+            <tag> Linux </tag>
             
         </tags>
         
@@ -9001,9 +9088,9 @@ You can wait for the scheduled retirement date - when the instance is stopped - 
             
             <tag> RDS </tag>
             
-            <tag> Ruby </tag>
-            
             <tag> AWS SDK </tag>
+            
+            <tag> Ruby </tag>
             
             <tag> AWS CLI </tag>
             
@@ -9373,9 +9460,9 @@ You can wait for the scheduled retirement date - when the instance is stopped - 
         
         <tags>
             
-            <tag> Linux </tag>
-            
             <tag> MacOS </tag>
+            
+            <tag> Linux </tag>
             
         </tags>
         

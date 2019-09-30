@@ -139,6 +139,62 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
+			<div class="date"> 2019-04-20 </div>
+			<div class="article-title"><a href="/2019/04/20/firewall-cmd-basic-usage/" >firewall-cmd基本用法</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p><strong>还需要装个虚拟机，重新敲命令，拷贝输出内容或者截图</strong></p>
+<h3 id="安装和管理firewalld"><a href="#安装和管理firewalld" class="headerlink" title="安装和管理firewalld"></a>安装和管理firewalld</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"># 安装firewalld</div><div class="line">yum install firewalld firewall-config</div><div class="line"></div><div class="line">systemctl start  firewalld # 启动</div><div class="line">systemctl status firewalld # 或者 firewall-cmd --state 查看状态</div><div class="line">systemctl stop firewalld  # 停止</div><div class="line">systemctl enable firewalld # 开机自自动</div><div class="line">systemctl disable firewalld # 取消自启动</div><div class="line">systemctl list-unit-files | grep firewalld # 查看是否开机自启动</div></pre></td></tr></table></figure>
+<h3 id="基础命令"><a href="#基础命令" class="headerlink" title="基础命令"></a>基础命令</h3><p>一些常用的命令如下:</p>
+<ul>
+<li>查看防火墙状态<br>命令: <code>firewall-cmd --list-all</code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">$ sudo firewall-cmd --list-all</div><div class="line">public (active)</div><div class="line">  target: default</div><div class="line">  icmp-block-inversion: no</div><div class="line">  interfaces: ens33</div><div class="line">  sources:</div><div class="line">  services: ssh dhcpv6-client</div><div class="line">  ports:</div><div class="line">  protocols:</div><div class="line">  masquerade: no</div><div class="line">  forward-ports:</div><div class="line">  source-ports:</div><div class="line">  icmp-blocks:</div><div class="line">  rich rules:</div><div class="line"></div><div class="line">$</div></pre></td></tr></table></figure>
+</li>
+</ul>
+	
+	</div>
+  <a type="button" href="/2019/04/20/firewall-cmd-basic-usage/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2019-04-08 </div>
+			<div class="article-title"><a href="/2019/04/08/some-command-to-parse-EB-logs/" >解析EB logs的一些Linux小命令</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>开启EB rotated log功能后，EB的日志将会被存储在EB对应bucket的<code>resources/environments/logs/logtype/environment-id/instance-id</code>路径下, 供后续查看。官网文档<a href="https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/using-features.logging.html" target="_blank" rel="external">Viewing Logs from Amazon EC2 Instances in Your Elastic Beanstalk Environment</a></p>
+<p>下面记录几个常用检查日志的小命令</p>
+<h3 id="使用exclue和include来获取部分日志"><a href="#使用exclue和include来获取部分日志" class="headerlink" title="使用exclue和include来获取部分日志"></a>使用exclue和include来获取部分日志</h3><p>开启EB的rotated log后，EB中的EC2会每小时将日志上传到S3中。以<code>Passenger with Ruby</code>的Platform为例，有production.log, access.log和passenger.log三种文件会被传到S3中，文件名格式:<code>文件路径</code>+<code>时间戳</code>+<code>gz</code>的格式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ ls *log1554688861.gz*</div><div class="line">_var_app_support_logs_rotated_access.log1554688861.gz  </div><div class="line">_var_app_support_logs_rotated_passenger.log1554688861.gz  </div><div class="line">_var_app_support_logs_rotated_production.log1554688861.gz</div><div class="line">$</div></pre></td></tr></table></figure>
+<p>Bucket下的日志，默认不会自动清理，日积月累,instance-id路径下的文件会越来越多，而目前aws cli的<code>s3 cp</code>或<code>s3 sync</code>,并没有提供根据创建时间的filter,有时候获取固定哪段时间的文件就不太方便。<br>
+	
+	</div>
+  <a type="button" href="/2019/04/08/some-command-to-parse-EB-logs/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
 			<div class="date"> 2019-04-02 </div>
 			<div class="article-title"><a href="/2019/04/02/bbr-on-aws-ec2/" >AWS EC2中开启BBR</a></div>						
 		</h3>
@@ -362,61 +418,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2019-02-14 </div>
-			<div class="article-title"><a href="/2019/02/14/ruby-exception/" >ruby异常</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>有一个通知服务，需要使用<a href="https://mandrill.com/" target="_blank" rel="external">Mandrill</a>的提供的邮件服务给客户发送邮件。开发时使用了<a href="https://github.com/renz45/mandrill_mailer" target="_blank" rel="external">mandrill_mailer</a>这个GEM来实现和Mandrill服务的交互。</p>
-<p>今天监控程序报警提及昨天的邮件发送量比平时低了不少。上线查了一下日志，发现是代码中一处exception没处理好,导致程序崩溃了。</p>
-<h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><p>Ruby 中捕获非指定类型的异常，会使用如下方式来捕获异常。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">begin</div><div class="line">rescue =&gt; e</div><div class="line">end</div></pre></td></tr></table></figure>
-	
-	</div>
-  <a type="button" href="/2019/02/14/ruby-exception/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2018-12-25 </div>
-			<div class="article-title"><a href="/2018/12/25/How-to-change-max-pool-size-of-passenger-on-ElasticBeanstalk/" >修改ElasticBeanstalk中Passenger的max-pool-size</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>在AWS Elastic Beanstalk中，如果选用Ruby with Passenger运行Rails时，会遇到一个问题，就是EB环境中的Passenger的max_pool_size是默认的6。如果EB中的Instance选用的是性能比较高的类型，只起6个Passenger进程会是一个巨大的浪费。下面介绍几个修改EB中Passenger max_pool_size参数的方法。</p>
-<h4 id="Passenger官方说明"><a href="#Passenger官方说明" class="headerlink" title="Passenger官方说明"></a>Passenger官方说明</h4><p>最新的官方<a href="https://www.phusionpassenger.com/library/config/standalone/intro.html#location-of-passengerfile-json" target="_blank" rel="external">Introduction to configuring Passenger Standalone</a>文档中，Passenger Standalone可以通过如下几种方式来修改启动参数</p>
-<ul>
-<li>一、传递参数给启动命令<code>passenger start</code></li>
-<li>二、使用环境变量(从5.0.22开始)</li>
-<li>三、通过配置文件<code>Passengerfile.json</code></li>
-</ul>
-	
-	</div>
-  <a type="button" href="/2018/12/25/How-to-change-max-pool-size-of-passenger-on-ElasticBeanstalk/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -488,11 +489,11 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/Code/">Code<span>5</span></a></li>
 		
-			<li><a href="/categories/Linux/">Linux<span>5</span></a></li>
+			<li><a href="/categories/Linux/">Linux<span>6</span></a></li>
 		
 			<li><a href="/categories/Shell/">Shell<span>8</span></a></li>
 		
-			<li><a href="/categories/Tools/">Tools<span>15</span></a></li>
+			<li><a href="/categories/Tools/">Tools<span>16</span></a></li>
 		
 		</ul>
 	</div>
@@ -503,45 +504,45 @@ var _hmt = _hmt || [];
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/HTTP/">HTTP<span>5</span></a></li>
+			<li><a href="/tags/IAM/">IAM<span>3</span></a></li>
 		
-			<li><a href="/tags/AWS-Free-Tier/">AWS Free Tier<span>1</span></a></li>
-		
-			<li><a href="/tags/S3/">S3<span>10</span></a></li>
-		
-			<li><a href="/tags/AWS-Tools/">AWS Tools<span>1</span></a></li>
-		
-			<li><a href="/tags/PostgreSQL/">PostgreSQL<span>1</span></a></li>
+			<li><a href="/tags/Rails/">Rails<span>3</span></a></li>
 		
 			<li><a href="/tags/Nginx/">Nginx<span>7</span></a></li>
 		
-			<li><a href="/tags/CloudWatch/">CloudWatch<span>1</span></a></li>
+			<li><a href="/tags/Ruby/">Ruby<span>8</span></a></li>
 		
-			<li><a href="/tags/EC2-User-Data/">EC2 User Data<span>1</span></a></li>
+			<li><a href="/tags/AWS-SDK/">AWS SDK<span>2</span></a></li>
 		
-			<li><a href="/tags/MacOS/">MacOS<span>14</span></a></li>
+			<li><a href="/tags/AWS-Free-Tier/">AWS Free Tier<span>1</span></a></li>
 		
-			<li><a href="/tags/Application-Load-Balancing/">Application Load Balancing<span>1</span></a></li>
+			<li><a href="/tags/CentOS/">CentOS<span>7</span></a></li>
 		
-			<li><a href="/tags/DynamoDB/">DynamoDB<span>1</span></a></li>
+			<li><a href="/tags/AutoScaling/">AutoScaling<span>3</span></a></li>
 		
-			<li><a href="/tags/RDS/">RDS<span>3</span></a></li>
+			<li><a href="/tags/iOS/">iOS<span>1</span></a></li>
 		
-			<li><a href="/tags/Office/">Office<span>1</span></a></li>
+			<li><a href="/tags/Firewall/">Firewall<span>1</span></a></li>
 		
-			<li><a href="/tags/Network/">Network<span>2</span></a></li>
-		
-			<li><a href="/tags/Failover/">Failover<span>1</span></a></li>
+			<li><a href="/tags/Git/">Git<span>2</span></a></li>
 		
 			<li><a href="/tags/Yum/">Yum<span>1</span></a></li>
 		
-			<li><a href="/tags/IAM/">IAM<span>3</span></a></li>
+			<li><a href="/tags/Tips/">Tips<span>1</span></a></li>
 		
-			<li><a href="/tags/FFMPEG/">FFMPEG<span>1</span></a></li>
+			<li><a href="/tags/PostgreSQL/">PostgreSQL<span>1</span></a></li>
 		
-			<li><a href="/tags/AWS-Deep-Dive/">AWS Deep Dive<span>2</span></a></li>
+			<li><a href="/tags/Office/">Office<span>1</span></a></li>
 		
-			<li><a href="/tags/Ruby/">Ruby<span>8</span></a></li>
+			<li><a href="/tags/Linux/">Linux<span>14</span></a></li>
+		
+			<li><a href="/tags/Image/">Image<span>1</span></a></li>
+		
+			<li><a href="/tags/HTTPS/">HTTPS<span>1</span></a></li>
+		
+			<li><a href="/tags/AWS-Tools/">AWS Tools<span>1</span></a></li>
+		
+			<li><a href="/tags/Video/">Video<span>1</span></a></li>
 		
 		
 		   <li><a href="/tags">...<span>49</span></a></li>
@@ -557,6 +558,14 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2019/09/30/apple-airport-express-access-unexpected-error-occurred/" ><i class="fa fa-file-o"></i>设置AirPort Express时获取不到设备信息的...</a>
+      </li>
+    
+      <li>
+        <a href="/2019/09/29/still-password-when-setting-public-key-ssh-authorization/" ><i class="fa fa-file-o"></i>ssh设置私钥登录后还是提示需要输入密码</a>
+      </li>
+    
+      <li>
         <a href="/2019/09/24/backup-tools-borgbackup/" ><i class="fa fa-file-o"></i>BorgBackup -- 基于命令行的增量备份工具</a>
       </li>
     
@@ -566,14 +575,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2019/07/06/how-to-check-network-throughput-on-aws-EC2/" ><i class="fa fa-file-o"></i>AWS EC2各个类型的网络性能的测试方法</a>
-      </li>
-    
-      <li>
-        <a href="/2019/07/04/how-to-cancel-automatic-spelling-in-macos/" ><i class="fa fa-file-o"></i>关闭Mac系统中的自动拼写纠正功能</a>
-      </li>
-    
-      <li>
-        <a href="/2019/06/24/SACK-Panic-in-CentOS-7/" ><i class="fa fa-file-o"></i>SACK Panic</a>
       </li>
     
   </ul>

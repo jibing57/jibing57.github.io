@@ -140,6 +140,35 @@ var _hmt = _hmt || [];
 	<!-- display as entry -->	
 		<h3 class="title">
 			<div class="date"> 2019-04-20 </div>
+			<div class="article-title"><a href="/2019/04/20/niu-x-resource/" >Niu-X resource</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>记录一些有用的网站，持续更新中。。</p>
+<hr>
+<h3 id="Linux-command"><a href="#Linux-command" class="headerlink" title="Linux-command"></a>Linux-command</h3><p>github地址: <a href="https://github.com/jaywcjlove/linux-command" target="_blank" rel="external">linux-command</a></p>
+<blockquote>
+<p>Linux命令大全搜索工具，内容包含Linux命令手册、详解、学习、搜集 </p>
+</blockquote>
+<p>比较系统的各个命令，期待有空时每个粗略一遍，需要时再来查询</p>
+	
+	</div>
+  <a type="button" href="/2019/04/20/niu-x-resource/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2019-04-20 </div>
 			<div class="article-title"><a href="/2019/04/20/firewall-cmd-basic-usage/" >firewall-cmd基本用法</a></div>						
 		</h3>
 	
@@ -390,34 +419,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2019-02-25 </div>
-			<div class="article-title"><a href="/2019/02/25/mount-point-changed-in-C5/" >AWS C5类型Instance的挂载点变更</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="问题点"><a href="#问题点" class="headerlink" title="问题点"></a>问题点</h3><p>一直使用的是Amazon自有的Amazon Linux，中国区的C5出来后，将原有的机器升级到C5的时候，发现额外挂载的磁盘没有挂载成功。</p>
-<p>调查了一下，C5系列属于<a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-types.html#ec2-nitro-instances" target="_blank" rel="external">Nitro-based instance</a>, EBS卷默认使用的是NVMe driver,设备名由原来C4的/dev/xvda1和/dev/xvdf变为了/dev/nvme[0-26]n1的格式。官网说明<a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/device_naming.html" target="_blank" rel="external">Device Naming on Linux Instances</a>。</p>
-<p>以前C4的机器中,/etc/fstab中设定的另外一块EBS的挂载点是/dev/xvdf, 所以导致了换用C5的时候，没能自动挂载。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># C4时的设置</div><div class="line">/dev/xvdf   /mnt/data ext4  auto,nofail,defaults        1   2</div></pre></td></tr></table></figure>
-<h3 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h3><p><code>lsblk</code>查看EBS的挂载路径，然后修改/etc/fstab。解决了问题。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/dev/nvme1n1 /mnt/data ext4  auto,nofail,defaults        1   2</div></pre></td></tr></table></figure>
-	
-	</div>
-  <a type="button" href="/2019/02/25/mount-point-changed-in-C5/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -493,7 +494,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/Shell/">Shell<span>8</span></a></li>
 		
-			<li><a href="/categories/Tools/">Tools<span>16</span></a></li>
+			<li><a href="/categories/Tools/">Tools<span>17</span></a></li>
 		
 		</ul>
 	</div>
@@ -504,45 +505,45 @@ var _hmt = _hmt || [];
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/Elastic-Load-Balancing/">Elastic Load Balancing<span>6</span></a></li>
+			<li><a href="/tags/Office/">Office<span>1</span></a></li>
 		
-			<li><a href="/tags/CentOS/">CentOS<span>7</span></a></li>
+			<li><a href="/tags/Linux/">Linux<span>14</span></a></li>
 		
-			<li><a href="/tags/Git/">Git<span>2</span></a></li>
+			<li><a href="/tags/Nodejs/">Nodejs<span>2</span></a></li>
 		
-			<li><a href="/tags/PostgreSQL/">PostgreSQL<span>1</span></a></li>
+			<li><a href="/tags/DynamoDB/">DynamoDB<span>1</span></a></li>
 		
-			<li><a href="/tags/AutoScaling/">AutoScaling<span>3</span></a></li>
+			<li><a href="/tags/Passenger/">Passenger<span>2</span></a></li>
 		
-			<li><a href="/tags/Failover/">Failover<span>1</span></a></li>
-		
-			<li><a href="/tags/AWS-SDK/">AWS SDK<span>2</span></a></li>
+			<li><a href="/tags/Nginx/">Nginx<span>7</span></a></li>
 		
 			<li><a href="/tags/Firewall/">Firewall<span>1</span></a></li>
 		
+			<li><a href="/tags/Hexo/">Hexo<span>7</span></a></li>
+		
+			<li><a href="/tags/Failover/">Failover<span>1</span></a></li>
+		
+			<li><a href="/tags/EC2/">EC2<span>8</span></a></li>
+		
+			<li><a href="/tags/FFMPEG/">FFMPEG<span>1</span></a></li>
+		
+			<li><a href="/tags/Chrome/">Chrome<span>1</span></a></li>
+		
 			<li><a href="/tags/Yum/">Yum<span>1</span></a></li>
+		
+			<li><a href="/tags/PostgreSQL/">PostgreSQL<span>2</span></a></li>
+		
+			<li><a href="/tags/Application-Load-Balancing/">Application Load Balancing<span>1</span></a></li>
+		
+			<li><a href="/tags/Elastic-Beanstalk/">Elastic Beanstalk<span>7</span></a></li>
+		
+			<li><a href="/tags/IAM/">IAM<span>3</span></a></li>
+		
+			<li><a href="/tags/AWS-SDK/">AWS SDK<span>2</span></a></li>
 		
 			<li><a href="/tags/Douban/">Douban<span>1</span></a></li>
 		
-			<li><a href="/tags/AWS-Tools/">AWS Tools<span>1</span></a></li>
-		
-			<li><a href="/tags/Office/">Office<span>1</span></a></li>
-		
-			<li><a href="/tags/VMware/">VMware<span>2</span></a></li>
-		
-			<li><a href="/tags/Tips/">Tips<span>1</span></a></li>
-		
-			<li><a href="/tags/EC2-User-Data/">EC2 User Data<span>1</span></a></li>
-		
-			<li><a href="/tags/Github/">Github<span>3</span></a></li>
-		
-			<li><a href="/tags/iOS/">iOS<span>1</span></a></li>
-		
-			<li><a href="/tags/HTTP/">HTTP<span>5</span></a></li>
-		
-			<li><a href="/tags/Video/">Video<span>1</span></a></li>
-		
-			<li><a href="/tags/FFMPEG/">FFMPEG<span>1</span></a></li>
+			<li><a href="/tags/SSH/">SSH<span>5</span></a></li>
 		
 		
 		   <li><a href="/tags">...<span>49</span></a></li>
@@ -558,6 +559,10 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2019/10/27/postgresql-tips/" ><i class="fa fa-file-o"></i>PostgreSQL Tips</a>
+      </li>
+    
+      <li>
         <a href="/2019/09/30/apple-airport-express-access-unexpected-error-occurred/" ><i class="fa fa-file-o"></i>设置AirPort Express时获取不到设备信息的...</a>
       </li>
     
@@ -571,10 +576,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2019/07/24/setlocale-LC-CTYPE-cannot-change-locale-UTF-8-issue-when-ssh-to-linux-in-Mac/" ><i class="fa fa-file-o"></i>在Mac下远程登录Linux时,提示cannot ch...</a>
-      </li>
-    
-      <li>
-        <a href="/2019/07/06/how-to-check-network-throughput-on-aws-EC2/" ><i class="fa fa-file-o"></i>AWS EC2各个类型的网络性能的测试方法</a>
       </li>
     
   </ul>

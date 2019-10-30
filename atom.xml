@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.jibing57.com/"/>
-  <updated>2019-09-30T06:07:41.157Z</updated>
+  <updated>2019-10-30T02:45:27.765Z</updated>
   <id>https://www.jibing57.com/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>PostgreSQL Tips</title>
+    <link href="https://www.jibing57.com/2019/10/27/postgresql-tips/"/>
+    <id>https://www.jibing57.com/2019/10/27/postgresql-tips/</id>
+    <published>2019-10-27T05:31:35.000Z</published>
+    <updated>2019-10-30T02:45:27.765Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;收录一些PostgreSQL日常使用的小命令和小配置，备查。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id=&quot;将sql结果导入csv文件&quot;&gt;&lt;a href=&quot;#将sql结果导入csv文件&quot; class=&quot;headerlink&quot; title=&quot;将sql结果导入csv文件&quot;&gt;&lt;/a&gt;将sql结果导入csv文件&lt;/h3&gt;&lt;p&gt;使用\copy命令将sql结果导入csv文件, postgresql命令行中输入以下命令:&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;\copy (Select * From foo) To &amp;apos;/tmp/test.csv&amp;apos; With CSV HEADER&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Reference :&lt;a href=&quot;http://stackoverflow.com/questions/1517635/save-pl-pgsql-output-from-postgresql-to-a-csv-file&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://stackoverflow.com/questions/1517635/save-pl-pgsql-output-from-postgresql-to-a-csv-file&lt;/a&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
+    
+    
+      <category term="PostgreSQL" scheme="https://www.jibing57.com/tags/PostgreSQL/"/>
+    
+  </entry>
   
   <entry>
     <title>设置AirPort Express时获取不到设备信息的解决方案</title>
@@ -593,7 +616,7 @@
     <link href="https://www.jibing57.com/2019/04/26/command-tips/"/>
     <id>https://www.jibing57.com/2019/04/26/command-tips/</id>
     <published>2019-04-26T05:22:40.000Z</published>
-    <updated>2019-10-23T06:09:35.016Z</updated>
+    <updated>2019-10-28T05:29:29.240Z</updated>
     
     <summary type="html">
     
@@ -611,36 +634,6 @@
       <category term="MacOS" scheme="https://www.jibing57.com/tags/MacOS/"/>
     
       <category term="Linux" scheme="https://www.jibing57.com/tags/Linux/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Niu-X resource</title>
-    <link href="https://www.jibing57.com/2019/04/20/niu-x-resource/"/>
-    <id>https://www.jibing57.com/2019/04/20/niu-x-resource/</id>
-    <published>2019-04-20T07:04:47.000Z</published>
-    <updated>2019-05-05T03:34:53.488Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;记录一些有用的网站，持续更新中。。&lt;/p&gt;
-&lt;hr&gt;
-&lt;h3 id=&quot;Linux-command&quot;&gt;&lt;a href=&quot;#Linux-command&quot; class=&quot;headerlink&quot; title=&quot;Linux-command&quot;&gt;&lt;/a&gt;Linux-command&lt;/h3&gt;&lt;p&gt;github地址: &lt;a href=&quot;https://github.com/jaywcjlove/linux-command&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;linux-command&lt;/a&gt;&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;Linux命令大全搜索工具，内容包含Linux命令手册、详解、学习、搜集 &lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;比较系统的各个命令，期待有空时每个粗略一遍，需要时再来查询&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
-    
-    
-      <category term="MacOS" scheme="https://www.jibing57.com/tags/MacOS/"/>
-    
-      <category term="Linux" scheme="https://www.jibing57.com/tags/Linux/"/>
-    
-      <category term="Github" scheme="https://www.jibing57.com/tags/Github/"/>
     
   </entry>
   

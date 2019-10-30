@@ -847,9 +847,9 @@
             
             <tag> Elastic Load Balancing </tag>
             
-            <tag> HTTP </tag>
-            
             <tag> IAM </tag>
+            
+            <tag> HTTP </tag>
             
             <tag> Application Load Balancing </tag>
             
@@ -1598,11 +1598,11 @@
         
         <tags>
             
+            <tag> S3 </tag>
+            
             <tag> Nginx </tag>
             
             <tag> HTTP </tag>
-            
-            <tag> S3 </tag>
             
             <tag> Linux </tag>
             
@@ -9210,11 +9210,11 @@ You can wait for the scheduled retirement date - when the instance is stopped - 
             
             <tag> RDS </tag>
             
-            <tag> AWS SDK </tag>
-            
             <tag> Ruby </tag>
             
             <tag> AWS CLI </tag>
+            
+            <tag> AWS SDK </tag>
             
             <tag> PostgreSQL </tag>
             

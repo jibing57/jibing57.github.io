@@ -1,10 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://www.jibing57.com/2018/04/25/command-line-tools-to-check-images-on-macos/</loc>
-    <lastmod>2019-10-30</lastmod>
+    <loc>https://www.jibing57.com/2019/10/18/AWS-Advanced-Networking-Specialty/</loc>
+    <lastmod>2019-11-05</lastmod>
+  </url>  <url>
+    <loc>https://www.jibing57.com/2017/12/04/AWS-Certified-Sysops-Administrator-Associate/</loc>
+    <lastmod>2019-11-05</lastmod>
+  </url>  <url>
+    <loc>https://www.jibing57.com/2017/07/24/AWS-Certified-Developer/</loc>
+    <lastmod>2019-11-05</lastmod>
+  </url>  <url>
+    <loc>https://www.jibing57.com/2018/02/07/AWS-Certified-Solutions-Architect-Professional/</loc>
+    <lastmod>2019-11-05</lastmod>
+  </url>  <url>
+    <loc>https://www.jibing57.com/2019/10/31/why-format-painter-not-working-on-mac-office-365/</loc>
+    <lastmod>2019-10-31</lastmod>
   </url>  <url>
     <loc>https://www.jibing57.com/2019/10/27/postgresql-tips/</loc>
+    <lastmod>2019-10-31</lastmod>
+  </url>  <url>
+    <loc>https://www.jibing57.com/2018/04/25/command-line-tools-to-check-images-on-macos/</loc>
     <lastmod>2019-10-30</lastmod>
   </url>  <url>
     <loc>https://www.jibing57.com/2019/04/26/command-tips/</loc>
@@ -112,9 +127,6 @@
     <loc>https://www.jibing57.com/2018/12/17/how-to-handle-heap-out-of-memory-in-node/</loc>
     <lastmod>2018-12-23</lastmod>
   </url>  <url>
-    <loc>https://www.jibing57.com/2018/02/07/AWS-Certified-Solutions-Architect-Professional/</loc>
-    <lastmod>2018-12-20</lastmod>
-  </url>  <url>
     <loc>https://www.jibing57.com/2018/12/11/how-to-enable-cors-on-S3/</loc>
     <lastmod>2018-12-11</lastmod>
   </url>  <url>
@@ -211,25 +223,19 @@
     <loc>https://www.jibing57.com/2017/12/14/deep-dig-on-s3-bucket-permission/</loc>
     <lastmod>2017-12-25</lastmod>
   </url>  <url>
+    <loc>https://www.jibing57.com/2017/12/20/expired-of-S3-RRS/</loc>
+    <lastmod>2017-12-25</lastmod>
+  </url>  <url>
     <loc>https://www.jibing57.com/2017/10/31/account-setting-by-aws/</loc>
+    <lastmod>2017-12-25</lastmod>
+  </url>  <url>
+    <loc>https://www.jibing57.com/2017/10/31/hexo-bind-domain-to-github-pages/</loc>
     <lastmod>2017-12-25</lastmod>
   </url>  <url>
     <loc>https://www.jibing57.com/2017/12/20/How-to-add-staging-log-to-EB-logs/</loc>
     <lastmod>2017-12-25</lastmod>
   </url>  <url>
     <loc>https://www.jibing57.com/2017/12/19/deep-dig-on-s3-bucket-permission-exam/</loc>
-    <lastmod>2017-12-25</lastmod>
-  </url>  <url>
-    <loc>https://www.jibing57.com/2017/12/20/expired-of-S3-RRS/</loc>
-    <lastmod>2017-12-25</lastmod>
-  </url>  <url>
-    <loc>https://www.jibing57.com/2017/10/31/hexo-bind-domain-to-github-pages/</loc>
-    <lastmod>2017-12-25</lastmod>
-  </url>  <url>
-    <loc>https://www.jibing57.com/2017/07/24/AWS-Certified-Developer/</loc>
-    <lastmod>2017-12-25</lastmod>
-  </url>  <url>
-    <loc>https://www.jibing57.com/2017/12/04/AWS-Certified-Sysops-Administrator-Associate/</loc>
     <lastmod>2017-12-25</lastmod>
   </url>  <url>
     <loc>https://www.jibing57.com/2017/12/25/how-to-add-shadow-of-images-in-freemind/</loc>

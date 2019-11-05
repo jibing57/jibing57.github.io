@@ -2,23 +2,58 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://www.jibing57.com/2018/04/25/command-line-tools-to-check-images-on-macos/</loc>
+    <loc>https://www.jibing57.com/about/index.html</loc>
     
-    <lastmod>2019-10-30T02:50:10.410Z</lastmod>
+    <lastmod>2019-11-05T03:24:08.894Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.jibing57.com/2019/10/18/AWS-Advanced-Networking-Specialty/</loc>
+    
+    <lastmod>2019-11-05T03:06:54.665Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.jibing57.com/2017/12/04/AWS-Certified-Sysops-Administrator-Associate/</loc>
+    
+    <lastmod>2019-11-05T02:59:36.821Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.jibing57.com/2017/07/24/AWS-Certified-Developer/</loc>
+    
+    <lastmod>2019-11-05T02:59:36.788Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.jibing57.com/2018/02/07/AWS-Certified-Solutions-Architect-Professional/</loc>
+    
+    <lastmod>2019-11-05T02:59:00.105Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.jibing57.com/2019/10/31/why-format-painter-not-working-on-mac-office-365/</loc>
+    
+    <lastmod>2019-10-31T08:54:18.250Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://www.jibing57.com/2019/10/27/postgresql-tips/</loc>
     
-    <lastmod>2019-10-30T02:45:27.765Z</lastmod>
+    <lastmod>2019-10-31T05:19:53.576Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://www.jibing57.com/about/index.html</loc>
+    <loc>https://www.jibing57.com/2018/04/25/command-line-tools-to-check-images-on-macos/</loc>
     
-    <lastmod>2019-10-29T09:05:24.462Z</lastmod>
+    <lastmod>2019-10-30T02:50:10.410Z</lastmod>
     
   </url>
   
@@ -268,13 +303,6 @@
   </url>
   
   <url>
-    <loc>https://www.jibing57.com/2018/02/07/AWS-Certified-Solutions-Architect-Professional/</loc>
-    
-    <lastmod>2018-12-20T02:01:20.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://www.jibing57.com/2018/12/11/how-to-enable-cors-on-S3/</loc>
     
     <lastmod>2018-12-11T15:36:54.000Z</lastmod>
@@ -499,7 +527,21 @@
   </url>
   
   <url>
+    <loc>https://www.jibing57.com/2017/12/20/expired-of-S3-RRS/</loc>
+    
+    <lastmod>2017-12-25T07:08:09.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.jibing57.com/2017/10/31/account-setting-by-aws/</loc>
+    
+    <lastmod>2017-12-25T07:08:09.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.jibing57.com/2017/10/31/hexo-bind-domain-to-github-pages/</loc>
     
     <lastmod>2017-12-25T07:08:09.000Z</lastmod>
     
@@ -516,34 +558,6 @@
     <loc>https://www.jibing57.com/2017/12/19/deep-dig-on-s3-bucket-permission-exam/</loc>
     
     <lastmod>2017-12-25T07:08:09.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.jibing57.com/2017/12/20/expired-of-S3-RRS/</loc>
-    
-    <lastmod>2017-12-25T07:08:09.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.jibing57.com/2017/10/31/hexo-bind-domain-to-github-pages/</loc>
-    
-    <lastmod>2017-12-25T07:08:09.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.jibing57.com/2017/07/24/AWS-Certified-Developer/</loc>
-    
-    <lastmod>2017-12-25T07:08:09.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.jibing57.com/2017/12/04/AWS-Certified-Sysops-Administrator-Associate/</loc>
-    
-    <lastmod>2017-12-25T07:05:45.000Z</lastmod>
     
   </url>
   

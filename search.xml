@@ -3,6 +3,45 @@
   
     
     <entry>
+      <title><![CDATA[Mac下Word不能双击格式刷重复刷的问题]]></title>
+      <url>/2019/10/31/why-format-painter-not-working-on-mac-office-365/</url>
+      <content type="html"><![CDATA[<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>Mac下的Word中没法通过双击格式刷来保持格式刷的状态来重复刷格式</p>
+<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>Word的双击格式刷功能，可能和某些字典软件的功能有冲突，会导致双击格式刷功能失效。</p>
+<h3 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h3><p>关掉字典软件即可。</p>
+<a id="more"></a>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://www.jianshu.com/p/b036729439e5" target="_blank" rel="external">word中格式刷不能双击连刷问题</a></li>
+</ul>
+<h3 id="题外话"><a href="#题外话" class="headerlink" title="题外话"></a>题外话</h3><p>我是2012年开始使用Mac的，刚开始用的时候，就注意到自己Mac上的Office双击格式刷没法达到保持格式刷状态,双击后就会取消格式刷状态。<br>当年的Mac Office 2011感觉一直是不太稳定的，而且微软还在发力window phone,试图在移动互联网中同iOS和Andriod抢夺操作系统的份额。 我就很小心眼地认为是微软不想在Mac上把Office做好，所以导致Office在Mac上比Window上要差一点。<br>这个自我认知也一直固定在我的脑袋中。每次都默认Mac下的Office是不支持格式刷双击保持功能的。</p>
+<p>今天排版文档时，正在费劲地用快捷键一个一个格式刷时。突然醒悟过来，都2019年了，Mac下的Office版本不可能还不支持格式刷双击吧。<br>网上一搜，哭笑不得，压根就和微软没关系。格式刷双击这个功能可能会因为和某些字典软件的功能会有冲突，导致不可用。这个情况不止是Mac，在Windows上也同样存在。<br><strong>尝试着把欧陆词典关了，发现格式刷双击就可以使用了。</strong></p>
+<p>这事感觉特别有意思。有时候一个压根就没有任何依据的自我认知，可能就会盘踞在脑袋中很多年。以后每次碰到相同的情况时，潜意识里就会搬出这个“结论”，认为是理所当然的。<br>对这事的感悟:</p>
+<ul>
+<li>无论是工作还是生活，时刻都需要有怀疑精神，保持对先前经验的怀疑。</li>
+<li>有一个事情感觉做起来特别不顺时，需要花时间调查下原因。</li>
+<li>做事需要有讨论，需要有思想的碰撞。</li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> Tools </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> MacOS </tag>
+            
+            <tag> Office </tag>
+            
+            <tag> 感悟 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[PostgreSQL Tips]]></title>
       <url>/2019/10/27/postgresql-tips/</url>
       <content type="html"><![CDATA[<p>收录一些PostgreSQL日常使用的小命令和小配置，备查。</p>
@@ -93,6 +132,8 @@
 <h3 id="AWS-RDS-Postgresql-master-replicate要修改的几个配置"><a href="#AWS-RDS-Postgresql-master-replicate要修改的几个配置" class="headerlink" title="AWS RDS Postgresql master/replicate要修改的几个配置"></a>AWS RDS Postgresql master/replicate要修改的几个配置</h3><p>Master参数修改<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">wal_keep_segments: 需要需要设大一点，否则写过多的话，会导致replica暂停流复制，从S3下载archived WAL来恢复数据</div><div class="line">random_page_cost: 设为seq_page_cost一样的值，默认random_page_cost是4，seq_page_cost是1。SSD磁盘下可以认为顺序查找和随机查找开销是一样的。</div></pre></td></tr></table></figure></p>
 <p>Replica参数修改<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">hot_standby_feedback: 设为1，防止replica查询还在执行时，Master已经将受影响的数据清理掉并同步给replica，导致replica上的查询失败。</div><div class="line">random_page_cost: 设为seq_page_cost一样的值，默认random_page_cost是4，seq_page_cost是1。SSD磁盘下可以认为顺序查找和随机查找开销是一样的。</div></pre></td></tr></table></figure></p>
 <p><strong>Reference:</strong> <a href="https://amazonaws-china.com/blogs/database/best-practices-for-amazon-rds-postgresql-replication/" target="_blank" rel="external">Best practices for Amazon RDS PostgreSQL replication</a></p>
+<hr>
+<h3 id="查看数据库支持的扩展"><a href="#查看数据库支持的扩展" class="headerlink" title="查看数据库支持的扩展"></a>查看数据库支持的扩展</h3><p>查看当前数据库的pg扩展命令<code>SELECT * FROM pg_extension;</code>或者<code>\dx</code><br>查看服务器支持的pg扩展<code>SELECT * FROM pg_available_extensions;</code></p>
 ]]></content>
       
         <categories>
@@ -105,6 +146,573 @@
         <tags>
             
             <tag> PostgreSQL </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[AWS Advanced Networking Specialty 考试心得]]></title>
+      <url>/2019/10/18/AWS-Advanced-Networking-Specialty/</url>
+      <content type="html"><![CDATA[<p>过了AWS的网络专项AWS Certified Advanced Networking -Specialty的考试，将学习过程中用到的资料罗列如下。<br><strong>注: 本文不是完整的学习考试指导，只是记录了我在准备考试的过程中所用到的一些资料和心得。</strong></p>
+<h3 id="考试说明"><a href="#考试说明" class="headerlink" title="考试说明"></a>考试说明</h3><ul>
+<li><a href="https://amazonaws-china.com/certification/certified-advanced-networking-specialty/" target="_blank" rel="external">考试说明主页</a></li>
+<li><a href="https://amazonaws-china.com/certification/certification-prep/" target="_blank" rel="external">AWS官方考试步骤的说明网页-包含sample question，Guide的下载地址等</a></li>
+<li><a href="https://d1.awsstatic-china.com/training-and-certification/docs-advnetworking-spec/AWS%20Certified%20Advanced%20Networking%20-%20Speciality_Exam_Guide_v1.2_FINAL.pdf" target="_blank" rel="external">AWS Certified Advanced Networking - Specialty Exam Guide</a></li>
+<li><a href="https://d1.awsstatic-china.com/training-and-certification/docs-advnetworking-spec/AWS_Certified_Advanced_Networking_Specialty_SampleExam.pdf" target="_blank" rel="external">官方例题下载</a></li>
+<li><a href="https://www.amazon.com/Certified-Advanced-Networking-Official-Study/dp/1119439833/ref=sr_1_1?s=books&amp;ie=UTF8&amp;qid=1519925473&amp;sr=1-1&amp;keywords=advanced+networking" target="_blank" rel="external">官方教材购买地址</a><ul>
+<li>网上也能找得到pdf版本</li>
+</ul>
+</li>
+</ul>
+<h3 id="一些参考资料"><a href="#一些参考资料" class="headerlink" title="一些参考资料"></a>一些参考资料</h3><ul>
+<li>Acloudguru上网络专项的视频教材,前7天免费，可随时取消。 - <a href="https://acloud.guru/learn/aws-certified-advanced-networking-specialty" target="_blank" rel="external">https://acloud.guru/learn/aws-certified-advanced-networking-specialty</a></li>
+<li>练习题: whizlabs上网络专项的练习题 - <a href="https://www.whizlabs.com/aws-advanced-networking-speciality/" target="_blank" rel="external">https://www.whizlabs.com/aws-advanced-networking-speciality/</a><ul>
+<li><strong>注意: whizlab上的题目仅仅是练习题，不是题库，是用来做考前练习，对知识点进行查漏补缺用的。我在实际考试中没有遇到一道和whizlab上一样的题目。</strong></li>
+</ul>
+</li>
+<li>几篇中文的考试心得<ul>
+<li>IT茶馆的博客 <a href="https://www.xiaopeiqing.com/posts/2896.html" target="_blank" rel="external">顺利通过AWS Certified Advanced Networking – Specialty考试</a></li>
+<li><a href="https://blog.51cto.com/8493144/2160058" target="_blank" rel="external">经验分享: 成功通过AWS Advanced Networking Specialty认证考试</a></li>
+</ul>
+</li>
+<li>几个老外的考试心得<ul>
+<li>学习AWS绕不开的一个博客–Jayendra的博客。他的这篇<a href="http://jayendrapatil.com/aws-certified-advanced-networking-speciality-ans-c00-exam-learning-path/" target="_blank" rel="external">AWS Certified Advanced Networking – Speciality (ANS-C00) Exam Learning Path</a>介绍了网络专项考试中会涉及到的大部分基础知识点，可以帮助理解考试知识点。</li>
+<li>一个老外的考试心得, 和我一样也是用了AcloudGuru和Whizlabs的材料进行的复习, 文章中对whizlab习题中的知识点做了系统的总结。<a href="https://daviseford.com/blog/2018/12/21/aws-advanced-networking-specialty-exam-tips.html" target="_blank" rel="external">AWS Advanced Networking Specialty Exam Tips and Tricks</a></li>
+<li>老外的考试心得2 <a href="https://blog.ashiny.cloud/2018/07/29/aws-certified-advanced-networking-specialty/" target="_blank" rel="external">AWS Certified Advanced Networking Specialty: Exam Notes and Observations</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<h3 id="ACloudguru课程中部分知识点的摘录"><a href="#ACloudguru课程中部分知识点的摘录" class="headerlink" title="ACloudguru课程中部分知识点的摘录"></a>ACloudguru课程中部分知识点的摘录</h3><ul>
+<li><p>DNS Basics</p>
+<ul>
+<li>DNS is a <strong>hierarchical</strong> and <strong>distributed</strong> system</li>
+<li>Generic top-level domains such as - .com .net .org .guru (<strong>gTLD</strong>)</li>
+<li>Country top-level domains - .uk .au .se (<strong>ccTLD</strong>)</li>
+<li>Sponsored top-level domains - .mil .gov .edu .int (<strong>STLD</strong>)</li>
+<li><strong>ROOT Servers - 300+</strong> Servers, Geographic Grouping</li>
+<li><strong>13 AnyCast IP’s</strong> -Operated by <strong>12</strong> organisations</li>
+<li><strong>Root Zone</strong> - hosted by ROOT servers, holds the <strong>xTLD</strong> records</li>
+<li>Root Zone is <strong>CONTROLLED</strong> by <strong>IANA</strong> and <strong>HOSTED</strong> by operators</li>
+</ul>
+</li>
+<li><p>BGP Fundamentals</p>
+<ul>
+<li><strong>BGP</strong> - Border Gateway Protocol</li>
+<li>Operater over <strong>tcp_179</strong> - ensuring reliable inter-router comms</li>
+<li><strong>Manual peering</strong> - no auto discovery - by design</li>
+<li>BGP is a <strong>path-vector</strong> - not link-state or distance-vector</li>
+<li>Path choice is political - can be <strong>flexibly changed</strong></li>
+<li>BGP shares <strong>best path</strong> to a destination with peers - not every path</li>
+<li>Introduces the concept of AS - <strong>Autonomous System</strong></li>
+<li><strong>AS</strong> = A set of routers under a single technical administration</li>
+<li>EBGP - <strong>External</strong> BGP</li>
+<li>IBGP - <strong>Internal</strong> BGP</li>
+<li>…… <strong>dynamically shares routes between peers</strong></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>MED - Multi-Exit Discriminator</p>
+<ul>
+<li><strong>MOST SPECIFIC</strong> wins - 192.168.0.1/32 &gt; 192.168.0.0/24</li>
+<li><strong>FIRST VALID PATH</strong> =  current best path</li>
+<li><strong>WEIGHT</strong> - Local to router and vendor specific - Highest Wins</li>
+<li><strong>LOCAL_PREF</strong> - Advertised Internally - Default 100 - Highest Wins</li>
+<li><strong>LOCAL ORIGINATION</strong> - learned locally, or from another IGP</li>
+<li><strong>AS_PATH</strong> - shortest is preferred.</li>
+<li><strong>ORIGIN_CODE</strong> - IGP &lt; EGP &lt; INCOMPLETE &gt;</li>
+<li><strong>MED</strong> Metric Attribute - <strong>LOWEST PREFERED</strong>!!!</li>
+<li>Cisco BGP - <a href="https://www.cisco.com/c/en/us/support/docs/ip/border-gateway-protocol-bgp/13753-25.html" target="_blank" rel="external">https://www.cisco.com/c/en/us/support/docs/ip/border-gateway-protocol-bgp/13753-25.html</a></li>
+</ul>
+</li>
+<li><p>BGP资料</p>
+<ul>
+<li><a href="https://zhuanlan.zhihu.com/p/25433049" target="_blank" rel="external">BGP漫谈</a></li>
+<li><a href="https://blog.51cto.com/wt7315/2084119" target="_blank" rel="external">边界网关协议（BGP）知识汇总</a></li>
+<li><a href="https://www.cnblogs.com/backlion/p/9546259.html" target="_blank" rel="external">BGP的那些安全痛点（转）</a> </li>
+<li><a href="https://heiok.com/2013/06/07/BGP%E4%B8%8EAS%E8%87%AA%E6%B2%BB%E5%8F%B7%E6%9F%A5%E8%AF%A2/" target="_blank" rel="external">BGP与AS自治号查询</a></li>
+<li><a href="https://bgp.he.net/" target="_blank" rel="external">BGP AS查询网站</a></li>
+</ul>
+</li>
+<li><p>DesignImplementAWSNetwork</p>
+<ul>
+<li>Global and Regional Infrastructure</li>
+<li>VPC and Basic Networking design</li>
+<li>VPC Router</li>
+<li>ENI Elastic IP and Internet Gateway(IGW)</li>
+<li>Security Group and ACL</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>VPC Peering</p>
+<ul>
+<li>Placement Group can cross VPC Peering now. <a href="https://acloud.guru/forums/aws-certified-solutions-architect-professional/discussion/-KR4LfQOK1NBqtdk7hup/span_of_placement_group" target="_blank" rel="external">https://acloud.guru/forums/aws-certified-solutions-architect-professional/discussion/-KR4LfQOK1NBqtdk7hup/span_of_placement_group</a></li>
+</ul>
+</li>
+<li><p>VPC Endpoints</p>
+<ul>
+<li>VPC Endpoints Deep Dive<ul>
+<li>Endpoints are a <strong>region</strong> service</li>
+<li>Endpoints <strong>aren’t extendable across VPC boundaries</strong></li>
+<li><strong>DNS Resolution</strong> is needed within the VPC</li>
+<li>Default VPCE policy is <strong>unrestricted</strong> - can be <strong>locked down</strong></li>
+<li>Controlling access to VPCE via <strong>NACL</strong> is <strong>problematic</strong></li>
+<li><strong>Multiple</strong> VPCE’s within a VPC is fine - even for the <strong>same</strong> service</li>
+</ul>
+</li>
+<li>VPC Endpoints Policy<ul>
+<li>cann’t use “aws:sourceIp”: “X.X.X.X” in policy statement, it won’t match any record</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>Hybrid Connectivity Options</p>
+<ul>
+<li>Software VPN<ul>
+<li>Widest <strong>compatibility</strong> - works with anything you can configure</li>
+<li>Can be configured quickly - no <strong>physical</strong> installation</li>
+<li>Aligns with any strict <strong>governance</strong> requirements</li>
+<li>You have to manage the <strong>instances</strong> it runs on - marketplace</li>
+<li>You may have to manage the <strong>OS</strong> and <strong>Product</strong> - self-created</li>
+<li>No <strong>default resilience</strong></li>
+<li><strong>Inconsistent network latency</strong> - public internet</li>
+<li><strong>Inconsistent network performance</strong> - Instance or on-premise limit</li>
+</ul>
+</li>
+<li>AWS Hardware VPN ( AWS VPC -VPN ) <ul>
+<li>Can be configured quickly - no <strong>physical</strong> installation</li>
+<li><strong>Resilience by default</strong> - active/active active/passive</li>
+<li>Can be <strong>combined</strong> with Direct Connect (DX)</li>
+<li><strong>No ongoing management</strong> required</li>
+<li><strong>Can’t</strong> be used between AWS VPC’s - <strong>no region-to-region</strong></li>
+<li><strong>Has</strong> to be client side initiated</li>
+<li><strong>Inconsistent network latency</strong> - public internet</li>
+<li><strong>Inconsistent network performance</strong> - at the high end </li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Design &amp; Implement Hybrid Networks at scale</p>
+<ul>
+<li>建立Direct Connect的路径和步骤</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+<th style="text-align:center">CUSTOMER</th>
+<th style="text-align:center">AWS</th>
+<th style="text-align:center">Location Provider</th>
+<th style="text-align:center">Carrier/Partner</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Select Region within AWS Account</td>
+<td>N/A</td>
+<td style="text-align:center">X</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td>2</td>
+<td>Order Connection - Specifying 1 or 10GB and DX location</td>
+<td>Depends</td>
+<td style="text-align:center">X</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td>3</td>
+<td>Arrange DX port on DX Router and Delver LOA CFA</td>
+<td>3 Days</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">X</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td>4</td>
+<td>Arrange Cross Connect - provide LOA and your Customer port details. OR, your carrier/partner handles</td>
+<td>~1-4 Days</td>
+<td style="text-align:center">X</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">X</td>
+<td style="text-align:center">O</td>
+</tr>
+<tr>
+<td>5</td>
+<td>(optional) physical backhaul from carrier to customer</td>
+<td>~90 days</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">X</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Port &amp; Physical Integration</td>
+<td>Depends</td>
+<td style="text-align:center">X</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td>7</td>
+<td>Interface creation, configuration, integration</td>
+<td>Depends</td>
+<td style="text-align:center">X</td>
+<td style="text-align:center"></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>DX的优点<ul>
+<li><strong>Low latency</strong> - no public internet or excessive hops</li>
+<li><strong>Consistent</strong> &amp; controlled latency</li>
+<li>High <strong>performance</strong> vs VPNs</li>
+<li><strong>Flexible</strong> - <strong>Trunks</strong> - Multiple VLANs</li>
+<li>Economic <strong>per hour</strong> port costs</li>
+<li><strong>Reduced</strong> DX <strong>Data costs</strong>.. Vs internet costs (VPN/Public endpoint)</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>R53 Routing &amp; Resolution Trees<ul>
+<li><strong>RecordSets</strong> aren’t just A, CNAME or other traditional types</li>
+<li><strong>ALIAS</strong> RecordSets - reference an <strong>ALIAS TARGET</strong></li>
+<li>S3, ELB, CloudFront, etc.. also <strong>RECORDSET GROUPS</strong></li>
+<li><strong>Individual</strong> RecordSets can have health checks</li>
+<li>If they FAIL/UNHEALTHY the recordset is ‘disabled’</li>
+<li><strong>RecordSet Group</strong> Healthy, if 1…M of its RecordSets are healthy</li>
+<li>ALIAS can evaluate its target health … uses ITS health status</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>Elastic Load Balancer (ELB)</p>
+<ul>
+<li>Defined within HTTPS or SSL <strong>listeners</strong></li>
+<li>NO SNI - You can only have <strong>one certificate</strong> per listener</li>
+<li><strong>Cypher</strong> - ELB Encryption Methods</li>
+<li><strong>Custom security policy</strong> or <strong>Predefined Security Policy</strong></li>
+<li>Certificates can be externally obtained and manually applied</li>
+<li>You own the cert, the purchase, the renewal and replacement</li>
+<li>or.. use <strong>ACM - renewal</strong> and <strong>replacement</strong> is automatic</li>
+<li>ELB Access Logs<ul>
+<li><strong>PROBLEM</strong>: Server Logs ELB, NOT Client IP</li>
+<li>TCP - <strong>Proxy Protocol</strong>, Application - <strong>X-Forwarded</strong>-* headers</li>
+<li>ELB Access Logs, Delivered to <strong>S3 Bucket</strong> &amp; Can be prefixed</li>
+<li>Interval is <strong>60</strong> or <strong>5</strong> minutes - <strong>not realtime</strong></li>
+<li>Attributes logged dependant on layer &amp; protocol</li>
+<li><strong>Common</strong> - Timestamp, ELB Name, client-ip &amp; port, backend-ip &amp; port, request_processing_time, backend_processing_time, response_processing_time, received bytes, sent bytes</li>
+<li><strong>HTTP</strong> - ELB Status Code, Backend Status Code, Request, User Agent</li>
+<li><strong>SSL &amp; HTTPS Only</strong> - SSL Cypher, SSL Protocol</li>
+</ul>
+</li>
+<li>Health Check<ul>
+<li><strong>InService</strong> or <strong>OutOfService</strong></li>
+<li>Requests <strong>NOT</strong> routed to <strong>OutOfService</strong> Instances</li>
+<li>ASG - ELB health checks will <strong>terminate OutOfService</strong> Instances</li>
+<li>HealthCheck <strong>Definition, Interval, Healthy</strong> Threshold, <strong>UnHealthy</strong> Threshold</li>
+<li>Ping <strong>Protocol</strong> - TCP, HTTP, HTTPS, and SSL</li>
+<li>Ping <strong>Port</strong></li>
+<li>Ping <strong>Path</strong> - ‘/index.html’</li>
+<li>Response <strong>Timeout</strong></li>
+<li><strong>Response timeout NEEDS to be &lt;= Interval</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>CloudFront</p>
+<ul>
+<li>CloudFront Geo Restriction</li>
+<li>3rd Party Geo Restriction<ul>
+<li><strong>Complex</strong> Restrictions</li>
+<li>Additional <strong>Granularity</strong> (Zip Code)</li>
+<li><strong>Cross Boundary</strong> Restrictions</li>
+<li>Non country loactions (<strong>LAT/LONG</strong>)</li>
+<li>Combine with <strong>non GEO</strong> restrictions</li>
+</ul>
+</li>
+<li>Behiviors<ul>
+<li>Header caching<ul>
+<li><a href="https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/header-caching.html" target="_blank" rel="external">https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/header-caching.html</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Private Content - URLs and Cookies<ul>
+<li><strong>Web Distributions</strong> support <strong>Signed Cookies</strong> and <strong>URLs</strong></li>
+<li><strong>RTMP distributions</strong> only support <strong>URLs</strong></li>
+<li>Use <strong>signed URLs</strong> to control access to <strong>individual files</strong></li>
+<li><strong>Embedded</strong> applications</li>
+<li>Signed URLs <strong>WILL change your URLs</strong> - this may be a problem</li>
+<li>Signed Cookies <strong>WONT</strong> change your <strong>URLs</strong></li>
+<li>..allow access control for groups of files</li>
+<li>HTTP Stack needs to support cookies</li>
+</ul>
+</li>
+<li>SSL<ul>
+<li>Access -&gt; Behaviour, SSL Configuration is <strong>per distribution</strong></li>
+<li>Viewwe &lt;-&gt; CloudFront</li>
+<li>Option <strong>#1 - Default CloudFront Certificate</strong> (*.cloudfront.net)</li>
+<li>.. devices need to support TLSv1 or later.</li>
+<li>Option <strong>#2 - Custom SSL Cert</strong> (acloud.guru)</li>
+<li><strong>Trusted CA, AWS Certificate Manager, Self-Signed</strong></li>
+<li>CloudFront -&gt; Origin</li>
+<li>Origin Name <strong>MUST</strong> match cert - Custom Origins</li>
+<li>ELB - ACM or Trusted CA - <strong>NO Self-Signed</strong></li>
+<li>Non ELB - Trusted CA - <strong>NO Self-Signed</strong></li>
+<li><a href="https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/cnames-and-https-requirements.html" target="_blank" rel="external">https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/cnames-and-https-requirements.html</a></li>
+</ul>
+</li>
+<li>Cost<ul>
+<li><strong>Price Class</strong></li>
+<li><strong>100</strong> = United States (<strong>US</strong>) Canada (<strong>CA</strong>) and Europe (<strong>EU</strong>)</li>
+<li><strong>200</strong> = 100 + <strong>Asia</strong></li>
+<li><strong>ALL</strong> = 200 + South America (<strong>SA</strong>) &amp; Australia (<strong>AU</strong>)</li>
+<li>Balance <strong>locality</strong>/<strong>latency</strong> vs <strong>Cost</strong>\</li>
+<li>Forwarding Headers, Cookies and Query Strings <strong>reduces caching efficiency</strong></li>
+<li><strong>AWS Origin</strong> -&gt; Edge (<strong>Origin Fetch</strong>) = <strong>FREE</strong></li>
+<li>CF Edge -&gt; Viewer = depends on price class/location</li>
+<li>CF Edge -&gt; Viewer is often <strong>CHEAPER</strong> than S3 -&gt; Internet</li>
+<li>CF has <strong>NO</strong> hourly fee/minimum fee</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Amazon Workspaces</p>
+<ul>
+<li>Directory Service is associated with <strong>TWO</strong> subnets - in <strong>TWO AZs</strong></li>
+<li><strong>Multiple Directories</strong> can be associated with each subnet pair.</li>
+<li>A Workspace is linked to <strong>ONE</strong> directory</li>
+<li>1 IP per Subnet</li>
+<li>A Workspace is in <strong>ONE subnet/AZ</strong></li>
+<li>Simple AD (<strong>Small</strong>) <strong>500</strong> Users, <strong>2,000</strong> Objects</li>
+<li>Simple AD (<strong>Large</strong>) <strong>5,00</strong> Users, <strong>20,000</strong> Objects</li>
+<li>Enterprise AD Supports Trusts &amp; Schema Extension</li>
+<li>AD Connector proxies authentication to a ‘real’ AD Source.</li>
+<li>Remember AD Sites &amp; Services</li>
+<li>Usage<ul>
+<li><strong>WebApp</strong> - document management and document reviewing</li>
+<li><strong>Mobile</strong> Applications - Native</li>
+<li>Workstation based <strong>synchronisation app</strong> - onedrive/dropbox like</li>
+<li><strong>Browser extensions</strong> - web clippers</li>
+<li><strong>Requires</strong> a directory service - <strong>simple, enterprise, AD Connector</strong></li>
+<li><strong>SSO</strong> is possible via setting on directory</li>
+<li><strong>50 GB</strong> free sync space for <strong>Workspace user</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>VPC Flow Logs</p>
+<ul>
+<li>Flow logs capture <strong>metadata</strong> of IP traffic</li>
+<li>It’s <strong>NOT IP DATA</strong>, its <strong>METADATA</strong> about that data.</li>
+<li>SRC Addr, DST Addr, SRC Port, DST Port, PROTOCOL</li>
+<li>Attached to <strong>ENI’s, Subnets</strong> or <strong>VPCs</strong></li>
+<li>Logs - <strong>Ingress</strong> and <strong>Egress</strong></li>
+<li>Logs - <strong>Accepted, Rejected</strong> or <strong>All Traffic</strong></li>
+<li><strong>NOT realtime</strong> - several minutes delay</li>
+<li>Logs Data to CloudWatch Logs - <strong>Needs IAM Role</strong></li>
+<li>Each Flow = Log Group</li>
+<li>Each ENI = Log Stream</li>
+</ul>
+</li>
+<li><p>VPC Flow Logs limitation</p>
+<ul>
+<li>Traffic between instances and <strong>AWS DNS</strong> isn’t captured.</li>
+<li><strong>License activation</strong> traffic between WIN and AWS isn’t captured.</li>
+<li>Metadata traffic isn’t captured - EC2 &lt;-&gt; <strong>169.254.169.254</strong></li>
+<li>DHCP traffic between the EC2 instance and <strong>AWS DHCP</strong> isn’t captured</li>
+<li>Traffic to the reserved IP of the <strong>VPC router</strong> isn’t captured..</li>
+</ul>
+</li>
+<li><p>Cost</p>
+<ul>
+<li><a href="https://github.com/open-guides/og-aws#aws-data-transfer-costs" target="_blank" rel="external">https://github.com/open-guides/og-aws#aws-data-transfer-costs</a></li>
+</ul>
+</li>
+<li><p>Enhanced Networking</p>
+<ul>
+<li>Detail info <a href="https://www.youtube.com/watch?v=hRHsk8Nycdg" target="_blank" rel="external">Intel SR-IOV Explanation</a></li>
+<li>Elastic Network Adaptor (<strong>ENA</strong>)</li>
+<li>Started in <strong>X1</strong> - Now additionally in <strong>P2</strong> and <strong>M4.16xlarge</strong></li>
+<li><strong>R4, F1, C5</strong> when updated</li>
+<li><strong>20Gbps</strong> Capability immediately</li>
+<li>..can scale to <strong>400Gbps - same interface/ same driver</strong></li>
+<li><strong>8</strong> request queues per device - will increase over time with cores</li>
+<li>Significantly improved <strong>debug features</strong> - custom designed by AWS</li>
+<li><strong>10 Gbps</strong> per <strong>TCP stream</strong> - inside placement group</li>
+<li>Some newer instances can do this in <strong>a region</strong></li>
+<li>From now - placement group = higher <strong>single</strong> TCP flow rate</li>
+<li>Placement group <strong>10 Gbps</strong>, otherwise <strong>5 Gbps</strong></li>
+</ul>
+</li>
+<li><p>Placement Group</p>
+<ul>
+<li>Limitation and implement<ul>
+<li>Placement groups <strong>CANNOT</strong> span Availability Zones</li>
+<li>A placement groups name is <strong>unique</strong>.. in your <strong>account</strong> .. <strong>all regions</strong></li>
+<li>Not all instance types are supported i.e the ‘t2.xx’ types</li>
+<li>Try and stick to the <strong>same instance type</strong></li>
+<li>You <strong>cant move existing</strong> instances into a placement group</li>
+<li>.. and you <strong>cant merge placement groups</strong> .. delete and make new</li>
+<li>Transit TO and FROM external services - <strong>limited to 5Gbps</strong></li>
+<li>Always use IPv4 or IPv6 <strong>PRIVATE</strong> addressing</li>
+<li>Ideally launch <strong>ALL instances</strong> at the start</li>
+<li>Placement groups <strong>CAN work over VPC Peers</strong> - but the speed is limited</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Aws Shield</p>
+<ul>
+<li>基础服务免费，advance服务是收费的</li>
+<li>AWS Shield只防护简单普遍的攻击，3层和4层的DDoS攻击，比如UDP floods和TCP SYN floods。7层的攻击比如HTTP floods和DNS floods。复杂的应用层的防护，需要在AWS WAF中自己编写规则。</li>
+</ul>
+</li>
+</ul>
+<h3 id="自己整理的一些知识点"><a href="#自己整理的一些知识点" class="headerlink" title="自己整理的一些知识点"></a>自己整理的一些知识点</h3><ul>
+<li><p>同一个VPC内，使用默认DNS时，解析Public DNS时，会解析到私有地址。</p>
+</li>
+<li><p>DX: public virtual interface vs private virtual interface VS Hosted virtual interface VS Hosted Connection</p>
+<ul>
+<li>官方博客<a href="https://amazonaws-china.com/premiumsupport/knowledge-center/direct-connect-types/?nc1=h_ls" target="_blank" rel="external">What’s the difference between a hosted virtual interface (VIF) and a hosted connection?</a> </li>
+<li>Direct connect中Direct connect Connection / private virtual interface / public virtual interface / Hosted virtual interface / Hosted connection几个概念的阐述<ul>
+<li>Direct connect Connection是自己账号申请的connection，可以在connection上建立private virtual interface或者public virtual interface</li>
+<li>Hosted Virtual Interface是自己账号有direct connect Connection，但是可以建立Hosted Virtual Interface给其他account使用</li>
+<li>Hosted connection是Partner为某个account建立的sub-1G的connection，VLAN ID是由partner指定的，端口速度在50~500M之间</li>
+<li><a href="https://www.youtube.com/watch?v=eNxPhHTN8gY" target="_blank" rel="external">AWS re:Invent 2017: Deep Dive: AWS Direct Connect and VPNs (NET403)</a>中对这几个概念的说明截图如下:<br><img src="/images/AWS/DirectConnect/1G_10G_dedicated_connection.png" alt="1G_10G_dedicated_connection"><br><img src="/images/AWS/DirectConnect/1G_10G_dedicated_connection_hosted_VIF.png" alt="1G_10G_dedicated_connection_hosted_VIF.png"><br><img src="/images/AWS/DirectConnect/hosted_connection_sub_1G.png" alt="hosted_connection_sub_1G.png"></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Direct Connect gateway 是什么?</p>
+<ul>
+<li><a href="https://medium.com/@datapath_io/7-things-you-need-to-know-about-aws-direct-connect-gateway-7deb1d6c7b85" target="_blank" rel="external">7 things you need to know about AWS Direct Connect Gateway</a></li>
+<li>官方文档<a href="https://docs.aws.amazon.com/directconnect/latest/UserGuide/direct-connect-gateways-intro.html" target="_blank" rel="external">Direct Connect Gateways</a></li>
+<li><a href="https://amazonaws-china.com/premiumsupport/knowledge-center/set-up-direct-connect-gateway/?nc1=h_ls" target="_blank" rel="external">How can I set up a Direct Connect gateway?</a></li>
+<li>要点:<ul>
+<li>Remember: The VPCs to which you connect through a Direct Connect gateway cannot have overlapping CIDR blocks</li>
+<li>DX Gateway is a global service</li>
+<li>Cannot be used cross account. Cannot be used with public VIFs.</li>
+<li>Cannot be used to send traffic to other VPCs that are connected to the same Gateway. – VPC之间不能通过direct connect gateway来互通</li>
+<li>连到同一个Direct connect gateway的多个private virtual interface之间不能通信</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Route53 - private hosted zone是什么?</p>
+<ul>
+<li><a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/hosted-zones-private.html" target="_blank" rel="external">Working with Private Hosted Zones</a></li>
+<li>In a private hosted zone, you can associate Route 53 health checks only with weighted and failover records</li>
+<li>You can use the following routing policies when you create records in a private hosted zone<ul>
+<li>Simple Routing</li>
+<li>Failover Routing</li>
+<li>Multivalue Answer Routing</li>
+<li>Weighted Routing</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>多VPC之间的连接方式</p>
+<ul>
+<li><a href="https://amazonaws-china.com/answers/networking/aws-single-region-multi-vpc-connectivity/" target="_blank" rel="external">How do I connect multiple VPCs within the same AWS Region?</a></li>
+<li><a href="https://amazonaws-china.com/answers/networking/aws-multiple-region-multi-vpc-connectivity/" target="_blank" rel="external">How do I connect multiple VPCs in different AWS Regions?</a></li>
+</ul>
+</li>
+<li><p>VPN CloudHub</p>
+<ul>
+<li><a href="https://docs.aws.amazon.com/whitepapers/latest/aws-vpc-connectivity-options/aws-vpn-cloudhub-network-to-amazon.html" target="_blank" rel="external">AWS VPN CloudHub</a></li>
+<li><img src="/images/AWS/NetworkingSpecialty/vpn_cloudhub.png" alt="vpn_cloudhub.png"></li>
+<li>用处: 各个site可以通过公告自己的路由，来达到互通的效果。</li>
+<li>要点:<ul>
+<li>The hub and spoke model involves creating multiple Customer Gateways, each with a public IP address</li>
+<li>The remote network prefixes for each spoke must have unique ASNs, and the sites must not have overlapping IP ranges</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>网上找的建立public VIF, private VIF时的截图</p>
+<ul>
+<li>private virtual interface用在direct connect gateway上的截图<br><img src="/images/AWS/NetworkingSpecialty/direct_connect_private_virtual_interface_on_directconnect_gateway_example.png" alt="direct_connect_private_virtual_interface_example.png"></li>
+<li>private virtual interface 用在Virtual Private Gateway上的截图<br><img src="/images/AWS/NetworkingSpecialty/direct_connect_private_virtual_interface_on_virtual_private_gateway_example.png" alt="direct_connect_private_virtual_interface_on_virtual_private_gateway_example.png"></li>
+<li>public virtual interface 截图<br><img src="/images/AWS/NetworkingSpecialty/direct_connect_public_virtual_interface_example.png" alt="direct_connect_public_virtual_interface_example.png"></li>
+<li>General VIF Creation Requirements<ul>
+<li>Name</li>
+<li>Owner</li>
+<li>Connection</li>
+<li>VLAN ID</li>
+<li>BGP Information<ul>
+<li>ASN</li>
+<li>BGP MD5 key</li>
+</ul>
+</li>
+<li>Peer IP’s</li>
+<li>Public VIFs: Choose which prefixes to advertise</li>
+<li>Private VIFs: Jumbo Frame setting</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>VPN sharing</p>
+<ul>
+<li><a href="https://amazonaws-china.com/answers/networking/aws-multiple-vpc-vpn-connection-sharing/" target="_blank" rel="external">Multiple-VPC VPN Connection Sharing - How do I share a single VPN connection with multiple VPCs?</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>其他资源<ul>
+<li><a href="https://amazonaws-china.com/cn/premiumsupport/knowledge-center/" target="_blank" rel="external">AWS 知识中心</a></li>
+<li>Direct Connect相关知识 <ul>
+<li>aws官方视频<a href="https://amazonaws-china.com/cn/premiumsupport/knowledge-center/create-vpn-direct-connect/" target="_blank" rel="external">如何通过 AWS Direct Connect 连接建立 AWS VPN？</a></li>
+<li>AWS官方说明-<a href="https://amazonaws-china.com/cn/directconnect/getting-started/" target="_blank" rel="external">AWS Direct Connect 入门</a> <ul>
+<li>页面下方的两个re:Invent的视频，强烈推荐看一下。<ul>
+<li>使用 AWS Direct Connect 将数据中心扩展到云中 – <a href="https://www.youtube.com/watch?v=lN2RybC9Vbk" target="_blank" rel="external">AWS re:Invent 2017: Extending Data Centers to the Cloud: Connectivity Options and Co (NET301)</a></li>
+<li>AWS Direct Connect 深入探究 – <a href="https://www.youtube.com/watch?v=eNxPhHTN8gY&amp;t=885s" target="_blank" rel="external">AWS re:Invent 2017: Deep Dive: AWS Direct Connect and VPNs (NET403)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="https://amazonaws-china.com/premiumsupport/knowledge-center/provision-direct-connection/?nc1=h_ls" target="_blank" rel="external">How do I provision an AWS Direct Connect connection?</a></li>
+</ul>
+</li>
+<li>使用Unbound来解析On-Premise和AWS的DNS请求 – <a href="https://amazonaws-china.com/cn/blogs/security/how-to-set-up-dns-resolution-between-on-premises-networks-and-aws-by-using-unbound/" target="_blank" rel="external">AWS BLOG - How to Set Up DNS Resolution Between On-Premises Networks and AWS by Using Unbound</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="延伸阅读"><a href="#延伸阅读" class="headerlink" title="延伸阅读"></a>延伸阅读</h3><ul>
+<li><a href="/2018/02/07/AWS-Certified-Solutions-Architect-Professional/" title="AWS Certified Solutions Architect - Professional Road Map">AWS Certified Solutions Architect - Professional Road Map</a></li>
+<li><a href="/2017/07/24/AWS-Certified-Developer/" title="AWS Certified Developer - Associate Road Map">AWS Certified Developer - Associate Road Map</a></li>
+<li><a href="/2017/12/04/AWS-Certified-Sysops-Administrator-Associate/" title="AWS Certified Sysops Administrator - Associate Road Map">AWS Certified Sysops Administrator - Associate Road Map</a>
+</li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> AWS Certified </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Network </tag>
             
         </tags>
         
@@ -235,9 +843,9 @@
         
         <tags>
             
-            <tag> CentOS </tag>
-            
             <tag> Linux </tag>
+            
+            <tag> CentOS </tag>
             
         </tags>
         
@@ -454,9 +1062,9 @@
         
         <tags>
             
-            <tag> CentOS </tag>
-            
             <tag> Network </tag>
+            
+            <tag> CentOS </tag>
             
         </tags>
         
@@ -847,11 +1455,11 @@
             
             <tag> Elastic Load Balancing </tag>
             
-            <tag> IAM </tag>
-            
             <tag> HTTP </tag>
             
             <tag> Application Load Balancing </tag>
+            
+            <tag> IAM </tag>
             
         </tags>
         
@@ -965,9 +1573,9 @@
         
         <tags>
             
-            <tag> CentOS </tag>
-            
             <tag> MacOS </tag>
+            
+            <tag> CentOS </tag>
             
         </tags>
         
@@ -1111,9 +1719,9 @@
         
         <tags>
             
-            <tag> CentOS </tag>
-            
             <tag> Linux </tag>
+            
+            <tag> CentOS </tag>
             
             <tag> VMware </tag>
             
@@ -1379,11 +1987,11 @@
             
             <tag> Elastic Beanstalk </tag>
             
+            <tag> Linux </tag>
+            
             <tag> S3 </tag>
             
             <tag> AWS CLI </tag>
-            
-            <tag> Linux </tag>
             
         </tags>
         
@@ -1428,9 +2036,9 @@
         
         <tags>
             
-            <tag> EC2 </tag>
-            
             <tag> Network </tag>
+            
+            <tag> EC2 </tag>
             
         </tags>
         
@@ -1514,9 +2122,9 @@
             
             <tag> Ruby </tag>
             
-            <tag> CentOS </tag>
-            
             <tag> Linux </tag>
+            
+            <tag> CentOS </tag>
             
             <tag> RVM </tag>
             
@@ -1598,13 +2206,13 @@
         
         <tags>
             
-            <tag> S3 </tag>
-            
             <tag> Nginx </tag>
             
             <tag> HTTP </tag>
             
             <tag> Linux </tag>
+            
+            <tag> S3 </tag>
             
         </tags>
         
@@ -1694,9 +2302,9 @@
             
             <tag> EC2 </tag>
             
-            <tag> Passenger </tag>
-            
             <tag> Nginx </tag>
+            
+            <tag> Passenger </tag>
             
         </tags>
         
@@ -2996,11 +3604,11 @@
         
         <tags>
             
-            <tag> IAM </tag>
-            
             <tag> S3 </tag>
             
             <tag> AWS CLI </tag>
+            
+            <tag> IAM </tag>
             
         </tags>
         
@@ -6795,6 +7403,12 @@ You can wait for the scheduled retirement date - when the instance is stopped - 
 </ul>
 </li>
 </ul>
+<h2 id="延伸"><a href="#延伸" class="headerlink" title="延伸"></a>延伸</h2><ul>
+<li><a href="/2017/07/24/AWS-Certified-Developer/" title="AWS Certified Developer - Associate Road Map">AWS Certified Developer - Associate Road Map</a></li>
+<li><a href="/2017/12/04/AWS-Certified-Sysops-Administrator-Associate/" title="AWS Certified Sysops Administrator - Associate Road Map">AWS Certified Sysops Administrator - Associate Road Map</a></li>
+<li><a href="/2019/10/18/AWS-Advanced-Networking-Specialty/" title="AWS Advanced Networking Specialty 考试心得">AWS Advanced Networking Specialty 考试心得</a>
+</li>
+</ul>
 ]]></content>
       
         <categories>
@@ -9133,6 +9747,12 @@ You can wait for the scheduled retirement date - when the instance is stopped - 
 <li><a href="https://amazonaws-china.com/lambda/faqs/" target="_blank" rel="external">Lambda FAQ</a></li>
 <li><a href="https://amazonaws-china.com/api-gateway/faqs/" target="_blank" rel="external">API Gateway FAQ</a></li>
 </ul>
+<h2 id="延伸"><a href="#延伸" class="headerlink" title="延伸"></a>延伸</h2><ul>
+<li><a href="/2018/02/07/AWS-Certified-Solutions-Architect-Professional/" title="AWS Certified Solutions Architect - Professional Road Map">AWS Certified Solutions Architect - Professional Road Map</a></li>
+<li><a href="/2017/07/24/AWS-Certified-Developer/" title="AWS Certified Developer - Associate Road Map">AWS Certified Developer - Associate Road Map</a></li>
+<li><a href="/2019/10/18/AWS-Advanced-Networking-Specialty/" title="AWS Advanced Networking Specialty 考试心得">AWS Advanced Networking Specialty 考试心得</a>
+</li>
+</ul>
 ]]></content>
       
         <categories>
@@ -9210,11 +9830,11 @@ You can wait for the scheduled retirement date - when the instance is stopped - 
             
             <tag> RDS </tag>
             
+            <tag> AWS SDK </tag>
+            
             <tag> Ruby </tag>
             
             <tag> AWS CLI </tag>
-            
-            <tag> AWS SDK </tag>
             
             <tag> PostgreSQL </tag>
             
@@ -11275,6 +11895,12 @@ You can wait for the scheduled retirement date - when the instance is stopped - 
 <li>老外心得 <a href="https://acloud.guru/forums/aws-certified-developer-associate/discussion/-KUdI5f2LNbi4wvK7v4I/how-to-pass-aws-certified-developer-exam" target="_blank" rel="external">https://acloud.guru/forums/aws-certified-developer-associate/discussion/-KUdI5f2LNbi4wvK7v4I/how-to-pass-aws-certified-developer-exam</a></li>
 <li>老外心得 <a href="https://acloud.guru/forums/aws-certified-developer-associate/discussion/-KPuWHwfTCiCJNsGzAwu/passed" target="_blank" rel="external">https://acloud.guru/forums/aws-certified-developer-associate/discussion/-KPuWHwfTCiCJNsGzAwu/passed</a></li>
 <li>re:Invent videos. “Deep Dive on Amazon DynamoDB” <a href="https://www.youtube.com/watch?v=bCW3lhsJKfw" target="_blank" rel="external">https://www.youtube.com/watch?v=bCW3lhsJKfw</a></li>
+</ul>
+<h2 id="延伸"><a href="#延伸" class="headerlink" title="延伸"></a>延伸</h2><ul>
+<li><a href="/2018/02/07/AWS-Certified-Solutions-Architect-Professional/" title="AWS Certified Solutions Architect - Professional Road Map">AWS Certified Solutions Architect - Professional Road Map</a></li>
+<li><a href="/2017/12/04/AWS-Certified-Sysops-Administrator-Associate/" title="AWS Certified Sysops Administrator - Associate Road Map">AWS Certified Sysops Administrator - Associate Road Map</a></li>
+<li><a href="/2019/10/18/AWS-Advanced-Networking-Specialty/" title="AWS Advanced Networking Specialty 考试心得">AWS Advanced Networking Specialty 考试心得</a>
+</li>
 </ul>
 ]]></content>
       

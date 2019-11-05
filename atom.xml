@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.jibing57.com/"/>
-  <updated>2019-10-30T02:45:27.765Z</updated>
+  <updated>2019-10-31T08:54:18.250Z</updated>
   <id>https://www.jibing57.com/</id>
   
   <author>
@@ -17,11 +17,37 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Mac下Word不能双击格式刷重复刷的问题</title>
+    <link href="https://www.jibing57.com/2019/10/31/why-format-painter-not-working-on-mac-office-365/"/>
+    <id>https://www.jibing57.com/2019/10/31/why-format-painter-not-working-on-mac-office-365/</id>
+    <published>2019-10-31T11:45:07.000Z</published>
+    <updated>2019-10-31T08:54:18.250Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;问题&quot;&gt;&lt;a href=&quot;#问题&quot; class=&quot;headerlink&quot; title=&quot;问题&quot;&gt;&lt;/a&gt;问题&lt;/h3&gt;&lt;p&gt;Mac下的Word中没法通过双击格式刷来保持格式刷的状态来重复刷格式&lt;/p&gt;
+&lt;h3 id=&quot;原因&quot;&gt;&lt;a href=&quot;#原因&quot; class=&quot;headerlink&quot; title=&quot;原因&quot;&gt;&lt;/a&gt;原因&lt;/h3&gt;&lt;p&gt;Word的双击格式刷功能，可能和某些字典软件的功能有冲突，会导致双击格式刷功能失效。&lt;/p&gt;
+&lt;h3 id=&quot;解决办法&quot;&gt;&lt;a href=&quot;#解决办法&quot; class=&quot;headerlink&quot; title=&quot;解决办法&quot;&gt;&lt;/a&gt;解决办法&lt;/h3&gt;&lt;p&gt;关掉字典软件即可。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
+    
+    
+      <category term="MacOS" scheme="https://www.jibing57.com/tags/MacOS/"/>
+    
+      <category term="Office" scheme="https://www.jibing57.com/tags/Office/"/>
+    
+      <category term="感悟" scheme="https://www.jibing57.com/tags/%E6%84%9F%E6%82%9F/"/>
+    
+  </entry>
+  
+  <entry>
     <title>PostgreSQL Tips</title>
     <link href="https://www.jibing57.com/2019/10/27/postgresql-tips/"/>
     <id>https://www.jibing57.com/2019/10/27/postgresql-tips/</id>
     <published>2019-10-27T05:31:35.000Z</published>
-    <updated>2019-10-30T02:45:27.765Z</updated>
+    <updated>2019-10-31T05:19:53.576Z</updated>
     
     <summary type="html">
     
@@ -36,6 +62,54 @@
     
     
       <category term="PostgreSQL" scheme="https://www.jibing57.com/tags/PostgreSQL/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>AWS Advanced Networking Specialty 考试心得</title>
+    <link href="https://www.jibing57.com/2019/10/18/AWS-Advanced-Networking-Specialty/"/>
+    <id>https://www.jibing57.com/2019/10/18/AWS-Advanced-Networking-Specialty/</id>
+    <published>2019-10-18T01:39:29.000Z</published>
+    <updated>2019-11-05T03:06:54.665Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;过了AWS的网络专项AWS Certified Advanced Networking -Specialty的考试，将学习过程中用到的资料罗列如下。&lt;br&gt;&lt;strong&gt;注: 本文不是完整的学习考试指导，只是记录了我在准备考试的过程中所用到的一些资料和心得。&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&quot;考试说明&quot;&gt;&lt;a href=&quot;#考试说明&quot; class=&quot;headerlink&quot; title=&quot;考试说明&quot;&gt;&lt;/a&gt;考试说明&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://amazonaws-china.com/certification/certified-advanced-networking-specialty/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;考试说明主页&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://amazonaws-china.com/certification/certification-prep/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;AWS官方考试步骤的说明网页-包含sample question，Guide的下载地址等&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://d1.awsstatic-china.com/training-and-certification/docs-advnetworking-spec/AWS%20Certified%20Advanced%20Networking%20-%20Speciality_Exam_Guide_v1.2_FINAL.pdf&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;AWS Certified Advanced Networking - Specialty Exam Guide&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://d1.awsstatic-china.com/training-and-certification/docs-advnetworking-spec/AWS_Certified_Advanced_Networking_Specialty_SampleExam.pdf&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;官方例题下载&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.amazon.com/Certified-Advanced-Networking-Official-Study/dp/1119439833/ref=sr_1_1?s=books&amp;amp;ie=UTF8&amp;amp;qid=1519925473&amp;amp;sr=1-1&amp;amp;keywords=advanced+networking&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;官方教材购买地址&lt;/a&gt;&lt;ul&gt;
+&lt;li&gt;网上也能找得到pdf版本&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;一些参考资料&quot;&gt;&lt;a href=&quot;#一些参考资料&quot; class=&quot;headerlink&quot; title=&quot;一些参考资料&quot;&gt;&lt;/a&gt;一些参考资料&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Acloudguru上网络专项的视频教材,前7天免费，可随时取消。 - &lt;a href=&quot;https://acloud.guru/learn/aws-certified-advanced-networking-specialty&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://acloud.guru/learn/aws-certified-advanced-networking-specialty&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;练习题: whizlabs上网络专项的练习题 - &lt;a href=&quot;https://www.whizlabs.com/aws-advanced-networking-speciality/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://www.whizlabs.com/aws-advanced-networking-speciality/&lt;/a&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;注意: whizlab上的题目仅仅是练习题，不是题库，是用来做考前练习，对知识点进行查漏补缺用的。我在实际考试中没有遇到一道和whizlab上一样的题目。&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;几篇中文的考试心得&lt;ul&gt;
+&lt;li&gt;IT茶馆的博客 &lt;a href=&quot;https://www.xiaopeiqing.com/posts/2896.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;顺利通过AWS Certified Advanced Networking – Specialty考试&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://blog.51cto.com/8493144/2160058&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;经验分享: 成功通过AWS Advanced Networking Specialty认证考试&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;几个老外的考试心得&lt;ul&gt;
+&lt;li&gt;学习AWS绕不开的一个博客–Jayendra的博客。他的这篇&lt;a href=&quot;http://jayendrapatil.com/aws-certified-advanced-networking-speciality-ans-c00-exam-learning-path/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;AWS Certified Advanced Networking – Speciality (ANS-C00) Exam Learning Path&lt;/a&gt;介绍了网络专项考试中会涉及到的大部分基础知识点，可以帮助理解考试知识点。&lt;/li&gt;
+&lt;li&gt;一个老外的考试心得, 和我一样也是用了AcloudGuru和Whizlabs的材料进行的复习, 文章中对whizlab习题中的知识点做了系统的总结。&lt;a href=&quot;https://daviseford.com/blog/2018/12/21/aws-advanced-networking-specialty-exam-tips.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;AWS Advanced Networking Specialty Exam Tips and Tricks&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;老外的考试心得2 &lt;a href=&quot;https://blog.ashiny.cloud/2018/07/29/aws-certified-advanced-networking-specialty/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;AWS Certified Advanced Networking Specialty: Exam Notes and Observations&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+    
+    </summary>
+    
+      <category term="AWS Certified" scheme="https://www.jibing57.com/categories/AWS-Certified/"/>
+    
+    
+      <category term="Network" scheme="https://www.jibing57.com/tags/Network/"/>
     
   </entry>
   
@@ -122,9 +196,9 @@
       <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
     
     
-      <category term="CentOS" scheme="https://www.jibing57.com/tags/CentOS/"/>
-    
       <category term="Linux" scheme="https://www.jibing57.com/tags/Linux/"/>
+    
+      <category term="CentOS" scheme="https://www.jibing57.com/tags/CentOS/"/>
     
   </entry>
   
@@ -242,9 +316,9 @@
       <category term="Linux" scheme="https://www.jibing57.com/categories/Linux/"/>
     
     
-      <category term="CentOS" scheme="https://www.jibing57.com/tags/CentOS/"/>
-    
       <category term="Network" scheme="https://www.jibing57.com/tags/Network/"/>
+    
+      <category term="CentOS" scheme="https://www.jibing57.com/tags/CentOS/"/>
     
   </entry>
   
@@ -467,11 +541,11 @@
     
       <category term="Elastic Load Balancing" scheme="https://www.jibing57.com/tags/Elastic-Load-Balancing/"/>
     
-      <category term="IAM" scheme="https://www.jibing57.com/tags/IAM/"/>
-    
       <category term="HTTP" scheme="https://www.jibing57.com/tags/HTTP/"/>
     
       <category term="Application Load Balancing" scheme="https://www.jibing57.com/tags/Application-Load-Balancing/"/>
+    
+      <category term="IAM" scheme="https://www.jibing57.com/tags/IAM/"/>
     
   </entry>
   
@@ -515,9 +589,9 @@
       <category term="Linux" scheme="https://www.jibing57.com/categories/Linux/"/>
     
     
-      <category term="CentOS" scheme="https://www.jibing57.com/tags/CentOS/"/>
-    
       <category term="MacOS" scheme="https://www.jibing57.com/tags/MacOS/"/>
+    
+      <category term="CentOS" scheme="https://www.jibing57.com/tags/CentOS/"/>
     
   </entry>
   
@@ -580,60 +654,6 @@
       <category term="Linux" scheme="https://www.jibing57.com/tags/Linux/"/>
     
       <category term="VMware" scheme="https://www.jibing57.com/tags/VMware/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Vmware Fusion中CentOS 7中安装Vmware Tools</title>
-    <link href="https://www.jibing57.com/2019/04/26/manually-install-vmeare-tools-on-centos-7/"/>
-    <id>https://www.jibing57.com/2019/04/26/manually-install-vmeare-tools-on-centos-7/</id>
-    <published>2019-04-26T13:07:10.000Z</published>
-    <updated>2019-04-26T07:59:16.464Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h3 id=&quot;安装步骤&quot;&gt;&lt;a href=&quot;#安装步骤&quot; class=&quot;headerlink&quot; title=&quot;安装步骤&quot;&gt;&lt;/a&gt;安装步骤&lt;/h3&gt;&lt;ol&gt;
-&lt;li&gt;虚拟机状态栏中选择 &lt;strong&gt;虚拟机 &amp;gt; 安装Vmware Tools&lt;/strong&gt;&lt;br&gt;期间
-      
-    
-    </summary>
-    
-      <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
-    
-    
-      <category term="CentOS" scheme="https://www.jibing57.com/tags/CentOS/"/>
-    
-      <category term="Linux" scheme="https://www.jibing57.com/tags/Linux/"/>
-    
-      <category term="VMware" scheme="https://www.jibing57.com/tags/VMware/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Command Tips</title>
-    <link href="https://www.jibing57.com/2019/04/26/command-tips/"/>
-    <id>https://www.jibing57.com/2019/04/26/command-tips/</id>
-    <published>2019-04-26T05:22:40.000Z</published>
-    <updated>2019-10-28T05:29:29.240Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;git-branch-不要分页&quot;&gt;&lt;a href=&quot;#git-branch-不要分页&quot; class=&quot;headerlink&quot; title=&quot;git branch 不要分页&quot;&gt;&lt;/a&gt;git branch 不要分页&lt;/h3&gt;&lt;p&gt;设置git branch不分页显示&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;git config --global pager.branch false&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-&lt;hr&gt;
-&lt;h3 id=&quot;Macos下tree显示中文&quot;&gt;&lt;a href=&quot;#Macos下tree显示中文&quot; class=&quot;headerlink&quot; title=&quot;Macos下tree显示中文&quot;&gt;&lt;/a&gt;Macos下tree显示中文&lt;/h3&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;# 安装tree&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;brew install tree`&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;# 中文不乱码加参数 -N&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;tree -N&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;hr&gt;
-&lt;h3 id=&quot;CentoOS-7-最小化安装后可能需要的一些命令&quot;&gt;&lt;a href=&quot;#CentoOS-7-最小化安装后可能需要的一些命令&quot; class=&quot;headerlink&quot; title=&quot;CentoOS 7 最小化安装后可能需要的一些命令&quot;&gt;&lt;/a&gt;CentoOS 7 最小化安装后可能需要的一些命令&lt;/h3&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;yum install wget curl&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;yum install unzip&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;yum install tree&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;yum install net-tools&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-    
-    </summary>
-    
-      <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
-    
-    
-      <category term="MacOS" scheme="https://www.jibing57.com/tags/MacOS/"/>
-    
-      <category term="Linux" scheme="https://www.jibing57.com/tags/Linux/"/>
     
   </entry>
   

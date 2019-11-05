@@ -139,6 +139,69 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
+			<div class="date"> 2019-04-26 </div>
+			<div class="article-title"><a href="/2019/04/26/manually-install-vmeare-tools-on-centos-7/" >Vmware Fusion中CentOS 7中安装Vmware Tools</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h3><ol>
+<li>虚拟机状态栏中选择 <strong>虚拟机 &gt; 安装Vmware Tools</strong><br>期间可能会报CDROM已经被占用等信息，选择还是挂载即可</li>
+<li><p>打开Terminal手动挂载CDROM, 如果已经挂载，则不需要挂载</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># 查看cdrom是否已经自动挂载</div><div class="line">mount | grep iso9660</div><div class="line"></div><div class="line"># 手动挂载cdrom</div><div class="line">mkdir /mnt/cdrom</div><div class="line">mount /dev/cdrom /mnt/cdrom</div></pre></td></tr></table></figure>
+</li>
+<li><p>拷贝cdrom内容到/tmp并安装<br>安装步骤:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"># 如果是CentOS最小化安装，则系统没有perl,gcc和kernel-devel，需要先安装</div><div class="line">yum install -y perl gcc make kernel-devel</div><div class="line"></div><div class="line"># 拷贝vmtools并安装</div><div class="line">cd /tmp/</div><div class="line">cp /mnt/cdrom/VMwareTools-x.x.x-yyyy.tar.gz ./</div><div class="line">tar xzvf VMwareTools-x.x.x-yyyy.tar.gz</div><div class="line">cd vmware-tools-distrib</div><div class="line"># 执行安装程序，没有特殊要求，一路回车即可</div><div class="line">bash ./vmware-install.pl</div><div class="line"></div><div class="line"># 清理文件</div><div class="line">rm -rf /tmp/VMwareTools-x.x.x-yyyy.tar.gz</div><div class="line">rm -rf /tmp/vmware-tools-distrib/</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://docs.vmware.com/en/VMware-Fusion/10.0/com.vmware.fusion.using.doc/GUID-08BB9465-D40A-4E16-9E15-8C016CC8166F.html" target="_blank" rel="external">Manually Installing VMware Tools on a Linux Virtual Machine</a></li>
+<li><a href="https://kb.vmware.com/s/article/1018414" target="_blank" rel="external">Installing VMware Tools in a Linux virtual machine using a Compiler (1018414)</a></li>
+</ul>
+
+	
+	</div>
+  <a type="button" href="/2019/04/26/manually-install-vmeare-tools-on-centos-7/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2019-04-26 </div>
+			<div class="article-title"><a href="/2019/04/26/command-tips/" >Command Tips</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="git-branch-不要分页"><a href="#git-branch-不要分页" class="headerlink" title="git branch 不要分页"></a>git branch 不要分页</h3><p>设置git branch不分页显示<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git config --global pager.branch false</div></pre></td></tr></table></figure></p>
+<hr>
+<h3 id="Macos下tree显示中文"><a href="#Macos下tree显示中文" class="headerlink" title="Macos下tree显示中文"></a>Macos下tree显示中文</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># 安装tree</div><div class="line">brew install tree`</div><div class="line"></div><div class="line"># 中文不乱码加参数 -N</div><div class="line">tree -N</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="CentoOS-7-最小化安装后可能需要的一些命令"><a href="#CentoOS-7-最小化安装后可能需要的一些命令" class="headerlink" title="CentoOS 7 最小化安装后可能需要的一些命令"></a>CentoOS 7 最小化安装后可能需要的一些命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">yum install wget curl</div><div class="line">yum install unzip</div><div class="line">yum install tree</div><div class="line">yum install net-tools</div></pre></td></tr></table></figure>
+	
+	</div>
+  <a type="button" href="/2019/04/26/command-tips/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
 			<div class="date"> 2019-04-20 </div>
 			<div class="article-title"><a href="/2019/04/20/niu-x-resource/" >Niu-X resource</a></div>						
 		</h3>
@@ -363,62 +426,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2019-03-05 </div>
-			<div class="article-title"><a href="/2019/03/05/how-resolve-nokogiri-failed-by-xml2-on-macos/" >Macos下因为找不到libxml2而导致nokogiri安装失败的解决办法</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>今天要跑一个其他的rails项目，为了不污染原先的gemset。就重建了一个gemset, 但是bundle install的时候，安装nokogiri 1.8.4一直失败。<br>系统版本是Macos 10.13 High Sierra中, ruby版本是rvm安装的ruby2.3.0。</p>
-<p>令人费解的是，同样在ruby2.3.0下的另一个gemset,nokogiri 1.8.2可以顺利安装。</p>
-<p>网上搜了一圈后，找到了解决办法。记录如下:</p>
-<p>设置bundle config，编译nokogiri时，使用系统xml2路径即可。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">bundle config build.nokogiri --use-system-libraries --with-xml2-include=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/usr/include/libxml2</div></pre></td></tr></table></figure>
-<p>还有一个更简单的方法，自动根据系统版本得到系统libxml2的路径</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">bundle config build.nokogiri --use-system-libraries=true --with-xml2-include=&quot;$(xcrun --show-sdk-path)&quot;/usr/include/libxml2</div></pre></td></tr></table></figure>
-<p>参考资料: <a href="https://github.com/sparklemotion/nokogiri/issues/1547" target="_blank" rel="external">Installation of nokogiri fail with bundle on macOS Sierra 10.12 </a></p>
-
-	
-	</div>
-  <a type="button" href="/2019/03/05/how-resolve-nokogiri-failed-by-xml2-on-macos/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2019-02-28 </div>
-			<div class="article-title"><a href="/2019/02/28/nginx_444_and_307/" >Nginx的HTTP Code444和307设置</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="nginx-444"><a href="#nginx-444" class="headerlink" title="nginx 444"></a>nginx 444</h3><h4 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h4><p>当没有显式指定default server的时候，Nginx会使用第一个server来作为默认的响应server，即使请求的Host并没有匹配到server_name。<br>这是为了兼容老旧的一些不带Host的HTTP请求而做的设置。官文描述: <a href="http://nginx.org/en/docs/http/request_processing.html" target="_blank" rel="external">How nginx processes a request</a></p>
-<p>此时可能存在一定的风险。如果有非备案的名解析到了你的Public IP上，而你的Web服务对该域名的请求有所响应的话，可能会导致Public IP被运营商封锁。</p>
-<h4 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法:"></a>解决办法:</h4><p>在nginx中添加一个default server，并在default server中设置<code>return 444;</code>。此时Nginx就不会响应请求，除非请求的Host是配置的。<br>
-	
-	</div>
-  <a type="button" href="/2019/02/28/nginx_444_and_307/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -484,7 +491,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/#AWS">AWS<span>34</span></a></li>
 		
-			<li><a href="/categories/#AWS Certified">AWS Certified<span>3</span></a></li>
+			<li><a href="/categories/#AWS Certified">AWS Certified<span>4</span></a></li>
 		
 			<li><a href="/categories/#Blog">Blog<span>5</span></a></li>
 		
@@ -494,7 +501,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/#Shell">Shell<span>8</span></a></li>
 		
-			<li><a href="/categories/#Tools">Tools<span>17</span></a></li>
+			<li><a href="/categories/#Tools">Tools<span>18</span></a></li>
 		
 		</ul>
 	</div>
@@ -508,46 +515,46 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/tags/#AWS Free Tier">AWS Free Tier<span>1</span></a></li>
 		
-			<li><a href="/tags/#Passenger">Passenger<span>2</span></a></li>
+			<li><a href="/tags/#AWS SDK">AWS SDK<span>2</span></a></li>
 		
-			<li><a href="/tags/#PostgreSQL">PostgreSQL<span>2</span></a></li>
+			<li><a href="/tags/#EC2">EC2<span>8</span></a></li>
 		
-			<li><a href="/tags/#EC2 User Data">EC2 User Data<span>1</span></a></li>
+			<li><a href="/tags/#Sysops">Sysops<span>1</span></a></li>
+		
+			<li><a href="/tags/#Video">Video<span>1</span></a></li>
 		
 			<li><a href="/tags/#Hexo">Hexo<span>7</span></a></li>
 		
-			<li><a href="/tags/#HTTP">HTTP<span>5</span></a></li>
-		
-			<li><a href="/tags/#Network">Network<span>3</span></a></li>
-		
-			<li><a href="/tags/#FFMPEG">FFMPEG<span>1</span></a></li>
-		
-			<li><a href="/tags/#Elastic Beanstalk">Elastic Beanstalk<span>7</span></a></li>
-		
-			<li><a href="/tags/#Git">Git<span>2</span></a></li>
-		
-			<li><a href="/tags/#Yum">Yum<span>1</span></a></li>
-		
-			<li><a href="/tags/#MacOS">MacOS<span>15</span></a></li>
-		
 			<li><a href="/tags/#DynamoDB">DynamoDB<span>1</span></a></li>
+		
+			<li><a href="/tags/#CloudWatch">CloudWatch<span>1</span></a></li>
+		
+			<li><a href="/tags/#RDS">RDS<span>3</span></a></li>
+		
+			<li><a href="/tags/#AWS CLI">AWS CLI<span>6</span></a></li>
+		
+			<li><a href="/tags/#HTTP">HTTP<span>5</span></a></li>
 		
 			<li><a href="/tags/#Elastic Load Balancing">Elastic Load Balancing<span>6</span></a></li>
 		
-			<li><a href="/tags/#CodeCommit">CodeCommit<span>1</span></a></li>
+			<li><a href="/tags/#Github">Github<span>3</span></a></li>
 		
-			<li><a href="/tags/#Firewall">Firewall<span>1</span></a></li>
+			<li><a href="/tags/#Office">Office<span>2</span></a></li>
+		
+			<li><a href="/tags/#MacOS">MacOS<span>16</span></a></li>
+		
+			<li><a href="/tags/#CentOS">CentOS<span>7</span></a></li>
 		
 			<li><a href="/tags/#S3">S3<span>10</span></a></li>
 		
-			<li><a href="/tags/#Github">Github<span>3</span></a></li>
+			<li><a href="/tags/#Tips">Tips<span>1</span></a></li>
 		
-			<li><a href="/tags/#Ruby">Ruby<span>8</span></a></li>
+			<li><a href="/tags/#FFMPEG">FFMPEG<span>1</span></a></li>
 		
-			<li><a href="/tags/#Solutions Architect">Solutions Architect<span>1</span></a></li>
+			<li><a href="/tags/#CodeCommit">CodeCommit<span>1</span></a></li>
 		
 		
-		   <li><a href="/tags">...<span>49</span></a></li>
+		   <li><a href="/tags">...<span>50</span></a></li>
 		 
 		</ul>
 	</div>
@@ -560,7 +567,15 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2019/10/31/why-format-painter-not-working-on-mac-office-365/" ><i class="fa fa-file-o"></i>Mac下Word不能双击格式刷重复刷的问题</a>
+      </li>
+    
+      <li>
         <a href="/2019/10/27/postgresql-tips/" ><i class="fa fa-file-o"></i>PostgreSQL Tips</a>
+      </li>
+    
+      <li>
+        <a href="/2019/10/18/AWS-Advanced-Networking-Specialty/" ><i class="fa fa-file-o"></i>AWS Advanced Networking Spe...</a>
       </li>
     
       <li>
@@ -569,14 +584,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2019/09/29/still-password-when-setting-public-key-ssh-authorization/" ><i class="fa fa-file-o"></i>ssh设置私钥登录后还是提示需要输入密码</a>
-      </li>
-    
-      <li>
-        <a href="/2019/09/24/backup-tools-borgbackup/" ><i class="fa fa-file-o"></i>BorgBackup -- 基于命令行的增量备份工具</a>
-      </li>
-    
-      <li>
-        <a href="/2019/07/24/setlocale-LC-CTYPE-cannot-change-locale-UTF-8-issue-when-ssh-to-linux-in-Mac/" ><i class="fa fa-file-o"></i>在Mac下远程登录Linux时,提示cannot ch...</a>
       </li>
     
   </ul>

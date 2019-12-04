@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://www.jibing57.com/2019/12/02/ImageMagick-watermark/</loc>
+    <lastmod>2019-12-04</lastmod>
+  </url>  <url>
+    <loc>https://www.jibing57.com/2019/04/09/online-visual-paradigm/</loc>
+    <lastmod>2019-12-04</lastmod>
+  </url>  <url>
+    <loc>https://www.jibing57.com/2019/11/28/way-to-install-wkhtmltopdf-and-wkhtmltoimage-to-CentOS-7/</loc>
+    <lastmod>2019-11-28</lastmod>
+  </url>  <url>
+    <loc>https://www.jibing57.com/2019/04/26/command-tips/</loc>
+    <lastmod>2019-11-25</lastmod>
+  </url>  <url>
+    <loc>https://www.jibing57.com/2019/11/19/how-to-install-docker-and-kubernetes-on-macos/</loc>
+    <lastmod>2019-11-19</lastmod>
+  </url>  <url>
     <loc>https://www.jibing57.com/2019/10/18/AWS-Advanced-Networking-Specialty/</loc>
     <lastmod>2019-11-05</lastmod>
   </url>  <url>
@@ -21,9 +36,6 @@
   </url>  <url>
     <loc>https://www.jibing57.com/2018/04/25/command-line-tools-to-check-images-on-macos/</loc>
     <lastmod>2019-10-30</lastmod>
-  </url>  <url>
-    <loc>https://www.jibing57.com/2019/04/26/command-tips/</loc>
-    <lastmod>2019-10-28</lastmod>
   </url>  <url>
     <loc>https://www.jibing57.com/2019/09/30/apple-airport-express-access-unexpected-error-occurred/</loc>
     <lastmod>2019-09-30</lastmod>
@@ -205,37 +217,37 @@
     <loc>https://www.jibing57.com/2017/07/25/useful-website-of-aws/</loc>
     <lastmod>2017-12-25</lastmod>
   </url>  <url>
-    <loc>https://www.jibing57.com/2017/11/29/how-to-enable-slow-query-on-aws-rds-postgresql/</loc>
-    <lastmod>2017-12-25</lastmod>
-  </url>  <url>
-    <loc>https://www.jibing57.com/2017/10/24/how-to-use-aws-cli-with-multi-user/</loc>
-    <lastmod>2017-12-25</lastmod>
-  </url>  <url>
-    <loc>https://www.jibing57.com/2017/07/25/how-to-read-text-on-macos/</loc>
+    <loc>https://www.jibing57.com/2017/10/30/how-to-use-post-link-on-hexo/</loc>
     <lastmod>2017-12-25</lastmod>
   </url>  <url>
     <loc>https://www.jibing57.com/2017/12/12/how-to-write-multiline-to-file-by-shell/</loc>
     <lastmod>2017-12-25</lastmod>
   </url>  <url>
-    <loc>https://www.jibing57.com/2017/10/30/how-to-use-post-link-on-hexo/</loc>
+    <loc>https://www.jibing57.com/2017/11/29/how-to-enable-slow-query-on-aws-rds-postgresql/</loc>
     <lastmod>2017-12-25</lastmod>
   </url>  <url>
-    <loc>https://www.jibing57.com/2017/12/14/deep-dig-on-s3-bucket-permission/</loc>
+    <loc>https://www.jibing57.com/2017/07/25/how-to-read-text-on-macos/</loc>
     <lastmod>2017-12-25</lastmod>
   </url>  <url>
-    <loc>https://www.jibing57.com/2017/12/20/expired-of-S3-RRS/</loc>
+    <loc>https://www.jibing57.com/2017/10/24/how-to-use-aws-cli-with-multi-user/</loc>
     <lastmod>2017-12-25</lastmod>
   </url>  <url>
     <loc>https://www.jibing57.com/2017/10/31/account-setting-by-aws/</loc>
     <lastmod>2017-12-25</lastmod>
   </url>  <url>
-    <loc>https://www.jibing57.com/2017/10/31/hexo-bind-domain-to-github-pages/</loc>
+    <loc>https://www.jibing57.com/2017/12/14/deep-dig-on-s3-bucket-permission/</loc>
     <lastmod>2017-12-25</lastmod>
   </url>  <url>
     <loc>https://www.jibing57.com/2017/12/20/How-to-add-staging-log-to-EB-logs/</loc>
     <lastmod>2017-12-25</lastmod>
   </url>  <url>
+    <loc>https://www.jibing57.com/2017/10/31/hexo-bind-domain-to-github-pages/</loc>
+    <lastmod>2017-12-25</lastmod>
+  </url>  <url>
     <loc>https://www.jibing57.com/2017/12/19/deep-dig-on-s3-bucket-permission-exam/</loc>
+    <lastmod>2017-12-25</lastmod>
+  </url>  <url>
+    <loc>https://www.jibing57.com/2017/12/20/expired-of-S3-RRS/</loc>
     <lastmod>2017-12-25</lastmod>
   </url>  <url>
     <loc>https://www.jibing57.com/2017/12/25/how-to-add-shadow-of-images-in-freemind/</loc>

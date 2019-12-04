@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.jibing57.com/"/>
-  <updated>2019-10-31T08:54:18.250Z</updated>
+  <updated>2019-12-04T06:28:35.576Z</updated>
   <id>https://www.jibing57.com/</id>
   
   <author>
@@ -15,6 +15,78 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>使用ImageMagick来给图片打文字水印</title>
+    <link href="https://www.jibing57.com/2019/12/02/ImageMagick-watermark/"/>
+    <id>https://www.jibing57.com/2019/12/02/ImageMagick-watermark/</id>
+    <published>2019-12-02T13:35:05.000Z</published>
+    <updated>2019-12-04T06:28:35.576Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h3&gt;&lt;p&gt;博客中，难免要为有些图片打上水印。下面摘录两个打文字水印的方法。&lt;br&gt;摘录来自博客&lt;a href=&quot;https://aotu.io/notes/2018/06/06/ImageMagick_intro/index.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;图像处理 - ImageMagick 简单介绍与案例&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;工具使用的是强大的&lt;a href=&quot;https://www.imagemagick.org/script/index.php&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;ImageMagick&lt;/a&gt;, Mac下可以通过&lt;a href=&quot;https://brew.sh/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Homebrew&lt;/a&gt;来安装。安装命令&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;brew install imagemagick&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;h3 id=&quot;给图片打上透明的文字水印&quot;&gt;&lt;a href=&quot;#给图片打上透明的文字水印&quot; class=&quot;headerlink&quot; title=&quot;给图片打上透明的文字水印&quot;&gt;&lt;/a&gt;给图片打上透明的文字水印&lt;/h3&gt;&lt;p&gt;命令:&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;convert  -draw &amp;apos;text 0,0 &amp;quot;WWW.JIBING57.COM&amp;quot;&amp;apos;  -fill &amp;apos;rgba(221, 34, 17, 0.25)&amp;apos;  -pointsize 36  \&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;-font Arial  -gravity center  src.png  src_with_watermark.png&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
+    
+    
+      <category term="Image" scheme="https://www.jibing57.com/tags/Image/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>如何在CentOS 7 中安装wkhtmltopdf和wkhtmltoimage</title>
+    <link href="https://www.jibing57.com/2019/11/28/way-to-install-wkhtmltopdf-and-wkhtmltoimage-to-CentOS-7/"/>
+    <id>https://www.jibing57.com/2019/11/28/way-to-install-wkhtmltopdf-and-wkhtmltoimage-to-CentOS-7/</id>
+    <published>2019-11-28T13:45:17.000Z</published>
+    <updated>2019-11-28T07:14:47.372Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;工具说明&quot;&gt;&lt;a href=&quot;#工具说明&quot; class=&quot;headerlink&quot; title=&quot;工具说明&quot;&gt;&lt;/a&gt;工具说明&lt;/h3&gt;&lt;p&gt;wkhtmltopdf和wkhtmltoimage是一个开源的命令行工具，可以将HTML转换为pdf文档和图片。&lt;br&gt;Github 仓库: &lt;a href=&quot;https://github.com/wkhtmltopdf/wkhtmltopdf&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;wkhtmltopdf/wkhtmltopdf&lt;/a&gt;&lt;br&gt;官网: &lt;a href=&quot;https://wkhtmltopdf.org/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://wkhtmltopdf.org/&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&quot;在CentOS7上安装wkhtmltopdf&quot;&gt;&lt;a href=&quot;#在CentOS7上安装wkhtmltopdf&quot; class=&quot;headerlink&quot; title=&quot;在CentOS7上安装wkhtmltopdf&quot;&gt;&lt;/a&gt;在CentOS7上安装wkhtmltopdf&lt;/h3&gt;&lt;p&gt;CentOS7 下，下载依赖&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;yum install -y xorg-x11-fonts-75dpi&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;yum install -y xorg-x11-fonts-Type1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;下载RMP包,  RMP包可以从官网&lt;a href=&quot;https://wkhtmltopdf.org/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;wkhtmltopdf.org&lt;/a&gt;下，也可以从Github下。&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.2.1/wkhtmltox-0.12.2.1_linux-centos7-amd64.rpm&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
+    
+    
+      <category term="CentOS" scheme="https://www.jibing57.com/tags/CentOS/"/>
+    
+      <category term="Linux" scheme="https://www.jibing57.com/tags/Linux/"/>
+    
+      <category term="Wkhtmltopdf" scheme="https://www.jibing57.com/tags/Wkhtmltopdf/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>在Macos上安装Docker和Kubernetes</title>
+    <link href="https://www.jibing57.com/2019/11/19/how-to-install-docker-and-kubernetes-on-macos/"/>
+    <id>https://www.jibing57.com/2019/11/19/how-to-install-docker-and-kubernetes-on-macos/</id>
+    <published>2019-11-19T11:46:46.000Z</published>
+    <updated>2019-11-19T09:02:06.917Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Macos下安装Docker和Kubernutes最方便的工具就是&lt;a href=&quot;https://www.docker.com/products/docker-desktop&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Docker Desktop&lt;/a&gt;了。&lt;/p&gt;
+&lt;h3 id=&quot;安装Docker&quot;&gt;&lt;a href=&quot;#安装Docker&quot; class=&quot;headerlink&quot; title=&quot;安装Docker&quot;&gt;&lt;/a&gt;安装Docker&lt;/h3&gt;&lt;p&gt;访问&lt;a href=&quot;https://www.docker.com/products/docker-desktop&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Docker Desktop&lt;/a&gt;官网，点击下载Mac版。会跳转到dockerhub进行下载。需要注册dockerhub才可以进行下载。&lt;/p&gt;
+&lt;p&gt;下载过后双击Docker.dmg文件进行安装即可。&lt;br&gt;安装完毕后，Docker就可以正常使用了&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
+    
+    
+      <category term="Docker" scheme="https://www.jibing57.com/tags/Docker/"/>
+    
+      <category term="Kubernetes" scheme="https://www.jibing57.com/tags/Kubernetes/"/>
+    
+  </entry>
   
   <entry>
     <title>Mac下Word不能双击格式刷重复刷的问题</title>
@@ -196,9 +268,9 @@
       <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
     
     
-      <category term="Linux" scheme="https://www.jibing57.com/tags/Linux/"/>
-    
       <category term="CentOS" scheme="https://www.jibing57.com/tags/CentOS/"/>
+    
+      <category term="Linux" scheme="https://www.jibing57.com/tags/Linux/"/>
     
   </entry>
   
@@ -543,9 +615,9 @@
     
       <category term="HTTP" scheme="https://www.jibing57.com/tags/HTTP/"/>
     
-      <category term="Application Load Balancing" scheme="https://www.jibing57.com/tags/Application-Load-Balancing/"/>
-    
       <category term="IAM" scheme="https://www.jibing57.com/tags/IAM/"/>
+    
+      <category term="Application Load Balancing" scheme="https://www.jibing57.com/tags/Application-Load-Balancing/"/>
     
   </entry>
   
@@ -567,93 +639,6 @@
     
     
       <category term="Office" scheme="https://www.jibing57.com/tags/Office/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Macos下制作CentOS 7 USB启动盘</title>
-    <link href="https://www.jibing57.com/2019/05/01/way-to-make-centos7-bootable-usb-on-macos/"/>
-    <id>https://www.jibing57.com/2019/05/01/way-to-make-centos7-bootable-usb-on-macos/</id>
-    <published>2019-05-01T04:02:57.000Z</published>
-    <updated>2019-05-04T03:38:17.642Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;记录下在MacOS中制作Linux USB启动盘的操作步骤。&lt;/p&gt;
-&lt;h3 id=&quot;操作步骤&quot;&gt;&lt;a href=&quot;#操作步骤&quot; class=&quot;headerlink&quot; title=&quot;操作步骤&quot;&gt;&lt;/a&gt;操作步骤&lt;/h3&gt;&lt;h4 id=&quot;查看磁盘挂载分区&quot;&gt;&lt;a href=&quot;#查看磁盘挂载分区&quot; class=&quot;headerlink&quot; title=&quot;查看磁盘挂载分区&quot;&gt;&lt;/a&gt;查看磁盘挂载分区&lt;/h4&gt;&lt;p&gt;使用命令&lt;code&gt;diskutil list&lt;/code&gt;查看所在U盘的分区，找到U盘的挂载点，此处挂载点为&lt;code&gt;/dev/disk2&lt;/code&gt;&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ diskutil list&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;...&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;/dev/disk2 (external, physical):&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;   #:                       TYPE NAME                    SIZE       IDENTIFIER&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;   0:     FDisk_partition_scheme                        *31.0 GB    disk2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;   1:                 DOS_FAT_32 UNTITLED                31.0 GB    disk2s1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;$&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-&lt;h4 id=&quot;卸载U盘挂载&quot;&gt;&lt;a href=&quot;#卸载U盘挂载&quot; class=&quot;headerlink&quot; title=&quot;卸载U盘挂载&quot;&gt;&lt;/a&gt;卸载U盘挂载&lt;/h4&gt;&lt;p&gt;使用&lt;code&gt;diskutil unmountDisk&lt;/code&gt;命令，卸载U盘的挂载。&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ diskutil unmountDisk /dev/disk2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;Unmount of all volumes on disk2 was successful&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;$&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;如果不卸载挂载点就写入启动盘，则会提示&lt;code&gt;dd: /dev/disk2: Resource busy&lt;/code&gt;。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="Linux" scheme="https://www.jibing57.com/categories/Linux/"/>
-    
-    
-      <category term="MacOS" scheme="https://www.jibing57.com/tags/MacOS/"/>
-    
-      <category term="CentOS" scheme="https://www.jibing57.com/tags/CentOS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>AWS Autoscaling的Scheduled Scaling(计划扩展)</title>
-    <link href="https://www.jibing57.com/2019/05/01/scheduled-action-of-aws-autoscaling/"/>
-    <id>https://www.jibing57.com/2019/05/01/scheduled-action-of-aws-autoscaling/</id>
-    <published>2019-05-01T02:49:04.000Z</published>
-    <updated>2019-09-26T02:08:11.590Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;介绍&quot;&gt;&lt;a href=&quot;#介绍&quot; class=&quot;headerlink&quot; title=&quot;介绍&quot;&gt;&lt;/a&gt;介绍&lt;/h3&gt;&lt;p&gt;除了用Alarm触发的Scaling Policy，AWS Autoscaling(ASG) 还提供了一个Scheduled Scaling(计划扩展)的功能。该功能主要用作一些流量可预测的情形。比如国外的Black Friday和国内6.18或双11这种活动时，就可以使用Scheduled Scaling来提前规划好机器数量。&lt;br&gt;详细说明和设置参见 AWS官方文档&lt;a href=&quot;https://docs.aws.amazon.com/autoscaling/ec2/userguide/schedule_time.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Scheduled Scaling for Amazon EC2 Auto Scaling&lt;/a&gt;。&lt;/p&gt;
-&lt;h3 id=&quot;例子&quot;&gt;&lt;a href=&quot;#例子&quot; class=&quot;headerlink&quot; title=&quot;例子&quot;&gt;&lt;/a&gt;例子&lt;/h3&gt;&lt;p&gt;举基于如下场景的一个例子&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;正常流量下，2台服务器就可以支撑。&lt;/li&gt;
-&lt;li&gt;周一到周五的早上8点~10点间是流量高峰期，此时需要4台服务器才能支撑对应的流量。&lt;/li&gt;
-&lt;li&gt;10点过后恢复正常流量。&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;如上场景分解为2个Schedule Action&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;周一到周五每天早上8点，扩展服务器数量为4.&lt;/li&gt;
-&lt;li&gt;周一到周五每天早上10点，缩减服务器数量为2.&lt;/li&gt;
-&lt;/ol&gt;
-    
-    </summary>
-    
-      <category term="AWS" scheme="https://www.jibing57.com/categories/AWS/"/>
-    
-    
-      <category term="AutoScaling" scheme="https://www.jibing57.com/tags/AutoScaling/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>MacOS上VMWare Fusion中如何给网口设置固定IP</title>
-    <link href="https://www.jibing57.com/2019/04/28/how-to-use-static-IP-in-VMWare-Fusion-on-Mac-OS-X/"/>
-    <id>https://www.jibing57.com/2019/04/28/how-to-use-static-IP-in-VMWare-Fusion-on-Mac-OS-X/</id>
-    <published>2019-04-28T13:29:09.000Z</published>
-    <updated>2019-04-29T02:19:53.506Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;介绍&quot;&gt;&lt;a href=&quot;#介绍&quot; class=&quot;headerlink&quot; title=&quot;介绍&quot;&gt;&lt;/a&gt;介绍&lt;/h3&gt;&lt;p&gt;VMWare Fusion中，虚拟机的网口使用NAT模式时，获取到的IP地址是通过DHCP动态分配的，不是固定分配的。每次开机虚拟机网口IP都有可能变动，SSH登录时每次要去查看，太不方便。&lt;br&gt;找了下如何设置固定IP的方法，记录如下。&lt;/p&gt;
-&lt;p&gt;在如下环境中可以设置成功:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;MacOS Version: 10.14.4 (18E226)&lt;/li&gt;
-&lt;li&gt;Vmware Fusion Version: 10.1.5 (10950653)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&quot;步骤&quot;&gt;&lt;a href=&quot;#步骤&quot; class=&quot;headerlink&quot; title=&quot;步骤&quot;&gt;&lt;/a&gt;步骤&lt;/h3&gt;&lt;h4 id=&quot;1-获取虚拟主机的MAC地址&quot;&gt;&lt;a href=&quot;#1-获取虚拟主机的MAC地址&quot; class=&quot;headerlink&quot; title=&quot;1. 获取虚拟主机的MAC地址&quot;&gt;&lt;/a&gt;1. 获取虚拟主机的MAC地址&lt;/h4&gt;&lt;p&gt;默认安装下，所有的虚拟主机的Image都存放在&lt;code&gt;~/Documents/Virtual\ Machines.localized/&lt;/code&gt;下，以名为&lt;code&gt;CentOS 7 64bit&lt;/code&gt;的虚拟机为例。获取命令为:&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;cat ~/Documents/Virtual\ Machines.localized/CentOS\ 7\ 64bit.vmwarevm/CentOS\ 7\ 64bit.vmx | grep generatedAddress&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;找到对应网口的MAC地址, 本文中要绑定的网口&lt;code&gt;ethernet0&lt;/code&gt;的MAC地址为&lt;code&gt;00:0C:29:23:6E:CC&lt;/code&gt;。&lt;/p&gt;
-&lt;h4 id=&quot;2-设置静态IP&quot;&gt;&lt;a href=&quot;#2-设置静态IP&quot; class=&quot;headerlink&quot; title=&quot;2. 设置静态IP&quot;&gt;&lt;/a&gt;2. 设置静态IP&lt;/h4&gt;&lt;p&gt;打开配置文件&lt;code&gt;/Library/Preferences/VMware\ Fusion/vmnet8/dhcpd.conf&lt;/code&gt;, &lt;code&gt;vmnet8&lt;/code&gt;是VMWare用来设置NAT的虚拟网口，在MacOS下使用命令&lt;code&gt;ifconfig&lt;/code&gt;可以看到该虚拟网口。&lt;/p&gt;
-&lt;p&gt;在配置文件中可以看到DHCP的IP池为192.168.187.128 ~ 192.168.187.254(每个机器可能不同，以实际显示的为准)&lt;br&gt;
-    
-    </summary>
-    
-      <category term="Linux" scheme="https://www.jibing57.com/categories/Linux/"/>
-    
-    
-      <category term="Linux" scheme="https://www.jibing57.com/tags/Linux/"/>
-    
-      <category term="VMware" scheme="https://www.jibing57.com/tags/VMware/"/>
     
   </entry>
   

@@ -293,9 +293,92 @@ var _hmt = _hmt || [];
 		
             
 		
+            
+		
+            
+		
+            
+		
+            
+		
         
         <!-- render other articles -->
         
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2019-12-02 </div>
+			<div class="article-title"><a href="/2019/12/02/ImageMagick-watermark/" >使用ImageMagick来给图片打文字水印</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>博客中，难免要为有些图片打上水印。下面摘录两个打文字水印的方法。<br>摘录来自博客<a href="https://aotu.io/notes/2018/06/06/ImageMagick_intro/index.html" target="_blank" rel="external">图像处理 - ImageMagick 简单介绍与案例</a></p>
+<p>工具使用的是强大的<a href="https://www.imagemagick.org/script/index.php" target="_blank" rel="external">ImageMagick</a>, Mac下可以通过<a href="https://brew.sh/" target="_blank" rel="external">Homebrew</a>来安装。安装命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew install imagemagick</div></pre></td></tr></table></figure></p>
+<h3 id="给图片打上透明的文字水印"><a href="#给图片打上透明的文字水印" class="headerlink" title="给图片打上透明的文字水印"></a>给图片打上透明的文字水印</h3><p>命令:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">convert  -draw &apos;text 0,0 &quot;WWW.JIBING57.COM&quot;&apos;  -fill &apos;rgba(221, 34, 17, 0.25)&apos;  -pointsize 36  \</div><div class="line">-font Arial  -gravity center  src.png  src_with_watermark.png</div></pre></td></tr></table></figure></p>
+	
+	</div>
+  <a type="button" href="/2019/12/02/ImageMagick-watermark/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2019-11-28 </div>
+			<div class="article-title"><a href="/2019/11/28/way-to-install-wkhtmltopdf-and-wkhtmltoimage-to-CentOS-7/" >如何在CentOS 7 中安装wkhtmltopdf和wkhtmltoimage</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="工具说明"><a href="#工具说明" class="headerlink" title="工具说明"></a>工具说明</h3><p>wkhtmltopdf和wkhtmltoimage是一个开源的命令行工具，可以将HTML转换为pdf文档和图片。<br>Github 仓库: <a href="https://github.com/wkhtmltopdf/wkhtmltopdf" target="_blank" rel="external">wkhtmltopdf/wkhtmltopdf</a><br>官网: <a href="https://wkhtmltopdf.org/" target="_blank" rel="external">https://wkhtmltopdf.org/</a></p>
+<h3 id="在CentOS7上安装wkhtmltopdf"><a href="#在CentOS7上安装wkhtmltopdf" class="headerlink" title="在CentOS7上安装wkhtmltopdf"></a>在CentOS7上安装wkhtmltopdf</h3><p>CentOS7 下，下载依赖<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">yum install -y xorg-x11-fonts-75dpi</div><div class="line">yum install -y xorg-x11-fonts-Type1</div></pre></td></tr></table></figure></p>
+<p>下载RMP包,  RMP包可以从官网<a href="https://wkhtmltopdf.org/" target="_blank" rel="external">wkhtmltopdf.org</a>下，也可以从Github下。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.2.1/wkhtmltox-0.12.2.1_linux-centos7-amd64.rpm</div></pre></td></tr></table></figure></p>
+	
+	</div>
+  <a type="button" href="/2019/11/28/way-to-install-wkhtmltopdf-and-wkhtmltoimage-to-CentOS-7/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2019-11-19 </div>
+			<div class="article-title"><a href="/2019/11/19/how-to-install-docker-and-kubernetes-on-macos/" >在Macos上安装Docker和Kubernetes</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>Macos下安装Docker和Kubernutes最方便的工具就是<a href="https://www.docker.com/products/docker-desktop" target="_blank" rel="external">Docker Desktop</a>了。</p>
+<h3 id="安装Docker"><a href="#安装Docker" class="headerlink" title="安装Docker"></a>安装Docker</h3><p>访问<a href="https://www.docker.com/products/docker-desktop" target="_blank" rel="external">Docker Desktop</a>官网，点击下载Mac版。会跳转到dockerhub进行下载。需要注册dockerhub才可以进行下载。</p>
+<p>下载过后双击Docker.dmg文件进行安装即可。<br>安装完毕后，Docker就可以正常使用了</p>
+	
+	</div>
+  <a type="button" href="/2019/11/19/how-to-install-docker-and-kubernetes-on-macos/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
            
 			  
 	
@@ -525,104 +608,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2019-07-06 </div>
-			<div class="article-title"><a href="/2019/07/06/how-to-check-network-throughput-on-aws-EC2/" >AWS EC2各个类型的网络性能的测试方法</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>在AWS中，不同类型的EC2 instance,拥有的网络带宽是不同的。</p>
-<p>让人犯糊的是，在<a href="https://amazonaws-china.com/ec2/instance-types/" target="_blank" rel="external">AWS EC2的介绍页面</a>中,并没有清晰的标明每种类型的Instance的带宽具体是多少？一些类型的Instance只是标注了网络性能(Network Performance)为<code>Up to 5</code>,<code>Low</code>,<code>Moderate</code>或者<code>High</code>。</p>
-<p>老外的<a href="https://cloudonaut.io/ec2-network-performance-cheat-sheet/" target="_blank" rel="external">EC2 Network Performance Cheat Sheet</a>这篇文章中，记录了作者使用<a href="(https://github.com/esnet/iperf)">iperf3</a>测试出来的各个Instance类型的带宽。如果选取类型的时候比较在意带宽，可以用来参考下。</p>
-<p>顺带介绍一下如何在AWS EC2中使用<a href="(https://github.com/esnet/iperf)">iperf3</a>来测试Instance带宽。如果确实有需要，就可以自己来进行测速。<br>测试环境如下:</p>
-<ul>
-<li>测试Region是美国Oregon</li>
-<li>使用两台m4.large的EC2，一台运行服务，一台用作客户端。</li>
-<li>介绍两种Amazon Linux的测试方法<ul>
-<li>Amazon Linux AMI 2018.03.0 (HVM), SSD Volume Type</li>
-<li>Amazon Linux 2 AMI (HVM), SSD Volume Type</li>
-</ul>
-</li>
-</ul>
-	
-	</div>
-  <a type="button" href="/2019/07/06/how-to-check-network-throughput-on-aws-EC2/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2019-07-04 </div>
-			<div class="article-title"><a href="/2019/07/04/how-to-cancel-automatic-spelling-in-macos/" >关闭Mac系统中的自动拼写纠正功能</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>Mac系统中输入英文字母的时候,有一些贴心的设置。拼写错误的时候，系统会自动纠正拼写错误。句子的首字母，会自动帮你设为大写。<br>对于写书来说，这些功能很是贴心，对于码农来说，这些功能有时候就显得很烦人。</p>
-<h3 id="关闭方法"><a href="#关闭方法" class="headerlink" title="关闭方法"></a>关闭方法</h3><p>在设置中，可以关闭自动纠正功能。[System preference] -&gt; [Keyboard] -&gt; [Text]</p>
-<p>下面三个选项前面的勾去掉即可。</p>
-<ul>
-<li>Correct spelling automatically</li>
-<li>Capitalize words automatically</li>
-<li>Add period with double-space</li>
-</ul>
-	
-	</div>
-  <a type="button" href="/2019/07/04/how-to-cancel-automatic-spelling-in-macos/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2019-06-24 </div>
-			<div class="article-title"><a href="/2019/06/24/SACK-Panic-in-CentOS-7/" >SACK Panic</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>在2019-06-17，Netfilx爆出了FreeBSD and Linux系统中的内核上存在严重远程DoS漏洞，攻击者可以构造特定的SACK请求到目标服务器，引起服务器内核奔溃。<br>漏洞编号为: </p>
-<ul>
-<li><a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-11477" target="_blank" rel="external">CVE-2019-11477</a></li>
-<li><a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-11478" target="_blank" rel="external">CVE-2019-11478</a></li>
-<li><a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-11479" target="_blank" rel="external">CVE-2019-11479</a></li>
-</ul>
-<p>几家公司的通告如下:</p>
-<ul>
-<li><a href="https://github.com/Netflix/security-bulletins/blob/master/advisories/third-party/2019-001.md" target="_blank" rel="external">Netflix官方通告</a></li>
-<li><a href="https://access.redhat.com/security/vulnerabilities/tcpsack" target="_blank" rel="external">红帽公告</a></li>
-</ul>
-	
-	</div>
-  <a type="button" href="/2019/06/24/SACK-Panic-in-CentOS-7/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -686,7 +671,7 @@ var _hmt = _hmt || [];
 		<h4>Categories</h4>
 		<ul class="tag_box inline list-unstyled">
 		
-			<li><a href="/categories/#AWS">AWS<span>34</span></a></li>
+			<li><a href="/categories/#AWS">AWS<span>35</span></a></li>
 		
 			<li><a href="/categories/#AWS Certified">AWS Certified<span>4</span></a></li>
 		
@@ -698,7 +683,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/#Shell">Shell<span>8</span></a></li>
 		
-			<li><a href="/categories/#Tools">Tools<span>18</span></a></li>
+			<li><a href="/categories/#Tools">Tools<span>21</span></a></li>
 		
 		</ul>
 	</div>
@@ -712,46 +697,46 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/tags/#Solutions Architect">Solutions Architect<span>1</span></a></li>
 		
-			<li><a href="/tags/#感悟">感悟<span>1</span></a></li>
+			<li><a href="/tags/#Hexo">Hexo<span>7</span></a></li>
 		
-			<li><a href="/tags/#Network">Network<span>4</span></a></li>
+			<li><a href="/tags/#Linux">Linux<span>15</span></a></li>
+		
+			<li><a href="/tags/#感悟">感悟<span>1</span></a></li>
 		
 			<li><a href="/tags/#AWS Deep Dive">AWS Deep Dive<span>2</span></a></li>
 		
-			<li><a href="/tags/#DynamoDB">DynamoDB<span>1</span></a></li>
+			<li><a href="/tags/#Nginx">Nginx<span>7</span></a></li>
 		
-			<li><a href="/tags/#Hexo">Hexo<span>7</span></a></li>
+			<li><a href="/tags/#Nodejs">Nodejs<span>2</span></a></li>
 		
-			<li><a href="/tags/#AWS CLI">AWS CLI<span>6</span></a></li>
+			<li><a href="/tags/#EC2 User Data">EC2 User Data<span>1</span></a></li>
 		
-			<li><a href="/tags/#RVM">RVM<span>1</span></a></li>
+			<li><a href="/tags/#Yum">Yum<span>1</span></a></li>
 		
-			<li><a href="/tags/#Git">Git<span>2</span></a></li>
+			<li><a href="/tags/#Network">Network<span>4</span></a></li>
 		
-			<li><a href="/tags/#EC2">EC2<span>8</span></a></li>
-		
-			<li><a href="/tags/#PostgreSQL">PostgreSQL<span>2</span></a></li>
+			<li><a href="/tags/#Application Load Balancing">Application Load Balancing<span>1</span></a></li>
 		
 			<li><a href="/tags/#Rails">Rails<span>3</span></a></li>
 		
-			<li><a href="/tags/#AWS Tools">AWS Tools<span>1</span></a></li>
+			<li><a href="/tags/#CloudWatch">CloudWatch<span>1</span></a></li>
 		
-			<li><a href="/tags/#Elastic Beanstalk">Elastic Beanstalk<span>7</span></a></li>
+			<li><a href="/tags/#Douban">Douban<span>1</span></a></li>
 		
-			<li><a href="/tags/#RDS">RDS<span>3</span></a></li>
+			<li><a href="/tags/#Kubernetes">Kubernetes<span>1</span></a></li>
 		
-			<li><a href="/tags/#Office">Office<span>2</span></a></li>
+			<li><a href="/tags/#HTTP">HTTP<span>5</span></a></li>
 		
-			<li><a href="/tags/#iOS">iOS<span>1</span></a></li>
+			<li><a href="/tags/#IAM">IAM<span>3</span></a></li>
 		
-			<li><a href="/tags/#CodeCommit">CodeCommit<span>1</span></a></li>
+			<li><a href="/tags/#AutoScaling">AutoScaling<span>3</span></a></li>
 		
-			<li><a href="/tags/#Linux">Linux<span>14</span></a></li>
+			<li><a href="/tags/#S3">S3<span>10</span></a></li>
 		
-			<li><a href="/tags/#Chrome">Chrome<span>1</span></a></li>
+			<li><a href="/tags/#Sysops">Sysops<span>1</span></a></li>
 		
 		
-		   <li><a href="/tags">...<span>50</span></a></li>
+		   <li><a href="/tags">...<span>53</span></a></li>
 		 
 		</ul>
 	</div>
@@ -764,23 +749,23 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2019/12/02/ImageMagick-watermark/" ><i class="fa fa-file-o"></i>使用ImageMagick来给图片打文字水印</a>
+      </li>
+    
+      <li>
+        <a href="/2019/11/28/way-to-install-wkhtmltopdf-and-wkhtmltoimage-to-CentOS-7/" ><i class="fa fa-file-o"></i>如何在CentOS 7 中安装wkhtmltopdf和...</a>
+      </li>
+    
+      <li>
+        <a href="/2019/11/19/how-to-install-docker-and-kubernetes-on-macos/" ><i class="fa fa-file-o"></i>在Macos上安装Docker和Kubernetes</a>
+      </li>
+    
+      <li>
         <a href="/2019/10/31/why-format-painter-not-working-on-mac-office-365/" ><i class="fa fa-file-o"></i>Mac下Word不能双击格式刷重复刷的问题</a>
       </li>
     
       <li>
         <a href="/2019/10/27/postgresql-tips/" ><i class="fa fa-file-o"></i>PostgreSQL Tips</a>
-      </li>
-    
-      <li>
-        <a href="/2019/10/18/AWS-Advanced-Networking-Specialty/" ><i class="fa fa-file-o"></i>AWS Advanced Networking Spe...</a>
-      </li>
-    
-      <li>
-        <a href="/2019/09/30/apple-airport-express-access-unexpected-error-occurred/" ><i class="fa fa-file-o"></i>设置AirPort Express时获取不到设备信息的...</a>
-      </li>
-    
-      <li>
-        <a href="/2019/09/29/still-password-when-setting-public-key-ssh-authorization/" ><i class="fa fa-file-o"></i>ssh设置私钥登录后还是提示需要输入密码</a>
       </li>
     
   </ul>

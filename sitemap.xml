@@ -2,6 +2,41 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://www.jibing57.com/2019/12/02/ImageMagick-watermark/</loc>
+    
+    <lastmod>2019-12-04T06:28:35.576Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.jibing57.com/2019/04/09/online-visual-paradigm/</loc>
+    
+    <lastmod>2019-12-04T06:05:54.617Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.jibing57.com/2019/11/28/way-to-install-wkhtmltopdf-and-wkhtmltoimage-to-CentOS-7/</loc>
+    
+    <lastmod>2019-11-28T07:14:47.372Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.jibing57.com/2019/04/26/command-tips/</loc>
+    
+    <lastmod>2019-11-25T03:01:02.926Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.jibing57.com/2019/11/19/how-to-install-docker-and-kubernetes-on-macos/</loc>
+    
+    <lastmod>2019-11-19T09:02:06.917Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.jibing57.com/about/index.html</loc>
     
     <lastmod>2019-11-05T03:24:08.894Z</lastmod>
@@ -54,13 +89,6 @@
     <loc>https://www.jibing57.com/2018/04/25/command-line-tools-to-check-images-on-macos/</loc>
     
     <lastmod>2019-10-30T02:50:10.410Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.jibing57.com/2019/04/26/command-tips/</loc>
-    
-    <lastmod>2019-10-28T05:29:29.240Z</lastmod>
     
   </url>
   
@@ -485,21 +513,7 @@
   </url>
   
   <url>
-    <loc>https://www.jibing57.com/2017/11/29/how-to-enable-slow-query-on-aws-rds-postgresql/</loc>
-    
-    <lastmod>2017-12-25T07:09:02.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.jibing57.com/2017/10/24/how-to-use-aws-cli-with-multi-user/</loc>
-    
-    <lastmod>2017-12-25T07:09:02.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.jibing57.com/2017/07/25/how-to-read-text-on-macos/</loc>
+    <loc>https://www.jibing57.com/2017/10/30/how-to-use-post-link-on-hexo/</loc>
     
     <lastmod>2017-12-25T07:09:02.000Z</lastmod>
     
@@ -513,23 +527,23 @@
   </url>
   
   <url>
-    <loc>https://www.jibing57.com/2017/10/30/how-to-use-post-link-on-hexo/</loc>
+    <loc>https://www.jibing57.com/2017/11/29/how-to-enable-slow-query-on-aws-rds-postgresql/</loc>
     
     <lastmod>2017-12-25T07:09:02.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://www.jibing57.com/2017/12/14/deep-dig-on-s3-bucket-permission/</loc>
+    <loc>https://www.jibing57.com/2017/07/25/how-to-read-text-on-macos/</loc>
     
-    <lastmod>2017-12-25T07:08:09.000Z</lastmod>
+    <lastmod>2017-12-25T07:09:02.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://www.jibing57.com/2017/12/20/expired-of-S3-RRS/</loc>
+    <loc>https://www.jibing57.com/2017/10/24/how-to-use-aws-cli-with-multi-user/</loc>
     
-    <lastmod>2017-12-25T07:08:09.000Z</lastmod>
+    <lastmod>2017-12-25T07:09:02.000Z</lastmod>
     
   </url>
   
@@ -541,7 +555,7 @@
   </url>
   
   <url>
-    <loc>https://www.jibing57.com/2017/10/31/hexo-bind-domain-to-github-pages/</loc>
+    <loc>https://www.jibing57.com/2017/12/14/deep-dig-on-s3-bucket-permission/</loc>
     
     <lastmod>2017-12-25T07:08:09.000Z</lastmod>
     
@@ -555,7 +569,21 @@
   </url>
   
   <url>
+    <loc>https://www.jibing57.com/2017/10/31/hexo-bind-domain-to-github-pages/</loc>
+    
+    <lastmod>2017-12-25T07:08:09.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.jibing57.com/2017/12/19/deep-dig-on-s3-bucket-permission-exam/</loc>
+    
+    <lastmod>2017-12-25T07:08:09.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.jibing57.com/2017/12/20/expired-of-S3-RRS/</loc>
     
     <lastmod>2017-12-25T07:08:09.000Z</lastmod>
     

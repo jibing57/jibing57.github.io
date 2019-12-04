@@ -3,6 +3,147 @@
   
     
     <entry>
+      <title><![CDATA[使用ImageMagick来给图片打文字水印]]></title>
+      <url>/2019/12/02/ImageMagick-watermark/</url>
+      <content type="html"><![CDATA[<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>博客中，难免要为有些图片打上水印。下面摘录两个打文字水印的方法。<br>摘录来自博客<a href="https://aotu.io/notes/2018/06/06/ImageMagick_intro/index.html" target="_blank" rel="external">图像处理 - ImageMagick 简单介绍与案例</a></p>
+<p>工具使用的是强大的<a href="https://www.imagemagick.org/script/index.php" target="_blank" rel="external">ImageMagick</a>, Mac下可以通过<a href="https://brew.sh/" target="_blank" rel="external">Homebrew</a>来安装。安装命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew install imagemagick</div></pre></td></tr></table></figure></p>
+<h3 id="给图片打上透明的文字水印"><a href="#给图片打上透明的文字水印" class="headerlink" title="给图片打上透明的文字水印"></a>给图片打上透明的文字水印</h3><p>命令:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">convert  -draw &apos;text 0,0 &quot;WWW.JIBING57.COM&quot;&apos;  -fill &apos;rgba(221, 34, 17, 0.25)&apos;  -pointsize 36  \</div><div class="line">-font Arial  -gravity center  src.png  src_with_watermark.png</div></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>解释：</p>
+<ul>
+<li><code>-draw</code>：绘图选项，text 声明绘制文本， 0,0 声明文本距离图片左上角的偏移值， WWW.JIBING57.COM 声明绘制的文本，最好用引号包裹起来，避免输入特殊字符引起错误。绘制文本的格式为 text x,y string，当然还可以绘制其他类型，诸如圆 ( circle )、折线 ( polyline )。</li>
+<li><code>-fill</code>：对文本填充颜色，貌似 ImageMagick 命令中前面的选项是用来控制后面的选项的，所以应该把这样的修饰选项放到 -draw 前面比较好，很重要，后面的案例就是这样的。</li>
+<li><code>-pointsize</code>：指定文本的字体大小。</li>
+<li><code>-font</code>：指定字体。</li>
+<li><code>-gravity</code>：设置文本在图片里的排列方式 ( 类似 CSS 里的 align-items + justify-content )，center 表示水平垂直都居中，其他值还可以是：NorthWest, North, NorthEast, West, East, SouthWest, South, SouthEast，不记大小写。</li>
+<li><code>\</code>：反斜线也是类 Unix 系统的续行字符，当一个命令很长时，我们可以把它写成多行，以便视觉上的美观和直观。</li>
+</ul>
+<h3 id="给图片打上倾斜平铺透明文本水印"><a href="#给图片打上倾斜平铺透明文本水印" class="headerlink" title="给图片打上倾斜平铺透明文本水印"></a>给图片打上倾斜平铺透明文本水印</h3><p>命令:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">convert  -size 200x200  xc:none  \</div><div class="line">-fill &apos;#d90f02&apos;  -pointsize 18  \</div><div class="line">-gravity center  -draw &apos;rotate -45 text 0,0 &quot;WWW.JIBING57.COM&quot;&apos;  \</div><div class="line">-resize 60%  miff:-  |  composite  -tile  -dissolve 25  -  src.png  src_with_watermark.png</div></pre></td></tr></table></figure></p>
+<p>解释：文本平铺水印其实是将文本画成一张 <code>png</code> 图片，然后用这张透明图片在目标图片上进行平铺。</p>
+<ul>
+<li><code>-size</code>：设置画布的大小。</li>
+<li><code>xc</code>：全称 X Constant Image，是 canvas: 的别名，定义一张画布，用来绘图，常用格式为 xc:color，none 或者 transparent 设置画布为透明底，默认为白色。</li>
+<li><code>-resize</code>：该选项还可以指定百分比，意为缩放至原图像的百分之几。貌似 -pointsize 小于 14 后，-draw 里的 rotate 会不生效，所以用 -resize 来把平铺图案变得更小。</li>
+<li><code>miff:-</code>：<ul>
+<li><code>miff</code>: 声明输出 ImageMagick ( IM ) 自己的图像文件格式：MIFF，主要用途是以复杂的方式处理图像时当做中间保存格式，适用于从一个 IM 命令向另一个 IM 命令传递图像元数据和其他关联属性。</li>
+<li><code>-</code> 在管道符前面意为将 IM 命令执行的结果作为标准输出，在管道符后面则表示从标准输入中读取这个数据，如在管道符后面的 composite 中使用 <code>-</code> 读取刚刚生成的透明图像。</li>
+</ul>
+</li>
+<li><code>|</code>：Linux shell 管道符，用于将上一个命令的标准输出传递到下一个命令作为标准输入。这里将生成的水印图案传递给 composite 命令。</li>
+<li><code>-tile</code>：顾名思义，让图案平铺。</li>
+<li><code>-dissolve</code>：设置平铺图案的透明度</li>
+</ul>
+<h3 id="例子"><a href="#例子" class="headerlink" title="例子:"></a>例子:</h3><p>原图:<br><img src="/images/ImageMagick/chusai.jpg" alt="chusai.jpg"></p>
+<p>在左上角打上透明的文字LOGO”SHY09”<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">convert  -draw &apos;text 0,0 &quot;SYH09&quot;&apos;  -fill &apos;rgba(221, 34, 17, 0.25)&apos;  -pointsize 72  \</div><div class="line">-font Arial  -gravity NorthWest  chusai.jpg  chusai_watermark.jpg</div></pre></td></tr></table></figure></p>
+<p>生成的图片水印图:<br><img src="/images/ImageMagick/chusai_watermark.jpg" alt="chusai_watermark.jpg"></p>
+<p>打上打上倾斜平铺透明文本水印:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">convert  -size 150x150  xc:none  \</div><div class="line">-fill &apos;#d90f02&apos;  -pointsize 26  \</div><div class="line">-gravity center  -draw &apos;rotate -45 text 0,0 &quot;SYH09&quot;&apos;  \</div><div class="line">-resize 60%  miff:-  |  composite  -tile  -dissolve 40  -  chusai.jpg  chusai_tile_watermark.jpg</div></pre></td></tr></table></figure></p>
+<p>生成的图片水印图:<br><img src="/images/ImageMagick/chusai_tile_watermark.jpg" alt="chusai_tile_watermark.jpg"></p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://aotu.io/notes/2018/06/06/ImageMagick_intro/index.html" target="_blank" rel="external">图像处理 - ImageMagick 简单介绍与案例</a></li>
+<li><a href="https://blog.gtwang.org/linux/imagemagick-image-watermarking-tutorial/" target="_blank" rel="external">ImageMagick 自動在照片上加入文字、圖片浮水印教學與範例指令稿</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> Tools </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Image </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[如何在CentOS 7 中安装wkhtmltopdf和wkhtmltoimage]]></title>
+      <url>/2019/11/28/way-to-install-wkhtmltopdf-and-wkhtmltoimage-to-CentOS-7/</url>
+      <content type="html"><![CDATA[<h3 id="工具说明"><a href="#工具说明" class="headerlink" title="工具说明"></a>工具说明</h3><p>wkhtmltopdf和wkhtmltoimage是一个开源的命令行工具，可以将HTML转换为pdf文档和图片。<br>Github 仓库: <a href="https://github.com/wkhtmltopdf/wkhtmltopdf" target="_blank" rel="external">wkhtmltopdf/wkhtmltopdf</a><br>官网: <a href="https://wkhtmltopdf.org/" target="_blank" rel="external">https://wkhtmltopdf.org/</a></p>
+<h3 id="在CentOS7上安装wkhtmltopdf"><a href="#在CentOS7上安装wkhtmltopdf" class="headerlink" title="在CentOS7上安装wkhtmltopdf"></a>在CentOS7上安装wkhtmltopdf</h3><p>CentOS7 下，下载依赖<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">yum install -y xorg-x11-fonts-75dpi</div><div class="line">yum install -y xorg-x11-fonts-Type1</div></pre></td></tr></table></figure></p>
+<p>下载RMP包,  RMP包可以从官网<a href="https://wkhtmltopdf.org/" target="_blank" rel="external">wkhtmltopdf.org</a>下，也可以从Github下。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.2.1/wkhtmltox-0.12.2.1_linux-centos7-amd64.rpm</div></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>在系统中安装RMP包<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rpm -Uvh wkhtmltox-0.12.2.1_linux-centos7-amd64.rpm</div></pre></td></tr></table></figure></p>
+<p>测试:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">wkhtmltopdf --encoding utf-8 https://www.baidu.com baidu.pdf</div></pre></td></tr></table></figure></p>
+<h3 id="相关Ruby-Gem"><a href="#相关Ruby-Gem" class="headerlink" title="相关Ruby Gem"></a>相关Ruby Gem</h3><p><a href="https://rubygems.org/gems/imgkit/versions/1.6.1" target="_blank" rel="external">imgkit</a>是Ruby的一个GEM，使用到了wkhtmltoimage命令，可以将HTML转换为图片。Github地址<a href="https://github.com/csquared/IMGKit" target="_blank" rel="external">csquared/IMGKit</a></p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p><a href="https://jaimegris.wordpress.com/2015/03/04/how-to-install-wkhtmltopdf-in-centos-7-0/" target="_blank" rel="external">https://jaimegris.wordpress.com/2015/03/04/how-to-install-wkhtmltopdf-in-centos-7-0/</a></p>
+]]></content>
+      
+        <categories>
+            
+            <category> Tools </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> CentOS </tag>
+            
+            <tag> Linux </tag>
+            
+            <tag> Wkhtmltopdf </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[在Macos上安装Docker和Kubernetes]]></title>
+      <url>/2019/11/19/how-to-install-docker-and-kubernetes-on-macos/</url>
+      <content type="html"><![CDATA[<p>Macos下安装Docker和Kubernutes最方便的工具就是<a href="https://www.docker.com/products/docker-desktop" target="_blank" rel="external">Docker Desktop</a>了。</p>
+<h3 id="安装Docker"><a href="#安装Docker" class="headerlink" title="安装Docker"></a>安装Docker</h3><p>访问<a href="https://www.docker.com/products/docker-desktop" target="_blank" rel="external">Docker Desktop</a>官网，点击下载Mac版。会跳转到dockerhub进行下载。需要注册dockerhub才可以进行下载。</p>
+<p>下载过后双击Docker.dmg文件进行安装即可。<br>安装完毕后，Docker就可以正常使用了</p>
+<a id="more"></a>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">$ docker version</div><div class="line">Client: Docker Engine - Community</div><div class="line"> Version:           19.03.4</div><div class="line"> API version:       1.40</div><div class="line"> Go version:        go1.12.10</div><div class="line"> Git commit:        9013bf5</div><div class="line"> Built:             Thu Oct 17 23:44:48 2019</div><div class="line"> OS/Arch:           darwin/amd64</div><div class="line"> Experimental:      false</div><div class="line"></div><div class="line">Server: Docker Engine - Community</div><div class="line"> Engine:</div><div class="line">  Version:          19.03.4</div><div class="line">  API version:      1.40 (minimum version 1.12)</div><div class="line">  Go version:       go1.12.10</div><div class="line">  Git commit:       9013bf5</div><div class="line">  Built:            Thu Oct 17 23:50:38 2019</div><div class="line">  OS/Arch:          linux/amd64</div><div class="line">  Experimental:     false</div><div class="line"> containerd:</div><div class="line">  Version:          v1.2.10</div><div class="line">  GitCommit:        b34a5c8af56e510852c35414db4c1f4fa6172339</div><div class="line"> runc:</div><div class="line">  Version:          1.0.0-rc8+dev</div><div class="line">  GitCommit:        3e425f80a8c931f88e6d94a8c831b9d5aa481657</div><div class="line"> docker-init:</div><div class="line">  Version:          0.18.0</div><div class="line">  GitCommit:        fec3683</div><div class="line">$</div></pre></td></tr></table></figure>
+<h3 id="安装Kubernetes"><a href="#安装Kubernetes" class="headerlink" title="安装Kubernetes"></a>安装Kubernetes</h3><h4 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h4><p>原先是想按照官方推荐，安装minikube的。可折腾了一下没成功。转而尝试用Docker Desktop自带的kubernetes。<br>以下步骤参照了如下两篇文章结合实际的安装步骤，记录如下:</p>
+<ul>
+<li><a href="https://juejin.im/post/5d87980f5188253f74438bb6" target="_blank" rel="external">在 macOS 上使用 Docker Desktop 启动 Kubernetes 踩坑全记录</a></li>
+<li><a href="https://github.com/gotok8s/k8s-docker-desktop-for-mac" target="_blank" rel="external">Docker Desktop for Mac 开启并使用 Kubernetes</a></li>
+</ul>
+<h4 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h4><p><a href="https://www.docker.com/products/docker-desktop" target="_blank" rel="external">Docker Desktop</a>中自带了Kubernetes，以stable 2.1.0.4为例。自带了v1.14.7的Kubernetes<br><img src="/images/Docker/kubernetes_in_docker_desktop.png" alt="kubernetes_in_docker_desktop"></p>
+<p>照道理直接在Preference中Enable Kubernetes即可使用了。可是kubernetes的安装需要去k8s.gcr.io下载镜像。国内没法直接访问。<br>直接Enable kubernetes的话，会一直处在<code>Kubernetes is starting</code>状态。</p>
+<p>解决办法是手动先从其他地方下载kubernetes相关的image，然后再打上原始的tag。<br>github上有前人制作了相关的工具，<a href="https://github.com/gotok8s/k8s-docker-desktop-for-mac" target="_blank" rel="external">k8s-docker-desktop-for-mac</a></p>
+<p>git clone代码到本地<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git clone https://github.com/gotok8s/k8s-docker-desktop-for-mac.git</div></pre></td></tr></table></figure></p>
+<p>然后修改images文件中kubernetes的版本号为Docker Desktop集成的Kubernetes的版本。<br>以v1.14.7为例，我修改后的版本如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">k8s.gcr.io/kube-proxy:v1.14.7=registry.cn-hangzhou.aliyuncs.com/google_containers/kube-proxy:v1.14.7</div><div class="line">k8s.gcr.io/kube-controller-manager:v1.14.7=registry.cn-hangzhou.aliyuncs.com/google_containers/kube-controller-manager:v1.14.7</div><div class="line">k8s.gcr.io/kube-scheduler:v1.14.7=registry.cn-hangzhou.aliyuncs.com/google_containers/kube-scheduler:v1.14.7</div><div class="line">k8s.gcr.io/kube-apiserver:v1.14.7=registry.cn-hangzhou.aliyuncs.com/google_containers/kube-apiserver:v1.14.7</div><div class="line">k8s.gcr.io/coredns:1.3.1=gotok8s/coredns:1.3.1</div><div class="line">k8s.gcr.io/pause:3.1=gotok8s/pause:3.1</div><div class="line">k8s.gcr.io/etcd:3.3.10=gotok8s/etcd:3.3.10</div></pre></td></tr></table></figure></p>
+<p>修改点有两处:</p>
+<ul>
+<li>替换原版本为v1.14.7，</li>
+<li>修改了原文件中dockerhub上的地址为阿里云的docker镜像地址</li>
+</ul>
+<p>执行<code>./load_images.sh</code>，安装镜像并打上k8s.gcr.io的tag。</p>
+<p>再在<a href="https://www.docker.com/products/docker-desktop" target="_blank" rel="external">Docker Desktop</a>的Preferences中开启Enable Kubernetes，就可以启动Kubernetes了。<br><img src="/images/Docker/enable_kubernetes_in_preference.png" alt="enable_kubernetes_in_preference.png"></p>
+<p>使用命令<code>kubectl version</code>来验证Kubernetes服务。如果能同时显示Client和Server的Version，就说明启动成功。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ kubectl version</div><div class="line">Client Version: version.Info&#123;Major:&quot;1&quot;, Minor:&quot;14&quot;, GitVersion:&quot;v1.14.7&quot;, GitCommit:&quot;8fca2ec50a6133511b771a11559e24191b1aa2b4&quot;, GitTreeState:&quot;clean&quot;, BuildDate:&quot;2019-09-18T14:47:22Z&quot;, GoVersion:&quot;go1.12.9&quot;, Compiler:&quot;gc&quot;, Platform:&quot;darwin/amd64&quot;&#125;</div><div class="line">Server Version: version.Info&#123;Major:&quot;1&quot;, Minor:&quot;14&quot;, GitVersion:&quot;v1.14.7&quot;, GitCommit:&quot;8fca2ec50a6133511b771a11559e24191b1aa2b4&quot;, GitTreeState:&quot;clean&quot;, BuildDate:&quot;2019-09-18T14:39:02Z&quot;, GoVersion:&quot;go1.12.9&quot;, Compiler:&quot;gc&quot;, Platform:&quot;linux/amd64&quot;&#125;</div><div class="line">$</div></pre></td></tr></table></figure></p>
+<h4 id="Unable-to-connect-to-the-server的异常"><a href="#Unable-to-connect-to-the-server的异常" class="headerlink" title="Unable to connect to the server的异常"></a>Unable to connect to the server的异常</h4><p>在安装过程中，启动了Kubernetes，但执行命令就报<code>Unable to connect to the server: EOF</code>的错误。<br>按照<a href="https://github.com/docker/for-mac/issues/2717" target="_blank" rel="external">Kubernetes on Mac is stuck very often. Needs restart all the time.</a>的说明，调高了内存</p>
+<p><img src="/images/Docker/memory_setting_in_kubernetes.png" alt="memory_setting_in_kubernetes.png"></p>
+<p>再执行<code>kubectl version</code>，还是报<code>Unable to connect to the server: EOF</code>错误。多次Reset Kubernetes也还是不行。<br>折腾了一通，最后发现是原先Terminal中装minikube时修改了部分环境变量。重新起一个Terminal后，就可以访问到kubernetes服务了。</p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://juejin.im/post/5d87980f5188253f74438bb6" target="_blank" rel="external">在 macOS 上使用 Docker Desktop 启动 Kubernetes 踩坑全记录</a></li>
+<li><a href="https://github.com/gotok8s/k8s-docker-desktop-for-mac" target="_blank" rel="external">Docker Desktop for Mac 开启并使用 Kubernetes</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> Tools </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Docker </tag>
+            
+            <tag> Kubernetes </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[Mac下Word不能双击格式刷重复刷的问题]]></title>
       <url>/2019/10/31/why-format-painter-not-working-on-mac-office-365/</url>
       <content type="html"><![CDATA[<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>Mac下的Word中没法通过双击格式刷来保持格式刷的状态来重复刷格式</p>
@@ -843,9 +984,9 @@
         
         <tags>
             
-            <tag> Linux </tag>
-            
             <tag> CentOS </tag>
+            
+            <tag> Linux </tag>
             
         </tags>
         
@@ -1457,9 +1598,9 @@
             
             <tag> HTTP </tag>
             
-            <tag> Application Load Balancing </tag>
-            
             <tag> IAM </tag>
+            
+            <tag> Application Load Balancing </tag>
             
         </tags>
         
@@ -1573,9 +1714,9 @@
         
         <tags>
             
-            <tag> MacOS </tag>
-            
             <tag> CentOS </tag>
+            
+            <tag> MacOS </tag>
             
         </tags>
         
@@ -1719,9 +1860,9 @@
         
         <tags>
             
-            <tag> Linux </tag>
-            
             <tag> CentOS </tag>
+            
+            <tag> Linux </tag>
             
             <tag> VMware </tag>
             
@@ -1786,8 +1927,15 @@
 <h3 id="EB手动打包时包含隐藏目录"><a href="#EB手动打包时包含隐藏目录" class="headerlink" title="EB手动打包时包含隐藏目录"></a>EB手动打包时包含隐藏目录</h3><p>进入源文件所在目录中工作<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ zip ../myapp.zip -r * .[^.]*</div></pre></td></tr></table></figure></p>
 <p>使用Git打包</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># 创建当前分支上最新 Git 提交的 ZIP 存档</div><div class="line">$ git archive --format=zip HEAD &gt; &lt;myapp&gt;.zip</div></pre></td></tr></table></figure>
+<hr>
 <h3 id="Linux下mail如何添加多个附件"><a href="#Linux下mail如何添加多个附件" class="headerlink" title="Linux下mail如何添加多个附件"></a>Linux下mail如何添加多个附件</h3><p>mailx 命令中使用多个-a选项<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ mailx -s &apos;Few files attached&apos; -a file1.txt -a file2.txt someone@some.com</div></pre></td></tr></table></figure></p>
 <p><a href="https://stackoverflow.com/questions/14473732/attaching-more-than-2-files-in-mail-in-unix" target="_blank" rel="external">https://stackoverflow.com/questions/14473732/attaching-more-than-2-files-in-mail-in-unix</a></p>
+<hr>
+<h3 id="top命令"><a href="#top命令" class="headerlink" title="top命令"></a>top命令</h3><p>指定刷新频率可以用<code>-d</code>参数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">top -d 1</div><div class="line">top -d 0.5</div></pre></td></tr></table></figure></p>
+<hr>
+<h3 id="使用ssh-keygen从私钥中获取公钥"><a href="#使用ssh-keygen从私钥中获取公钥" class="headerlink" title="使用ssh-keygen从私钥中获取公钥"></a>使用ssh-keygen从私钥中获取公钥</h3><p>命令如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh-keygen -y -f id_rsa_for_passphrase</div></pre></td></tr></table></figure></p>
+<hr>
+<h3 id="设置ssh-tunnel"><a href="#设置ssh-tunnel" class="headerlink" title="设置ssh tunnel"></a>设置ssh tunnel</h3><p>使用ssh 设置转发tunnel<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># -N 不执行远程命令</div><div class="line"># -f Requests ssh to go to background just before command execution.</div><div class="line"># -D 指定绑定地址和端口 [bind_address:]port</div><div class="line"># 将来着本地0.0.0.0:10086的流量转发到指定的host中</div><div class="line">ssh -f -N -D 0.0.0.0:10086 -i id_rsa_key user@host</div></pre></td></tr></table></figure></p>
 ]]></content>
       
         <categories>
@@ -1946,6 +2094,42 @@
     </entry>
     
     <entry>
+      <title><![CDATA[在线架构图工具Online Visual Paradigm]]></title>
+      <url>/2019/04/09/online-visual-paradigm/</url>
+      <content type="html"><![CDATA[<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>一个免费的在线画AWS架构图的网址<a href="https://online.visual-paradigm.com" target="_blank" rel="external">https://online.visual-paradigm.com</a>, 30天试用期内可以随时保存和下载源文件。过了试用期后，还可以使用，但无法保存和导出源文件。<br>visual-paradigm也有<a href="https://www.visual-paradigm.com/download/" target="_blank" rel="external">客户端</a>，30天免费试用。</p>
+<ul>
+<li>优势<ul>
+<li>集成了AWS各个服务的图标，</li>
+<li>有一些经典的架构模板，制作AWS架构图的时候会比较方便。</li>
+</ul>
+</li>
+<li>劣势<ul>
+<li>试用过后, 费用比较贵</li>
+</ul>
+</li>
+</ul>
+<h3 id="几个例子"><a href="#几个例子" class="headerlink" title="几个例子"></a>几个例子</h3><p>使用在线工具画的项目的架构图<br><img src="/images/AWS/Tools/architecture_diagram.png" alt="architecture_diagram.png"><br><a id="more"></a></p>
+<p>网络拓扑图<br><img src="/images/AWS/Tools/network_topology.png" alt="network_topology"></p>
+<h3 id="自带模板预览"><a href="#自带模板预览" class="headerlink" title="自带模板预览"></a>自带模板预览</h3><p>网站自带的一些模板预览:</p>
+<p><img src="/images/AWS/Tools/template1.jpg" alt="template1.jpg"><br><img src="/images/AWS/Tools/template2.jpg" alt="template2.jpg"></p>
+]]></content>
+      
+        <categories>
+            
+            <category> AWS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> AWS Tools </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[解析EB logs的一些Linux小命令]]></title>
       <url>/2019/04/08/some-command-to-parse-EB-logs/</url>
       <content type="html"><![CDATA[<p>开启EB rotated log功能后，EB的日志将会被存储在EB对应bucket的<code>resources/environments/logs/logtype/environment-id/instance-id</code>路径下, 供后续查看。官网文档<a href="https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/using-features.logging.html" target="_blank" rel="external">Viewing Logs from Amazon EC2 Instances in Your Elastic Beanstalk Environment</a></p>
@@ -1987,11 +2171,11 @@
             
             <tag> Elastic Beanstalk </tag>
             
-            <tag> Linux </tag>
-            
             <tag> S3 </tag>
             
             <tag> AWS CLI </tag>
+            
+            <tag> Linux </tag>
             
         </tags>
         
@@ -2122,9 +2306,9 @@
             
             <tag> Ruby </tag>
             
-            <tag> Linux </tag>
-            
             <tag> CentOS </tag>
+            
+            <tag> Linux </tag>
             
             <tag> RVM </tag>
             
@@ -2210,9 +2394,9 @@
             
             <tag> HTTP </tag>
             
-            <tag> Linux </tag>
-            
             <tag> S3 </tag>
+            
+            <tag> Linux </tag>
             
         </tags>
         
@@ -2302,9 +2486,9 @@
             
             <tag> EC2 </tag>
             
-            <tag> Nginx </tag>
-            
             <tag> Passenger </tag>
+            
+            <tag> Nginx </tag>
             
         </tags>
         
@@ -3175,9 +3359,9 @@
         
         <tags>
             
-            <tag> MacOS </tag>
-            
             <tag> Image </tag>
+            
+            <tag> MacOS </tag>
             
         </tags>
         
@@ -9830,9 +10014,9 @@ You can wait for the scheduled retirement date - when the instance is stopped - 
             
             <tag> RDS </tag>
             
-            <tag> AWS SDK </tag>
-            
             <tag> Ruby </tag>
+            
+            <tag> AWS SDK </tag>
             
             <tag> AWS CLI </tag>
             

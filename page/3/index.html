@@ -139,6 +139,98 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
+			<div class="date"> 2019-05-01 </div>
+			<div class="article-title"><a href="/2019/05/01/way-to-make-centos7-bootable-usb-on-macos/" >Macos下制作CentOS 7 USB启动盘</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>记录下在MacOS中制作Linux USB启动盘的操作步骤。</p>
+<h3 id="操作步骤"><a href="#操作步骤" class="headerlink" title="操作步骤"></a>操作步骤</h3><h4 id="查看磁盘挂载分区"><a href="#查看磁盘挂载分区" class="headerlink" title="查看磁盘挂载分区"></a>查看磁盘挂载分区</h4><p>使用命令<code>diskutil list</code>查看所在U盘的分区，找到U盘的挂载点，此处挂载点为<code>/dev/disk2</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">$ diskutil list</div><div class="line">...</div><div class="line"></div><div class="line">/dev/disk2 (external, physical):</div><div class="line">   #:                       TYPE NAME                    SIZE       IDENTIFIER</div><div class="line">   0:     FDisk_partition_scheme                        *31.0 GB    disk2</div><div class="line">   1:                 DOS_FAT_32 UNTITLED                31.0 GB    disk2s1</div><div class="line"></div><div class="line">$</div></pre></td></tr></table></figure></p>
+<h4 id="卸载U盘挂载"><a href="#卸载U盘挂载" class="headerlink" title="卸载U盘挂载"></a>卸载U盘挂载</h4><p>使用<code>diskutil unmountDisk</code>命令，卸载U盘的挂载。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ diskutil unmountDisk /dev/disk2</div><div class="line">Unmount of all volumes on disk2 was successful</div><div class="line">$</div></pre></td></tr></table></figure></p>
+<p>如果不卸载挂载点就写入启动盘，则会提示<code>dd: /dev/disk2: Resource busy</code>。</p>
+	
+	</div>
+  <a type="button" href="/2019/05/01/way-to-make-centos7-bootable-usb-on-macos/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2019-05-01 </div>
+			<div class="article-title"><a href="/2019/05/01/scheduled-action-of-aws-autoscaling/" >AWS Autoscaling的Scheduled Scaling(计划扩展)</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>除了用Alarm触发的Scaling Policy，AWS Autoscaling(ASG) 还提供了一个Scheduled Scaling(计划扩展)的功能。该功能主要用作一些流量可预测的情形。比如国外的Black Friday和国内6.18或双11这种活动时，就可以使用Scheduled Scaling来提前规划好机器数量。<br>详细说明和设置参见 AWS官方文档<a href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/schedule_time.html" target="_blank" rel="external">Scheduled Scaling for Amazon EC2 Auto Scaling</a>。</p>
+<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><p>举基于如下场景的一个例子</p>
+<ol>
+<li>正常流量下，2台服务器就可以支撑。</li>
+<li>周一到周五的早上8点~10点间是流量高峰期，此时需要4台服务器才能支撑对应的流量。</li>
+<li>10点过后恢复正常流量。</li>
+</ol>
+<p>如上场景分解为2个Schedule Action</p>
+<ol>
+<li>周一到周五每天早上8点，扩展服务器数量为4.</li>
+<li>周一到周五每天早上10点，缩减服务器数量为2.</li>
+</ol>
+	
+	</div>
+  <a type="button" href="/2019/05/01/scheduled-action-of-aws-autoscaling/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2019-04-28 </div>
+			<div class="article-title"><a href="/2019/04/28/how-to-use-static-IP-in-VMWare-Fusion-on-Mac-OS-X/" >MacOS上VMWare Fusion中如何给网口设置固定IP</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>VMWare Fusion中，虚拟机的网口使用NAT模式时，获取到的IP地址是通过DHCP动态分配的，不是固定分配的。每次开机虚拟机网口IP都有可能变动，SSH登录时每次要去查看，太不方便。<br>找了下如何设置固定IP的方法，记录如下。</p>
+<p>在如下环境中可以设置成功:</p>
+<ul>
+<li>MacOS Version: 10.14.4 (18E226)</li>
+<li>Vmware Fusion Version: 10.1.5 (10950653)</li>
+</ul>
+<h3 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h3><h4 id="1-获取虚拟主机的MAC地址"><a href="#1-获取虚拟主机的MAC地址" class="headerlink" title="1. 获取虚拟主机的MAC地址"></a>1. 获取虚拟主机的MAC地址</h4><p>默认安装下，所有的虚拟主机的Image都存放在<code>~/Documents/Virtual\ Machines.localized/</code>下，以名为<code>CentOS 7 64bit</code>的虚拟机为例。获取命令为:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cat ~/Documents/Virtual\ Machines.localized/CentOS\ 7\ 64bit.vmwarevm/CentOS\ 7\ 64bit.vmx | grep generatedAddress</div></pre></td></tr></table></figure></p>
+<p>找到对应网口的MAC地址, 本文中要绑定的网口<code>ethernet0</code>的MAC地址为<code>00:0C:29:23:6E:CC</code>。</p>
+<h4 id="2-设置静态IP"><a href="#2-设置静态IP" class="headerlink" title="2. 设置静态IP"></a>2. 设置静态IP</h4><p>打开配置文件<code>/Library/Preferences/VMware\ Fusion/vmnet8/dhcpd.conf</code>, <code>vmnet8</code>是VMWare用来设置NAT的虚拟网口，在MacOS下使用命令<code>ifconfig</code>可以看到该虚拟网口。</p>
+<p>在配置文件中可以看到DHCP的IP池为192.168.187.128 ~ 192.168.187.254(每个机器可能不同，以实际显示的为准)<br>
+	
+	</div>
+  <a type="button" href="/2019/04/28/how-to-use-static-IP-in-VMWare-Fusion-on-Mac-OS-X/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
 			<div class="date"> 2019-04-26 </div>
 			<div class="article-title"><a href="/2019/04/26/manually-install-vmeare-tools-on-centos-7/" >Vmware Fusion中CentOS 7中安装Vmware Tools</a></div>						
 		</h3>
@@ -260,6 +352,41 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
+			<div class="date"> 2019-04-09 </div>
+			<div class="article-title"><a href="/2019/04/09/online-visual-paradigm/" >在线架构图工具Online Visual Paradigm</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>一个免费的在线画AWS架构图的网址<a href="https://online.visual-paradigm.com" target="_blank" rel="external">https://online.visual-paradigm.com</a>, 30天试用期内可以随时保存和下载源文件。过了试用期后，还可以使用，但无法保存和导出源文件。<br>visual-paradigm也有<a href="https://www.visual-paradigm.com/download/" target="_blank" rel="external">客户端</a>，30天免费试用。</p>
+<ul>
+<li>优势<ul>
+<li>集成了AWS各个服务的图标，</li>
+<li>有一些经典的架构模板，制作AWS架构图的时候会比较方便。</li>
+</ul>
+</li>
+<li>劣势<ul>
+<li>试用过后, 费用比较贵</li>
+</ul>
+</li>
+</ul>
+<h3 id="几个例子"><a href="#几个例子" class="headerlink" title="几个例子"></a>几个例子</h3><p>使用在线工具画的项目的架构图<br><img src="/images/AWS/Tools/architecture_diagram.png" alt="architecture_diagram.png"><br>
+	
+	</div>
+  <a type="button" href="/2019/04/09/online-visual-paradigm/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
 			<div class="date"> 2019-04-08 </div>
 			<div class="article-title"><a href="/2019/04/08/some-command-to-parse-EB-logs/" >解析EB logs的一些Linux小命令</a></div>						
 		</h3>
@@ -306,122 +433,6 @@ var _hmt = _hmt || [];
 	
 	</div>
   <a type="button" href="/2019/04/02/bbr-on-aws-ec2/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2019-03-24 </div>
-			<div class="article-title"><a href="/2019/03/24/share-ShadowsocksX-NG-to-iOS/" >Mac下共享ShadowsocksX-NG的梯子给iOS</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>提供一个Mac下共享<code>ShadowsocksX-NG</code>(小飞机)梯子给iPhone的方法。</p>
-<h3 id="Mac端设置"><a href="#Mac端设置" class="headerlink" title="Mac端设置"></a>Mac端设置</h3><p>打开小飞机的“偏好设置”，切换到HTTP一栏，其中的HTTP代理监听地址默认是127.0.0.1，将其改成0.0.0.0。保留默认的1087或改为自己想要设置的端口，并勾选“开启HTTP代理服务器”。<br><img src="/images/ShadowSock/shadowsock_http_proxy.png" alt="shadowsock_http_proxy.png"></p>
-<p>Terminal中输入<code>ifconfig</code>查看Mac的IP地址, 供iPhone设置时使用。此处是<code>192.168.3.18</code><br>
-	
-	</div>
-  <a type="button" href="/2019/03/24/share-ShadowsocksX-NG-to-iOS/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2019-03-21 </div>
-			<div class="article-title"><a href="/2019/03/21/ctrl-c-invalid-on-Centos-7/" >CentOS 7下Ctrl-C失效问题</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>rvm 1.29.4在CentOS 7上有一个bug，在Bash下，source了rvm后，执行Crtl+C时，无法终止shell命令。</p>
-<p>具体讨论在<a href="https://github.com/rvm/rvm/issues/4422" target="_blank" rel="external">Unable to pass SIGINT signal (control-C) on 1.29.4 </a>中。</p>
-<p>解决办法:</p>
-<ol>
-<li>在用户账号下强制使用trap设置回被改写的信号量INT QUIT</li>
-<li>升级rvm到1.29.4以上版本</li>
-</ol>
-	
-	</div>
-  <a type="button" href="/2019/03/21/ctrl-c-invalid-on-Centos-7/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2019-03-11 </div>
-			<div class="article-title"><a href="/2019/03/11/ways-to-support-public-s3-file-in-nginx/" >使用nginx处理S3静态资源</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>在网页或APP中，使用S3公开的静态资源，比如图片,小视频等。通常有这么几个常用的方式</p>
-<ul>
-<li>直接在页面中使用S3的public链接</li>
-<li>使用自己的域名，再在Web服务器侧redirect到S3的链接</li>
-<li>使用自己的域名，再在服务器上经过反向代理服务，获取S3内容后再返回给客户端或浏览器。</li>
-</ul>
-<p>在APP中，因为不需要考虑SEO，可以在页面或接口中直接返回S3的链接，APP直接访问S3资源，效率最高。<br>如果是网页，有时候为了SEO的需要，可能更多的会采用第二和第三种方式, 将资源经过服务器来中转一下。<br>下面介绍一下第二和第三种方式在Nginx侧的简单实现。</p>
-<h3 id="使用Nginx来redirect-S3的链接"><a href="#使用Nginx来redirect-S3的链接" class="headerlink" title="使用Nginx来redirect S3的链接"></a>使用Nginx来redirect S3的链接</h3><p>如下是一个简单的Nginx的配置的例子。基于以下几个前提</p>
-<ul>
-<li>测试域名为test.jibing57.com</li>
-<li>所有放在S3上的静态文件，在网站上都以<code>/s3_redirect</code>路径打头</li>
-<li>S3 Region为us-west-2, Bucket 为<code>s3-for-blog</code></li>
-<li>将<code>/s3_redirect</code>开头的文件redirect到真实的S3 URL中。</li>
-</ul>
-	
-	</div>
-  <a type="button" href="/2019/03/11/ways-to-support-public-s3-file-in-nginx/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2019-03-10 </div>
-			<div class="article-title"><a href="/2019/03/10/passenger-status-not-work-on-CentOS-7/" >CentOS 7下passenger-status报错</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>CentOS 7中，执行<code>passenger-status</code>报了如下错误:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">ERROR: Phusion Passenger doesn&apos;t seem to be running. If you are sure that it is running, then the causes of this problem could be:</div><div class="line"></div><div class="line">1. You customized the instance registry directory using Apache&apos;s PassengerInstanceRegistryDir option, Nginx&apos;s passenger_instance_registry_dir option, or Phusion Passenger Standalone&apos;s --instance-registry-dir command line argument. If so, please set the environment variable PASSENGER_INSTANCE_REGISTRY_DIR to that directory and run passenger-status again.</div><div class="line">2. The instance directory has been removed by an operating system background service. Please set a different instance registry directory using Apache&apos;s PassengerInstanceRegistryDir option, Nginx&apos;s passenger_instance_registry_dir option, or Phusion Passenger Standalone&apos;s --instance-registry-dir command line argument.</div></pre></td></tr></table></figure>
-<p>而命令<code>passenger-memory-stats</code>可以正常工作。</p>
-<p>同样的问题，在Amazon Linux 2 AMI中也同样存在。</p>
-	
-	</div>
-  <a type="button" href="/2019/03/10/passenger-status-not-work-on-CentOS-7/#more" class="btn btn-default more">Read More</a>
 </div>
 
            
@@ -489,7 +500,7 @@ var _hmt = _hmt || [];
 		<h4>Categories</h4>
 		<ul class="tag_box inline list-unstyled">
 		
-			<li><a href="/categories/#AWS">AWS<span>34</span></a></li>
+			<li><a href="/categories/#AWS">AWS<span>35</span></a></li>
 		
 			<li><a href="/categories/#AWS Certified">AWS Certified<span>4</span></a></li>
 		
@@ -501,7 +512,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/#Shell">Shell<span>8</span></a></li>
 		
-			<li><a href="/categories/#Tools">Tools<span>18</span></a></li>
+			<li><a href="/categories/#Tools">Tools<span>21</span></a></li>
 		
 		</ul>
 	</div>
@@ -513,48 +524,48 @@ var _hmt = _hmt || [];
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/#AWS Free Tier">AWS Free Tier<span>1</span></a></li>
-		
-			<li><a href="/tags/#AWS SDK">AWS SDK<span>2</span></a></li>
-		
-			<li><a href="/tags/#EC2">EC2<span>8</span></a></li>
-		
-			<li><a href="/tags/#Sysops">Sysops<span>1</span></a></li>
-		
-			<li><a href="/tags/#Video">Video<span>1</span></a></li>
-		
-			<li><a href="/tags/#Hexo">Hexo<span>7</span></a></li>
-		
-			<li><a href="/tags/#DynamoDB">DynamoDB<span>1</span></a></li>
-		
-			<li><a href="/tags/#CloudWatch">CloudWatch<span>1</span></a></li>
-		
-			<li><a href="/tags/#RDS">RDS<span>3</span></a></li>
-		
-			<li><a href="/tags/#AWS CLI">AWS CLI<span>6</span></a></li>
-		
 			<li><a href="/tags/#HTTP">HTTP<span>5</span></a></li>
-		
-			<li><a href="/tags/#Elastic Load Balancing">Elastic Load Balancing<span>6</span></a></li>
-		
-			<li><a href="/tags/#Github">Github<span>3</span></a></li>
-		
-			<li><a href="/tags/#Office">Office<span>2</span></a></li>
-		
-			<li><a href="/tags/#MacOS">MacOS<span>16</span></a></li>
-		
-			<li><a href="/tags/#CentOS">CentOS<span>7</span></a></li>
-		
-			<li><a href="/tags/#S3">S3<span>10</span></a></li>
-		
-			<li><a href="/tags/#Tips">Tips<span>1</span></a></li>
 		
 			<li><a href="/tags/#FFMPEG">FFMPEG<span>1</span></a></li>
 		
+			<li><a href="/tags/#Office">Office<span>2</span></a></li>
+		
+			<li><a href="/tags/#Git">Git<span>2</span></a></li>
+		
+			<li><a href="/tags/#Wkhtmltopdf">Wkhtmltopdf<span>1</span></a></li>
+		
+			<li><a href="/tags/#Firewall">Firewall<span>1</span></a></li>
+		
+			<li><a href="/tags/#AWS CLI">AWS CLI<span>6</span></a></li>
+		
+			<li><a href="/tags/#RDS">RDS<span>3</span></a></li>
+		
+			<li><a href="/tags/#Elastic Beanstalk">Elastic Beanstalk<span>7</span></a></li>
+		
+			<li><a href="/tags/#SSH">SSH<span>5</span></a></li>
+		
+			<li><a href="/tags/#IAM">IAM<span>3</span></a></li>
+		
+			<li><a href="/tags/#HTTPS">HTTPS<span>1</span></a></li>
+		
+			<li><a href="/tags/#EC2 User Data">EC2 User Data<span>1</span></a></li>
+		
+			<li><a href="/tags/#Chrome">Chrome<span>1</span></a></li>
+		
+			<li><a href="/tags/#CloudWatch">CloudWatch<span>1</span></a></li>
+		
+			<li><a href="/tags/#Passenger">Passenger<span>2</span></a></li>
+		
+			<li><a href="/tags/#Failover">Failover<span>1</span></a></li>
+		
 			<li><a href="/tags/#CodeCommit">CodeCommit<span>1</span></a></li>
 		
+			<li><a href="/tags/#Sysops">Sysops<span>1</span></a></li>
 		
-		   <li><a href="/tags">...<span>50</span></a></li>
+			<li><a href="/tags/#RVM">RVM<span>1</span></a></li>
+		
+		
+		   <li><a href="/tags">...<span>53</span></a></li>
 		 
 		</ul>
 	</div>
@@ -567,23 +578,23 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2019/12/02/ImageMagick-watermark/" ><i class="fa fa-file-o"></i>使用ImageMagick来给图片打文字水印</a>
+      </li>
+    
+      <li>
+        <a href="/2019/11/28/way-to-install-wkhtmltopdf-and-wkhtmltoimage-to-CentOS-7/" ><i class="fa fa-file-o"></i>如何在CentOS 7 中安装wkhtmltopdf和...</a>
+      </li>
+    
+      <li>
+        <a href="/2019/11/19/how-to-install-docker-and-kubernetes-on-macos/" ><i class="fa fa-file-o"></i>在Macos上安装Docker和Kubernetes</a>
+      </li>
+    
+      <li>
         <a href="/2019/10/31/why-format-painter-not-working-on-mac-office-365/" ><i class="fa fa-file-o"></i>Mac下Word不能双击格式刷重复刷的问题</a>
       </li>
     
       <li>
         <a href="/2019/10/27/postgresql-tips/" ><i class="fa fa-file-o"></i>PostgreSQL Tips</a>
-      </li>
-    
-      <li>
-        <a href="/2019/10/18/AWS-Advanced-Networking-Specialty/" ><i class="fa fa-file-o"></i>AWS Advanced Networking Spe...</a>
-      </li>
-    
-      <li>
-        <a href="/2019/09/30/apple-airport-express-access-unexpected-error-occurred/" ><i class="fa fa-file-o"></i>设置AirPort Express时获取不到设备信息的...</a>
-      </li>
-    
-      <li>
-        <a href="/2019/09/29/still-password-when-setting-public-key-ssh-authorization/" ><i class="fa fa-file-o"></i>ssh设置私钥登录后还是提示需要输入密码</a>
       </li>
     
   </ul>

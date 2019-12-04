@@ -1,0 +1,353 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>在Macos上安装Docker和Kubernetes | Recording</title>
+  <meta name="author" content="jibing57">
+  
+  <meta name="description" content="AWS, 阅读, Architecture, PostgreSQL">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="在Macos上安装Docker和Kubernetes"/>
+  <meta property="og:site_name" content="Recording"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/css/themes/bootstrap.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/comment.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+  
+  <!-- analytics -->
+  
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-111771042-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?59d3e14cdc96877383afed646f44d216";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+</head>
+
+ <body>  
+  <nav id="main-nav" class="navbar  navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+	<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+       <a class="navbar-brand" href="/">Recording</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class="fa fa-archive"></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class="fa fa-folder"></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class="fa fa-tags"></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/douban" title="Douban">
+			  <i class="fa fa-book"></i>Douban
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header ">		
+			<h1 class="title "> 在Macos上安装Docker和Kubernetes</h1>
+		</div>		
+	
+
+
+
+
+   <style type="text/css">
+           img, video {
+                -webkit-box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+                -moz-box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+                box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+           }
+   </style>
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
+
+	<!-- content -->
+	<div class="mypage">		
+	  		
+
+	  <p>Macos下安装Docker和Kubernutes最方便的工具就是<a href="https://www.docker.com/products/docker-desktop" target="_blank" rel="external">Docker Desktop</a>了。</p>
+<h3 id="安装Docker"><a href="#安装Docker" class="headerlink" title="安装Docker"></a>安装Docker</h3><p>访问<a href="https://www.docker.com/products/docker-desktop" target="_blank" rel="external">Docker Desktop</a>官网，点击下载Mac版。会跳转到dockerhub进行下载。需要注册dockerhub才可以进行下载。</p>
+<p>下载过后双击Docker.dmg文件进行安装即可。<br>安装完毕后，Docker就可以正常使用了</p>
+<a id="more"></a>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">$ docker version</div><div class="line">Client: Docker Engine - Community</div><div class="line"> Version:           19.03.4</div><div class="line"> API version:       1.40</div><div class="line"> Go version:        go1.12.10</div><div class="line"> Git commit:        9013bf5</div><div class="line"> Built:             Thu Oct 17 23:44:48 2019</div><div class="line"> OS/Arch:           darwin/amd64</div><div class="line"> Experimental:      false</div><div class="line"></div><div class="line">Server: Docker Engine - Community</div><div class="line"> Engine:</div><div class="line">  Version:          19.03.4</div><div class="line">  API version:      1.40 (minimum version 1.12)</div><div class="line">  Go version:       go1.12.10</div><div class="line">  Git commit:       9013bf5</div><div class="line">  Built:            Thu Oct 17 23:50:38 2019</div><div class="line">  OS/Arch:          linux/amd64</div><div class="line">  Experimental:     false</div><div class="line"> containerd:</div><div class="line">  Version:          v1.2.10</div><div class="line">  GitCommit:        b34a5c8af56e510852c35414db4c1f4fa6172339</div><div class="line"> runc:</div><div class="line">  Version:          1.0.0-rc8+dev</div><div class="line">  GitCommit:        3e425f80a8c931f88e6d94a8c831b9d5aa481657</div><div class="line"> docker-init:</div><div class="line">  Version:          0.18.0</div><div class="line">  GitCommit:        fec3683</div><div class="line">$</div></pre></td></tr></table></figure>
+<h3 id="安装Kubernetes"><a href="#安装Kubernetes" class="headerlink" title="安装Kubernetes"></a>安装Kubernetes</h3><h4 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h4><p>原先是想按照官方推荐，安装minikube的。可折腾了一下没成功。转而尝试用Docker Desktop自带的kubernetes。<br>以下步骤参照了如下两篇文章结合实际的安装步骤，记录如下:</p>
+<ul>
+<li><a href="https://juejin.im/post/5d87980f5188253f74438bb6" target="_blank" rel="external">在 macOS 上使用 Docker Desktop 启动 Kubernetes 踩坑全记录</a></li>
+<li><a href="https://github.com/gotok8s/k8s-docker-desktop-for-mac" target="_blank" rel="external">Docker Desktop for Mac 开启并使用 Kubernetes</a></li>
+</ul>
+<h4 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h4><p><a href="https://www.docker.com/products/docker-desktop" target="_blank" rel="external">Docker Desktop</a>中自带了Kubernetes，以stable 2.1.0.4为例。自带了v1.14.7的Kubernetes<br><img src="/images/Docker/kubernetes_in_docker_desktop.png" alt="kubernetes_in_docker_desktop"></p>
+<p>照道理直接在Preference中Enable Kubernetes即可使用了。可是kubernetes的安装需要去k8s.gcr.io下载镜像。国内没法直接访问。<br>直接Enable kubernetes的话，会一直处在<code>Kubernetes is starting</code>状态。</p>
+<p>解决办法是手动先从其他地方下载kubernetes相关的image，然后再打上原始的tag。<br>github上有前人制作了相关的工具，<a href="https://github.com/gotok8s/k8s-docker-desktop-for-mac" target="_blank" rel="external">k8s-docker-desktop-for-mac</a></p>
+<p>git clone代码到本地<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git clone https://github.com/gotok8s/k8s-docker-desktop-for-mac.git</div></pre></td></tr></table></figure></p>
+<p>然后修改images文件中kubernetes的版本号为Docker Desktop集成的Kubernetes的版本。<br>以v1.14.7为例，我修改后的版本如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">k8s.gcr.io/kube-proxy:v1.14.7=registry.cn-hangzhou.aliyuncs.com/google_containers/kube-proxy:v1.14.7</div><div class="line">k8s.gcr.io/kube-controller-manager:v1.14.7=registry.cn-hangzhou.aliyuncs.com/google_containers/kube-controller-manager:v1.14.7</div><div class="line">k8s.gcr.io/kube-scheduler:v1.14.7=registry.cn-hangzhou.aliyuncs.com/google_containers/kube-scheduler:v1.14.7</div><div class="line">k8s.gcr.io/kube-apiserver:v1.14.7=registry.cn-hangzhou.aliyuncs.com/google_containers/kube-apiserver:v1.14.7</div><div class="line">k8s.gcr.io/coredns:1.3.1=gotok8s/coredns:1.3.1</div><div class="line">k8s.gcr.io/pause:3.1=gotok8s/pause:3.1</div><div class="line">k8s.gcr.io/etcd:3.3.10=gotok8s/etcd:3.3.10</div></pre></td></tr></table></figure></p>
+<p>修改点有两处:</p>
+<ul>
+<li>替换原版本为v1.14.7，</li>
+<li>修改了原文件中dockerhub上的地址为阿里云的docker镜像地址</li>
+</ul>
+<p>执行<code>./load_images.sh</code>，安装镜像并打上k8s.gcr.io的tag。</p>
+<p>再在<a href="https://www.docker.com/products/docker-desktop" target="_blank" rel="external">Docker Desktop</a>的Preferences中开启Enable Kubernetes，就可以启动Kubernetes了。<br><img src="/images/Docker/enable_kubernetes_in_preference.png" alt="enable_kubernetes_in_preference.png"></p>
+<p>使用命令<code>kubectl version</code>来验证Kubernetes服务。如果能同时显示Client和Server的Version，就说明启动成功。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ kubectl version</div><div class="line">Client Version: version.Info&#123;Major:&quot;1&quot;, Minor:&quot;14&quot;, GitVersion:&quot;v1.14.7&quot;, GitCommit:&quot;8fca2ec50a6133511b771a11559e24191b1aa2b4&quot;, GitTreeState:&quot;clean&quot;, BuildDate:&quot;2019-09-18T14:47:22Z&quot;, GoVersion:&quot;go1.12.9&quot;, Compiler:&quot;gc&quot;, Platform:&quot;darwin/amd64&quot;&#125;</div><div class="line">Server Version: version.Info&#123;Major:&quot;1&quot;, Minor:&quot;14&quot;, GitVersion:&quot;v1.14.7&quot;, GitCommit:&quot;8fca2ec50a6133511b771a11559e24191b1aa2b4&quot;, GitTreeState:&quot;clean&quot;, BuildDate:&quot;2019-09-18T14:39:02Z&quot;, GoVersion:&quot;go1.12.9&quot;, Compiler:&quot;gc&quot;, Platform:&quot;linux/amd64&quot;&#125;</div><div class="line">$</div></pre></td></tr></table></figure></p>
+<h4 id="Unable-to-connect-to-the-server的异常"><a href="#Unable-to-connect-to-the-server的异常" class="headerlink" title="Unable to connect to the server的异常"></a>Unable to connect to the server的异常</h4><p>在安装过程中，启动了Kubernetes，但执行命令就报<code>Unable to connect to the server: EOF</code>的错误。<br>按照<a href="https://github.com/docker/for-mac/issues/2717" target="_blank" rel="external">Kubernetes on Mac is stuck very often. Needs restart all the time.</a>的说明，调高了内存</p>
+<p><img src="/images/Docker/memory_setting_in_kubernetes.png" alt="memory_setting_in_kubernetes.png"></p>
+<p>再执行<code>kubectl version</code>，还是报<code>Unable to connect to the server: EOF</code>错误。多次Reset Kubernetes也还是不行。<br>折腾了一通，最后发现是原先Terminal中装minikube时修改了部分环境变量。重新起一个Terminal后，就可以访问到kubernetes服务了。</p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://juejin.im/post/5d87980f5188253f74438bb6" target="_blank" rel="external">在 macOS 上使用 Docker Desktop 启动 Kubernetes 踩坑全记录</a></li>
+<li><a href="https://github.com/gotok8s/k8s-docker-desktop-for-mac" target="_blank" rel="external">Docker Desktop for Mac 开启并使用 Kubernetes</a></li>
+</ul>
+	  
+	</div>
+
+	<div>
+  	<center>
+	<div class="pagination">
+<ul class="pagination">
+	 
+				
+    	<li class="prev"><a href="/2019/11/28/way-to-install-wkhtmltopdf-and-wkhtmltoimage-to-CentOS-7/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>Prev</a></li>
+  		
+
+        <li><a href="/archives"><i class="fa fa-archive"></i>Archive</a></li>
+
+		
+		   <li class="next"><a href="/2019/10/31/why-format-painter-not-working-on-mac-office-365/" class="alignright next">Next<i class="fa fa-arrow-circle-o-right"></i></a></li>         
+        
+	
+</ul>
+</div>
+
+    </center>
+	</div>
+
+    <!-- share -->
+    
+        
+    <div class="bdsharebuttonbox">
+        <a href="#" class="bds_more" data-cmd="more"></a>
+        <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+        <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+        <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+        <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+        <a href="#" class="bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+        <a href="#" class="bds_evernotecn" data-cmd="evernotecn" title="分享到印象笔记"></a>
+        <a href="#" class="bds_youdao" data-cmd="youdao" title="分享到有道云笔记"></a>
+        <a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+    </div>
+    <script>
+        window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"24"},"share":{}};
+        with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+    </script>
+
+
+        
+
+    
+	
+	<!-- comment -->
+	
+<section id="comment">
+  <h2 class="title">Comments</h2>
+  
+  	 <div id="disqus_thread">
+     <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  	 </div>
+  
+</section>
+
+
+	</div> <!-- col-md-9/col-md-12 -->
+		
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta">
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2019-11-19
+	</div>
+	
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
+	   <div id="toc" class="toc collapse in">
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#安装Docker"><span class="toc-article-text">安装Docker</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#安装Kubernetes"><span class="toc-article-text">安装Kubernetes</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#说明"><span class="toc-article-text">说明</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#安装步骤"><span class="toc-article-text">安装步骤</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#Unable-to-connect-to-the-server的异常"><span class="toc-article-text">Unable to connect to the server的异常</span></a></li></ol></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#Reference"><span class="toc-article-text">Reference</span></a></li></ol>
+		</div>
+	
+	</div>
+
+	<!-- categories -->
+    
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>
+    <ul id="categorys" class="tag_box list-unstyled collapse in">
+          
+  <li>
+    <li><a href="/categories/Tools/">Tools<span>21</span></a></li>
+  </li>
+
+    </ul>
+	</div>
+	
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>
+    <ul id="tags" class="tag_box list-unstyled collapse in">
+	    
+  <li><a href="/tags/Docker/">Docker<span>1</span></a></li> <li><a href="/tags/Kubernetes/">Kubernetes<span>1</span></a></li>
+    </ul>
+	</div>
+	
+
+    <hr>
+
+</div><!-- col-md-3 -->
+
+	</div>
+		
+
+</div><!-- row -->
+
+<script type="text/javascript">
+var disqus_shortname = 'jibing57-blog';
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  &copy; 2019 jibing57
+  
+      with help from <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>.    
+</p> </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>

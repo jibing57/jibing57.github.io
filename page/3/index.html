@@ -139,6 +139,72 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
+			<div class="date"> 2019-05-16 </div>
+			<div class="article-title"><a href="/2019/05/16/how-to-add-SSL-Certification-to-Elastic-Load-Balancer/" >如何在Elastic Load Balancer中添加SSL证书</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="上传方式"><a href="#上传方式" class="headerlink" title="上传方式"></a>上传方式</h3><p>AWS侧上传HTTPS证书有两种方式</p>
+<ul>
+<li>使用 AWS Certificate Manager (ACM)生成，优点是免费，和aws其他服务集成性好，缺点是只能在AWS中使用</li>
+<li>上传第三方证书到AWS Identity and Access Management (IAM) 中，优点是证书生成灵活，缺点是操作麻烦。</li>
+</ul>
+<p>中国区的AWS还没有ACM服务，因此只能使用IAM的方式来上传证书。</p>
+<h3 id="证书相关的一系列命令"><a href="#证书相关的一系列命令" class="headerlink" title="证书相关的一系列命令"></a>证书相关的一系列命令</h3><ol>
+<li><p>证书上传命令<br>如果没有<code>certificate-chain</code>，可以不传。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ aws iam upload-server-certificate --server-certificate-name ExampleCertificate </div><div class="line">                                    --certificate-body file://Certificate.pem </div><div class="line">                                    --certificate-chain file://CertificateChain.pem </div><div class="line">                                    --private-key file://PrivateKey.pem</div></pre></td></tr></table></figure>
+</li>
+<li><p>列出证书命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ aws iam list-server-certificates</div></pre></td></tr></table></figure>
+</li>
+<li><p>获取证书信息命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ aws iam get-server-certificate --server-certificate-name ExampleCertificate</div></pre></td></tr></table></figure>
+</li>
+<li><p>删除证书命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ aws iam delete-server-certificate --server-certificate-name ExampleCertificate</div></pre></td></tr></table></figure>
+</li>
+</ol>
+	
+	</div>
+  <a type="button" href="/2019/05/16/how-to-add-SSL-Certification-to-Elastic-Load-Balancer/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2019-05-10 </div>
+			<div class="article-title"><a href="/2019/05/10/how-to-change-office-UI-language-on-macos/" >在Mac下修改Office的界面显示语言</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>在Macos中，微软的Office套件的UI，是根据系统默认语言来设置的。系统是中文，Office就是中文UI，系统是英文，Office就是英文UI。微软并没有在Office的偏好设置中，设置一个可以切换语言的设置。<br>这让我这种想保持系统英文，Office中文的人感到很难受。<br>官网上搜了一圈，都没有找到可用的办法。功夫不负有心人，最终在office社区里面的这篇帖子提供了解决办法<a href="https://answers.microsoft.com/en-us/msoffice/forum/msoffice_other-mso_mac-mso_mac2016/how-to-manually-change-the-language-used-in-office/abe2a9c1-f550-45de-9d0e-58b99f206c41?page=2" target="_blank" rel="external">How to manually change the language used in Office for Mac 2016 without changing OS language?</a>, 还是我最喜欢的命令行方式。虽然是15，16年的帖子，但是对应的方法，在最新版的Office(版本16.24-19041401)中仍然可用。</p>
+<h3 id="修改方法"><a href="#修改方法" class="headerlink" title="修改方法"></a>修改方法</h3><p>以work为例，记录相关命令如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"># 修改word的语言</div><div class="line">$ defaults write com.microsoft.Word AppleLanguages &apos;(&quot;zh-cn&quot;)&apos;</div><div class="line"></div><div class="line"># 读取word的设置, 可以看到多了一个AppleLanguages的选项。</div><div class="line">$ defaults read com.microsoft.Word</div><div class="line">&#123;</div><div class="line">    ...</div><div class="line">    AppleLanguages =     (</div><div class="line">        &quot;zh-cn&quot;</div><div class="line">    );</div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+	
+	</div>
+  <a type="button" href="/2019/05/10/how-to-change-office-UI-language-on-macos/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
 			<div class="date"> 2019-05-01 </div>
 			<div class="article-title"><a href="/2019/05/01/way-to-make-centos7-bootable-usb-on-macos/" >Macos下制作CentOS 7 USB启动盘</a></div>						
 		</h3>
@@ -382,61 +448,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2019-04-08 </div>
-			<div class="article-title"><a href="/2019/04/08/some-command-to-parse-EB-logs/" >解析EB logs的一些Linux小命令</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>开启EB rotated log功能后，EB的日志将会被存储在EB对应bucket的<code>resources/environments/logs/logtype/environment-id/instance-id</code>路径下, 供后续查看。官网文档<a href="https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/using-features.logging.html" target="_blank" rel="external">Viewing Logs from Amazon EC2 Instances in Your Elastic Beanstalk Environment</a></p>
-<p>下面记录几个常用检查日志的小命令</p>
-<h3 id="使用exclue和include来获取部分日志"><a href="#使用exclue和include来获取部分日志" class="headerlink" title="使用exclue和include来获取部分日志"></a>使用exclue和include来获取部分日志</h3><p>开启EB的rotated log后，EB中的EC2会每小时将日志上传到S3中。以<code>Passenger with Ruby</code>的Platform为例，有production.log, access.log和passenger.log三种文件会被传到S3中，文件名格式:<code>文件路径</code>+<code>时间戳</code>+<code>gz</code>的格式</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ ls *log1554688861.gz*</div><div class="line">_var_app_support_logs_rotated_access.log1554688861.gz  </div><div class="line">_var_app_support_logs_rotated_passenger.log1554688861.gz  </div><div class="line">_var_app_support_logs_rotated_production.log1554688861.gz</div><div class="line">$</div></pre></td></tr></table></figure>
-<p>Bucket下的日志，默认不会自动清理，日积月累,instance-id路径下的文件会越来越多，而目前aws cli的<code>s3 cp</code>或<code>s3 sync</code>,并没有提供根据创建时间的filter,有时候获取固定哪段时间的文件就不太方便。<br>
-	
-	</div>
-  <a type="button" href="/2019/04/08/some-command-to-parse-EB-logs/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2019-04-02 </div>
-			<div class="article-title"><a href="/2019/04/02/bbr-on-aws-ec2/" >AWS EC2中开启BBR</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>官网中关于如何在EC2中开启BBR的说明。<a href="https://aws.amazon.com/amazon-linux-ami/2017.09-release-notes/" target="_blank" rel="external">Amazon Linux AMI 2017.09 Release Notes</a></p>
-<h3 id="开启方法"><a href="#开启方法" class="headerlink" title="开启方法"></a>开启方法</h3><p>开启方法摘录如下:</p>
-<blockquote>
-<p>The Kernel has been updated to latest 4.9.y stable tree, new ENA driver 1.3.0 as well as support for TCP Bottleneck Bandwidth and RTT (BBR) which improve network performance.<br>BBR is not enabled by default. You can enable it on your EC2 Instance via:</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">$ sudo modprobe tcp_bbr</div><div class="line"></div><div class="line">$ sudo modprobe sch_fq</div><div class="line"></div><div class="line">$ sudo sysctl -w net.ipv4.tcp_congestion_control=bbr</div><div class="line"></div><div class="line">Persistent configuration should look like:</div><div class="line"></div><div class="line">$ sudo su -</div><div class="line"></div><div class="line"># cat &lt;&lt;EOF&gt;&gt; /etc/sysconfig/modules/tcpcong.modules  </div><div class="line"></div><div class="line">&gt;#!/bin/bash</div><div class="line"></div><div class="line">&gt; exec /sbin/modprobe tcp_bbr &gt;/dev/null 2&gt;&amp;1</div><div class="line"></div><div class="line">&gt; exec /sbin/modprobe sch_fq &gt;/dev/null 2&gt;&amp;1</div><div class="line"></div><div class="line">&gt; EOF</div><div class="line"></div><div class="line"># chmod 755 /etc/sysconfig/modules/tcpcong.modules</div><div class="line"></div><div class="line"># echo &quot;net.ipv4.tcp_congestion_control = bbr&quot; &gt;&gt; /etc/sysctl.d/00-tcpcong.conf</div></pre></td></tr></table></figure>
-	
-	</div>
-  <a type="button" href="/2019/04/02/bbr-on-aws-ec2/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -512,7 +523,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/#Shell">Shell<span>8</span></a></li>
 		
-			<li><a href="/categories/#Tools">Tools<span>21</span></a></li>
+			<li><a href="/categories/#Tools">Tools<span>23</span></a></li>
 		
 		</ul>
 	</div>
@@ -524,48 +535,48 @@ var _hmt = _hmt || [];
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/#HTTP">HTTP<span>5</span></a></li>
-		
-			<li><a href="/tags/#FFMPEG">FFMPEG<span>1</span></a></li>
-		
-			<li><a href="/tags/#Office">Office<span>2</span></a></li>
-		
-			<li><a href="/tags/#Git">Git<span>2</span></a></li>
-		
-			<li><a href="/tags/#Wkhtmltopdf">Wkhtmltopdf<span>1</span></a></li>
-		
-			<li><a href="/tags/#Firewall">Firewall<span>1</span></a></li>
-		
 			<li><a href="/tags/#AWS CLI">AWS CLI<span>6</span></a></li>
 		
-			<li><a href="/tags/#RDS">RDS<span>3</span></a></li>
+			<li><a href="/tags/#Kubernetes">Kubernetes<span>1</span></a></li>
 		
-			<li><a href="/tags/#Elastic Beanstalk">Elastic Beanstalk<span>7</span></a></li>
+			<li><a href="/tags/#Udemy">Udemy<span>1</span></a></li>
 		
-			<li><a href="/tags/#SSH">SSH<span>5</span></a></li>
+			<li><a href="/tags/#Nginx">Nginx<span>7</span></a></li>
 		
-			<li><a href="/tags/#IAM">IAM<span>3</span></a></li>
-		
-			<li><a href="/tags/#HTTPS">HTTPS<span>1</span></a></li>
-		
-			<li><a href="/tags/#EC2 User Data">EC2 User Data<span>1</span></a></li>
-		
-			<li><a href="/tags/#Chrome">Chrome<span>1</span></a></li>
-		
-			<li><a href="/tags/#CloudWatch">CloudWatch<span>1</span></a></li>
+			<li><a href="/tags/#Hexo">Hexo<span>7</span></a></li>
 		
 			<li><a href="/tags/#Passenger">Passenger<span>2</span></a></li>
 		
-			<li><a href="/tags/#Failover">Failover<span>1</span></a></li>
+			<li><a href="/tags/#IAM">IAM<span>3</span></a></li>
 		
-			<li><a href="/tags/#CodeCommit">CodeCommit<span>1</span></a></li>
+			<li><a href="/tags/#Chrome">Chrome<span>1</span></a></li>
 		
-			<li><a href="/tags/#Sysops">Sysops<span>1</span></a></li>
+			<li><a href="/tags/#Solutions Architect">Solutions Architect<span>1</span></a></li>
 		
 			<li><a href="/tags/#RVM">RVM<span>1</span></a></li>
 		
+			<li><a href="/tags/#Nodejs">Nodejs<span>2</span></a></li>
 		
-		   <li><a href="/tags">...<span>53</span></a></li>
+			<li><a href="/tags/#PostgreSQL">PostgreSQL<span>2</span></a></li>
+		
+			<li><a href="/tags/#EC2 User Data">EC2 User Data<span>1</span></a></li>
+		
+			<li><a href="/tags/#Docker">Docker<span>1</span></a></li>
+		
+			<li><a href="/tags/#Rails">Rails<span>3</span></a></li>
+		
+			<li><a href="/tags/#CodeCommit">CodeCommit<span>1</span></a></li>
+		
+			<li><a href="/tags/#AWS SDK">AWS SDK<span>2</span></a></li>
+		
+			<li><a href="/tags/#Git">Git<span>2</span></a></li>
+		
+			<li><a href="/tags/#AWS Tools">AWS Tools<span>2</span></a></li>
+		
+			<li><a href="/tags/#Failover">Failover<span>1</span></a></li>
+		
+		
+		   <li><a href="/tags">...<span>54</span></a></li>
 		 
 		</ul>
 	</div>
@@ -578,6 +589,14 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2019/12/31/macos-youcompleteme-ERROR-root-code-for-hash-md5-was-not-found/" ><i class="fa fa-file-o"></i>Macos下vim中YouCompleteMe报错 E...</a>
+      </li>
+    
+      <li>
+        <a href="/2019/12/15/way-to-download-udemy-course/" ><i class="fa fa-file-o"></i>访问Udemy慢的一个解决办法</a>
+      </li>
+    
+      <li>
         <a href="/2019/12/02/ImageMagick-watermark/" ><i class="fa fa-file-o"></i>使用ImageMagick来给图片打文字水印</a>
       </li>
     
@@ -587,14 +606,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2019/11/19/how-to-install-docker-and-kubernetes-on-macos/" ><i class="fa fa-file-o"></i>在Macos上安装Docker和Kubernetes</a>
-      </li>
-    
-      <li>
-        <a href="/2019/10/31/why-format-painter-not-working-on-mac-office-365/" ><i class="fa fa-file-o"></i>Mac下Word不能双击格式刷重复刷的问题</a>
-      </li>
-    
-      <li>
-        <a href="/2019/10/27/postgresql-tips/" ><i class="fa fa-file-o"></i>PostgreSQL Tips</a>
       </li>
     
   </ul>
@@ -631,7 +642,7 @@ var _hmt = _hmt || [];
   </div>
   <div class="container-narrow">
   <footer> <p>
-  &copy; 2019 jibing57
+  &copy; 2020 jibing57
   
       with help from <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>.    
 </p> </footer>

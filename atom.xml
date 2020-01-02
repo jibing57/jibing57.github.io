@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.jibing57.com/"/>
-  <updated>2019-12-04T06:28:35.576Z</updated>
+  <updated>2019-12-31T05:54:52.653Z</updated>
   <id>https://www.jibing57.com/</id>
   
   <author>
@@ -15,6 +15,50 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Macos下vim中YouCompleteMe报错 ERROR:root:code for hash md5 was not found</title>
+    <link href="https://www.jibing57.com/2019/12/31/macos-youcompleteme-ERROR-root-code-for-hash-md5-was-not-found/"/>
+    <id>https://www.jibing57.com/2019/12/31/macos-youcompleteme-ERROR-root-code-for-hash-md5-was-not-found/</id>
+    <published>2019-12-31T05:27:47.000Z</published>
+    <updated>2019-12-31T05:54:52.653Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;问题&quot;&gt;&lt;a href=&quot;#问题&quot; class=&quot;headerlink&quot; title=&quot;问题&quot;&gt;&lt;/a&gt;问题&lt;/h3&gt;&lt;p&gt;Macos中brew安装某个软件的时候，brew自动把openssl版本也升级了。&lt;br&gt;升级过后，打开vim就发现有错误提示&lt;code&gt;ERROR:root:code for hash md5 was not found.&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&quot;原因&quot;&gt;&lt;a href=&quot;#原因&quot; class=&quot;headerlink&quot; title=&quot;原因&quot;&gt;&lt;/a&gt;原因&lt;/h3&gt;&lt;p&gt;报错的是vim中的一个自动补全的插件&lt;a href=&quot;https://github.com/ycm-core/YouCompleteMe&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;YouCompleteMe&lt;/a&gt;, 该插件是python写的。&lt;/p&gt;
+&lt;p&gt;网上搜了下，是因为openssl版本升级了，python找不到编译时的openssl的lib了。所以报错了。&lt;/p&gt;
+&lt;h3 id=&quot;解决&quot;&gt;&lt;a href=&quot;#解决&quot; class=&quot;headerlink&quot; title=&quot;解决&quot;&gt;&lt;/a&gt;解决&lt;/h3&gt;&lt;p&gt;解决办法就是使用brew重新装下python&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;brew reinstall python@2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
+    
+    
+      <category term="MacOS" scheme="https://www.jibing57.com/tags/MacOS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>访问Udemy慢的一个解决办法</title>
+    <link href="https://www.jibing57.com/2019/12/15/way-to-download-udemy-course/"/>
+    <id>https://www.jibing57.com/2019/12/15/way-to-download-udemy-course/</id>
+    <published>2019-12-15T05:44:56.000Z</published>
+    <updated>2019-12-16T02:29:10.137Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;问题&quot;&gt;&lt;a href=&quot;#问题&quot; class=&quot;headerlink&quot; title=&quot;问题&quot;&gt;&lt;/a&gt;问题&lt;/h3&gt;&lt;p&gt;最近不知道是什么原因，家里的电信宽带连接Udemy非常不稳。不用梯子看课程卡顿，用上了梯子看视频还是卡顿。&lt;br&gt;在线看不行，那就试着下载下来看。Udemy的APP提供了下载视频功能，就尝试在Pad上下载了视频观看。但不知道是APP问题还是网络的问题。APP上下载的视频，明明显示是下载完成了，但很多都是看几分钟就卡住了。我猜测是没有下载完整。&lt;/p&gt;
+&lt;p&gt;看个课程还这么费劲，真是抓狂，纠结。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
+    
+    
+      <category term="Udemy" scheme="https://www.jibing57.com/tags/Udemy/"/>
+    
+  </entry>
   
   <entry>
     <title>使用ImageMagick来给图片打文字水印</title>
@@ -573,72 +617,6 @@
       <category term="HTTP" scheme="https://www.jibing57.com/tags/HTTP/"/>
     
       <category term="HTTPS" scheme="https://www.jibing57.com/tags/HTTPS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>如何在Elastic Load Balancer中添加SSL证书</title>
-    <link href="https://www.jibing57.com/2019/05/16/how-to-add-SSL-Certification-to-Elastic-Load-Balancer/"/>
-    <id>https://www.jibing57.com/2019/05/16/how-to-add-SSL-Certification-to-Elastic-Load-Balancer/</id>
-    <published>2019-05-16T13:51:28.000Z</published>
-    <updated>2019-05-16T09:03:19.676Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;上传方式&quot;&gt;&lt;a href=&quot;#上传方式&quot; class=&quot;headerlink&quot; title=&quot;上传方式&quot;&gt;&lt;/a&gt;上传方式&lt;/h3&gt;&lt;p&gt;AWS侧上传HTTPS证书有两种方式&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;使用 AWS Certificate Manager (ACM)生成，优点是免费，和aws其他服务集成性好，缺点是只能在AWS中使用&lt;/li&gt;
-&lt;li&gt;上传第三方证书到AWS Identity and Access Management (IAM) 中，优点是证书生成灵活，缺点是操作麻烦。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;中国区的AWS还没有ACM服务，因此只能使用IAM的方式来上传证书。&lt;/p&gt;
-&lt;h3 id=&quot;证书相关的一系列命令&quot;&gt;&lt;a href=&quot;#证书相关的一系列命令&quot; class=&quot;headerlink&quot; title=&quot;证书相关的一系列命令&quot;&gt;&lt;/a&gt;证书相关的一系列命令&lt;/h3&gt;&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;证书上传命令&lt;br&gt;如果没有&lt;code&gt;certificate-chain&lt;/code&gt;，可以不传。&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ aws iam upload-server-certificate --server-certificate-name ExampleCertificate &lt;/div&gt;&lt;div class=&quot;line&quot;&gt;                                    --certificate-body file://Certificate.pem &lt;/div&gt;&lt;div class=&quot;line&quot;&gt;                                    --certificate-chain file://CertificateChain.pem &lt;/div&gt;&lt;div class=&quot;line&quot;&gt;                                    --private-key file://PrivateKey.pem&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;列出证书命令&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ aws iam list-server-certificates&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;获取证书信息命令&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ aws iam get-server-certificate --server-certificate-name ExampleCertificate&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;删除证书命令&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ aws iam delete-server-certificate --server-certificate-name ExampleCertificate&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-    
-    </summary>
-    
-      <category term="AWS" scheme="https://www.jibing57.com/categories/AWS/"/>
-    
-    
-      <category term="Elastic Load Balancing" scheme="https://www.jibing57.com/tags/Elastic-Load-Balancing/"/>
-    
-      <category term="HTTP" scheme="https://www.jibing57.com/tags/HTTP/"/>
-    
-      <category term="IAM" scheme="https://www.jibing57.com/tags/IAM/"/>
-    
-      <category term="Application Load Balancing" scheme="https://www.jibing57.com/tags/Application-Load-Balancing/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>在Mac下修改Office的界面显示语言</title>
-    <link href="https://www.jibing57.com/2019/05/10/how-to-change-office-UI-language-on-macos/"/>
-    <id>https://www.jibing57.com/2019/05/10/how-to-change-office-UI-language-on-macos/</id>
-    <published>2019-05-10T11:47:18.000Z</published>
-    <updated>2019-05-10T03:15:18.986Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;概述&quot;&gt;&lt;a href=&quot;#概述&quot; class=&quot;headerlink&quot; title=&quot;概述&quot;&gt;&lt;/a&gt;概述&lt;/h3&gt;&lt;p&gt;在Macos中，微软的Office套件的UI，是根据系统默认语言来设置的。系统是中文，Office就是中文UI，系统是英文，Office就是英文UI。微软并没有在Office的偏好设置中，设置一个可以切换语言的设置。&lt;br&gt;这让我这种想保持系统英文，Office中文的人感到很难受。&lt;br&gt;官网上搜了一圈，都没有找到可用的办法。功夫不负有心人，最终在office社区里面的这篇帖子提供了解决办法&lt;a href=&quot;https://answers.microsoft.com/en-us/msoffice/forum/msoffice_other-mso_mac-mso_mac2016/how-to-manually-change-the-language-used-in-office/abe2a9c1-f550-45de-9d0e-58b99f206c41?page=2&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;How to manually change the language used in Office for Mac 2016 without changing OS language?&lt;/a&gt;, 还是我最喜欢的命令行方式。虽然是15，16年的帖子，但是对应的方法，在最新版的Office(版本16.24-19041401)中仍然可用。&lt;/p&gt;
-&lt;h3 id=&quot;修改方法&quot;&gt;&lt;a href=&quot;#修改方法&quot; class=&quot;headerlink&quot; title=&quot;修改方法&quot;&gt;&lt;/a&gt;修改方法&lt;/h3&gt;&lt;p&gt;以work为例，记录相关命令如下:&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;10&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;11&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;12&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;# 修改word的语言&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;$ defaults write com.microsoft.Word AppleLanguages &amp;apos;(&amp;quot;zh-cn&amp;quot;)&amp;apos;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;# 读取word的设置, 可以看到多了一个AppleLanguages的选项。&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;$ defaults read com.microsoft.Word&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    ...&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    AppleLanguages =     (&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        &amp;quot;zh-cn&amp;quot;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    );&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    ...&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#125;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
-    
-    
-      <category term="Office" scheme="https://www.jibing57.com/tags/Office/"/>
     
   </entry>
   

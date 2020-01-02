@@ -2,6 +2,27 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://www.jibing57.com/2019/04/26/command-tips/</loc>
+    
+    <lastmod>2020-01-02T06:58:25.084Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.jibing57.com/2019/12/31/macos-youcompleteme-ERROR-root-code-for-hash-md5-was-not-found/</loc>
+    
+    <lastmod>2019-12-31T05:54:52.653Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.jibing57.com/2019/12/15/way-to-download-udemy-course/</loc>
+    
+    <lastmod>2019-12-16T02:29:10.137Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.jibing57.com/2019/12/02/ImageMagick-watermark/</loc>
     
     <lastmod>2019-12-04T06:28:35.576Z</lastmod>
@@ -19,13 +40,6 @@
     <loc>https://www.jibing57.com/2019/11/28/way-to-install-wkhtmltopdf-and-wkhtmltoimage-to-CentOS-7/</loc>
     
     <lastmod>2019-11-28T07:14:47.372Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.jibing57.com/2019/04/26/command-tips/</loc>
-    
-    <lastmod>2019-11-25T03:01:02.926Z</lastmod>
     
   </url>
   
@@ -499,13 +513,6 @@
   </url>
   
   <url>
-    <loc>https://www.jibing57.com/2017/10/29/ruby-paperclip-destroy-callback-nil/</loc>
-    
-    <lastmod>2017-12-25T07:09:03.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://www.jibing57.com/2017/07/25/useful-website-of-aws/</loc>
     
     <lastmod>2017-12-25T07:09:03.000Z</lastmod>
@@ -513,21 +520,14 @@
   </url>
   
   <url>
+    <loc>https://www.jibing57.com/2017/10/29/ruby-paperclip-destroy-callback-nil/</loc>
+    
+    <lastmod>2017-12-25T07:09:03.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.jibing57.com/2017/10/30/how-to-use-post-link-on-hexo/</loc>
-    
-    <lastmod>2017-12-25T07:09:02.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.jibing57.com/2017/12/12/how-to-write-multiline-to-file-by-shell/</loc>
-    
-    <lastmod>2017-12-25T07:09:02.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.jibing57.com/2017/11/29/how-to-enable-slow-query-on-aws-rds-postgresql/</loc>
     
     <lastmod>2017-12-25T07:09:02.000Z</lastmod>
     
@@ -548,21 +548,21 @@
   </url>
   
   <url>
-    <loc>https://www.jibing57.com/2017/10/31/account-setting-by-aws/</loc>
+    <loc>https://www.jibing57.com/2017/11/29/how-to-enable-slow-query-on-aws-rds-postgresql/</loc>
     
-    <lastmod>2017-12-25T07:08:09.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.jibing57.com/2017/12/14/deep-dig-on-s3-bucket-permission/</loc>
-    
-    <lastmod>2017-12-25T07:08:09.000Z</lastmod>
+    <lastmod>2017-12-25T07:09:02.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://www.jibing57.com/2017/12/20/How-to-add-staging-log-to-EB-logs/</loc>
+    <loc>https://www.jibing57.com/2017/12/12/how-to-write-multiline-to-file-by-shell/</loc>
+    
+    <lastmod>2017-12-25T07:09:02.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.jibing57.com/2017/12/20/expired-of-S3-RRS/</loc>
     
     <lastmod>2017-12-25T07:08:09.000Z</lastmod>
     
@@ -576,6 +576,20 @@
   </url>
   
   <url>
+    <loc>https://www.jibing57.com/2017/12/14/deep-dig-on-s3-bucket-permission/</loc>
+    
+    <lastmod>2017-12-25T07:08:09.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.jibing57.com/2017/10/31/account-setting-by-aws/</loc>
+    
+    <lastmod>2017-12-25T07:08:09.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.jibing57.com/2017/12/19/deep-dig-on-s3-bucket-permission-exam/</loc>
     
     <lastmod>2017-12-25T07:08:09.000Z</lastmod>
@@ -583,7 +597,7 @@
   </url>
   
   <url>
-    <loc>https://www.jibing57.com/2017/12/20/expired-of-S3-RRS/</loc>
+    <loc>https://www.jibing57.com/2017/12/20/How-to-add-staging-log-to-EB-logs/</loc>
     
     <lastmod>2017-12-25T07:08:09.000Z</lastmod>
     

@@ -301,9 +301,63 @@ var _hmt = _hmt || [];
 		
             
 		
+            
+		
+            
+		
         
         <!-- render other articles -->
         
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2019-12-31 </div>
+			<div class="article-title"><a href="/2019/12/31/macos-youcompleteme-ERROR-root-code-for-hash-md5-was-not-found/" >Macos下vim中YouCompleteMe报错 ERROR:root:code for hash md5 was not found</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>Macos中brew安装某个软件的时候，brew自动把openssl版本也升级了。<br>升级过后，打开vim就发现有错误提示<code>ERROR:root:code for hash md5 was not found.</code></p>
+<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>报错的是vim中的一个自动补全的插件<a href="https://github.com/ycm-core/YouCompleteMe" target="_blank" rel="external">YouCompleteMe</a>, 该插件是python写的。</p>
+<p>网上搜了下，是因为openssl版本升级了，python找不到编译时的openssl的lib了。所以报错了。</p>
+<h3 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h3><p>解决办法就是使用brew重新装下python<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew reinstall python@2</div></pre></td></tr></table></figure></p>
+	
+	</div>
+  <a type="button" href="/2019/12/31/macos-youcompleteme-ERROR-root-code-for-hash-md5-was-not-found/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2019-12-15 </div>
+			<div class="article-title"><a href="/2019/12/15/way-to-download-udemy-course/" >访问Udemy慢的一个解决办法</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>最近不知道是什么原因，家里的电信宽带连接Udemy非常不稳。不用梯子看课程卡顿，用上了梯子看视频还是卡顿。<br>在线看不行，那就试着下载下来看。Udemy的APP提供了下载视频功能，就尝试在Pad上下载了视频观看。但不知道是APP问题还是网络的问题。APP上下载的视频，明明显示是下载完成了，但很多都是看几分钟就卡住了。我猜测是没有下载完整。</p>
+<p>看个课程还这么费劲，真是抓狂，纠结。</p>
+	
+	</div>
+  <a type="button" href="/2019/12/15/way-to-download-udemy-course/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
            
 			  
 	
@@ -540,74 +594,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2019-09-24 </div>
-			<div class="article-title"><a href="/2019/09/24/backup-tools-borgbackup/" >BorgBackup -- 基于命令行的增量备份工具</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p><a href="https://www.borgbackup.org/" target="_blank" rel="external">BorgBackup</a>(简称 Borg)是一款基于命令行的增量备份工具。Github地址:<a href="https://github.com/borgbackup/borg" target="_blank" rel="external">https://github.com/borgbackup/borg</a><br>官网上所述的优势如下:</p>
-<ul>
-<li>Space efficient storage of backups. - 高效存储</li>
-<li>Secure, authenticated encryption. - 可加密</li>
-<li>Compression: LZ4, zlib, LZMA, zstd (since borg 1.1.4). - 支持多种压缩算法</li>
-<li>Mountable backups with FUSE. - 可使用FUSE异地本非</li>
-<li>Easy installation on multiple platforms: Linux, macOS, BSD, … - 支持多个平台</li>
-<li>Free software (BSD license). - 开源</li>
-<li>Backed by a large and active open source community.</li>
-</ul>
-<h3 id="CentOS下安装"><a href="#CentOS下安装" class="headerlink" title="CentOS下安装"></a>CentOS下安装</h3><p>borgbackup在EPEL中已有提供，CentOS 7下使用如下命令安装:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm</div><div class="line">yum install -y borgbackup</div></pre></td></tr></table></figure></p>
-	
-	</div>
-  <a type="button" href="/2019/09/24/backup-tools-borgbackup/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2019-07-24 </div>
-			<div class="article-title"><a href="/2019/07/24/setlocale-LC-CTYPE-cannot-change-locale-UTF-8-issue-when-ssh-to-linux-in-Mac/" >在Mac下远程登录Linux时,提示cannot change locale (UTF-8) No such file or directory</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><ul>
-<li>Mac下设置第一语言为English</li>
-<li>在Terminal或者iTerm2上登录远端Linux时，Linux的prompt提示 <code>setlocale: LC_CTYPE: cannot change locale (UTF-8): No such file or directory</code></li>
-<li>登录Linux后无法正常显示中文</li>
-</ul>
-<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><ol>
-<li>Mac下设置为英文后，locale字符集默认是”C”，Terminal或者iTerm2中有选项会自动设置LC_CTYPE或者LC_LANG为UTF-8</li>
-<li>Mac下ssh客户端的配置文件<code>/etc/ssh/ssh_config</code>中，会尝试设置本地的LANG到远端服务器中。</li>
-<li>远端Linux服务器，没有UTF-8的字符集，就导致了setlocale的警报</li>
-</ol>
-<h3 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h3><p>为了登录而来，修改每个服务器的字符集，操作上是不可行的。最简单的办法就是修改Mac本地的ssh客户端配置，不要将LANG设置发送到服务器端。<br>打开ssh配置文件，<code>sudo vim /etc/ssh/ssh_config</code>, 注释掉如下几行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Host *</div><div class="line">	SendEnv LANG LC_*</div></pre></td></tr></table></figure></p>
-<p>重新ssh到服务器，就不会再有setlocale的告警了。</p>
-
-	
-	</div>
-  <a type="button" href="/2019/07/24/setlocale-LC-CTYPE-cannot-change-locale-UTF-8-issue-when-ssh-to-linux-in-Mac/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -683,7 +669,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/#Shell">Shell<span>8</span></a></li>
 		
-			<li><a href="/categories/#Tools">Tools<span>21</span></a></li>
+			<li><a href="/categories/#Tools">Tools<span>23</span></a></li>
 		
 		</ul>
 	</div>
@@ -695,48 +681,48 @@ var _hmt = _hmt || [];
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/#Solutions Architect">Solutions Architect<span>1</span></a></li>
-		
-			<li><a href="/tags/#Hexo">Hexo<span>7</span></a></li>
-		
-			<li><a href="/tags/#Linux">Linux<span>15</span></a></li>
-		
-			<li><a href="/tags/#感悟">感悟<span>1</span></a></li>
-		
-			<li><a href="/tags/#AWS Deep Dive">AWS Deep Dive<span>2</span></a></li>
-		
-			<li><a href="/tags/#Nginx">Nginx<span>7</span></a></li>
-		
-			<li><a href="/tags/#Nodejs">Nodejs<span>2</span></a></li>
-		
-			<li><a href="/tags/#EC2 User Data">EC2 User Data<span>1</span></a></li>
-		
-			<li><a href="/tags/#Yum">Yum<span>1</span></a></li>
-		
-			<li><a href="/tags/#Network">Network<span>4</span></a></li>
-		
-			<li><a href="/tags/#Application Load Balancing">Application Load Balancing<span>1</span></a></li>
+			<li><a href="/tags/#FFMPEG">FFMPEG<span>1</span></a></li>
 		
 			<li><a href="/tags/#Rails">Rails<span>3</span></a></li>
 		
-			<li><a href="/tags/#CloudWatch">CloudWatch<span>1</span></a></li>
+			<li><a href="/tags/#AWS CLI">AWS CLI<span>6</span></a></li>
 		
-			<li><a href="/tags/#Douban">Douban<span>1</span></a></li>
+			<li><a href="/tags/#Office">Office<span>2</span></a></li>
 		
-			<li><a href="/tags/#Kubernetes">Kubernetes<span>1</span></a></li>
+			<li><a href="/tags/#Image">Image<span>2</span></a></li>
 		
-			<li><a href="/tags/#HTTP">HTTP<span>5</span></a></li>
+			<li><a href="/tags/#EC2 User Data">EC2 User Data<span>1</span></a></li>
 		
-			<li><a href="/tags/#IAM">IAM<span>3</span></a></li>
+			<li><a href="/tags/#感悟">感悟<span>1</span></a></li>
 		
-			<li><a href="/tags/#AutoScaling">AutoScaling<span>3</span></a></li>
+			<li><a href="/tags/#Lightsail">Lightsail<span>2</span></a></li>
 		
-			<li><a href="/tags/#S3">S3<span>10</span></a></li>
+			<li><a href="/tags/#Udemy">Udemy<span>1</span></a></li>
 		
-			<li><a href="/tags/#Sysops">Sysops<span>1</span></a></li>
+			<li><a href="/tags/#CodeCommit">CodeCommit<span>1</span></a></li>
+		
+			<li><a href="/tags/#DynamoDB">DynamoDB<span>1</span></a></li>
+		
+			<li><a href="/tags/#VMware">VMware<span>2</span></a></li>
+		
+			<li><a href="/tags/#Git">Git<span>2</span></a></li>
+		
+			<li><a href="/tags/#iOS">iOS<span>1</span></a></li>
+		
+			<li><a href="/tags/#PostgreSQL">PostgreSQL<span>2</span></a></li>
+		
+			<li><a href="/tags/#Failover">Failover<span>1</span></a></li>
+		
+			<li><a href="/tags/#AWS Tools">AWS Tools<span>2</span></a></li>
+		
+			<li><a href="/tags/#Docker">Docker<span>1</span></a></li>
+		
+			<li><a href="/tags/#CentOS">CentOS<span>8</span></a></li>
+		
+			<li><a href="/tags/#Yum">Yum<span>1</span></a></li>
 		
 		
-		   <li><a href="/tags">...<span>53</span></a></li>
+		   <li><a href="/tags">...<span>54</span></a></li>
 		 
 		</ul>
 	</div>
@@ -749,6 +735,14 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2019/12/31/macos-youcompleteme-ERROR-root-code-for-hash-md5-was-not-found/" ><i class="fa fa-file-o"></i>Macos下vim中YouCompleteMe报错 E...</a>
+      </li>
+    
+      <li>
+        <a href="/2019/12/15/way-to-download-udemy-course/" ><i class="fa fa-file-o"></i>访问Udemy慢的一个解决办法</a>
+      </li>
+    
+      <li>
         <a href="/2019/12/02/ImageMagick-watermark/" ><i class="fa fa-file-o"></i>使用ImageMagick来给图片打文字水印</a>
       </li>
     
@@ -758,14 +752,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2019/11/19/how-to-install-docker-and-kubernetes-on-macos/" ><i class="fa fa-file-o"></i>在Macos上安装Docker和Kubernetes</a>
-      </li>
-    
-      <li>
-        <a href="/2019/10/31/why-format-painter-not-working-on-mac-office-365/" ><i class="fa fa-file-o"></i>Mac下Word不能双击格式刷重复刷的问题</a>
-      </li>
-    
-      <li>
-        <a href="/2019/10/27/postgresql-tips/" ><i class="fa fa-file-o"></i>PostgreSQL Tips</a>
       </li>
     
   </ul>
@@ -802,7 +788,7 @@ var _hmt = _hmt || [];
   </div>
   <div class="container-narrow">
   <footer> <p>
-  &copy; 2019 jibing57
+  &copy; 2020 jibing57
   
       with help from <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>.    
 </p> </footer>

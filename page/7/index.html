@@ -139,6 +139,58 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
+			<div class="date"> 2018-02-11 </div>
+			<div class="article-title"><a href="/2018/02/11/aws-s3-cli-to-backup-and-restore-bucket-acl/" >使用AWS CLI来备份和恢复S3 Bucket的ACL</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>S3 Bucket层面的权限管理，推荐使用Bucket Policy来管理，但可能会有一些遗留的S3 Bucket, 还使用着Bucket ACL来进行权限管理。</p>
+<p>在将Bucket ACl升级为Bucket Policy或者是更新Bucket ACL的时候，会有备份Bucket ACL的需求。此处介绍一下如何使用AWS CLI来备份和恢复Bucket的Bucket ACL。</p>
+<h3 id="备份-Bucket-ACL"><a href="#备份-Bucket-ACL" class="headerlink" title="备份 Bucket ACL"></a>备份 Bucket ACL</h3><p>使用CLI中s3api中的<a href="https://docs.aws.amazon.com/cli/latest/reference/s3api/get-bucket-acl.html" target="_blank" rel="external">get-bucket-acl</a>命令来保存bucket acl。</p>
+<h4 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">  get-bucket-acl</div><div class="line">--bucket &lt;value&gt;</div><div class="line">[--cli-input-json &lt;value&gt;]</div><div class="line">[--generate-cli-skeleton &lt;value&gt;]</div></pre></td></tr></table></figure>
+	
+	</div>
+  <a type="button" href="/2018/02/11/aws-s3-cli-to-backup-and-restore-bucket-acl/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2018-02-09 </div>
+			<div class="article-title"><a href="/2018/02/09/non-greedy-match-in-grep-on-macos/" >Macos下如何实现grep的非贪婪模式</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>有时候需要使用正则的<code>非贪婪模式(non-greedy或者叫lazy模式)</code>来搜一些内容，但Macos系统自带的<code>grep</code>无法胜任。<br>Mac下的<code>grep</code>是BSD系的，不能使用-P参数来使用perl模式。Linux下的<code>GNU grep</code>就可以使用-P参数来支持非贪婪模式。</p>
+<p>MacOS自带的<code>grep</code>的示例:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">$ cat grep_on_macos.txt</div><div class="line">carl has a nice car. the car has four wheels.</div><div class="line">$</div><div class="line"># 支持普通正则</div><div class="line">$ grep -o &quot;car.*has&quot; grep_on_macos.txt</div><div class="line">carl has a nice car. the car has</div><div class="line">$</div><div class="line"># 不支持带?的非贪婪模式</div><div class="line">$ grep -o &quot;car.*?has&quot; grep_on_macos.txt</div><div class="line">$</div></pre></td></tr></table></figure>
+<p>此处记录两个可行的方法来解决该问题</p>
+	
+	</div>
+  <a type="button" href="/2018/02/09/non-greedy-match-in-grep-on-macos/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
 			<div class="date"> 2018-02-07 </div>
 			<div class="article-title"><a href="/2018/02/07/AWS-Certified-Solutions-Architect-Professional/" >AWS Certified Solutions Architect - Professional Road Map</a></div>						
 		</h3>
@@ -376,66 +428,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2017-12-14 </div>
-			<div class="article-title"><a href="/2017/12/14/deep-dig-on-s3-bucket-permission/" >深挖AWS S3的权限管理</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>AWS共有三种方式用来管理S3的访问权限</p>
-<ul>
-<li>IAM policy</li>
-<li>Bucket Policy</li>
-<li>S3 ACL</li>
-</ul>
-<p>此处深挖一下这三种访问控制的用法和区别</p>
-<h3 id="三种访问控制的介绍"><a href="#三种访问控制的介绍" class="headerlink" title="三种访问控制的介绍"></a>三种访问控制的介绍</h3><p>S3的三种访问控制如下:</p>
-<ul>
-<li>IAM Policy, 是基于用户层面的控制，attach to IAM实体(User, Role或Group),规定了谁能对哪些S3做什么操作</li>
-<li>Bucket Policy, 是基于Bucket层面的控制, attach to Bucket, 规定了哪些人能对我这个Bucket中的resource做什么操作。</li>
-<li>S3 ACL, 是基于Bucket或单个对象的，规定了谁能对我这个Bucket或对象做什么操作。</li>
-</ul>
-	
-	</div>
-  <a type="button" href="/2017/12/14/deep-dig-on-s3-bucket-permission/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2017-12-12 </div>
-			<div class="article-title"><a href="/2017/12/12/how-to-write-multiline-to-file-by-shell/" >使用shell添加多行到文件的几个办法</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>使用shell添加多行到某个文件的几个办法, 启动EC2设置User Data时可能会用到。</p>
-<h4 id="方法一-逐行echo添加"><a href="#方法一-逐行echo添加" class="headerlink" title="方法一: 逐行echo添加"></a>方法一: 逐行echo添加</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">echo &apos;#!/bin/bash&apos; &gt; way1.sh</div><div class="line">echo &apos;export PATH=$PATH:~/bin/&apos; &gt;&gt; way1.sh</div></pre></td></tr></table></figure>
-<p>查看文件内容为:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ cat way1.sh</div><div class="line">#!/bin/bash</div><div class="line">export PATH=$PATH:~/bin/</div><div class="line">$</div></pre></td></tr></table></figure></p>
-	
-	</div>
-  <a type="button" href="/2017/12/12/how-to-write-multiline-to-file-by-shell/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -511,7 +503,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/#Shell">Shell<span>8</span></a></li>
 		
-			<li><a href="/categories/#Tools">Tools<span>21</span></a></li>
+			<li><a href="/categories/#Tools">Tools<span>23</span></a></li>
 		
 		</ul>
 	</div>
@@ -523,48 +515,48 @@ var _hmt = _hmt || [];
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/#Rails">Rails<span>3</span></a></li>
+			<li><a href="/tags/#AWS Tools">AWS Tools<span>2</span></a></li>
 		
-			<li><a href="/tags/#S3">S3<span>10</span></a></li>
+			<li><a href="/tags/#Firewall">Firewall<span>1</span></a></li>
+		
+			<li><a href="/tags/#Tips">Tips<span>1</span></a></li>
+		
+			<li><a href="/tags/#RVM">RVM<span>1</span></a></li>
+		
+			<li><a href="/tags/#IAM">IAM<span>3</span></a></li>
+		
+			<li><a href="/tags/#PostgreSQL">PostgreSQL<span>2</span></a></li>
+		
+			<li><a href="/tags/#AWS SDK">AWS SDK<span>2</span></a></li>
 		
 			<li><a href="/tags/#HTTP">HTTP<span>5</span></a></li>
 		
-			<li><a href="/tags/#HTTPS">HTTPS<span>1</span></a></li>
+			<li><a href="/tags/#Solutions Architect">Solutions Architect<span>1</span></a></li>
 		
-			<li><a href="/tags/#RDS">RDS<span>3</span></a></li>
-		
-			<li><a href="/tags/#Wkhtmltopdf">Wkhtmltopdf<span>1</span></a></li>
-		
-			<li><a href="/tags/#Ruby">Ruby<span>8</span></a></li>
-		
-			<li><a href="/tags/#Linux">Linux<span>15</span></a></li>
-		
-			<li><a href="/tags/#AWS Tools">AWS Tools<span>2</span></a></li>
-		
-			<li><a href="/tags/#iOS">iOS<span>1</span></a></li>
-		
-			<li><a href="/tags/#Hexo">Hexo<span>7</span></a></li>
-		
-			<li><a href="/tags/#Chrome">Chrome<span>1</span></a></li>
+			<li><a href="/tags/#Image">Image<span>2</span></a></li>
 		
 			<li><a href="/tags/#CloudWatch">CloudWatch<span>1</span></a></li>
-		
-			<li><a href="/tags/#SSH">SSH<span>5</span></a></li>
 		
 			<li><a href="/tags/#Douban">Douban<span>1</span></a></li>
 		
 			<li><a href="/tags/#Kubernetes">Kubernetes<span>1</span></a></li>
 		
-			<li><a href="/tags/#Git">Git<span>2</span></a></li>
+			<li><a href="/tags/#感悟">感悟<span>1</span></a></li>
 		
-			<li><a href="/tags/#Solutions Architect">Solutions Architect<span>1</span></a></li>
+			<li><a href="/tags/#Elastic Beanstalk">Elastic Beanstalk<span>7</span></a></li>
 		
-			<li><a href="/tags/#Passenger">Passenger<span>2</span></a></li>
+			<li><a href="/tags/#Github">Github<span>3</span></a></li>
 		
-			<li><a href="/tags/#Failover">Failover<span>1</span></a></li>
+			<li><a href="/tags/#DynamoDB">DynamoDB<span>1</span></a></li>
+		
+			<li><a href="/tags/#Rails">Rails<span>3</span></a></li>
+		
+			<li><a href="/tags/#Sysops">Sysops<span>1</span></a></li>
+		
+			<li><a href="/tags/#Chrome">Chrome<span>1</span></a></li>
 		
 		
-		   <li><a href="/tags">...<span>53</span></a></li>
+		   <li><a href="/tags">...<span>54</span></a></li>
 		 
 		</ul>
 	</div>
@@ -577,6 +569,14 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2019/12/31/macos-youcompleteme-ERROR-root-code-for-hash-md5-was-not-found/" ><i class="fa fa-file-o"></i>Macos下vim中YouCompleteMe报错 E...</a>
+      </li>
+    
+      <li>
+        <a href="/2019/12/15/way-to-download-udemy-course/" ><i class="fa fa-file-o"></i>访问Udemy慢的一个解决办法</a>
+      </li>
+    
+      <li>
         <a href="/2019/12/02/ImageMagick-watermark/" ><i class="fa fa-file-o"></i>使用ImageMagick来给图片打文字水印</a>
       </li>
     
@@ -586,14 +586,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2019/11/19/how-to-install-docker-and-kubernetes-on-macos/" ><i class="fa fa-file-o"></i>在Macos上安装Docker和Kubernetes</a>
-      </li>
-    
-      <li>
-        <a href="/2019/10/31/why-format-painter-not-working-on-mac-office-365/" ><i class="fa fa-file-o"></i>Mac下Word不能双击格式刷重复刷的问题</a>
-      </li>
-    
-      <li>
-        <a href="/2019/10/27/postgresql-tips/" ><i class="fa fa-file-o"></i>PostgreSQL Tips</a>
       </li>
     
   </ul>
@@ -630,7 +622,7 @@ var _hmt = _hmt || [];
   </div>
   <div class="container-narrow">
   <footer> <p>
-  &copy; 2019 jibing57
+  &copy; 2020 jibing57
   
       with help from <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>.    
 </p> </footer>

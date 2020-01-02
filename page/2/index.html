@@ -139,6 +139,74 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
+			<div class="date"> 2019-09-24 </div>
+			<div class="article-title"><a href="/2019/09/24/backup-tools-borgbackup/" >BorgBackup -- 基于命令行的增量备份工具</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p><a href="https://www.borgbackup.org/" target="_blank" rel="external">BorgBackup</a>(简称 Borg)是一款基于命令行的增量备份工具。Github地址:<a href="https://github.com/borgbackup/borg" target="_blank" rel="external">https://github.com/borgbackup/borg</a><br>官网上所述的优势如下:</p>
+<ul>
+<li>Space efficient storage of backups. - 高效存储</li>
+<li>Secure, authenticated encryption. - 可加密</li>
+<li>Compression: LZ4, zlib, LZMA, zstd (since borg 1.1.4). - 支持多种压缩算法</li>
+<li>Mountable backups with FUSE. - 可使用FUSE异地本非</li>
+<li>Easy installation on multiple platforms: Linux, macOS, BSD, … - 支持多个平台</li>
+<li>Free software (BSD license). - 开源</li>
+<li>Backed by a large and active open source community.</li>
+</ul>
+<h3 id="CentOS下安装"><a href="#CentOS下安装" class="headerlink" title="CentOS下安装"></a>CentOS下安装</h3><p>borgbackup在EPEL中已有提供，CentOS 7下使用如下命令安装:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm</div><div class="line">yum install -y borgbackup</div></pre></td></tr></table></figure></p>
+	
+	</div>
+  <a type="button" href="/2019/09/24/backup-tools-borgbackup/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2019-07-24 </div>
+			<div class="article-title"><a href="/2019/07/24/setlocale-LC-CTYPE-cannot-change-locale-UTF-8-issue-when-ssh-to-linux-in-Mac/" >在Mac下远程登录Linux时,提示cannot change locale (UTF-8) No such file or directory</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><ul>
+<li>Mac下设置第一语言为English</li>
+<li>在Terminal或者iTerm2上登录远端Linux时，Linux的prompt提示 <code>setlocale: LC_CTYPE: cannot change locale (UTF-8): No such file or directory</code></li>
+<li>登录Linux后无法正常显示中文</li>
+</ul>
+<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><ol>
+<li>Mac下设置为英文后，locale字符集默认是”C”，Terminal或者iTerm2中有选项会自动设置LC_CTYPE或者LC_LANG为UTF-8</li>
+<li>Mac下ssh客户端的配置文件<code>/etc/ssh/ssh_config</code>中，会尝试设置本地的LANG到远端服务器中。</li>
+<li>远端Linux服务器，没有UTF-8的字符集，就导致了setlocale的警报</li>
+</ol>
+<h3 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h3><p>为了登录而来，修改每个服务器的字符集，操作上是不可行的。最简单的办法就是修改Mac本地的ssh客户端配置，不要将LANG设置发送到服务器端。<br>打开ssh配置文件，<code>sudo vim /etc/ssh/ssh_config</code>, 注释掉如下几行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Host *</div><div class="line">	SendEnv LANG LC_*</div></pre></td></tr></table></figure></p>
+<p>重新ssh到服务器，就不会再有setlocale的告警了。</p>
+
+	
+	</div>
+  <a type="button" href="/2019/07/24/setlocale-LC-CTYPE-cannot-change-locale-UTF-8-issue-when-ssh-to-linux-in-Mac/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
 			<div class="date"> 2019-07-06 </div>
 			<div class="article-title"><a href="/2019/07/06/how-to-check-network-throughput-on-aws-EC2/" >AWS EC2各个类型的网络性能的测试方法</a></div>						
 		</h3>
@@ -424,72 +492,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2019-05-16 </div>
-			<div class="article-title"><a href="/2019/05/16/how-to-add-SSL-Certification-to-Elastic-Load-Balancer/" >如何在Elastic Load Balancer中添加SSL证书</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="上传方式"><a href="#上传方式" class="headerlink" title="上传方式"></a>上传方式</h3><p>AWS侧上传HTTPS证书有两种方式</p>
-<ul>
-<li>使用 AWS Certificate Manager (ACM)生成，优点是免费，和aws其他服务集成性好，缺点是只能在AWS中使用</li>
-<li>上传第三方证书到AWS Identity and Access Management (IAM) 中，优点是证书生成灵活，缺点是操作麻烦。</li>
-</ul>
-<p>中国区的AWS还没有ACM服务，因此只能使用IAM的方式来上传证书。</p>
-<h3 id="证书相关的一系列命令"><a href="#证书相关的一系列命令" class="headerlink" title="证书相关的一系列命令"></a>证书相关的一系列命令</h3><ol>
-<li><p>证书上传命令<br>如果没有<code>certificate-chain</code>，可以不传。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ aws iam upload-server-certificate --server-certificate-name ExampleCertificate </div><div class="line">                                    --certificate-body file://Certificate.pem </div><div class="line">                                    --certificate-chain file://CertificateChain.pem </div><div class="line">                                    --private-key file://PrivateKey.pem</div></pre></td></tr></table></figure>
-</li>
-<li><p>列出证书命令</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ aws iam list-server-certificates</div></pre></td></tr></table></figure>
-</li>
-<li><p>获取证书信息命令</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ aws iam get-server-certificate --server-certificate-name ExampleCertificate</div></pre></td></tr></table></figure>
-</li>
-<li><p>删除证书命令</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ aws iam delete-server-certificate --server-certificate-name ExampleCertificate</div></pre></td></tr></table></figure>
-</li>
-</ol>
-	
-	</div>
-  <a type="button" href="/2019/05/16/how-to-add-SSL-Certification-to-Elastic-Load-Balancer/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2019-05-10 </div>
-			<div class="article-title"><a href="/2019/05/10/how-to-change-office-UI-language-on-macos/" >在Mac下修改Office的界面显示语言</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>在Macos中，微软的Office套件的UI，是根据系统默认语言来设置的。系统是中文，Office就是中文UI，系统是英文，Office就是英文UI。微软并没有在Office的偏好设置中，设置一个可以切换语言的设置。<br>这让我这种想保持系统英文，Office中文的人感到很难受。<br>官网上搜了一圈，都没有找到可用的办法。功夫不负有心人，最终在office社区里面的这篇帖子提供了解决办法<a href="https://answers.microsoft.com/en-us/msoffice/forum/msoffice_other-mso_mac-mso_mac2016/how-to-manually-change-the-language-used-in-office/abe2a9c1-f550-45de-9d0e-58b99f206c41?page=2" target="_blank" rel="external">How to manually change the language used in Office for Mac 2016 without changing OS language?</a>, 还是我最喜欢的命令行方式。虽然是15，16年的帖子，但是对应的方法，在最新版的Office(版本16.24-19041401)中仍然可用。</p>
-<h3 id="修改方法"><a href="#修改方法" class="headerlink" title="修改方法"></a>修改方法</h3><p>以work为例，记录相关命令如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"># 修改word的语言</div><div class="line">$ defaults write com.microsoft.Word AppleLanguages &apos;(&quot;zh-cn&quot;)&apos;</div><div class="line"></div><div class="line"># 读取word的设置, 可以看到多了一个AppleLanguages的选项。</div><div class="line">$ defaults read com.microsoft.Word</div><div class="line">&#123;</div><div class="line">    ...</div><div class="line">    AppleLanguages =     (</div><div class="line">        &quot;zh-cn&quot;</div><div class="line">    );</div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-	
-	</div>
-  <a type="button" href="/2019/05/10/how-to-change-office-UI-language-on-macos/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -565,7 +567,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/#Shell">Shell<span>8</span></a></li>
 		
-			<li><a href="/categories/#Tools">Tools<span>21</span></a></li>
+			<li><a href="/categories/#Tools">Tools<span>23</span></a></li>
 		
 		</ul>
 	</div>
@@ -577,48 +579,48 @@ var _hmt = _hmt || [];
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/#Kubernetes">Kubernetes<span>1</span></a></li>
-		
-			<li><a href="/tags/#RVM">RVM<span>1</span></a></li>
-		
-			<li><a href="/tags/#Solutions Architect">Solutions Architect<span>1</span></a></li>
-		
-			<li><a href="/tags/#IAM">IAM<span>3</span></a></li>
-		
-			<li><a href="/tags/#iOS">iOS<span>1</span></a></li>
-		
-			<li><a href="/tags/#Chrome">Chrome<span>1</span></a></li>
-		
-			<li><a href="/tags/#Network">Network<span>4</span></a></li>
-		
-			<li><a href="/tags/#Video">Video<span>1</span></a></li>
-		
-			<li><a href="/tags/#Failover">Failover<span>1</span></a></li>
-		
-			<li><a href="/tags/#感悟">感悟<span>1</span></a></li>
-		
-			<li><a href="/tags/#AWS Deep Dive">AWS Deep Dive<span>2</span></a></li>
-		
-			<li><a href="/tags/#AWS CLI">AWS CLI<span>6</span></a></li>
-		
-			<li><a href="/tags/#HTTPS">HTTPS<span>1</span></a></li>
-		
-			<li><a href="/tags/#Ruby">Ruby<span>8</span></a></li>
+			<li><a href="/tags/#AWS SDK">AWS SDK<span>2</span></a></li>
 		
 			<li><a href="/tags/#Passenger">Passenger<span>2</span></a></li>
 		
-			<li><a href="/tags/#EC2 User Data">EC2 User Data<span>1</span></a></li>
+			<li><a href="/tags/#CentOS">CentOS<span>8</span></a></li>
 		
-			<li><a href="/tags/#Linux">Linux<span>15</span></a></li>
+			<li><a href="/tags/#Douban">Douban<span>1</span></a></li>
 		
-			<li><a href="/tags/#HTTP">HTTP<span>5</span></a></li>
+			<li><a href="/tags/#CloudWatch">CloudWatch<span>1</span></a></li>
+		
+			<li><a href="/tags/#Ruby">Ruby<span>8</span></a></li>
+		
+			<li><a href="/tags/#AWS Tools">AWS Tools<span>2</span></a></li>
+		
+			<li><a href="/tags/#Image">Image<span>2</span></a></li>
+		
+			<li><a href="/tags/#RVM">RVM<span>1</span></a></li>
 		
 			<li><a href="/tags/#Elastic Load Balancing">Elastic Load Balancing<span>6</span></a></li>
 		
-			<li><a href="/tags/#RDS">RDS<span>3</span></a></li>
+			<li><a href="/tags/#Failover">Failover<span>1</span></a></li>
+		
+			<li><a href="/tags/#Linux">Linux<span>15</span></a></li>
+		
+			<li><a href="/tags/#MacOS">MacOS<span>17</span></a></li>
+		
+			<li><a href="/tags/#Solutions Architect">Solutions Architect<span>1</span></a></li>
+		
+			<li><a href="/tags/#Udemy">Udemy<span>1</span></a></li>
+		
+			<li><a href="/tags/#Lightsail">Lightsail<span>2</span></a></li>
+		
+			<li><a href="/tags/#Docker">Docker<span>1</span></a></li>
+		
+			<li><a href="/tags/#VMware">VMware<span>2</span></a></li>
+		
+			<li><a href="/tags/#Kubernetes">Kubernetes<span>1</span></a></li>
+		
+			<li><a href="/tags/#HTTP">HTTP<span>5</span></a></li>
 		
 		
-		   <li><a href="/tags">...<span>53</span></a></li>
+		   <li><a href="/tags">...<span>54</span></a></li>
 		 
 		</ul>
 	</div>
@@ -631,6 +633,14 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2019/12/31/macos-youcompleteme-ERROR-root-code-for-hash-md5-was-not-found/" ><i class="fa fa-file-o"></i>Macos下vim中YouCompleteMe报错 E...</a>
+      </li>
+    
+      <li>
+        <a href="/2019/12/15/way-to-download-udemy-course/" ><i class="fa fa-file-o"></i>访问Udemy慢的一个解决办法</a>
+      </li>
+    
+      <li>
         <a href="/2019/12/02/ImageMagick-watermark/" ><i class="fa fa-file-o"></i>使用ImageMagick来给图片打文字水印</a>
       </li>
     
@@ -640,14 +650,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2019/11/19/how-to-install-docker-and-kubernetes-on-macos/" ><i class="fa fa-file-o"></i>在Macos上安装Docker和Kubernetes</a>
-      </li>
-    
-      <li>
-        <a href="/2019/10/31/why-format-painter-not-working-on-mac-office-365/" ><i class="fa fa-file-o"></i>Mac下Word不能双击格式刷重复刷的问题</a>
-      </li>
-    
-      <li>
-        <a href="/2019/10/27/postgresql-tips/" ><i class="fa fa-file-o"></i>PostgreSQL Tips</a>
       </li>
     
   </ul>
@@ -684,7 +686,7 @@ var _hmt = _hmt || [];
   </div>
   <div class="container-narrow">
   <footer> <p>
-  &copy; 2019 jibing57
+  &copy; 2020 jibing57
   
       with help from <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>.    
 </p> </footer>

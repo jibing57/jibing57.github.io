@@ -139,6 +139,55 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
+			<div class="date"> 2018-04-25 </div>
+			<div class="article-title"><a href="/2018/04/25/command-line-tools-to-check-images-on-macos/" >Mac下几个处理图片的命令</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h3><p>Macos下，查看图片，默认就是使用Preview。Preview基本包含了普通人能用到的各种功能。<br>但有时候需要批量处理图片时，常规的GUI工具会显得不太方便，使用命令来操作能够更快捷高效。下面介绍几个Macos下和图片相关的几个命令。</p>
+<h3 id="查看图片尺寸"><a href="#查看图片尺寸" class="headerlink" title="查看图片尺寸"></a>查看图片尺寸</h3><h4 id="系统自带file命令"><a href="#系统自带file命令" class="headerlink" title="系统自带file命令"></a>系统自带file命令</h4><p>在命令行下查看图片的分辨率，可以直接使用Macos自带的file命令即可。<br>
+	
+	</div>
+  <a type="button" href="/2018/04/25/command-line-tools-to-check-images-on-macos/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2018-04-24 </div>
+			<div class="article-title"><a href="/2018/04/24/douban-image-403/" >豆瓣图片403问题</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="起由"><a href="#起由" class="headerlink" title="起由"></a>起由</h3><p>发布了一版blog到github上。偶然间发现<a href="/douban">豆瓣页面</a>中书的图片都无法显示了。打开Inspector调查了下，发现请求豆瓣图片的链接返回的都是403 Forbidden。<br><img src="/images/Hexo/douban_image_403.png" alt="douban_image_403.png"></p>
+<p>网上搜索了一下，可能的原因就是豆瓣为了封杀微信小程序在页面上直接请求豆瓣的图片，封杀了图片的外链。</p>
+<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>尝试着将豆瓣API返回的图片链接拷贝到浏览器中直接访问，发现可以加载图片，那估计豆瓣是通过检测HTTP Request中的referer Header来实现防盗链。</p>
+	
+	</div>
+  <a type="button" href="/2018/04/24/douban-image-403/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
 			<div class="date"> 2018-04-21 </div>
 			<div class="article-title"><a href="/2018/04/21/aws-s3-master-permission/" >S3进阶系列(二) ——权限管理</a></div>						
 		</h3>
@@ -339,58 +388,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2018-02-11 </div>
-			<div class="article-title"><a href="/2018/02/11/aws-s3-cli-to-backup-and-restore-bucket-acl/" >使用AWS CLI来备份和恢复S3 Bucket的ACL</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>S3 Bucket层面的权限管理，推荐使用Bucket Policy来管理，但可能会有一些遗留的S3 Bucket, 还使用着Bucket ACL来进行权限管理。</p>
-<p>在将Bucket ACl升级为Bucket Policy或者是更新Bucket ACL的时候，会有备份Bucket ACL的需求。此处介绍一下如何使用AWS CLI来备份和恢复Bucket的Bucket ACL。</p>
-<h3 id="备份-Bucket-ACL"><a href="#备份-Bucket-ACL" class="headerlink" title="备份 Bucket ACL"></a>备份 Bucket ACL</h3><p>使用CLI中s3api中的<a href="https://docs.aws.amazon.com/cli/latest/reference/s3api/get-bucket-acl.html" target="_blank" rel="external">get-bucket-acl</a>命令来保存bucket acl。</p>
-<h4 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">  get-bucket-acl</div><div class="line">--bucket &lt;value&gt;</div><div class="line">[--cli-input-json &lt;value&gt;]</div><div class="line">[--generate-cli-skeleton &lt;value&gt;]</div></pre></td></tr></table></figure>
-	
-	</div>
-  <a type="button" href="/2018/02/11/aws-s3-cli-to-backup-and-restore-bucket-acl/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2018-02-09 </div>
-			<div class="article-title"><a href="/2018/02/09/non-greedy-match-in-grep-on-macos/" >Macos下如何实现grep的非贪婪模式</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>有时候需要使用正则的<code>非贪婪模式(non-greedy或者叫lazy模式)</code>来搜一些内容，但Macos系统自带的<code>grep</code>无法胜任。<br>Mac下的<code>grep</code>是BSD系的，不能使用-P参数来使用perl模式。Linux下的<code>GNU grep</code>就可以使用-P参数来支持非贪婪模式。</p>
-<p>MacOS自带的<code>grep</code>的示例:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">$ cat grep_on_macos.txt</div><div class="line">carl has a nice car. the car has four wheels.</div><div class="line">$</div><div class="line"># 支持普通正则</div><div class="line">$ grep -o &quot;car.*has&quot; grep_on_macos.txt</div><div class="line">carl has a nice car. the car has</div><div class="line">$</div><div class="line"># 不支持带?的非贪婪模式</div><div class="line">$ grep -o &quot;car.*?has&quot; grep_on_macos.txt</div><div class="line">$</div></pre></td></tr></table></figure>
-<p>此处记录两个可行的方法来解决该问题</p>
-	
-	</div>
-  <a type="button" href="/2018/02/09/non-greedy-match-in-grep-on-macos/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -466,7 +463,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/#Shell">Shell<span>8</span></a></li>
 		
-			<li><a href="/categories/#Tools">Tools<span>21</span></a></li>
+			<li><a href="/categories/#Tools">Tools<span>23</span></a></li>
 		
 		</ul>
 	</div>
@@ -478,48 +475,48 @@ var _hmt = _hmt || [];
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/#Nginx">Nginx<span>7</span></a></li>
-		
 			<li><a href="/tags/#AWS Tools">AWS Tools<span>2</span></a></li>
 		
-			<li><a href="/tags/#Github">Github<span>3</span></a></li>
+			<li><a href="/tags/#Tips">Tips<span>1</span></a></li>
 		
-			<li><a href="/tags/#Linux">Linux<span>15</span></a></li>
+			<li><a href="/tags/#Udemy">Udemy<span>1</span></a></li>
 		
-			<li><a href="/tags/#HTTPS">HTTPS<span>1</span></a></li>
-		
-			<li><a href="/tags/#CentOS">CentOS<span>8</span></a></li>
-		
-			<li><a href="/tags/#EC2 User Data">EC2 User Data<span>1</span></a></li>
-		
-			<li><a href="/tags/#Firewall">Firewall<span>1</span></a></li>
-		
-			<li><a href="/tags/#RDS">RDS<span>3</span></a></li>
+			<li><a href="/tags/#感悟">感悟<span>1</span></a></li>
 		
 			<li><a href="/tags/#Lightsail">Lightsail<span>2</span></a></li>
 		
-			<li><a href="/tags/#CodeCommit">CodeCommit<span>1</span></a></li>
+			<li><a href="/tags/#Github">Github<span>3</span></a></li>
 		
-			<li><a href="/tags/#Network">Network<span>4</span></a></li>
+			<li><a href="/tags/#Nginx">Nginx<span>7</span></a></li>
 		
-			<li><a href="/tags/#AutoScaling">AutoScaling<span>3</span></a></li>
+			<li><a href="/tags/#Office">Office<span>2</span></a></li>
 		
-			<li><a href="/tags/#Chrome">Chrome<span>1</span></a></li>
+			<li><a href="/tags/#HTTPS">HTTPS<span>1</span></a></li>
 		
-			<li><a href="/tags/#HTTP">HTTP<span>5</span></a></li>
+			<li><a href="/tags/#Kubernetes">Kubernetes<span>1</span></a></li>
 		
-			<li><a href="/tags/#Git">Git<span>2</span></a></li>
+			<li><a href="/tags/#DynamoDB">DynamoDB<span>1</span></a></li>
 		
-			<li><a href="/tags/#S3">S3<span>10</span></a></li>
-		
-			<li><a href="/tags/#Wkhtmltopdf">Wkhtmltopdf<span>1</span></a></li>
-		
-			<li><a href="/tags/#FFMPEG">FFMPEG<span>1</span></a></li>
+			<li><a href="/tags/#AWS Deep Dive">AWS Deep Dive<span>2</span></a></li>
 		
 			<li><a href="/tags/#Yum">Yum<span>1</span></a></li>
 		
+			<li><a href="/tags/#Sysops">Sysops<span>1</span></a></li>
 		
-		   <li><a href="/tags">...<span>53</span></a></li>
+			<li><a href="/tags/#Passenger">Passenger<span>2</span></a></li>
+		
+			<li><a href="/tags/#Rails">Rails<span>3</span></a></li>
+		
+			<li><a href="/tags/#Elastic Beanstalk">Elastic Beanstalk<span>7</span></a></li>
+		
+			<li><a href="/tags/#Hexo">Hexo<span>7</span></a></li>
+		
+			<li><a href="/tags/#Ruby">Ruby<span>8</span></a></li>
+		
+			<li><a href="/tags/#Image">Image<span>2</span></a></li>
+		
+		
+		   <li><a href="/tags">...<span>54</span></a></li>
 		 
 		</ul>
 	</div>
@@ -532,6 +529,14 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2019/12/31/macos-youcompleteme-ERROR-root-code-for-hash-md5-was-not-found/" ><i class="fa fa-file-o"></i>Macos下vim中YouCompleteMe报错 E...</a>
+      </li>
+    
+      <li>
+        <a href="/2019/12/15/way-to-download-udemy-course/" ><i class="fa fa-file-o"></i>访问Udemy慢的一个解决办法</a>
+      </li>
+    
+      <li>
         <a href="/2019/12/02/ImageMagick-watermark/" ><i class="fa fa-file-o"></i>使用ImageMagick来给图片打文字水印</a>
       </li>
     
@@ -541,14 +546,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2019/11/19/how-to-install-docker-and-kubernetes-on-macos/" ><i class="fa fa-file-o"></i>在Macos上安装Docker和Kubernetes</a>
-      </li>
-    
-      <li>
-        <a href="/2019/10/31/why-format-painter-not-working-on-mac-office-365/" ><i class="fa fa-file-o"></i>Mac下Word不能双击格式刷重复刷的问题</a>
-      </li>
-    
-      <li>
-        <a href="/2019/10/27/postgresql-tips/" ><i class="fa fa-file-o"></i>PostgreSQL Tips</a>
       </li>
     
   </ul>
@@ -585,7 +582,7 @@ var _hmt = _hmt || [];
   </div>
   <div class="container-narrow">
   <footer> <p>
-  &copy; 2019 jibing57
+  &copy; 2020 jibing57
   
       with help from <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>.    
 </p> </footer>

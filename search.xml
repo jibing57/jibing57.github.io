@@ -3,6 +3,63 @@
   
     
     <entry>
+      <title><![CDATA[Macos下vim中YouCompleteMe报错 ERROR:root:code for hash md5 was not found]]></title>
+      <url>/2019/12/31/macos-youcompleteme-ERROR-root-code-for-hash-md5-was-not-found/</url>
+      <content type="html"><![CDATA[<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>Macos中brew安装某个软件的时候，brew自动把openssl版本也升级了。<br>升级过后，打开vim就发现有错误提示<code>ERROR:root:code for hash md5 was not found.</code></p>
+<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>报错的是vim中的一个自动补全的插件<a href="https://github.com/ycm-core/YouCompleteMe" target="_blank" rel="external">YouCompleteMe</a>, 该插件是python写的。</p>
+<p>网上搜了下，是因为openssl版本升级了，python找不到编译时的openssl的lib了。所以报错了。</p>
+<h3 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h3><p>解决办法就是使用brew重新装下python<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew reinstall python@2</div></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://github.com/wting/autojump/issues/540" target="_blank" rel="external">hash md5 error on Mac</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> Tools </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> MacOS </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[访问Udemy慢的一个解决办法]]></title>
+      <url>/2019/12/15/way-to-download-udemy-course/</url>
+      <content type="html"><![CDATA[<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>最近不知道是什么原因，家里的电信宽带连接Udemy非常不稳。不用梯子看课程卡顿，用上了梯子看视频还是卡顿。<br>在线看不行，那就试着下载下来看。Udemy的APP提供了下载视频功能，就尝试在Pad上下载了视频观看。但不知道是APP问题还是网络的问题。APP上下载的视频，明明显示是下载完成了，但很多都是看几分钟就卡住了。我猜测是没有下载完整。</p>
+<p>看个课程还这么费劲，真是抓狂，纠结。</p>
+<a id="more"></a>
+<h3 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h3><p>网上搜了一圈，看有没有什么工具可以在电脑上在线下载。还真找到了一个，github上有一个<a href="https://github.com/FaisalUmair/udemy-downloader-gui" target="_blank" rel="external">udemy-downloader-gui</a>的工具，可以下载Udemy的视频。<br>下载后用了一下，目前版本只支持整个课程的下载，而不支持单个视频下载。但至少可以以肉眼可见的速度知道视频在下载。<br>就丢着慢慢下载了。</p>
+<h3 id="吐槽"><a href="#吐槽" class="headerlink" title="吐槽"></a>吐槽</h3><p>在Pad，Mac和iPhione上在线观看的视频，Udemy会自动帮你管理进度。基本可以做到在各个设备上无缝的观看。现在手动下载后，在不同的设备上，就只能自己来记住观看进度了。大大降低了使用体验。<br>但至少下载后，可以在单一平台上流畅地观看课程，而不需要时时刻刻地等待缓冲了。 能看总比不能看来的强, 只能说是一种无奈的妥协。</p>
+<h3 id="版权声明"><a href="#版权声明" class="headerlink" title="版权声明"></a>版权声明</h3><p><a href="https://github.com/FaisalUmair/udemy-downloader-gui" target="_blank" rel="external">udemy-downloader-gui</a>的使用写上了Udemy的版权声明，下载下来的视频仅供自己使用，而不应该分享给其他人使用。</p>
+<blockquote>
+<p>This software is intended to help you download Udemy courses for personal use only. Sharing the content of your subscribed courses is strictly prohibited under Udemy Terms of Use. Each and every course on Udemy is subjected to copyright infringement. This software does not magically download any paid course available on Udemy, you need to provide your Udemy login credentials to download the courses you have enrolled in. Udeler downloads the lecture videos by simply using the source of the video player returned to the user by Udemy after proper authentication, you can also do the same manually. Many download managers use same method to download videos on a web page. This app only automates the process of a user doing this manually in a web browser.</p>
+</blockquote>
+]]></content>
+      
+        <categories>
+            
+            <category> Tools </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Udemy </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[使用ImageMagick来给图片打文字水印]]></title>
       <url>/2019/12/02/ImageMagick-watermark/</url>
       <content type="html"><![CDATA[<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>博客中，难免要为有些图片打上水印。下面摘录两个打文字水印的方法。<br>摘录来自博客<a href="https://aotu.io/notes/2018/06/06/ImageMagick_intro/index.html" target="_blank" rel="external">图像处理 - ImageMagick 简单介绍与案例</a></p>
@@ -1936,6 +1993,10 @@
 <h3 id="使用ssh-keygen从私钥中获取公钥"><a href="#使用ssh-keygen从私钥中获取公钥" class="headerlink" title="使用ssh-keygen从私钥中获取公钥"></a>使用ssh-keygen从私钥中获取公钥</h3><p>命令如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh-keygen -y -f id_rsa_for_passphrase</div></pre></td></tr></table></figure></p>
 <hr>
 <h3 id="设置ssh-tunnel"><a href="#设置ssh-tunnel" class="headerlink" title="设置ssh tunnel"></a>设置ssh tunnel</h3><p>使用ssh 设置转发tunnel<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># -N 不执行远程命令</div><div class="line"># -f Requests ssh to go to background just before command execution.</div><div class="line"># -D 指定绑定地址和端口 [bind_address:]port</div><div class="line"># 将来着本地0.0.0.0:10086的流量转发到指定的host中</div><div class="line">ssh -f -N -D 0.0.0.0:10086 -i id_rsa_key user@host</div></pre></td></tr></table></figure></p>
+<hr>
+<h3 id="awk"><a href="#awk" class="headerlink" title="awk"></a>awk</h3><p>awk中去除字段的前后空格<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">echo &quot; 300173226 | news-icon &quot; | awk -F &apos;|&apos; &apos;&#123;  print &quot;src is [&quot;$1&quot;][&quot;$2&quot;]&quot;&#125;; &#123;gsub(/^[ \t]+/,&quot;&quot;,$2);gsub(/[ \t]+$/,&quot;&quot;,$2);gsub(/^[ \t]+/,&quot;&quot;,$1);gsub(/[ \t]+$/,&quot;&quot;,$1); print &quot;processed result is [&quot;$1&quot;][&quot;$2&quot;]&quot;&#125;;&apos;</div></pre></td></tr></table></figure></p>
+<hr>
+<h3 id="CentOS下获取内存使用率"><a href="#CentOS下获取内存使用率" class="headerlink" title="CentOS下获取内存使用率"></a>CentOS下获取内存使用率</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">free | grep &apos;buffers/cache&apos; | awk &apos;&#123;printf &quot;%.2f&quot;, $3/($3+$4)*100&#125;&apos;</div></pre></td></tr></table></figure>
 ]]></content>
       
         <categories>
@@ -10016,9 +10077,9 @@ You can wait for the scheduled retirement date - when the instance is stopped - 
             
             <tag> Ruby </tag>
             
-            <tag> AWS SDK </tag>
-            
             <tag> AWS CLI </tag>
+            
+            <tag> AWS SDK </tag>
             
             <tag> PostgreSQL </tag>
             

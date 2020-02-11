@@ -139,6 +139,74 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
+			<div class="date"> 2017-10-24 </div>
+			<div class="article-title"><a href="/2017/10/24/how-to-use-aws-cli-with-multi-user/" >如何在aws cli中使用多个配置文件</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p><code>aws cli</code>使用中，可能会有在多个IAM账户中进行切换的需求，手动切换<code>~/.aws/</code>目录下的<code>config</code>和<code>credentials</code>是十分费力的事情。还好<code>aws cli</code>本身就可以支持多个aws credentials</p>
+<h3 id="配置多个profile"><a href="#配置多个profile" class="headerlink" title="配置多个profile"></a>配置多个profile</h3><p><code>aws configure</code>时，加上<code>--profile</code>参数来命名不同的账户, 依次输入access id, access key, region和output format。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ aws configure --profile user1</div><div class="line">$ aws configure --profile user2</div></pre></td></tr></table></figure>
+<p>此时生成的<code>config</code>和<code>credentials</code>文件中，会使用账户名来分割不同的配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">[carlshen@carl-macpro-lan ~]$ cat ~/.aws/config</div><div class="line">[profile user1]</div><div class="line">output = json</div><div class="line">region = us-west-2</div><div class="line">[profile user2]</div><div class="line">output = json</div><div class="line">region = ap-northeast-2</div><div class="line">[carlshen@carl-macpro-lan ~]$</div><div class="line">[carlshen@carl-macpro-lan ~]$ cat ~/.aws/credentials</div><div class="line">[user1]</div><div class="line">aws_access_key_id = AKIAXXXXXXXXXXXXXXXX</div><div class="line">aws_secret_access_key = XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</div><div class="line">[user2]</div><div class="line">aws_access_key_id = AKIAXXXXXXXXXXXXXXXX</div><div class="line">aws_secret_access_key = XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</div><div class="line">[carlshen@carl-macpro-lan ~]$</div></pre></td></tr></table></figure>
+	
+	</div>
+  <a type="button" href="/2017/10/24/how-to-use-aws-cli-with-multi-user/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2017-10-24 </div>
+			<div class="article-title"><a href="/2017/10/24/how-to-use-aws-codecommit/" >使用aws codecommit作为私有的git远程服务器</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>博客的hexo的代码，一直是保存在本地的。上次电脑花了一次屏后，感觉到保存在本地实在是不够安全。因此考虑寻觅一个远端的私密git库，存起来。</p>
+<p>开始寻寻觅觅合适的仓库.</p>
+<ul>
+<li>Github?,私有库是收费的。但为了这些哪天就不更新的markdown，每月7刀开个Developer的Plan，感觉不划算。</li>
+<li>自建Gitlab？嫌麻烦麻烦。</li>
+<li>oschina的私有库？不想用。</li>
+<li>。。。。。。</li>
+</ul>
+<p>好吧，我承认我就是想尝试用一下aws的codecommit。</p>
+<p>关于CodeCommit的免费额度，<a href="https://aws.amazon.com/cn/codecommit/pricing/" target="_blank" rel="external">官网</a>介绍:</p>
+<ul>
+<li>最初5位活动用户<ul>
+<li>无限存储库</li>
+<li>50GB的月存储量</li>
+<li>每月10000个git请求</li>
+</ul>
+</li>
+</ul>
+<p>托管我一个小博客，妥妥的够了。毕竟除了我，没人还会来关心这点markdown文件, 5位用户免费足够了。至于50GB的月存储量么，除非把看过的电影都commit进git来，要不然应该是足够了。</p>
+	
+	</div>
+  <a type="button" href="/2017/10/24/how-to-use-aws-codecommit/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
 			<div class="date"> 2017-08-03 </div>
 			<div class="article-title"><a href="/2017/08/03/date-command-on-Linux-and-Mac/" >Linux 和 Mac下date命令的基本用法</a></div>						
 		</h3>
@@ -421,11 +489,11 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/#Code">Code<span>5</span></a></li>
 		
-			<li><a href="/categories/#Linux">Linux<span>6</span></a></li>
+			<li><a href="/categories/#Linux">Linux<span>7</span></a></li>
 		
 			<li><a href="/categories/#Shell">Shell<span>8</span></a></li>
 		
-			<li><a href="/categories/#Tools">Tools<span>23</span></a></li>
+			<li><a href="/categories/#Tools">Tools<span>24</span></a></li>
 		
 		</ul>
 	</div>
@@ -437,48 +505,48 @@ var _hmt = _hmt || [];
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/#Lightsail">Lightsail<span>2</span></a></li>
-		
-			<li><a href="/tags/#Kubernetes">Kubernetes<span>1</span></a></li>
-		
-			<li><a href="/tags/#AWS Free Tier">AWS Free Tier<span>1</span></a></li>
-		
-			<li><a href="/tags/#MacOS">MacOS<span>17</span></a></li>
-		
-			<li><a href="/tags/#HTTPS">HTTPS<span>1</span></a></li>
-		
-			<li><a href="/tags/#FFMPEG">FFMPEG<span>1</span></a></li>
-		
-			<li><a href="/tags/#CloudWatch">CloudWatch<span>1</span></a></li>
-		
 			<li><a href="/tags/#Github">Github<span>3</span></a></li>
 		
-			<li><a href="/tags/#RDS">RDS<span>3</span></a></li>
-		
-			<li><a href="/tags/#Elastic Beanstalk">Elastic Beanstalk<span>7</span></a></li>
-		
-			<li><a href="/tags/#Solutions Architect">Solutions Architect<span>1</span></a></li>
-		
-			<li><a href="/tags/#Image">Image<span>2</span></a></li>
+			<li><a href="/tags/#Nodejs">Nodejs<span>2</span></a></li>
 		
 			<li><a href="/tags/#感悟">感悟<span>1</span></a></li>
 		
-			<li><a href="/tags/#Yum">Yum<span>1</span></a></li>
+			<li><a href="/tags/#Sysops">Sysops<span>1</span></a></li>
 		
-			<li><a href="/tags/#Elastic Load Balancing">Elastic Load Balancing<span>6</span></a></li>
+			<li><a href="/tags/#AWS CLI">AWS CLI<span>6</span></a></li>
 		
-			<li><a href="/tags/#PostgreSQL">PostgreSQL<span>2</span></a></li>
+			<li><a href="/tags/#FFMPEG">FFMPEG<span>2</span></a></li>
 		
-			<li><a href="/tags/#Passenger">Passenger<span>2</span></a></li>
+			<li><a href="/tags/#Office">Office<span>2</span></a></li>
 		
-			<li><a href="/tags/#Chrome">Chrome<span>1</span></a></li>
+			<li><a href="/tags/#DynamoDB">DynamoDB<span>1</span></a></li>
+		
+			<li><a href="/tags/#Kubernetes">Kubernetes<span>1</span></a></li>
+		
+			<li><a href="/tags/#AWS SDK">AWS SDK<span>2</span></a></li>
+		
+			<li><a href="/tags/#Hexo">Hexo<span>7</span></a></li>
+		
+			<li><a href="/tags/#EC2 User Data">EC2 User Data<span>1</span></a></li>
 		
 			<li><a href="/tags/#CodeCommit">CodeCommit<span>1</span></a></li>
 		
-			<li><a href="/tags/#HTTP">HTTP<span>5</span></a></li>
+			<li><a href="/tags/#EC2">EC2<span>8</span></a></li>
+		
+			<li><a href="/tags/#Git">Git<span>2</span></a></li>
+		
+			<li><a href="/tags/#AWS Tools">AWS Tools<span>2</span></a></li>
+		
+			<li><a href="/tags/#Ruby">Ruby<span>9</span></a></li>
+		
+			<li><a href="/tags/#CentOS">CentOS<span>8</span></a></li>
+		
+			<li><a href="/tags/#Lightsail">Lightsail<span>2</span></a></li>
+		
+			<li><a href="/tags/#Chrome">Chrome<span>1</span></a></li>
 		
 		
-		   <li><a href="/tags">...<span>54</span></a></li>
+		   <li><a href="/tags">...<span>55</span></a></li>
 		 
 		</ul>
 	</div>
@@ -491,6 +559,14 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2020/01/31/How-to-install-rails-on-Ubuntu-18-04/" ><i class="fa fa-file-o"></i>在Ubuntu 18.04中安装Rails开发环境</a>
+      </li>
+    
+      <li>
+        <a href="/2019/12/31/after-upgrade-the-openssl-in-macos/" ><i class="fa fa-file-o"></i>MacOS下Brew升级openssl的后续处理</a>
+      </li>
+    
+      <li>
         <a href="/2019/12/31/macos-youcompleteme-ERROR-root-code-for-hash-md5-was-not-found/" ><i class="fa fa-file-o"></i>Macos下vim中YouCompleteMe报错 E...</a>
       </li>
     
@@ -500,14 +576,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2019/12/02/ImageMagick-watermark/" ><i class="fa fa-file-o"></i>使用ImageMagick来给图片打文字水印</a>
-      </li>
-    
-      <li>
-        <a href="/2019/11/28/way-to-install-wkhtmltopdf-and-wkhtmltoimage-to-CentOS-7/" ><i class="fa fa-file-o"></i>如何在CentOS 7 中安装wkhtmltopdf和...</a>
-      </li>
-    
-      <li>
-        <a href="/2019/11/19/how-to-install-docker-and-kubernetes-on-macos/" ><i class="fa fa-file-o"></i>在Macos上安装Docker和Kubernetes</a>
       </li>
     
   </ul>

@@ -160,6 +160,8 @@ var _hmt = _hmt || [];
 <hr>
 <h3 id="pg-dump多表到一个sql文件中"><a href="#pg-dump多表到一个sql文件中" class="headerlink" title="pg_dump多表到一个sql文件中"></a>pg_dump多表到一个sql文件中</h3><p>可以使用多个-t 参数来dump多张表<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ pg_dump -U postgres db_name -t table1 -t table 2 &gt; output_sql.sql</div></pre></td></tr></table></figure></p>
 <hr>
+<h3 id="pg-dump只dump表结构"><a href="#pg-dump只dump表结构" class="headerlink" title="pg_dump只dump表结构"></a>pg_dump只dump表结构</h3><p>使用<code>--schema-only</code>或<code>-s</code>参数。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ pg_dump --schema-only</div></pre></td></tr></table></figure></p>
+<hr>
 <h3 id="如何不dump表结构，只dump数据"><a href="#如何不dump表结构，只dump数据" class="headerlink" title="如何不dump表结构，只dump数据"></a>如何不dump表结构，只dump数据</h3><p>可以使用<code>--data-only</code>来实现<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ pg_dump --data-only -U postgres db_name -t table1 &gt; output_sql.sql</div></pre></td></tr></table></figure></p>
 <p>如果结合<code>--column-inserts</code>参数使用的话，那么就会为每条记录都生成一个insert语句</p>
 <p>使用<code>--column-inserts</code>的缺点:</p>
@@ -235,6 +237,57 @@ var _hmt = _hmt || [];
 <p><strong>Reference:</strong> <a href="https://amazonaws-china.com/blogs/database/best-practices-for-amazon-rds-postgresql-replication/" target="_blank" rel="external">Best practices for Amazon RDS PostgreSQL replication</a></p>
 <hr>
 <h3 id="查看数据库支持的扩展"><a href="#查看数据库支持的扩展" class="headerlink" title="查看数据库支持的扩展"></a>查看数据库支持的扩展</h3><p>查看当前数据库的pg扩展命令<code>SELECT * FROM pg_extension;</code>或者<code>\dx</code><br>查看服务器支持的pg扩展<code>SELECT * FROM pg_available_extensions;</code></p>
+<hr>
+<h3 id="使用SSL-TLS连接数据库"><a href="#使用SSL-TLS连接数据库" class="headerlink" title="使用SSL/TLS连接数据库"></a>使用SSL/TLS连接数据库</h3><p>psql中通过添加<code>sslmode</code>指定模式以及<code>sslrootcert</code>指定cert路径来使用SSL/TLS<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">psql &quot;sslmode=verify-full sslrootcert=./rds-ca-2019-root.pem host=staging-replica.xxxxxxxxxxx.us-east-1.rds.amazonaws.com port=5432 user=db_user dbname=db_name&quot;</div></pre></td></tr></table></figure></p>
+<p><code>sslmode</code>的说明摘录如下, 来自: <a href="https://www.postgresql.org/docs/9.6/libpq-ssl.html" target="_blank" rel="external">https://www.postgresql.org/docs/9.6/libpq-ssl.html</a></p>
+<table>
+<thead>
+<tr>
+<th>sslmode</th>
+<th>Eavesdropping protection</th>
+<th>MITM protection</th>
+<th>Statement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>disable</td>
+<td>No</td>
+<td>No</td>
+<td>I don’t care about security, and I don’t want to pay the overhead of encryption.</td>
+</tr>
+<tr>
+<td>allow</td>
+<td>Maybe</td>
+<td>No</td>
+<td>I don’t care about security, but I will pay the overhead of encryption if the server insists on it.</td>
+</tr>
+<tr>
+<td>prefer</td>
+<td>Maybe</td>
+<td>No</td>
+<td>I don’t care about encryption, but I wish to pay the overhead of encryption if the server supports it.</td>
+</tr>
+<tr>
+<td>require</td>
+<td>Yes</td>
+<td>No</td>
+<td>I want my data to be encrypted, and I accept the overhead. I trust that the network will make sure I always connect to the server I want.</td>
+</tr>
+<tr>
+<td>verify-ca</td>
+<td>Yes</td>
+<td>Depends on CA-policy</td>
+<td>I want my data encrypted, and I accept the overhead. I want to be sure that I connect to a server that I trust.</td>
+</tr>
+<tr>
+<td>verify-full</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>I want my data encrypted, and I accept the overhead. I want to be sure that I connect to a server I trust, and that it’s the one I specify.</td>
+</tr>
+</tbody>
+</table>
 	  
 	</div>
 
@@ -314,7 +367,7 @@ var _hmt = _hmt || [];
 	
 	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
 	   <div id="toc" class="toc collapse in">
-			<ol class="toc-article"><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#将sql结果导入csv文件"><span class="toc-article-text">将sql结果导入csv文件</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#将shapefile导入postgresql的步骤"><span class="toc-article-text">将shapefile导入postgresql的步骤</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#pg-dump多表到一个sql文件中"><span class="toc-article-text">pg_dump多表到一个sql文件中</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#如何不dump表结构，只dump数据"><span class="toc-article-text">如何不dump表结构，只dump数据</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#在postgresql中建立一个只读用户"><span class="toc-article-text">在postgresql中建立一个只读用户</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#如何在group-by中统计基于group-by字段和其他条件的记录的总数"><span class="toc-article-text">如何在group by中统计基于group by字段和其他条件的记录的总数</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#PG的时间函数"><span class="toc-article-text">PG的时间函数</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#查看数据库中各个表上次vacuum和autovacuum时间的sql"><span class="toc-article-text">查看数据库中各个表上次vacuum和autovacuum时间的sql</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#Postgis中比较geometry类型的值的方法"><span class="toc-article-text">Postgis中比较geometry类型的值的方法</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#PG中查看sql执行时间的方法"><span class="toc-article-text">PG中查看sql执行时间的方法</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#切割第一个字符串是不是数字的sql"><span class="toc-article-text">切割第一个字符串是不是数字的sql</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#如何建索引时不锁表"><span class="toc-article-text">如何建索引时不锁表</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#一些常用的psql命令"><span class="toc-article-text">一些常用的psql命令</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#数据库磁盘容量命令"><span class="toc-article-text">数据库磁盘容量命令</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#PG中重建索引"><span class="toc-article-text">PG中重建索引</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#数据库导出和恢复"><span class="toc-article-text">数据库导出和恢复</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#pg-dump和pg-restore加速"><span class="toc-article-text">pg_dump和pg_restore加速</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#输出结果中显示NULL字串"><span class="toc-article-text">输出结果中显示NULL字串</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#explain-analyze用来定位慢查询"><span class="toc-article-text">explain analyze用来定位慢查询</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#修改用户密码"><span class="toc-article-text">修改用户密码</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#查看所有的参数"><span class="toc-article-text">查看所有的参数</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#AWS-RDS-Postgresql-master-replicate要修改的几个配置"><span class="toc-article-text">AWS RDS Postgresql master/replicate要修改的几个配置</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#查看数据库支持的扩展"><span class="toc-article-text">查看数据库支持的扩展</span></a></li></ol>
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#将sql结果导入csv文件"><span class="toc-article-text">将sql结果导入csv文件</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#将shapefile导入postgresql的步骤"><span class="toc-article-text">将shapefile导入postgresql的步骤</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#pg-dump多表到一个sql文件中"><span class="toc-article-text">pg_dump多表到一个sql文件中</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#pg-dump只dump表结构"><span class="toc-article-text">pg_dump只dump表结构</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#如何不dump表结构，只dump数据"><span class="toc-article-text">如何不dump表结构，只dump数据</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#在postgresql中建立一个只读用户"><span class="toc-article-text">在postgresql中建立一个只读用户</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#如何在group-by中统计基于group-by字段和其他条件的记录的总数"><span class="toc-article-text">如何在group by中统计基于group by字段和其他条件的记录的总数</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#PG的时间函数"><span class="toc-article-text">PG的时间函数</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#查看数据库中各个表上次vacuum和autovacuum时间的sql"><span class="toc-article-text">查看数据库中各个表上次vacuum和autovacuum时间的sql</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#Postgis中比较geometry类型的值的方法"><span class="toc-article-text">Postgis中比较geometry类型的值的方法</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#PG中查看sql执行时间的方法"><span class="toc-article-text">PG中查看sql执行时间的方法</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#切割第一个字符串是不是数字的sql"><span class="toc-article-text">切割第一个字符串是不是数字的sql</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#如何建索引时不锁表"><span class="toc-article-text">如何建索引时不锁表</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#一些常用的psql命令"><span class="toc-article-text">一些常用的psql命令</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#数据库磁盘容量命令"><span class="toc-article-text">数据库磁盘容量命令</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#PG中重建索引"><span class="toc-article-text">PG中重建索引</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#数据库导出和恢复"><span class="toc-article-text">数据库导出和恢复</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#pg-dump和pg-restore加速"><span class="toc-article-text">pg_dump和pg_restore加速</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#输出结果中显示NULL字串"><span class="toc-article-text">输出结果中显示NULL字串</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#explain-analyze用来定位慢查询"><span class="toc-article-text">explain analyze用来定位慢查询</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#修改用户密码"><span class="toc-article-text">修改用户密码</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#查看所有的参数"><span class="toc-article-text">查看所有的参数</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#AWS-RDS-Postgresql-master-replicate要修改的几个配置"><span class="toc-article-text">AWS RDS Postgresql master/replicate要修改的几个配置</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#查看数据库支持的扩展"><span class="toc-article-text">查看数据库支持的扩展</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#使用SSL-TLS连接数据库"><span class="toc-article-text">使用SSL/TLS连接数据库</span></a></li></ol>
 		</div>
 	
 	</div>
@@ -326,7 +379,7 @@ var _hmt = _hmt || [];
     <ul id="categorys" class="tag_box list-unstyled collapse in">
           
   <li>
-    <li><a href="/categories/Tools/">Tools<span>23</span></a></li>
+    <li><a href="/categories/Tools/">Tools<span>24</span></a></li>
   </li>
 
     </ul>
@@ -339,7 +392,7 @@ var _hmt = _hmt || [];
 	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>
     <ul id="tags" class="tag_box list-unstyled collapse in">
 	    
-  <li><a href="/tags/PostgreSQL/">PostgreSQL<span>2</span></a></li>
+  <li><a href="/tags/PostgreSQL/">PostgreSQL<span>3</span></a></li>
     </ul>
 	</div>
 	

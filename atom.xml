@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.jibing57.com/"/>
-  <updated>2019-12-31T05:54:52.653Z</updated>
+  <updated>2020-02-03T16:20:27.369Z</updated>
   <id>https://www.jibing57.com/</id>
   
   <author>
@@ -15,6 +15,70 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>在Ubuntu 18.04中安装Rails开发环境</title>
+    <link href="https://www.jibing57.com/2020/01/31/How-to-install-rails-on-Ubuntu-18-04/"/>
+    <id>https://www.jibing57.com/2020/01/31/How-to-install-rails-on-Ubuntu-18-04/</id>
+    <published>2020-01-31T06:10:58.000Z</published>
+    <updated>2020-02-03T16:20:27.369Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;本文介绍在Ubuntu 18.04上不用Docker，使用本地安装组件的方式搭建Rails+PostgreSQL开发环境的步骤。&lt;/p&gt;
+&lt;h3 id=&quot;搭建步骤&quot;&gt;&lt;a href=&quot;#搭建步骤&quot; class=&quot;headerlink&quot; title=&quot;搭建步骤&quot;&gt;&lt;/a&gt;搭建步骤&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;下载Ubuntu 18.04.3 TLS安装镜像，下载地址: &lt;a href=&quot;https://ubuntu.com/download/desktop&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://ubuntu.com/download/desktop&lt;/a&gt;。安装完成后，登录系统，打开Terminal。&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;安装vim编辑器&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;sudo apt install vim&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;按照&lt;a href=&quot;https://github.com/rvm/ubuntu_rvm&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/rvm/ubuntu_rvm&lt;/a&gt;的安装方法，安装rvm, 命令如下:&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;sudo apt install gnupg2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;gpg2 --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;sudo apt-get install software-properties-common&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;sudo apt-add-repository -y ppa:rael-gc/rvm&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;sudo apt-get update&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;sudo apt-get install rvm&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;rvm安装完毕后，为了每次登陆时自动load rvm，执行如下命令。&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;echo &amp;apos;source &amp;quot;/etc/profile.d/rvm.sh&amp;quot;&amp;apos; &amp;gt;&amp;gt; ~/.bashrc&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;退出当前Terminal重新登陆，重新加载rvm环境变量&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Linux" scheme="https://www.jibing57.com/categories/Linux/"/>
+    
+    
+      <category term="Rails" scheme="https://www.jibing57.com/tags/Rails/"/>
+    
+      <category term="RVM" scheme="https://www.jibing57.com/tags/RVM/"/>
+    
+      <category term="Ubuntu" scheme="https://www.jibing57.com/tags/Ubuntu/"/>
+    
+      <category term="PostgreSQL" scheme="https://www.jibing57.com/tags/PostgreSQL/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MacOS下Brew升级openssl的后续处理</title>
+    <link href="https://www.jibing57.com/2019/12/31/after-upgrade-the-openssl-in-macos/"/>
+    <id>https://www.jibing57.com/2019/12/31/after-upgrade-the-openssl-in-macos/</id>
+    <published>2019-12-31T13:56:11.000Z</published>
+    <updated>2020-02-03T06:08:43.759Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Brew安装软件的时候，不小心把openssl版本升了。然后电脑就炸了。vim打不开，ruby不能运行，一些命令出错。&lt;br&gt;一个一个的填坑，填坑记录如下:&lt;/p&gt;
+&lt;h3 id=&quot;vim&quot;&gt;&lt;a href=&quot;#vim&quot; class=&quot;headerlink&quot; title=&quot;vim&quot;&gt;&lt;/a&gt;vim&lt;/h3&gt;&lt;p&gt;vim问题参见 &lt;a href=&quot;/2019/12/31/macos-youcompleteme-ERROR-root-code-for-hash-md5-was-not-found/&quot; title=&quot;Macos下vim中YouCompleteMe报错 ERROR:root:code for hash md5 was not found&quot;&gt;Macos下vim中YouCompleteMe报错 ERROR:root:code for hash md5 was not found&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&quot;Ruby&quot;&gt;&lt;a href=&quot;#Ruby&quot; class=&quot;headerlink&quot; title=&quot;Ruby&quot;&gt;&lt;/a&gt;Ruby&lt;/h3&gt;&lt;p&gt;我的ruby是通过rvm安装的。本地存有多个版本，每个版本又因为项目隔离需要，使用了不同的gemset。&lt;br&gt;openssl升级到1.1过后，全部都炸了。只能重新安装编译。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
+    
+    
+      <category term="Ruby" scheme="https://www.jibing57.com/tags/Ruby/"/>
+    
+      <category term="FFMPEG" scheme="https://www.jibing57.com/tags/FFMPEG/"/>
+    
+      <category term="MacOS" scheme="https://www.jibing57.com/tags/MacOS/"/>
+    
+  </entry>
   
   <entry>
     <title>Macos下vim中YouCompleteMe报错 ERROR:root:code for hash md5 was not found</title>
@@ -163,7 +227,7 @@
     <link href="https://www.jibing57.com/2019/10/27/postgresql-tips/"/>
     <id>https://www.jibing57.com/2019/10/27/postgresql-tips/</id>
     <published>2019-10-27T05:31:35.000Z</published>
-    <updated>2019-10-31T05:19:53.576Z</updated>
+    <updated>2020-01-09T08:01:41.106Z</updated>
     
     <summary type="html">
     
@@ -526,97 +590,6 @@
       <category term="Hexo" scheme="https://www.jibing57.com/tags/Hexo/"/>
     
       <category term="Lightsail" scheme="https://www.jibing57.com/tags/Lightsail/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>将hexo部署到AWS的Lightsail</title>
-    <link href="https://www.jibing57.com/2019/05/29/how-to-deploy-hexo-to-aws-lightsail/"/>
-    <id>https://www.jibing57.com/2019/05/29/how-to-deploy-hexo-to-aws-lightsail/</id>
-    <published>2019-05-29T12:13:00.000Z</published>
-    <updated>2019-05-30T05:35:19.442Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;介绍&quot;&gt;&lt;a href=&quot;#介绍&quot; class=&quot;headerlink&quot; title=&quot;介绍&quot;&gt;&lt;/a&gt;介绍&lt;/h3&gt;&lt;p&gt;Github Pages的访问最近有些慢，感觉不太稳。最近正好买了台Lightsail，就考虑将blog丢到Lightsail上去, 试试Lightsail的访问速度。&lt;br&gt;整理了一下相关操作步骤，该步骤应该也同样适用于EC2。区别就是Lightsail默认配置了22和80端口是开放的。部署到EC2的话，需要自己设置Security Group开放22和80端口。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;步骤前提&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;本地已经有&lt;a href=&quot;https://hexo.io/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;hexo&lt;/a&gt;环境&lt;/li&gt;
-&lt;li&gt;有可用的&lt;a href=&quot;https://aws.amazon.com/lightsail/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Lightsail Instance&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;strong&gt;步骤中特定的信息，部署时可能需要根据自己实际情况进行修改&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Lightsail Instance相关:&lt;ul&gt;
-&lt;li&gt;AMI是原生的&lt;/li&gt;
-&lt;li&gt;Public IP是&lt;code&gt;54.203.178.195&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;博客目录&lt;code&gt;/opt/app/web/hexo&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;存放git库的账号名字为git, 博客git库代码存放目录:&lt;code&gt;/opt/app/git/hexo.git&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;本地信息&lt;ul&gt;
-&lt;li&gt;本地系统是&lt;code&gt;Macos 10.14.4&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;以identity key而不是密码形式登录远端服务器&lt;ul&gt;
-&lt;li&gt;此处在~/tmp/tmp/下新生成key，也可以按照实际要求修改为使用平时用的key&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-    
-    </summary>
-    
-      <category term="AWS" scheme="https://www.jibing57.com/categories/AWS/"/>
-    
-    
-      <category term="Nginx" scheme="https://www.jibing57.com/tags/Nginx/"/>
-    
-      <category term="Hexo" scheme="https://www.jibing57.com/tags/Hexo/"/>
-    
-      <category term="Lightsail" scheme="https://www.jibing57.com/tags/Lightsail/"/>
-    
-      <category term="Git" scheme="https://www.jibing57.com/tags/Git/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Elastic Beanstalk Ruby Passenger平台下设置HTTP重定向到HTTPS</title>
-    <link href="https://www.jibing57.com/2019/05/21/how-to-direct-http-to-https-in-elasticbeanstalk-ruby-passenger-platform/"/>
-    <id>https://www.jibing57.com/2019/05/21/how-to-direct-http-to-https-in-elasticbeanstalk-ruby-passenger-platform/</id>
-    <published>2019-05-21T13:12:23.000Z</published>
-    <updated>2019-05-21T06:58:21.016Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;Elastic Beanstalk配置HTTPS后，接下来就需要配置HTTP请求redirect到HTTPS。&lt;br&gt;以前都是直接在application层面做redirect的。这次调查了一下在passenger层面来进行redirect的做法,记录在此。&lt;/p&gt;
-&lt;h3 id=&quot;Ruby平台基本信息&quot;&gt;&lt;a href=&quot;#Ruby平台基本信息&quot; class=&quot;headerlink&quot; title=&quot;Ruby平台基本信息:&quot;&gt;&lt;/a&gt;Ruby平台基本信息:&lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;EB平台: &lt;code&gt;Passenger with Ruby 2.3 running on 64bit Amazon Linux/2.9.3&lt;/code&gt;&lt;ul&gt;
-&lt;li&gt;Ruby 2.3&lt;/li&gt;
-&lt;li&gt;Passenger模式&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;前端使用ALB进行负载均衡，和后端EC2之间端口对应关系:&lt;ul&gt;
-&lt;li&gt;ALB:443 -&amp;gt; EC2:80 (在ALB侧进行HTTPS terminate)&lt;/li&gt;
-&lt;li&gt;ALB:80 -&amp;gt; EC2:80&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&quot;修改方法&quot;&gt;&lt;a href=&quot;#修改方法&quot; class=&quot;headerlink&quot; title=&quot;修改方法&quot;&gt;&lt;/a&gt;修改方法&lt;/h3&gt;&lt;p&gt;使用&lt;code&gt;.ebextension&lt;/code&gt;直接修改passenger的配置文件&lt;code&gt;/opt/elasticbeanstalk/support/conf/nginx_config.erb&lt;/code&gt;.&lt;br&gt;修改要点:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;动态请求http_x_forwarded_proto 不是https的，redirect为https&lt;/li&gt;
-&lt;li&gt;静态文件请求的http_x_forwarded_proto不是https的，redirect为https&lt;/li&gt;
-&lt;li&gt;来自ELB health check的请求还是直接返回请求，而不用redirect为https&lt;/li&gt;
-&lt;/ol&gt;
-    
-    </summary>
-    
-      <category term="AWS" scheme="https://www.jibing57.com/categories/AWS/"/>
-    
-    
-      <category term="Elastic Beanstalk" scheme="https://www.jibing57.com/tags/Elastic-Beanstalk/"/>
-    
-      <category term="HTTP" scheme="https://www.jibing57.com/tags/HTTP/"/>
-    
-      <category term="HTTPS" scheme="https://www.jibing57.com/tags/HTTPS/"/>
     
   </entry>
   

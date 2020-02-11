@@ -305,9 +305,73 @@ var _hmt = _hmt || [];
 		
             
 		
+            
+		
+            
+		
         
         <!-- render other articles -->
         
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2020-01-31 </div>
+			<div class="article-title"><a href="/2020/01/31/How-to-install-rails-on-Ubuntu-18-04/" >在Ubuntu 18.04中安装Rails开发环境</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>本文介绍在Ubuntu 18.04上不用Docker，使用本地安装组件的方式搭建Rails+PostgreSQL开发环境的步骤。</p>
+<h3 id="搭建步骤"><a href="#搭建步骤" class="headerlink" title="搭建步骤"></a>搭建步骤</h3><ol>
+<li>下载Ubuntu 18.04.3 TLS安装镜像，下载地址: <a href="https://ubuntu.com/download/desktop" target="_blank" rel="external">https://ubuntu.com/download/desktop</a>。安装完成后，登录系统，打开Terminal。</li>
+<li><p>安装vim编辑器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt install vim</div></pre></td></tr></table></figure>
+</li>
+<li><p>按照<a href="https://github.com/rvm/ubuntu_rvm" target="_blank" rel="external">https://github.com/rvm/ubuntu_rvm</a>的安装方法，安装rvm, 命令如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">sudo apt install gnupg2</div><div class="line">gpg2 --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB</div><div class="line">sudo apt-get install software-properties-common</div><div class="line"></div><div class="line">sudo apt-add-repository -y ppa:rael-gc/rvm</div><div class="line">sudo apt-get update</div><div class="line">sudo apt-get install rvm</div></pre></td></tr></table></figure>
+</li>
+<li><p>rvm安装完毕后，为了每次登陆时自动load rvm，执行如下命令。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">echo &apos;source &quot;/etc/profile.d/rvm.sh&quot;&apos; &gt;&gt; ~/.bashrc</div></pre></td></tr></table></figure>
+</li>
+<li><p>退出当前Terminal重新登陆，重新加载rvm环境变量</p>
+	
+	</div>
+  <a type="button" href="/2020/01/31/How-to-install-rails-on-Ubuntu-18-04/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2019-12-31 </div>
+			<div class="article-title"><a href="/2019/12/31/after-upgrade-the-openssl-in-macos/" >MacOS下Brew升级openssl的后续处理</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>Brew安装软件的时候，不小心把openssl版本升了。然后电脑就炸了。vim打不开，ruby不能运行，一些命令出错。<br>一个一个的填坑，填坑记录如下:</p>
+<h3 id="vim"><a href="#vim" class="headerlink" title="vim"></a>vim</h3><p>vim问题参见 <a href="/2019/12/31/macos-youcompleteme-ERROR-root-code-for-hash-md5-was-not-found/" title="Macos下vim中YouCompleteMe报错 ERROR:root:code for hash md5 was not found">Macos下vim中YouCompleteMe报错 ERROR:root:code for hash md5 was not found</a></p>
+<h3 id="Ruby"><a href="#Ruby" class="headerlink" title="Ruby"></a>Ruby</h3><p>我的ruby是通过rvm安装的。本地存有多个版本，每个版本又因为项目隔离需要，使用了不同的gemset。<br>openssl升级到1.1过后，全部都炸了。只能重新安装编译。</p>
+	
+	</div>
+  <a type="button" href="/2019/12/31/after-upgrade-the-openssl-in-macos/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
            
 			  
 	
@@ -535,65 +599,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2019-09-30 </div>
-			<div class="article-title"><a href="/2019/09/30/apple-airport-express-access-unexpected-error-occurred/" >设置AirPort Express时获取不到设备信息的解决方案</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>设置新airport express，使用AirPort Utility获取设备信息时，提示”An unexpected error occurred try again”。</p>
-<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><p>解决办法如下:</p>
-<ol>
-<li>打开系统设置”System Preferences”，选择网络”Network”</li>
-<li>左侧选择连接设备的网络，”Wi-Fi”或者有线网络, 点击右下角的”Advanced..”</li>
-<li>选择”TCP/IP”的tab</li>
-<li>在”Configure IPv6”页面，选择”Link-local only”</li>
-<li>点击”OK”和”Apply”</li>
-</ol>
-	
-	</div>
-  <a type="button" href="/2019/09/30/apple-airport-express-access-unexpected-error-occurred/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2019-09-29 </div>
-			<div class="article-title"><a href="/2019/09/29/still-password-when-setting-public-key-ssh-authorization/" >ssh设置私钥登录后还是提示需要输入密码</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><p>在客户机器上配置好使用key免密登录后，尝试使用私钥登录，却被提示还是需要密码。<br>检查了一圈服务器上<code>~/.ssh/</code>, <code>~/.ssh/authorized_keys</code>的权限, 权限设置都没有问题。<br>可登录时还是提示需要输入密码。只能一步一步来检查调试</p>
-<h3 id="解决步骤"><a href="#解决步骤" class="headerlink" title="解决步骤"></a>解决步骤</h3><ul>
-<li>首先尝试在客户端ssh时加上-vv参数来输出debug信息, 看是否有明显的错误信息。<br>debug输出如下<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">debug1: SSH2_MSG_EXT_INFO received</div><div class="line">debug1: kex_input_ext_info: server-sig-algs=&lt;ssh-ed25519,ssh-rsa,rsa-sha2-256,rsa-sha2-512,ssh-dss,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521&gt;</div><div class="line">debug2: service_accept: ssh-userauth</div><div class="line">debug1: SSH2_MSG_SERVICE_ACCEPT received</div><div class="line">debug1: Authentications that can continue: publickey,password,keyboard-interactive</div><div class="line">debug1: Next authentication method: publickey</div><div class="line">debug1: Trying private key: /home/deployer/.ssh/id_rsa_sync</div><div class="line">debug2: we sent a publickey packet, wait for reply</div><div class="line">debug1: Authentications that can continue: publickey,password,keyboard-interactive</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>在正常情况下，<code>Trying private key: /home/deployer/.ssh/id_rsa_sync</code>之后，应该是提示密钥验证成功<code>Authentication succeeded (publickey).</code>并登录到服务器上。<br>这边是直接提示<code>Authentications that can continue: publickey,password,keyboard-interactive</code>，表示没有成功。<br>
-	
-	</div>
-  <a type="button" href="/2019/09/29/still-password-when-setting-public-key-ssh-authorization/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -665,11 +670,11 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/#Code">Code<span>5</span></a></li>
 		
-			<li><a href="/categories/#Linux">Linux<span>6</span></a></li>
+			<li><a href="/categories/#Linux">Linux<span>7</span></a></li>
 		
 			<li><a href="/categories/#Shell">Shell<span>8</span></a></li>
 		
-			<li><a href="/categories/#Tools">Tools<span>23</span></a></li>
+			<li><a href="/categories/#Tools">Tools<span>24</span></a></li>
 		
 		</ul>
 	</div>
@@ -681,48 +686,48 @@ var _hmt = _hmt || [];
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/#FFMPEG">FFMPEG<span>1</span></a></li>
+			<li><a href="/tags/#Ruby">Ruby<span>9</span></a></li>
 		
-			<li><a href="/tags/#Rails">Rails<span>3</span></a></li>
+			<li><a href="/tags/#Kubernetes">Kubernetes<span>1</span></a></li>
 		
 			<li><a href="/tags/#AWS CLI">AWS CLI<span>6</span></a></li>
 		
-			<li><a href="/tags/#Office">Office<span>2</span></a></li>
+			<li><a href="/tags/#IAM">IAM<span>3</span></a></li>
 		
-			<li><a href="/tags/#Image">Image<span>2</span></a></li>
+			<li><a href="/tags/#HTTP">HTTP<span>5</span></a></li>
 		
-			<li><a href="/tags/#EC2 User Data">EC2 User Data<span>1</span></a></li>
+			<li><a href="/tags/#Rails">Rails<span>4</span></a></li>
 		
-			<li><a href="/tags/#感悟">感悟<span>1</span></a></li>
-		
-			<li><a href="/tags/#Lightsail">Lightsail<span>2</span></a></li>
-		
-			<li><a href="/tags/#Udemy">Udemy<span>1</span></a></li>
+			<li><a href="/tags/#Hexo">Hexo<span>7</span></a></li>
 		
 			<li><a href="/tags/#CodeCommit">CodeCommit<span>1</span></a></li>
 		
-			<li><a href="/tags/#DynamoDB">DynamoDB<span>1</span></a></li>
+			<li><a href="/tags/#PostgreSQL">PostgreSQL<span>3</span></a></li>
 		
-			<li><a href="/tags/#VMware">VMware<span>2</span></a></li>
+			<li><a href="/tags/#Firewall">Firewall<span>1</span></a></li>
 		
-			<li><a href="/tags/#Git">Git<span>2</span></a></li>
+			<li><a href="/tags/#EC2">EC2<span>8</span></a></li>
 		
-			<li><a href="/tags/#iOS">iOS<span>1</span></a></li>
+			<li><a href="/tags/#CloudWatch">CloudWatch<span>1</span></a></li>
 		
-			<li><a href="/tags/#PostgreSQL">PostgreSQL<span>2</span></a></li>
+			<li><a href="/tags/#Linux">Linux<span>15</span></a></li>
 		
-			<li><a href="/tags/#Failover">Failover<span>1</span></a></li>
+			<li><a href="/tags/#Nodejs">Nodejs<span>2</span></a></li>
 		
-			<li><a href="/tags/#AWS Tools">AWS Tools<span>2</span></a></li>
+			<li><a href="/tags/#Image">Image<span>2</span></a></li>
 		
-			<li><a href="/tags/#Docker">Docker<span>1</span></a></li>
+			<li><a href="/tags/#Douban">Douban<span>1</span></a></li>
 		
-			<li><a href="/tags/#CentOS">CentOS<span>8</span></a></li>
+			<li><a href="/tags/#Office">Office<span>2</span></a></li>
 		
-			<li><a href="/tags/#Yum">Yum<span>1</span></a></li>
+			<li><a href="/tags/#RVM">RVM<span>2</span></a></li>
+		
+			<li><a href="/tags/#Sysops">Sysops<span>1</span></a></li>
+		
+			<li><a href="/tags/#AutoScaling">AutoScaling<span>3</span></a></li>
 		
 		
-		   <li><a href="/tags">...<span>54</span></a></li>
+		   <li><a href="/tags">...<span>55</span></a></li>
 		 
 		</ul>
 	</div>
@@ -735,6 +740,14 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2020/01/31/How-to-install-rails-on-Ubuntu-18-04/" ><i class="fa fa-file-o"></i>在Ubuntu 18.04中安装Rails开发环境</a>
+      </li>
+    
+      <li>
+        <a href="/2019/12/31/after-upgrade-the-openssl-in-macos/" ><i class="fa fa-file-o"></i>MacOS下Brew升级openssl的后续处理</a>
+      </li>
+    
+      <li>
         <a href="/2019/12/31/macos-youcompleteme-ERROR-root-code-for-hash-md5-was-not-found/" ><i class="fa fa-file-o"></i>Macos下vim中YouCompleteMe报错 E...</a>
       </li>
     
@@ -744,14 +757,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2019/12/02/ImageMagick-watermark/" ><i class="fa fa-file-o"></i>使用ImageMagick来给图片打文字水印</a>
-      </li>
-    
-      <li>
-        <a href="/2019/11/28/way-to-install-wkhtmltopdf-and-wkhtmltoimage-to-CentOS-7/" ><i class="fa fa-file-o"></i>如何在CentOS 7 中安装wkhtmltopdf和...</a>
-      </li>
-    
-      <li>
-        <a href="/2019/11/19/how-to-install-docker-and-kubernetes-on-macos/" ><i class="fa fa-file-o"></i>在Macos上安装Docker和Kubernetes</a>
       </li>
     
   </ul>

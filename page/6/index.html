@@ -139,6 +139,56 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
+			<div class="date"> 2018-05-21 </div>
+			<div class="article-title"><a href="/2018/05/21/ssh-key-Invalid-key-length-Error-on-Macos/" >macOS 10.13.2下SSH命令Invalid key length错误的原因</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>升级到Macos 10.13.2后，使用ssh以key方式登陆一个12年配置的服务器的时候，ssh命令报告了<code>Invalid key length</code>的错误。</p>
+<p>很是纳闷，服务器和本地的key都是配置好后就没动过的，key pair本身肯定没问题啊，怎么会报错了呢?</p>
+<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>Google了一下，发现是MacOS使用的OpenSSH版本升级到了7.6，小于1024bits的RSA keys已经不被支持了。</p>
+<p>使用<code>ssh-keygen</code>查看了一下public key，发现是1023bit的。所以ssh时候报了<code>Invalid key length</code>的错误。</p>
+	
+	</div>
+  <a type="button" href="/2018/05/21/ssh-key-Invalid-key-length-Error-on-Macos/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2018-05-10 </div>
+			<div class="article-title"><a href="/2018/05/10/how-to-write-NTFS-Deives-on-a-Mac-10.13/" >macOS 10.13 High Sierra读写NTFS移动硬盘</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>系统升级到10.13后，没用过移动硬盘，所以一直也没发现以前装的osxfuse+ntfs-3g在系统更新后已经失效了。结果么在要使用的时候发现悲剧了，在10.13中没法写NTFT格式的移动硬盘了。</p>
+<p>上网搜了一下，How-To Geek上面有一篇文章，详细讲述了Macos下挂载NTFS移动硬盘的几种方法,有收费方案也有免费方案，并比较了每个方案的优缺点。 虽然文章是基于macOS 10.12 Sierra的，但各个方案的优缺点同样适用于10.13。<a href="https://www.howtogeek.com/236055/how-to-write-to-ntfs-drives-on-a-mac/" target="_blank" rel="external">How to Write to NTFS Drives on a Mac</a></p>
+	
+	</div>
+  <a type="button" href="/2018/05/10/how-to-write-NTFS-Deives-on-a-Mac-10.13/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
 			<div class="date"> 2018-04-25 </div>
 			<div class="article-title"><a href="/2018/04/25/command-line-tools-to-check-images-on-macos/" >Mac下几个处理图片的命令</a></div>						
 		</h3>
@@ -336,58 +386,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2018-03-12 </div>
-			<div class="article-title"><a href="/2018/03/12/how-to-handle-Retirement-Notification-Amazon-EC2-Instance-scheduled-for-retirement/" >EC2底层硬件Retirement的处理方法</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>AWS的EC2的实例是在物理机上虚拟化出来的，当承载EC2的物理机出现问题或者要退役时，AWS会发送一封主题为<strong>[Retirement Notification] Amazon EC2 Instance scheduled for retirement</strong>的email到AWS Account的注册邮箱中。</p>
-<p>以前多次收到过这类邮件，但提示的目标instance-ID都是AutoScaling中运行的EC2，而AutoScaling中的Instance自动伸缩不会影响业务，因此也从没有主动去处理过。</p>
-<p>这次突然收到通知邮件，说一台运行后台任务的Instance的underlying hardware hosting出问题了。在此记录一下相关的现象和解决方法。</p>
-	
-	</div>
-  <a type="button" href="/2018/03/12/how-to-handle-Retirement-Notification-Amazon-EC2-Instance-scheduled-for-retirement/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2018-02-11 </div>
-			<div class="article-title"><a href="/2018/02/11/a-way-to-use-csv-file-to-populate-the-database-by-rake-db-seed-on-rails/" >使用seed将csv格式的db文件导入DB</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>一段将csv格式的db文件导入对应表结构的代码。</p>
-<h3 id="前提要求"><a href="#前提要求" class="headerlink" title="前提要求"></a>前提要求</h3><ol>
-<li>csv文件名字和Model Class需要一一对应， 比如用户表users, Model中定义是<code>class User &lt; ActiveRecord::Base</code>, 那么csv文件名字得是user.csv</li>
-<li>csv文件需要有header,并且header名字需要同数据库中对应表的字段名相同</li>
-</ol>
-	
-	</div>
-  <a type="button" href="/2018/02/11/a-way-to-use-csv-file-to-populate-the-database-by-rake-db-seed-on-rails/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -459,11 +457,11 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/#Code">Code<span>5</span></a></li>
 		
-			<li><a href="/categories/#Linux">Linux<span>6</span></a></li>
+			<li><a href="/categories/#Linux">Linux<span>7</span></a></li>
 		
 			<li><a href="/categories/#Shell">Shell<span>8</span></a></li>
 		
-			<li><a href="/categories/#Tools">Tools<span>23</span></a></li>
+			<li><a href="/categories/#Tools">Tools<span>24</span></a></li>
 		
 		</ul>
 	</div>
@@ -475,48 +473,48 @@ var _hmt = _hmt || [];
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/#AWS Tools">AWS Tools<span>2</span></a></li>
+			<li><a href="/tags/#AWS Free Tier">AWS Free Tier<span>1</span></a></li>
 		
-			<li><a href="/tags/#Tips">Tips<span>1</span></a></li>
-		
-			<li><a href="/tags/#Udemy">Udemy<span>1</span></a></li>
-		
-			<li><a href="/tags/#感悟">感悟<span>1</span></a></li>
+			<li><a href="/tags/#VMware">VMware<span>2</span></a></li>
 		
 			<li><a href="/tags/#Lightsail">Lightsail<span>2</span></a></li>
 		
+			<li><a href="/tags/#Git">Git<span>2</span></a></li>
+		
 			<li><a href="/tags/#Github">Github<span>3</span></a></li>
 		
-			<li><a href="/tags/#Nginx">Nginx<span>7</span></a></li>
+			<li><a href="/tags/#Solutions Architect">Solutions Architect<span>1</span></a></li>
 		
-			<li><a href="/tags/#Office">Office<span>2</span></a></li>
-		
-			<li><a href="/tags/#HTTPS">HTTPS<span>1</span></a></li>
-		
-			<li><a href="/tags/#Kubernetes">Kubernetes<span>1</span></a></li>
-		
-			<li><a href="/tags/#DynamoDB">DynamoDB<span>1</span></a></li>
-		
-			<li><a href="/tags/#AWS Deep Dive">AWS Deep Dive<span>2</span></a></li>
-		
-			<li><a href="/tags/#Yum">Yum<span>1</span></a></li>
-		
-			<li><a href="/tags/#Sysops">Sysops<span>1</span></a></li>
-		
-			<li><a href="/tags/#Passenger">Passenger<span>2</span></a></li>
-		
-			<li><a href="/tags/#Rails">Rails<span>3</span></a></li>
+			<li><a href="/tags/#Tips">Tips<span>1</span></a></li>
 		
 			<li><a href="/tags/#Elastic Beanstalk">Elastic Beanstalk<span>7</span></a></li>
 		
-			<li><a href="/tags/#Hexo">Hexo<span>7</span></a></li>
+			<li><a href="/tags/#PostgreSQL">PostgreSQL<span>3</span></a></li>
 		
-			<li><a href="/tags/#Ruby">Ruby<span>8</span></a></li>
+			<li><a href="/tags/#Rails">Rails<span>4</span></a></li>
 		
-			<li><a href="/tags/#Image">Image<span>2</span></a></li>
+			<li><a href="/tags/#Elastic Load Balancing">Elastic Load Balancing<span>6</span></a></li>
+		
+			<li><a href="/tags/#Network">Network<span>4</span></a></li>
+		
+			<li><a href="/tags/#Ruby">Ruby<span>9</span></a></li>
+		
+			<li><a href="/tags/#AWS CLI">AWS CLI<span>6</span></a></li>
+		
+			<li><a href="/tags/#HTTPS">HTTPS<span>1</span></a></li>
+		
+			<li><a href="/tags/#iOS">iOS<span>1</span></a></li>
+		
+			<li><a href="/tags/#Chrome">Chrome<span>1</span></a></li>
+		
+			<li><a href="/tags/#Passenger">Passenger<span>2</span></a></li>
+		
+			<li><a href="/tags/#DynamoDB">DynamoDB<span>1</span></a></li>
+		
+			<li><a href="/tags/#RVM">RVM<span>2</span></a></li>
 		
 		
-		   <li><a href="/tags">...<span>54</span></a></li>
+		   <li><a href="/tags">...<span>55</span></a></li>
 		 
 		</ul>
 	</div>
@@ -529,6 +527,14 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2020/01/31/How-to-install-rails-on-Ubuntu-18-04/" ><i class="fa fa-file-o"></i>在Ubuntu 18.04中安装Rails开发环境</a>
+      </li>
+    
+      <li>
+        <a href="/2019/12/31/after-upgrade-the-openssl-in-macos/" ><i class="fa fa-file-o"></i>MacOS下Brew升级openssl的后续处理</a>
+      </li>
+    
+      <li>
         <a href="/2019/12/31/macos-youcompleteme-ERROR-root-code-for-hash-md5-was-not-found/" ><i class="fa fa-file-o"></i>Macos下vim中YouCompleteMe报错 E...</a>
       </li>
     
@@ -538,14 +544,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2019/12/02/ImageMagick-watermark/" ><i class="fa fa-file-o"></i>使用ImageMagick来给图片打文字水印</a>
-      </li>
-    
-      <li>
-        <a href="/2019/11/28/way-to-install-wkhtmltopdf-and-wkhtmltoimage-to-CentOS-7/" ><i class="fa fa-file-o"></i>如何在CentOS 7 中安装wkhtmltopdf和...</a>
-      </li>
-    
-      <li>
-        <a href="/2019/11/19/how-to-install-docker-and-kubernetes-on-macos/" ><i class="fa fa-file-o"></i>在Macos上安装Docker和Kubernetes</a>
       </li>
     
   </ul>

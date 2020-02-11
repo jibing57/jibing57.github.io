@@ -139,6 +139,65 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
+			<div class="date"> 2019-09-30 </div>
+			<div class="article-title"><a href="/2019/09/30/apple-airport-express-access-unexpected-error-occurred/" >设置AirPort Express时获取不到设备信息的解决方案</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>设置新airport express，使用AirPort Utility获取设备信息时，提示”An unexpected error occurred try again”。</p>
+<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><p>解决办法如下:</p>
+<ol>
+<li>打开系统设置”System Preferences”，选择网络”Network”</li>
+<li>左侧选择连接设备的网络，”Wi-Fi”或者有线网络, 点击右下角的”Advanced..”</li>
+<li>选择”TCP/IP”的tab</li>
+<li>在”Configure IPv6”页面，选择”Link-local only”</li>
+<li>点击”OK”和”Apply”</li>
+</ol>
+	
+	</div>
+  <a type="button" href="/2019/09/30/apple-airport-express-access-unexpected-error-occurred/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2019-09-29 </div>
+			<div class="article-title"><a href="/2019/09/29/still-password-when-setting-public-key-ssh-authorization/" >ssh设置私钥登录后还是提示需要输入密码</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><p>在客户机器上配置好使用key免密登录后，尝试使用私钥登录，却被提示还是需要密码。<br>检查了一圈服务器上<code>~/.ssh/</code>, <code>~/.ssh/authorized_keys</code>的权限, 权限设置都没有问题。<br>可登录时还是提示需要输入密码。只能一步一步来检查调试</p>
+<h3 id="解决步骤"><a href="#解决步骤" class="headerlink" title="解决步骤"></a>解决步骤</h3><ul>
+<li>首先尝试在客户端ssh时加上-vv参数来输出debug信息, 看是否有明显的错误信息。<br>debug输出如下<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">debug1: SSH2_MSG_EXT_INFO received</div><div class="line">debug1: kex_input_ext_info: server-sig-algs=&lt;ssh-ed25519,ssh-rsa,rsa-sha2-256,rsa-sha2-512,ssh-dss,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521&gt;</div><div class="line">debug2: service_accept: ssh-userauth</div><div class="line">debug1: SSH2_MSG_SERVICE_ACCEPT received</div><div class="line">debug1: Authentications that can continue: publickey,password,keyboard-interactive</div><div class="line">debug1: Next authentication method: publickey</div><div class="line">debug1: Trying private key: /home/deployer/.ssh/id_rsa_sync</div><div class="line">debug2: we sent a publickey packet, wait for reply</div><div class="line">debug1: Authentications that can continue: publickey,password,keyboard-interactive</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>在正常情况下，<code>Trying private key: /home/deployer/.ssh/id_rsa_sync</code>之后，应该是提示密钥验证成功<code>Authentication succeeded (publickey).</code>并登录到服务器上。<br>这边是直接提示<code>Authentications that can continue: publickey,password,keyboard-interactive</code>，表示没有成功。<br>
+	
+	</div>
+  <a type="button" href="/2019/09/29/still-password-when-setting-public-key-ssh-authorization/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
 			<div class="date"> 2019-09-24 </div>
 			<div class="article-title"><a href="/2019/09/24/backup-tools-borgbackup/" >BorgBackup -- 基于命令行的增量备份工具</a></div>						
 		</h3>
@@ -405,93 +464,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2019-05-29 </div>
-			<div class="article-title"><a href="/2019/05/29/how-to-deploy-hexo-to-aws-lightsail/" >将hexo部署到AWS的Lightsail</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>Github Pages的访问最近有些慢，感觉不太稳。最近正好买了台Lightsail，就考虑将blog丢到Lightsail上去, 试试Lightsail的访问速度。<br>整理了一下相关操作步骤，该步骤应该也同样适用于EC2。区别就是Lightsail默认配置了22和80端口是开放的。部署到EC2的话，需要自己设置Security Group开放22和80端口。</p>
-<p><strong>步骤前提</strong></p>
-<ul>
-<li>本地已经有<a href="https://hexo.io/" target="_blank" rel="external">hexo</a>环境</li>
-<li>有可用的<a href="https://aws.amazon.com/lightsail/" target="_blank" rel="external">Lightsail Instance</a></li>
-</ul>
-<p><strong>步骤中特定的信息，部署时可能需要根据自己实际情况进行修改</strong></p>
-<ul>
-<li>Lightsail Instance相关:<ul>
-<li>AMI是原生的</li>
-<li>Public IP是<code>54.203.178.195</code></li>
-<li>博客目录<code>/opt/app/web/hexo</code></li>
-<li>存放git库的账号名字为git, 博客git库代码存放目录:<code>/opt/app/git/hexo.git</code></li>
-</ul>
-</li>
-<li>本地信息<ul>
-<li>本地系统是<code>Macos 10.14.4</code></li>
-<li>以identity key而不是密码形式登录远端服务器<ul>
-<li>此处在~/tmp/tmp/下新生成key，也可以按照实际要求修改为使用平时用的key</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-	
-	</div>
-  <a type="button" href="/2019/05/29/how-to-deploy-hexo-to-aws-lightsail/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2019-05-21 </div>
-			<div class="article-title"><a href="/2019/05/21/how-to-direct-http-to-https-in-elasticbeanstalk-ruby-passenger-platform/" >Elastic Beanstalk Ruby Passenger平台下设置HTTP重定向到HTTPS</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>Elastic Beanstalk配置HTTPS后，接下来就需要配置HTTP请求redirect到HTTPS。<br>以前都是直接在application层面做redirect的。这次调查了一下在passenger层面来进行redirect的做法,记录在此。</p>
-<h3 id="Ruby平台基本信息"><a href="#Ruby平台基本信息" class="headerlink" title="Ruby平台基本信息:"></a>Ruby平台基本信息:</h3><ul>
-<li>EB平台: <code>Passenger with Ruby 2.3 running on 64bit Amazon Linux/2.9.3</code><ul>
-<li>Ruby 2.3</li>
-<li>Passenger模式</li>
-</ul>
-</li>
-<li>前端使用ALB进行负载均衡，和后端EC2之间端口对应关系:<ul>
-<li>ALB:443 -&gt; EC2:80 (在ALB侧进行HTTPS terminate)</li>
-<li>ALB:80 -&gt; EC2:80</li>
-</ul>
-</li>
-</ul>
-<h3 id="修改方法"><a href="#修改方法" class="headerlink" title="修改方法"></a>修改方法</h3><p>使用<code>.ebextension</code>直接修改passenger的配置文件<code>/opt/elasticbeanstalk/support/conf/nginx_config.erb</code>.<br>修改要点:</p>
-<ol>
-<li>动态请求http_x_forwarded_proto 不是https的，redirect为https</li>
-<li>静态文件请求的http_x_forwarded_proto不是https的，redirect为https</li>
-<li>来自ELB health check的请求还是直接返回请求，而不用redirect为https</li>
-</ol>
-	
-	</div>
-  <a type="button" href="/2019/05/21/how-to-direct-http-to-https-in-elasticbeanstalk-ruby-passenger-platform/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -563,11 +535,11 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/#Code">Code<span>5</span></a></li>
 		
-			<li><a href="/categories/#Linux">Linux<span>6</span></a></li>
+			<li><a href="/categories/#Linux">Linux<span>7</span></a></li>
 		
 			<li><a href="/categories/#Shell">Shell<span>8</span></a></li>
 		
-			<li><a href="/categories/#Tools">Tools<span>23</span></a></li>
+			<li><a href="/categories/#Tools">Tools<span>24</span></a></li>
 		
 		</ul>
 	</div>
@@ -579,48 +551,48 @@ var _hmt = _hmt || [];
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/#AWS SDK">AWS SDK<span>2</span></a></li>
+			<li><a href="/tags/#Lightsail">Lightsail<span>2</span></a></li>
 		
-			<li><a href="/tags/#Passenger">Passenger<span>2</span></a></li>
+			<li><a href="/tags/#CodeCommit">CodeCommit<span>1</span></a></li>
 		
-			<li><a href="/tags/#CentOS">CentOS<span>8</span></a></li>
-		
-			<li><a href="/tags/#Douban">Douban<span>1</span></a></li>
-		
-			<li><a href="/tags/#CloudWatch">CloudWatch<span>1</span></a></li>
-		
-			<li><a href="/tags/#Ruby">Ruby<span>8</span></a></li>
-		
-			<li><a href="/tags/#AWS Tools">AWS Tools<span>2</span></a></li>
+			<li><a href="/tags/#HTTPS">HTTPS<span>1</span></a></li>
 		
 			<li><a href="/tags/#Image">Image<span>2</span></a></li>
 		
-			<li><a href="/tags/#RVM">RVM<span>1</span></a></li>
+			<li><a href="/tags/#Tips">Tips<span>1</span></a></li>
 		
-			<li><a href="/tags/#Elastic Load Balancing">Elastic Load Balancing<span>6</span></a></li>
+			<li><a href="/tags/#AWS SDK">AWS SDK<span>2</span></a></li>
 		
-			<li><a href="/tags/#Failover">Failover<span>1</span></a></li>
+			<li><a href="/tags/#Github">Github<span>3</span></a></li>
 		
-			<li><a href="/tags/#Linux">Linux<span>15</span></a></li>
+			<li><a href="/tags/#AWS Deep Dive">AWS Deep Dive<span>2</span></a></li>
 		
-			<li><a href="/tags/#MacOS">MacOS<span>17</span></a></li>
+			<li><a href="/tags/#Chrome">Chrome<span>1</span></a></li>
 		
-			<li><a href="/tags/#Solutions Architect">Solutions Architect<span>1</span></a></li>
+			<li><a href="/tags/#DynamoDB">DynamoDB<span>1</span></a></li>
+		
+			<li><a href="/tags/#PostgreSQL">PostgreSQL<span>3</span></a></li>
+		
+			<li><a href="/tags/#Video">Video<span>1</span></a></li>
+		
+			<li><a href="/tags/#IAM">IAM<span>3</span></a></li>
+		
+			<li><a href="/tags/#EC2 User Data">EC2 User Data<span>1</span></a></li>
+		
+			<li><a href="/tags/#Passenger">Passenger<span>2</span></a></li>
+		
+			<li><a href="/tags/#Ubuntu">Ubuntu<span>1</span></a></li>
+		
+			<li><a href="/tags/#RDS">RDS<span>3</span></a></li>
 		
 			<li><a href="/tags/#Udemy">Udemy<span>1</span></a></li>
 		
-			<li><a href="/tags/#Lightsail">Lightsail<span>2</span></a></li>
+			<li><a href="/tags/#Hexo">Hexo<span>7</span></a></li>
 		
-			<li><a href="/tags/#Docker">Docker<span>1</span></a></li>
-		
-			<li><a href="/tags/#VMware">VMware<span>2</span></a></li>
-		
-			<li><a href="/tags/#Kubernetes">Kubernetes<span>1</span></a></li>
-		
-			<li><a href="/tags/#HTTP">HTTP<span>5</span></a></li>
+			<li><a href="/tags/#Nodejs">Nodejs<span>2</span></a></li>
 		
 		
-		   <li><a href="/tags">...<span>54</span></a></li>
+		   <li><a href="/tags">...<span>55</span></a></li>
 		 
 		</ul>
 	</div>
@@ -633,6 +605,14 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2020/01/31/How-to-install-rails-on-Ubuntu-18-04/" ><i class="fa fa-file-o"></i>在Ubuntu 18.04中安装Rails开发环境</a>
+      </li>
+    
+      <li>
+        <a href="/2019/12/31/after-upgrade-the-openssl-in-macos/" ><i class="fa fa-file-o"></i>MacOS下Brew升级openssl的后续处理</a>
+      </li>
+    
+      <li>
         <a href="/2019/12/31/macos-youcompleteme-ERROR-root-code-for-hash-md5-was-not-found/" ><i class="fa fa-file-o"></i>Macos下vim中YouCompleteMe报错 E...</a>
       </li>
     
@@ -642,14 +622,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2019/12/02/ImageMagick-watermark/" ><i class="fa fa-file-o"></i>使用ImageMagick来给图片打文字水印</a>
-      </li>
-    
-      <li>
-        <a href="/2019/11/28/way-to-install-wkhtmltopdf-and-wkhtmltoimage-to-CentOS-7/" ><i class="fa fa-file-o"></i>如何在CentOS 7 中安装wkhtmltopdf和...</a>
-      </li>
-    
-      <li>
-        <a href="/2019/11/19/how-to-install-docker-and-kubernetes-on-macos/" ><i class="fa fa-file-o"></i>在Macos上安装Docker和Kubernetes</a>
       </li>
     
   </ul>

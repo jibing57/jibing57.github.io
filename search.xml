@@ -3,6 +3,77 @@
   
     
     <entry>
+      <title><![CDATA[弱网络环境下如何使用rvm安装ruby]]></title>
+      <url>/2020/02/29/how-to-use-rvm-to-instal-ruby-in-slow-network-connection/</url>
+      <content type="html"><![CDATA[<p>下面介绍下如何在屏蔽比较严重的网络情况下使用rvm来半手工的安装ruby, 如下操作基于CentOS 7，其他操作系统可能有所不同。</p>
+<h3 id="安装rvm"><a href="#安装rvm" class="headerlink" title="安装rvm"></a>安装rvm</h3><h4 id="官网安装步骤"><a href="#官网安装步骤" class="headerlink" title="官网安装步骤"></a>官网安装步骤</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">gpg --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB</div><div class="line">curl -L get.rvm.io | bash -s stable</div></pre></td></tr></table></figure>
+<h4 id="问题点"><a href="#问题点" class="headerlink" title="问题点:"></a>问题点:</h4><p><code>get.rvm.io</code>是重定向到<code>https://raw.githubusercontent.com/rvm/rvm/master/binscripts/rvm-installer</code>这个地址的。可是有些国内机构的网络中，<code>raw.githubusercontent.com</code>这个域名是被屏蔽的。</p>
+<h4 id="措施"><a href="#措施" class="headerlink" title="措施:"></a>措施:</h4><p>可先在本地下载rvm-installer脚本，再拷贝脚本到服务器后，再执行安装命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"># 1. 本机上下载</div><div class="line">curl -L get.rvm.io &gt; rvm-installer.sh</div><div class="line"></div><div class="line"># 2. 拷贝rvm-installer.sh到服务器</div><div class="line"></div><div class="line"># 3. 服务器本地执行安装命令</div><div class="line">cat rvm-installer.sh | bash -s stable</div></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<h3 id="使用rvm安装ruby"><a href="#使用rvm安装ruby" class="headerlink" title="使用rvm安装ruby"></a>使用rvm安装ruby</h3><h4 id="官网安装步骤-1"><a href="#官网安装步骤-1" class="headerlink" title="官网安装步骤:"></a>官网安装步骤:</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">rvm requirements run</div><div class="line">rvm install 2.3.8</div></pre></td></tr></table></figure>
+<h4 id="问题点-1"><a href="#问题点-1" class="headerlink" title="问题点:"></a>问题点:</h4><p>安装ruby时，会下载ruby源码和rubygems，然后进行编译安装。某些网络情况下，ruby源码和rubygems都下载不下来。会导致安装失败。</p>
+<h4 id="措施-1"><a href="#措施-1" class="headerlink" title="措施:"></a>措施:</h4><p>指定ruby下载源为rubychina，或手动下载ruby源码, 再下载rubygems，放在rvm archives目录下，最后执行安装命令即可。以全局安装ruby 2.3.8, rubygems 3.0.8为例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"># 1. 修改ruby source为rubychina </div><div class="line">echo &quot;ruby_url=https://cache.ruby-china.com/pub/ruby&quot; &gt;&gt; /usr/local/rvm/user/db</div><div class="line"></div><div class="line"># 2. 本地下载rubygems 3.0.8</div><div class="line">wget https://rubygems.org/rubygems/rubygems-3.0.8.tgz</div><div class="line"></div><div class="line"># 3. 将rubygems拷贝到服务器的/usr/local/rvm/archives/中</div><div class="line"></div><div class="line"># 4. 执行安装命令</div><div class="line">rvm install 2.3.8</div></pre></td></tr></table></figure>
+<h3 id="替换使用rubychina的gem源"><a href="#替换使用rubychina的gem源" class="headerlink" title="替换使用rubychina的gem源"></a>替换使用rubychina的gem源</h3><p>将默认的Gem源从rubygems.org替换为rubychina<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ gem sources --add https://gems.ruby-china.com/ --remove https://rubygems.org/</div><div class="line">$ gem sources -l</div><div class="line">https://gems.ruby-china.com</div><div class="line"># 确保只有 gems.ruby-china.com</div></pre></td></tr></table></figure></p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://rvm.io/rvm/install" target="_blank" rel="external">Installing RVM</a></li>
+<li><a href="https://blog.csdn.net/watkinsong/article/details/7770391" target="_blank" rel="external">rvm的安装, 使用rvm, 安装ruby, 以及gem的使用</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> Linux </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Ruby </tag>
+            
+            <tag> RVM </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[如何在国内加速yarn install]]></title>
+      <url>/2020/02/24/how-to-speed-yarn-install-interiorly/</url>
+      <content type="html"><![CDATA[<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p><code>yarn install</code>安装包时，在国内的网络环境下，不挂梯子，访问不稳定，会比较慢。</p>
+<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p><code>yarn install</code>默认是去<code>npm</code>,<code>yarn</code>官方源去获取软件信息的。</p>
+<p>使用<code>yarn config list</code>可以查看到<code>registry</code>的默认值是<code>https://registry.yarnpkg.com</code>。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">$ yarn config list</div><div class="line">yarn config v1.7.0</div><div class="line">info yarn config</div><div class="line">&#123; &apos;version-tag-prefix&apos;: &apos;v&apos;,</div><div class="line">  &apos;version-git-tag&apos;: true,</div><div class="line">  &apos;version-commit-hooks&apos;: true,</div><div class="line">  &apos;version-git-sign&apos;: false,</div><div class="line">  &apos;version-git-message&apos;: &apos;v%s&apos;,</div><div class="line">  &apos;init-version&apos;: &apos;1.0.0&apos;,</div><div class="line">  &apos;init-license&apos;: &apos;MIT&apos;,</div><div class="line">  &apos;save-prefix&apos;: &apos;^&apos;,</div><div class="line">  &apos;bin-links&apos;: true,</div><div class="line">  &apos;ignore-scripts&apos;: false,</div><div class="line">  &apos;ignore-optional&apos;: false,</div><div class="line">  registry: &apos;https://registry.yarnpkg.com&apos;,</div><div class="line">  &apos;strict-ssl&apos;: true,</div><div class="line">  &apos;user-agent&apos;: &apos;yarn/1.7.0 npm/? node/v8.11.2 linux x64&apos; &#125;</div><div class="line">info npm config</div><div class="line">&#123;&#125;</div><div class="line">Done in 0.03s.</div><div class="line">$</div></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><p>可以使用<code>yarn config set registry &#39;https://registry.npm.taobao.org&#39;</code>来设置yarn的registry为淘宝源。</p>
+<p>执行命令后，会自动在yarn的配置文件<code>~/.yarnrc</code>中添加<code>registry &quot;https://registry.npm.taobao.org&quot;</code>。<br>再次运行<code>yarn config list</code>可看到<code>yarn</code>的<code>registry</code>已经设置为淘宝的源了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">$ yarn config list</div><div class="line">yarn config v1.7.0</div><div class="line">info yarn config</div><div class="line">&#123; &apos;version-tag-prefix&apos;: &apos;v&apos;,</div><div class="line">  &apos;version-git-tag&apos;: true,</div><div class="line">  &apos;version-commit-hooks&apos;: true,</div><div class="line">  &apos;version-git-sign&apos;: false,</div><div class="line">  &apos;version-git-message&apos;: &apos;v%s&apos;,</div><div class="line">  &apos;init-version&apos;: &apos;1.0.0&apos;,</div><div class="line">  &apos;init-license&apos;: &apos;MIT&apos;,</div><div class="line">  &apos;save-prefix&apos;: &apos;^&apos;,</div><div class="line">  &apos;bin-links&apos;: true,</div><div class="line">  &apos;ignore-scripts&apos;: false,</div><div class="line">  &apos;ignore-optional&apos;: false,</div><div class="line">  registry: &apos;https://registry.npm.taobao.org&apos;,</div><div class="line">  &apos;strict-ssl&apos;: true,</div><div class="line">  &apos;user-agent&apos;: &apos;yarn/1.7.0 npm/? node/v8.11.2 linux x64&apos;,</div><div class="line">  lastUpdateCheck: 1576820075696 &#125;</div><div class="line">info npm config</div><div class="line">&#123;&#125;</div><div class="line">Done in 0.06s.</div><div class="line">$</div></pre></td></tr></table></figure>
+<h3 id="网上额外总结的一些-yarnrc配置"><a href="#网上额外总结的一些-yarnrc配置" class="headerlink" title="网上额外总结的一些.yarnrc配置"></a>网上额外总结的一些.yarnrc配置</h3><p>网上搜集的一些<code>~/.yarnrc</code>的额外配置，可根据实际需要，来决定是否需要设置。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">registry &quot;https://registry.npm.taobao.org&quot;</div><div class="line"></div><div class="line">sass_binary_site &quot;https://npm.taobao.org/mirrors/node-sass/&quot;</div><div class="line">phantomjs_cdnurl &quot;http://cnpmjs.org/downloads&quot;</div><div class="line">electron_mirror &quot;https://npm.taobao.org/mirrors/electron/&quot;</div><div class="line">sqlite3_binary_host_mirror &quot;https://foxgis.oss-cn-shanghai.aliyuncs.com/&quot;</div><div class="line">profiler_binary_host_mirror &quot;https://npm.taobao.org/mirrors/node-inspector/&quot;</div><div class="line">chromedriver_cdnurl &quot;https://cdn.npm.taobao.org/dist/chromedriver&quot;</div></pre></td></tr></table></figure></p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://learnku.com/articles/15976/yarn-accelerate-and-modify-mirror-source-in-china" target="_blank" rel="external">yarn 国内加速，修改镜像源</a></li>
+<li><a href="https://github.com/yarnpkg/yarn/issues/2411" target="_blank" rel="external">how config yarn use chinese taobao npm mirror</a></li>
+<li><a href="https://blog.csdn.net/qq_36999496/article/details/98352541" target="_blank" rel="external">安装nodejs,npm,yarn</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> Tools </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Nodejs </tag>
+            
+            <tag> Yarn </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[在Ubuntu 18.04中安装Rails开发环境]]></title>
       <url>/2020/01/31/How-to-install-rails-on-Ubuntu-18-04/</url>
       <content type="html"><![CDATA[<p>本文介绍在Ubuntu 18.04上不用Docker，使用本地安装组件的方式搭建Rails+PostgreSQL开发环境的步骤。</p>
@@ -2192,6 +2263,27 @@
 <ul>
 <li><a href="https://www.phusionpassenger.com/docs/references/config_reference/nginx/#passenger_root" target="_blank" rel="external">Configuration reference</a></li>
 </ul>
+<hr>
+<h3 id="Rvm-相关小命令"><a href="#Rvm-相关小命令" class="headerlink" title="Rvm 相关小命令"></a>Rvm 相关小命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># 清理rvm缓存文件</div><div class="line">rvm cleanup all</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="CentOS-7中显示和修改时区"><a href="#CentOS-7中显示和修改时区" class="headerlink" title="CentOS 7中显示和修改时区"></a>CentOS 7中显示和修改时区</h3><p>显示当前系统时区命令<code>timedatectl status</code></p>
+<p>设置当前时区为北京时间<code>timedatectl set-timezone Asia/Shanghai</code></p>
+<p>列出所有支持的时区<code>timedatectl list-timezones</code></p>
+<hr>
+<h3 id="修改CentOS-7中主机名字"><a href="#修改CentOS-7中主机名字" class="headerlink" title="修改CentOS 7中主机名字"></a>修改CentOS 7中主机名字</h3><p>修改主机名命令: <code>hostnamectl set-hostname newname</code></p>
+<hr>
+<h3 id="CentOS-7中安装node-10-x"><a href="#CentOS-7中安装node-10-x" class="headerlink" title="CentOS 7中安装node 10.x"></a>CentOS 7中安装node 10.x</h3><p>CentOS 7中base源的node版本是6.x，但很多新nmp包都需要8.x以上版本，所以base中的node有点老旧了。<br>下面记录在CentOS 7中从NodeSource安装node 10.x的步骤<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ curl –sL https://rpm.nodesource.com/setup_10.x | sudo bash -</div><div class="line">$ sudo yum install nodejs</div></pre></td></tr></table></figure></p>
+<p>安装完毕后，可使用<code>node -v</code>和<code>npm -v</code>查看node和npm的版本</p>
+<ul>
+<li><a href="https://github.com/nodesource/distributions#rpm" target="_blank" rel="external">nodesource/distributions</a></li>
+</ul>
+<hr>
+<h3 id="CentOS-7中安装yarn"><a href="#CentOS-7中安装yarn" class="headerlink" title="CentOS 7中安装yarn"></a>CentOS 7中安装yarn</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ curl --silent --location https://dl.yarnpkg.com/rpm/yarn.repo | sudo tee /etc/yum.repos.d/yarn.repo</div><div class="line">$ sudo yum install yarn</div><div class="line">$ yarn --version</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="让终端走代理的方法"><a href="#让终端走代理的方法" class="headerlink" title="让终端走代理的方法"></a>让终端走代理的方法</h3><p>设置http，https代理<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">export http_proxy=&quot;http://proxyAddress:port&quot;; export HTTP_PROXY=&quot;http://proxyAddress:port&quot;; export https_proxy=&quot;http://proxyAddress:port&quot;; export HTTPS_PROXY=&quot;http://proxyAddress:port&quot;</div></pre></td></tr></table></figure></p>
+<p>设置socks5代理:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">export ALL_PROXY=socks5://proxyAddress:port</div></pre></td></tr></table></figure></p>
+<hr>
+<h3 id="openssl查看证书的几个命令"><a href="#openssl查看证书的几个命令" class="headerlink" title="openssl查看证书的几个命令"></a>openssl查看证书的几个命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># 查看KEY信息</div><div class="line">$ openssl rsa -noout -text -in server.key</div><div class="line"></div><div class="line"># 查看CSR信息</div><div class="line">$ openssl req -noout -text -in server.csr</div><div class="line"></div><div class="line"># 查看证书信息</div><div class="line">$ openssl x509 -noout -text -in ca.crt</div></pre></td></tr></table></figure>
 ]]></content>
       
         <categories>
@@ -10270,9 +10362,9 @@ You can wait for the scheduled retirement date - when the instance is stopped - 
             
             <tag> RDS </tag>
             
-            <tag> AWS SDK </tag>
-            
             <tag> Ruby </tag>
+            
+            <tag> AWS SDK </tag>
             
             <tag> PostgreSQL </tag>
             

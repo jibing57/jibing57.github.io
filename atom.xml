@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.jibing57.com/"/>
-  <updated>2020-02-03T16:20:27.369Z</updated>
+  <updated>2020-03-02T01:18:38.417Z</updated>
   <id>https://www.jibing57.com/</id>
   
   <author>
@@ -15,6 +15,55 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>弱网络环境下如何使用rvm安装ruby</title>
+    <link href="https://www.jibing57.com/2020/02/29/how-to-use-rvm-to-instal-ruby-in-slow-network-connection/"/>
+    <id>https://www.jibing57.com/2020/02/29/how-to-use-rvm-to-instal-ruby-in-slow-network-connection/</id>
+    <published>2020-02-29T05:41:26.000Z</published>
+    <updated>2020-03-02T01:18:38.417Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;下面介绍下如何在屏蔽比较严重的网络情况下使用rvm来半手工的安装ruby, 如下操作基于CentOS 7，其他操作系统可能有所不同。&lt;/p&gt;
+&lt;h3 id=&quot;安装rvm&quot;&gt;&lt;a href=&quot;#安装rvm&quot; class=&quot;headerlink&quot; title=&quot;安装rvm&quot;&gt;&lt;/a&gt;安装rvm&lt;/h3&gt;&lt;h4 id=&quot;官网安装步骤&quot;&gt;&lt;a href=&quot;#官网安装步骤&quot; class=&quot;headerlink&quot; title=&quot;官网安装步骤&quot;&gt;&lt;/a&gt;官网安装步骤&lt;/h4&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;gpg --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;curl -L get.rvm.io | bash -s stable&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h4 id=&quot;问题点&quot;&gt;&lt;a href=&quot;#问题点&quot; class=&quot;headerlink&quot; title=&quot;问题点:&quot;&gt;&lt;/a&gt;问题点:&lt;/h4&gt;&lt;p&gt;&lt;code&gt;get.rvm.io&lt;/code&gt;是重定向到&lt;code&gt;https://raw.githubusercontent.com/rvm/rvm/master/binscripts/rvm-installer&lt;/code&gt;这个地址的。可是有些国内机构的网络中，&lt;code&gt;raw.githubusercontent.com&lt;/code&gt;这个域名是被屏蔽的。&lt;/p&gt;
+&lt;h4 id=&quot;措施&quot;&gt;&lt;a href=&quot;#措施&quot; class=&quot;headerlink&quot; title=&quot;措施:&quot;&gt;&lt;/a&gt;措施:&lt;/h4&gt;&lt;p&gt;可先在本地下载rvm-installer脚本，再拷贝脚本到服务器后，再执行安装命令&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;# 1. 本机上下载&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;curl -L get.rvm.io &amp;gt; rvm-installer.sh&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;# 2. 拷贝rvm-installer.sh到服务器&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;# 3. 服务器本地执行安装命令&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;cat rvm-installer.sh | bash -s stable&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Linux" scheme="https://www.jibing57.com/categories/Linux/"/>
+    
+    
+      <category term="Ruby" scheme="https://www.jibing57.com/tags/Ruby/"/>
+    
+      <category term="RVM" scheme="https://www.jibing57.com/tags/RVM/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>如何在国内加速yarn install</title>
+    <link href="https://www.jibing57.com/2020/02/24/how-to-speed-yarn-install-interiorly/"/>
+    <id>https://www.jibing57.com/2020/02/24/how-to-speed-yarn-install-interiorly/</id>
+    <published>2020-02-24T13:07:33.000Z</published>
+    <updated>2020-02-25T06:57:26.679Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;问题&quot;&gt;&lt;a href=&quot;#问题&quot; class=&quot;headerlink&quot; title=&quot;问题&quot;&gt;&lt;/a&gt;问题&lt;/h3&gt;&lt;p&gt;&lt;code&gt;yarn install&lt;/code&gt;安装包时，在国内的网络环境下，不挂梯子，访问不稳定，会比较慢。&lt;/p&gt;
+&lt;h3 id=&quot;原因&quot;&gt;&lt;a href=&quot;#原因&quot; class=&quot;headerlink&quot; title=&quot;原因&quot;&gt;&lt;/a&gt;原因&lt;/h3&gt;&lt;p&gt;&lt;code&gt;yarn install&lt;/code&gt;默认是去&lt;code&gt;npm&lt;/code&gt;,&lt;code&gt;yarn&lt;/code&gt;官方源去获取软件信息的。&lt;/p&gt;
+&lt;p&gt;使用&lt;code&gt;yarn config list&lt;/code&gt;可以查看到&lt;code&gt;registry&lt;/code&gt;的默认值是&lt;code&gt;https://registry.yarnpkg.com&lt;/code&gt;。&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;10&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;11&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;12&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;13&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;14&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;15&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;16&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;17&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;18&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;19&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;20&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;21&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ yarn config list&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;yarn config v1.7.0&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;info yarn config&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#123; &amp;apos;version-tag-prefix&amp;apos;: &amp;apos;v&amp;apos;,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &amp;apos;version-git-tag&amp;apos;: true,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &amp;apos;version-commit-hooks&amp;apos;: true,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &amp;apos;version-git-sign&amp;apos;: false,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &amp;apos;version-git-message&amp;apos;: &amp;apos;v%s&amp;apos;,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &amp;apos;init-version&amp;apos;: &amp;apos;1.0.0&amp;apos;,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &amp;apos;init-license&amp;apos;: &amp;apos;MIT&amp;apos;,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &amp;apos;save-prefix&amp;apos;: &amp;apos;^&amp;apos;,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &amp;apos;bin-links&amp;apos;: true,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &amp;apos;ignore-scripts&amp;apos;: false,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &amp;apos;ignore-optional&amp;apos;: false,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  registry: &amp;apos;https://registry.yarnpkg.com&amp;apos;,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &amp;apos;strict-ssl&amp;apos;: true,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &amp;apos;user-agent&amp;apos;: &amp;apos;yarn/1.7.0 npm/? node/v8.11.2 linux x64&amp;apos; &amp;#125;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;info npm config&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#123;&amp;#125;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;Done in 0.03s.&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;$&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
+    
+    
+      <category term="Nodejs" scheme="https://www.jibing57.com/tags/Nodejs/"/>
+    
+      <category term="Yarn" scheme="https://www.jibing57.com/tags/Yarn/"/>
+    
+  </entry>
   
   <entry>
     <title>在Ubuntu 18.04中安装Rails开发环境</title>
@@ -534,62 +583,6 @@
       <category term="Nginx" scheme="https://www.jibing57.com/tags/Nginx/"/>
     
       <category term="HTTP" scheme="https://www.jibing57.com/tags/HTTP/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>CentOS 7下制作本地yum源</title>
-    <link href="https://www.jibing57.com/2019/06/04/how-to-make-local-yum-repository-on-centos-7/"/>
-    <id>https://www.jibing57.com/2019/06/04/how-to-make-local-yum-repository-on-centos-7/</id>
-    <published>2019-06-04T13:00:51.000Z</published>
-    <updated>2019-09-24T03:00:49.117Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;CentOS 7 制作本地repository的方法, 适用于没有外网访问权限的CentOS 7的升级。&lt;br&gt;大概步骤:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;找一台系统版本相同，但是有外网访问权限的CentOS 7的机器&lt;/li&gt;
-&lt;li&gt;在这台机器上下载yum包，并制作本地repository&lt;/li&gt;
-&lt;li&gt;拷贝repository到内网机器&lt;/li&gt;
-&lt;li&gt;配置内网机器，从制作好的本地repository升级yum包
-    
-    </summary>
-    
-      <category term="Linux" scheme="https://www.jibing57.com/categories/Linux/"/>
-    
-    
-      <category term="CentOS" scheme="https://www.jibing57.com/tags/CentOS/"/>
-    
-      <category term="Yum" scheme="https://www.jibing57.com/tags/Yum/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>在AWS Lightsail上给hexo blog配置HTTPS</title>
-    <link href="https://www.jibing57.com/2019/06/04/configure-https-for-hexo-blog-on-lightsail/"/>
-    <id>https://www.jibing57.com/2019/06/04/configure-https-for-hexo-blog-on-lightsail/</id>
-    <published>2019-06-04T05:41:43.000Z</published>
-    <updated>2019-06-11T06:01:34.102Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h3 id=&quot;申请免费SSL证书&quot;&gt;&lt;a href=&quot;#申请免费SSL证书&quot; class=&quot;headerlink&quot; title=&quot;申请免费SSL证书&quot;&gt;&lt;/a&gt;申请免费SSL证书&lt;/h3&gt;&lt;p&gt;免费证书渠道:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;如果是万网的域名，可以使用阿里云的&lt;a h
-      
-    
-    </summary>
-    
-      <category term="AWS" scheme="https://www.jibing57.com/categories/AWS/"/>
-    
-    
-      <category term="Nginx" scheme="https://www.jibing57.com/tags/Nginx/"/>
-    
-      <category term="Hexo" scheme="https://www.jibing57.com/tags/Hexo/"/>
-    
-      <category term="Lightsail" scheme="https://www.jibing57.com/tags/Lightsail/"/>
     
   </entry>
   

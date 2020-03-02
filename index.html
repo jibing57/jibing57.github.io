@@ -309,9 +309,64 @@ var _hmt = _hmt || [];
 		
             
 		
+            
+		
+            
+		
         
         <!-- render other articles -->
         
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2020-02-29 </div>
+			<div class="article-title"><a href="/2020/02/29/how-to-use-rvm-to-instal-ruby-in-slow-network-connection/" >弱网络环境下如何使用rvm安装ruby</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>下面介绍下如何在屏蔽比较严重的网络情况下使用rvm来半手工的安装ruby, 如下操作基于CentOS 7，其他操作系统可能有所不同。</p>
+<h3 id="安装rvm"><a href="#安装rvm" class="headerlink" title="安装rvm"></a>安装rvm</h3><h4 id="官网安装步骤"><a href="#官网安装步骤" class="headerlink" title="官网安装步骤"></a>官网安装步骤</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">gpg --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB</div><div class="line">curl -L get.rvm.io | bash -s stable</div></pre></td></tr></table></figure>
+<h4 id="问题点"><a href="#问题点" class="headerlink" title="问题点:"></a>问题点:</h4><p><code>get.rvm.io</code>是重定向到<code>https://raw.githubusercontent.com/rvm/rvm/master/binscripts/rvm-installer</code>这个地址的。可是有些国内机构的网络中，<code>raw.githubusercontent.com</code>这个域名是被屏蔽的。</p>
+<h4 id="措施"><a href="#措施" class="headerlink" title="措施:"></a>措施:</h4><p>可先在本地下载rvm-installer脚本，再拷贝脚本到服务器后，再执行安装命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"># 1. 本机上下载</div><div class="line">curl -L get.rvm.io &gt; rvm-installer.sh</div><div class="line"></div><div class="line"># 2. 拷贝rvm-installer.sh到服务器</div><div class="line"></div><div class="line"># 3. 服务器本地执行安装命令</div><div class="line">cat rvm-installer.sh | bash -s stable</div></pre></td></tr></table></figure></p>
+	
+	</div>
+  <a type="button" href="/2020/02/29/how-to-use-rvm-to-instal-ruby-in-slow-network-connection/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2020-02-24 </div>
+			<div class="article-title"><a href="/2020/02/24/how-to-speed-yarn-install-interiorly/" >如何在国内加速yarn install</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p><code>yarn install</code>安装包时，在国内的网络环境下，不挂梯子，访问不稳定，会比较慢。</p>
+<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p><code>yarn install</code>默认是去<code>npm</code>,<code>yarn</code>官方源去获取软件信息的。</p>
+<p>使用<code>yarn config list</code>可以查看到<code>registry</code>的默认值是<code>https://registry.yarnpkg.com</code>。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">$ yarn config list</div><div class="line">yarn config v1.7.0</div><div class="line">info yarn config</div><div class="line">&#123; &apos;version-tag-prefix&apos;: &apos;v&apos;,</div><div class="line">  &apos;version-git-tag&apos;: true,</div><div class="line">  &apos;version-commit-hooks&apos;: true,</div><div class="line">  &apos;version-git-sign&apos;: false,</div><div class="line">  &apos;version-git-message&apos;: &apos;v%s&apos;,</div><div class="line">  &apos;init-version&apos;: &apos;1.0.0&apos;,</div><div class="line">  &apos;init-license&apos;: &apos;MIT&apos;,</div><div class="line">  &apos;save-prefix&apos;: &apos;^&apos;,</div><div class="line">  &apos;bin-links&apos;: true,</div><div class="line">  &apos;ignore-scripts&apos;: false,</div><div class="line">  &apos;ignore-optional&apos;: false,</div><div class="line">  registry: &apos;https://registry.yarnpkg.com&apos;,</div><div class="line">  &apos;strict-ssl&apos;: true,</div><div class="line">  &apos;user-agent&apos;: &apos;yarn/1.7.0 npm/? node/v8.11.2 linux x64&apos; &#125;</div><div class="line">info npm config</div><div class="line">&#123;&#125;</div><div class="line">Done in 0.03s.</div><div class="line">$</div></pre></td></tr></table></figure></p>
+	
+	</div>
+  <a type="button" href="/2020/02/24/how-to-speed-yarn-install-interiorly/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
            
 			  
 	
@@ -522,83 +577,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2019-10-27 </div>
-			<div class="article-title"><a href="/2019/10/27/postgresql-tips/" >PostgreSQL Tips</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>收录一些PostgreSQL日常使用的小命令和小配置，备查。</p>
-<hr>
-<h3 id="将sql结果导入csv文件"><a href="#将sql结果导入csv文件" class="headerlink" title="将sql结果导入csv文件"></a>将sql结果导入csv文件</h3><p>使用\copy命令将sql结果导入csv文件, postgresql命令行中输入以下命令:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">\copy (Select * From foo) To &apos;/tmp/test.csv&apos; With CSV HEADER</div></pre></td></tr></table></figure></p>
-<p>Reference :<a href="http://stackoverflow.com/questions/1517635/save-pl-pgsql-output-from-postgresql-to-a-csv-file" target="_blank" rel="external">http://stackoverflow.com/questions/1517635/save-pl-pgsql-output-from-postgresql-to-a-csv-file</a></p>
-	
-	</div>
-  <a type="button" href="/2019/10/27/postgresql-tips/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2019-10-18 </div>
-			<div class="article-title"><a href="/2019/10/18/AWS-Advanced-Networking-Specialty/" >AWS Advanced Networking Specialty 考试心得</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>过了AWS的网络专项AWS Certified Advanced Networking -Specialty的考试，将学习过程中用到的资料罗列如下。<br><strong>注: 本文不是完整的学习考试指导，只是记录了我在准备考试的过程中所用到的一些资料和心得。</strong></p>
-<h3 id="考试说明"><a href="#考试说明" class="headerlink" title="考试说明"></a>考试说明</h3><ul>
-<li><a href="https://amazonaws-china.com/certification/certified-advanced-networking-specialty/" target="_blank" rel="external">考试说明主页</a></li>
-<li><a href="https://amazonaws-china.com/certification/certification-prep/" target="_blank" rel="external">AWS官方考试步骤的说明网页-包含sample question，Guide的下载地址等</a></li>
-<li><a href="https://d1.awsstatic-china.com/training-and-certification/docs-advnetworking-spec/AWS%20Certified%20Advanced%20Networking%20-%20Speciality_Exam_Guide_v1.2_FINAL.pdf" target="_blank" rel="external">AWS Certified Advanced Networking - Specialty Exam Guide</a></li>
-<li><a href="https://d1.awsstatic-china.com/training-and-certification/docs-advnetworking-spec/AWS_Certified_Advanced_Networking_Specialty_SampleExam.pdf" target="_blank" rel="external">官方例题下载</a></li>
-<li><a href="https://www.amazon.com/Certified-Advanced-Networking-Official-Study/dp/1119439833/ref=sr_1_1?s=books&amp;ie=UTF8&amp;qid=1519925473&amp;sr=1-1&amp;keywords=advanced+networking" target="_blank" rel="external">官方教材购买地址</a><ul>
-<li>网上也能找得到pdf版本</li>
-</ul>
-</li>
-</ul>
-<h3 id="一些参考资料"><a href="#一些参考资料" class="headerlink" title="一些参考资料"></a>一些参考资料</h3><ul>
-<li>Acloudguru上网络专项的视频教材,前7天免费，可随时取消。 - <a href="https://acloud.guru/learn/aws-certified-advanced-networking-specialty" target="_blank" rel="external">https://acloud.guru/learn/aws-certified-advanced-networking-specialty</a></li>
-<li>练习题: whizlabs上网络专项的练习题 - <a href="https://www.whizlabs.com/aws-advanced-networking-speciality/" target="_blank" rel="external">https://www.whizlabs.com/aws-advanced-networking-speciality/</a><ul>
-<li><strong>注意: whizlab上的题目仅仅是练习题，不是题库，是用来做考前练习，对知识点进行查漏补缺用的。我在实际考试中没有遇到一道和whizlab上一样的题目。</strong></li>
-</ul>
-</li>
-<li>几篇中文的考试心得<ul>
-<li>IT茶馆的博客 <a href="https://www.xiaopeiqing.com/posts/2896.html" target="_blank" rel="external">顺利通过AWS Certified Advanced Networking – Specialty考试</a></li>
-<li><a href="https://blog.51cto.com/8493144/2160058" target="_blank" rel="external">经验分享: 成功通过AWS Advanced Networking Specialty认证考试</a></li>
-</ul>
-</li>
-<li>几个老外的考试心得<ul>
-<li>学习AWS绕不开的一个博客–Jayendra的博客。他的这篇<a href="http://jayendrapatil.com/aws-certified-advanced-networking-speciality-ans-c00-exam-learning-path/" target="_blank" rel="external">AWS Certified Advanced Networking – Speciality (ANS-C00) Exam Learning Path</a>介绍了网络专项考试中会涉及到的大部分基础知识点，可以帮助理解考试知识点。</li>
-<li>一个老外的考试心得, 和我一样也是用了AcloudGuru和Whizlabs的材料进行的复习, 文章中对whizlab习题中的知识点做了系统的总结。<a href="https://daviseford.com/blog/2018/12/21/aws-advanced-networking-specialty-exam-tips.html" target="_blank" rel="external">AWS Advanced Networking Specialty Exam Tips and Tricks</a></li>
-<li>老外的考试心得2 <a href="https://blog.ashiny.cloud/2018/07/29/aws-certified-advanced-networking-specialty/" target="_blank" rel="external">AWS Certified Advanced Networking Specialty: Exam Notes and Observations</a></li>
-</ul>
-</li>
-</ul>
-	
-	</div>
-  <a type="button" href="/2019/10/18/AWS-Advanced-Networking-Specialty/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -670,11 +648,11 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/#Code">Code<span>5</span></a></li>
 		
-			<li><a href="/categories/#Linux">Linux<span>7</span></a></li>
+			<li><a href="/categories/#Linux">Linux<span>8</span></a></li>
 		
 			<li><a href="/categories/#Shell">Shell<span>8</span></a></li>
 		
-			<li><a href="/categories/#Tools">Tools<span>24</span></a></li>
+			<li><a href="/categories/#Tools">Tools<span>25</span></a></li>
 		
 		</ul>
 	</div>
@@ -686,48 +664,48 @@ var _hmt = _hmt || [];
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/#Ruby">Ruby<span>9</span></a></li>
-		
-			<li><a href="/tags/#Kubernetes">Kubernetes<span>1</span></a></li>
-		
-			<li><a href="/tags/#AWS CLI">AWS CLI<span>6</span></a></li>
-		
-			<li><a href="/tags/#IAM">IAM<span>3</span></a></li>
-		
 			<li><a href="/tags/#HTTP">HTTP<span>5</span></a></li>
 		
-			<li><a href="/tags/#Rails">Rails<span>4</span></a></li>
+			<li><a href="/tags/#SSH">SSH<span>5</span></a></li>
 		
-			<li><a href="/tags/#Hexo">Hexo<span>7</span></a></li>
+			<li><a href="/tags/#HTTPS">HTTPS<span>1</span></a></li>
 		
-			<li><a href="/tags/#CodeCommit">CodeCommit<span>1</span></a></li>
+			<li><a href="/tags/#Ruby">Ruby<span>10</span></a></li>
 		
-			<li><a href="/tags/#PostgreSQL">PostgreSQL<span>3</span></a></li>
+			<li><a href="/tags/#S3">S3<span>10</span></a></li>
 		
-			<li><a href="/tags/#Firewall">Firewall<span>1</span></a></li>
-		
-			<li><a href="/tags/#EC2">EC2<span>8</span></a></li>
+			<li><a href="/tags/#Network">Network<span>4</span></a></li>
 		
 			<li><a href="/tags/#CloudWatch">CloudWatch<span>1</span></a></li>
 		
-			<li><a href="/tags/#Linux">Linux<span>15</span></a></li>
+			<li><a href="/tags/#Nginx">Nginx<span>7</span></a></li>
 		
-			<li><a href="/tags/#Nodejs">Nodejs<span>2</span></a></li>
+			<li><a href="/tags/#IAM">IAM<span>3</span></a></li>
 		
-			<li><a href="/tags/#Image">Image<span>2</span></a></li>
-		
-			<li><a href="/tags/#Douban">Douban<span>1</span></a></li>
-		
-			<li><a href="/tags/#Office">Office<span>2</span></a></li>
-		
-			<li><a href="/tags/#RVM">RVM<span>2</span></a></li>
-		
-			<li><a href="/tags/#Sysops">Sysops<span>1</span></a></li>
+			<li><a href="/tags/#EC2 User Data">EC2 User Data<span>1</span></a></li>
 		
 			<li><a href="/tags/#AutoScaling">AutoScaling<span>3</span></a></li>
 		
+			<li><a href="/tags/#CodeCommit">CodeCommit<span>1</span></a></li>
 		
-		   <li><a href="/tags">...<span>55</span></a></li>
+			<li><a href="/tags/#MacOS">MacOS<span>18</span></a></li>
+		
+			<li><a href="/tags/#Udemy">Udemy<span>1</span></a></li>
+		
+			<li><a href="/tags/#Elastic Beanstalk">Elastic Beanstalk<span>7</span></a></li>
+		
+			<li><a href="/tags/#RDS">RDS<span>3</span></a></li>
+		
+			<li><a href="/tags/#Docker">Docker<span>1</span></a></li>
+		
+			<li><a href="/tags/#Hexo">Hexo<span>7</span></a></li>
+		
+			<li><a href="/tags/#Chrome">Chrome<span>1</span></a></li>
+		
+			<li><a href="/tags/#Yum">Yum<span>1</span></a></li>
+		
+		
+		   <li><a href="/tags">...<span>56</span></a></li>
 		 
 		</ul>
 	</div>
@@ -740,6 +718,14 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2020/02/29/how-to-use-rvm-to-instal-ruby-in-slow-network-connection/" ><i class="fa fa-file-o"></i>弱网络环境下如何使用rvm安装ruby</a>
+      </li>
+    
+      <li>
+        <a href="/2020/02/24/how-to-speed-yarn-install-interiorly/" ><i class="fa fa-file-o"></i>如何在国内加速yarn install</a>
+      </li>
+    
+      <li>
         <a href="/2020/01/31/How-to-install-rails-on-Ubuntu-18-04/" ><i class="fa fa-file-o"></i>在Ubuntu 18.04中安装Rails开发环境</a>
       </li>
     
@@ -749,14 +735,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2019/12/31/macos-youcompleteme-ERROR-root-code-for-hash-md5-was-not-found/" ><i class="fa fa-file-o"></i>Macos下vim中YouCompleteMe报错 E...</a>
-      </li>
-    
-      <li>
-        <a href="/2019/12/15/way-to-download-udemy-course/" ><i class="fa fa-file-o"></i>访问Udemy慢的一个解决办法</a>
-      </li>
-    
-      <li>
-        <a href="/2019/12/02/ImageMagick-watermark/" ><i class="fa fa-file-o"></i>使用ImageMagick来给图片打文字水印</a>
       </li>
     
   </ul>

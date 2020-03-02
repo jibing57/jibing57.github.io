@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://www.jibing57.com/2020/02/29/how-to-use-rvm-to-instal-ruby-in-slow-network-connection/</loc>
+    <lastmod>2020-03-02</lastmod>
+  </url>  <url>
     <loc>https://www.jibing57.com/2019/04/26/command-tips/</loc>
-    <lastmod>2020-02-06</lastmod>
+    <lastmod>2020-03-01</lastmod>
+  </url>  <url>
+    <loc>https://www.jibing57.com/2020/02/24/how-to-speed-yarn-install-interiorly/</loc>
+    <lastmod>2020-02-25</lastmod>
   </url>  <url>
     <loc>https://www.jibing57.com/2020/01/31/How-to-install-rails-on-Ubuntu-18-04/</loc>
     <lastmod>2020-02-03</lastmod>
@@ -223,43 +229,43 @@
     <loc>https://www.jibing57.com/2017/12/25/shell-gist-to-get-http-5XX-code-from-ELB-access-log/</loc>
     <lastmod>2017-12-26</lastmod>
   </url>  <url>
-    <loc>https://www.jibing57.com/2017/10/29/ruby-paperclip-destroy-callback-nil/</loc>
-    <lastmod>2017-12-25</lastmod>
-  </url>  <url>
     <loc>https://www.jibing57.com/2017/07/25/useful-website-of-aws/</loc>
     <lastmod>2017-12-25</lastmod>
   </url>  <url>
-    <loc>https://www.jibing57.com/2017/11/29/how-to-enable-slow-query-on-aws-rds-postgresql/</loc>
+    <loc>https://www.jibing57.com/2017/10/29/ruby-paperclip-destroy-callback-nil/</loc>
     <lastmod>2017-12-25</lastmod>
   </url>  <url>
     <loc>https://www.jibing57.com/2017/10/24/how-to-use-aws-cli-with-multi-user/</loc>
     <lastmod>2017-12-25</lastmod>
   </url>  <url>
-    <loc>https://www.jibing57.com/2017/12/12/how-to-write-multiline-to-file-by-shell/</loc>
+    <loc>https://www.jibing57.com/2017/07/25/how-to-read-text-on-macos/</loc>
     <lastmod>2017-12-25</lastmod>
   </url>  <url>
-    <loc>https://www.jibing57.com/2017/07/25/how-to-read-text-on-macos/</loc>
+    <loc>https://www.jibing57.com/2017/12/12/how-to-write-multiline-to-file-by-shell/</loc>
     <lastmod>2017-12-25</lastmod>
   </url>  <url>
     <loc>https://www.jibing57.com/2017/10/30/how-to-use-post-link-on-hexo/</loc>
     <lastmod>2017-12-25</lastmod>
   </url>  <url>
-    <loc>https://www.jibing57.com/2017/10/31/hexo-bind-domain-to-github-pages/</loc>
+    <loc>https://www.jibing57.com/2017/11/29/how-to-enable-slow-query-on-aws-rds-postgresql/</loc>
     <lastmod>2017-12-25</lastmod>
   </url>  <url>
     <loc>https://www.jibing57.com/2017/12/20/expired-of-S3-RRS/</loc>
     <lastmod>2017-12-25</lastmod>
   </url>  <url>
-    <loc>https://www.jibing57.com/2017/12/14/deep-dig-on-s3-bucket-permission/</loc>
+    <loc>https://www.jibing57.com/2017/12/19/deep-dig-on-s3-bucket-permission-exam/</loc>
     <lastmod>2017-12-25</lastmod>
   </url>  <url>
-    <loc>https://www.jibing57.com/2017/12/19/deep-dig-on-s3-bucket-permission-exam/</loc>
+    <loc>https://www.jibing57.com/2017/10/31/hexo-bind-domain-to-github-pages/</loc>
+    <lastmod>2017-12-25</lastmod>
+  </url>  <url>
+    <loc>https://www.jibing57.com/2017/12/20/How-to-add-staging-log-to-EB-logs/</loc>
     <lastmod>2017-12-25</lastmod>
   </url>  <url>
     <loc>https://www.jibing57.com/2017/10/31/account-setting-by-aws/</loc>
     <lastmod>2017-12-25</lastmod>
   </url>  <url>
-    <loc>https://www.jibing57.com/2017/12/20/How-to-add-staging-log-to-EB-logs/</loc>
+    <loc>https://www.jibing57.com/2017/12/14/deep-dig-on-s3-bucket-permission/</loc>
     <lastmod>2017-12-25</lastmod>
   </url>  <url>
     <loc>https://www.jibing57.com/2017/12/25/how-to-add-shadow-of-images-in-freemind/</loc>

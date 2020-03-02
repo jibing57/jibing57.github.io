@@ -139,6 +139,56 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
+			<div class="date"> 2018-03-15 </div>
+			<div class="article-title"><a href="/2018/03/15/how-to-set-chrome-to-use-google-with-NoCountryRedirect/" >在Chrome中设置Google搜索为NoCountryRedirect</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>添加代理来科学上网时，使用Google进行搜索，Chrome浏览器默认会重定向到代理国所在的Google域名。比如<code>https://www.google.co.kr/</code>,<code>https://www.google.co.jp/</code>等, 已经在<code>www.google.com</code>登录的Google账号就还得重登, 极度烦躁。</p>
+<p>下面是几个固定使用<code>www.google.com</code>来进行搜索的方法</p>
+	
+	</div>
+  <a type="button" href="/2018/03/15/how-to-set-chrome-to-use-google-with-NoCountryRedirect/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2018-03-14 </div>
+			<div class="article-title"><a href="/2018/03/14/AWS-RDS-recovery-due-to-issue-with-underlying-hardware/" >AWS RDS recovery due to issue with underlying hardware</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>早上刚上班就收到一封主题为”RDS Notification Message”的订阅邮件，message内容为”Recovery of the DB instance has started. Recovery time will vary with the amount of data to be recovered”。</p>
+<p>上Web Console查看发生了什么事，发现RDS已经自我恢复完毕了。最新的Event消息提示为”Recovery of the DB instance is complete.”</p>
+<p><img src="/images/AWS/RDS/rds_recovery_event.png" alt="rds_recovery_event"></p>
+<p>提了Case询问了下，也在网上搜了一下，基本搞清楚了是怎么个回事，记录如下。</p>
+	
+	</div>
+  <a type="button" href="/2018/03/14/AWS-RDS-recovery-due-to-issue-with-underlying-hardware/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
 			<div class="date"> 2018-03-12 </div>
 			<div class="article-title"><a href="/2018/03/12/how-to-handle-Retirement-Notification-Amazon-EC2-Instance-scheduled-for-retirement/" >EC2底层硬件Retirement的处理方法</a></div>						
 		</h3>
@@ -372,56 +422,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2017-12-22 </div>
-			<div class="article-title"><a href="/2017/12/22/what-is-Access-Logs-of-Classic-Load-Balancer/" >什么是传统负载均衡器的访问日志</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="什么是传统负载均衡器的Access-Logs"><a href="#什么是传统负载均衡器的Access-Logs" class="headerlink" title="什么是传统负载均衡器的Access Logs"></a>什么是传统负载均衡器的Access Logs</h3><p>Elastic Load Balancing 提供了Access Logs(访问日志)，Access Logs可记录下发送到负载均衡器的请求的详细信息。每个日志都包含固定格式的信息 (例如，收到请求的时间、客户端的 IP 地址、延迟、请求路径和服务器响应)。可以使用这些日志分析流量模式和进行Debug。</p>
-<p>Access Logs是ELB的一项可选功能，默认情况下是Disable的。启用后，ELB会将logs存储到指定的某个S3 Bucket中。</p>
-<h3 id="收费"><a href="#收费" class="headerlink" title="收费"></a>收费</h3><p>ELB的Access Logs本身是不需要额外的费用的，从ELB传输到S3的流量是免费的，但是S3的存储费用是需要支付的。<br>
-	
-	</div>
-  <a type="button" href="/2017/12/22/what-is-Access-Logs-of-Classic-Load-Balancer/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2017-12-20 </div>
-			<div class="article-title"><a href="/2017/12/20/How-to-add-staging-log-to-EB-logs/" >如何在Elastic Beanstalk的Rails环境中配置staging.log为可下载</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>新建了一个EB环境，来跑一个staging模式的rails。EB环境变量设置好后，部署成功。一系列测试都没问题，结果却在一个不起眼的地方出了点幺蛾子。</p>
-<p>Rails代码中，没有特殊配置config.logger,因此staging模式时，默认的输出日志为logs/staging.log, 但是在EB的Web console中尝试获取Full Logs后，在BundleLogs中发现没有staging.log。</p>
-<p>赶紧调查试验了一下，并将调查结果记录如下。</p>
-	
-	</div>
-  <a type="button" href="/2017/12/20/How-to-add-staging-log-to-EB-logs/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -493,11 +493,11 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/#Code">Code<span>5</span></a></li>
 		
-			<li><a href="/categories/#Linux">Linux<span>7</span></a></li>
+			<li><a href="/categories/#Linux">Linux<span>8</span></a></li>
 		
 			<li><a href="/categories/#Shell">Shell<span>8</span></a></li>
 		
-			<li><a href="/categories/#Tools">Tools<span>24</span></a></li>
+			<li><a href="/categories/#Tools">Tools<span>25</span></a></li>
 		
 		</ul>
 	</div>
@@ -509,48 +509,48 @@ var _hmt = _hmt || [];
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/#Passenger">Passenger<span>2</span></a></li>
-		
-			<li><a href="/tags/#AutoScaling">AutoScaling<span>3</span></a></li>
-		
-			<li><a href="/tags/#Ruby">Ruby<span>9</span></a></li>
-		
-			<li><a href="/tags/#CloudWatch">CloudWatch<span>1</span></a></li>
-		
-			<li><a href="/tags/#Tips">Tips<span>1</span></a></li>
-		
-			<li><a href="/tags/#AWS Free Tier">AWS Free Tier<span>1</span></a></li>
-		
-			<li><a href="/tags/#EC2 User Data">EC2 User Data<span>1</span></a></li>
-		
-			<li><a href="/tags/#Kubernetes">Kubernetes<span>1</span></a></li>
-		
-			<li><a href="/tags/#IAM">IAM<span>3</span></a></li>
-		
-			<li><a href="/tags/#感悟">感悟<span>1</span></a></li>
-		
-			<li><a href="/tags/#Office">Office<span>2</span></a></li>
+			<li><a href="/tags/#S3">S3<span>10</span></a></li>
 		
 			<li><a href="/tags/#CentOS">CentOS<span>8</span></a></li>
 		
-			<li><a href="/tags/#Rails">Rails<span>4</span></a></li>
+			<li><a href="/tags/#AWS CLI">AWS CLI<span>6</span></a></li>
 		
-			<li><a href="/tags/#Nodejs">Nodejs<span>2</span></a></li>
+			<li><a href="/tags/#Docker">Docker<span>1</span></a></li>
 		
-			<li><a href="/tags/#Elastic Load Balancing">Elastic Load Balancing<span>6</span></a></li>
+			<li><a href="/tags/#Wkhtmltopdf">Wkhtmltopdf<span>1</span></a></li>
 		
-			<li><a href="/tags/#SSH">SSH<span>5</span></a></li>
-		
-			<li><a href="/tags/#Ubuntu">Ubuntu<span>1</span></a></li>
+			<li><a href="/tags/#Sysops">Sysops<span>1</span></a></li>
 		
 			<li><a href="/tags/#Elastic Beanstalk">Elastic Beanstalk<span>7</span></a></li>
 		
+			<li><a href="/tags/#Passenger">Passenger<span>2</span></a></li>
+		
+			<li><a href="/tags/#HTTP">HTTP<span>5</span></a></li>
+		
+			<li><a href="/tags/#Ubuntu">Ubuntu<span>1</span></a></li>
+		
+			<li><a href="/tags/#EC2 User Data">EC2 User Data<span>1</span></a></li>
+		
+			<li><a href="/tags/#PostgreSQL">PostgreSQL<span>3</span></a></li>
+		
+			<li><a href="/tags/#Tips">Tips<span>1</span></a></li>
+		
+			<li><a href="/tags/#Network">Network<span>4</span></a></li>
+		
+			<li><a href="/tags/#Failover">Failover<span>1</span></a></li>
+		
+			<li><a href="/tags/#Douban">Douban<span>1</span></a></li>
+		
 			<li><a href="/tags/#iOS">iOS<span>1</span></a></li>
+		
+			<li><a href="/tags/#AWS SDK">AWS SDK<span>2</span></a></li>
 		
 			<li><a href="/tags/#Image">Image<span>2</span></a></li>
 		
+			<li><a href="/tags/#EC2">EC2<span>8</span></a></li>
 		
-		   <li><a href="/tags">...<span>55</span></a></li>
+		
+		   <li><a href="/tags">...<span>56</span></a></li>
 		 
 		</ul>
 	</div>
@@ -563,6 +563,14 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2020/02/29/how-to-use-rvm-to-instal-ruby-in-slow-network-connection/" ><i class="fa fa-file-o"></i>弱网络环境下如何使用rvm安装ruby</a>
+      </li>
+    
+      <li>
+        <a href="/2020/02/24/how-to-speed-yarn-install-interiorly/" ><i class="fa fa-file-o"></i>如何在国内加速yarn install</a>
+      </li>
+    
+      <li>
         <a href="/2020/01/31/How-to-install-rails-on-Ubuntu-18-04/" ><i class="fa fa-file-o"></i>在Ubuntu 18.04中安装Rails开发环境</a>
       </li>
     
@@ -572,14 +580,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2019/12/31/macos-youcompleteme-ERROR-root-code-for-hash-md5-was-not-found/" ><i class="fa fa-file-o"></i>Macos下vim中YouCompleteMe报错 E...</a>
-      </li>
-    
-      <li>
-        <a href="/2019/12/15/way-to-download-udemy-course/" ><i class="fa fa-file-o"></i>访问Udemy慢的一个解决办法</a>
-      </li>
-    
-      <li>
-        <a href="/2019/12/02/ImageMagick-watermark/" ><i class="fa fa-file-o"></i>使用ImageMagick来给图片打文字水印</a>
       </li>
     
   </ul>

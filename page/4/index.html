@@ -139,6 +139,62 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
+			<div class="date"> 2019-04-26 </div>
+			<div class="article-title"><a href="/2019/04/26/command-tips/" >Command Tips</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="git-branch-不要分页"><a href="#git-branch-不要分页" class="headerlink" title="git branch 不要分页"></a>git branch 不要分页</h3><p>设置git branch不分页显示<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git config --global pager.branch false</div></pre></td></tr></table></figure></p>
+<hr>
+<h3 id="Macos下tree显示中文"><a href="#Macos下tree显示中文" class="headerlink" title="Macos下tree显示中文"></a>Macos下tree显示中文</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># 安装tree</div><div class="line">brew install tree`</div><div class="line"></div><div class="line"># 中文不乱码加参数 -N</div><div class="line">tree -N</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="CentoOS-7-最小化安装后可能需要的一些命令"><a href="#CentoOS-7-最小化安装后可能需要的一些命令" class="headerlink" title="CentoOS 7 最小化安装后可能需要的一些命令"></a>CentoOS 7 最小化安装后可能需要的一些命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">yum install wget curl</div><div class="line">yum install unzip</div><div class="line">yum install tree</div><div class="line">yum install net-tools</div></pre></td></tr></table></figure>
+	
+	</div>
+  <a type="button" href="/2019/04/26/command-tips/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2019-04-20 </div>
+			<div class="article-title"><a href="/2019/04/20/niu-x-resource/" >Niu-X resource</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>记录一些有用的网站，持续更新中。。</p>
+<hr>
+<h3 id="Linux-command"><a href="#Linux-command" class="headerlink" title="Linux-command"></a>Linux-command</h3><p>github地址: <a href="https://github.com/jaywcjlove/linux-command" target="_blank" rel="external">linux-command</a></p>
+<blockquote>
+<p>Linux命令大全搜索工具，内容包含Linux命令手册、详解、学习、搜集 </p>
+</blockquote>
+<p>比较系统的各个命令，期待有空时每个粗略一遍，需要时再来查询</p>
+	
+	</div>
+  <a type="button" href="/2019/04/20/niu-x-resource/#more" class="btn btn-default more">Read More</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
 			<div class="date"> 2019-04-20 </div>
 			<div class="article-title"><a href="/2019/04/20/firewall-cmd-basic-usage/" >firewall-cmd基本用法</a></div>						
 		</h3>
@@ -369,62 +425,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2019-03-05 </div>
-			<div class="article-title"><a href="/2019/03/05/how-resolve-nokogiri-failed-by-xml2-on-macos/" >Macos下因为找不到libxml2而导致nokogiri安装失败的解决办法</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>今天要跑一个其他的rails项目，为了不污染原先的gemset。就重建了一个gemset, 但是bundle install的时候，安装nokogiri 1.8.4一直失败。<br>系统版本是Macos 10.13 High Sierra中, ruby版本是rvm安装的ruby2.3.0。</p>
-<p>令人费解的是，同样在ruby2.3.0下的另一个gemset,nokogiri 1.8.2可以顺利安装。</p>
-<p>网上搜了一圈后，找到了解决办法。记录如下:</p>
-<p>设置bundle config，编译nokogiri时，使用系统xml2路径即可。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">bundle config build.nokogiri --use-system-libraries --with-xml2-include=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/usr/include/libxml2</div></pre></td></tr></table></figure>
-<p>还有一个更简单的方法，自动根据系统版本得到系统libxml2的路径</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">bundle config build.nokogiri --use-system-libraries=true --with-xml2-include=&quot;$(xcrun --show-sdk-path)&quot;/usr/include/libxml2</div></pre></td></tr></table></figure>
-<p>参考资料: <a href="https://github.com/sparklemotion/nokogiri/issues/1547" target="_blank" rel="external">Installation of nokogiri fail with bundle on macOS Sierra 10.12 </a></p>
-
-	
-	</div>
-  <a type="button" href="/2019/03/05/how-resolve-nokogiri-failed-by-xml2-on-macos/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2019-02-28 </div>
-			<div class="article-title"><a href="/2019/02/28/nginx_444_and_307/" >Nginx的HTTP Code444和307设置</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="nginx-444"><a href="#nginx-444" class="headerlink" title="nginx 444"></a>nginx 444</h3><h4 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h4><p>当没有显式指定default server的时候，Nginx会使用第一个server来作为默认的响应server，即使请求的Host并没有匹配到server_name。<br>这是为了兼容老旧的一些不带Host的HTTP请求而做的设置。官文描述: <a href="http://nginx.org/en/docs/http/request_processing.html" target="_blank" rel="external">How nginx processes a request</a></p>
-<p>此时可能存在一定的风险。如果有非备案的名解析到了你的Public IP上，而你的Web服务对该域名的请求有所响应的话，可能会导致Public IP被运营商封锁。</p>
-<h4 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法:"></a>解决办法:</h4><p>在nginx中添加一个default server，并在default server中设置<code>return 444;</code>。此时Nginx就不会响应请求，除非请求的Host是配置的。<br>
-	
-	</div>
-  <a type="button" href="/2019/02/28/nginx_444_and_307/#more" class="btn btn-default more">Read More</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -496,11 +496,11 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/#Code">Code<span>5</span></a></li>
 		
-			<li><a href="/categories/#Linux">Linux<span>7</span></a></li>
+			<li><a href="/categories/#Linux">Linux<span>8</span></a></li>
 		
 			<li><a href="/categories/#Shell">Shell<span>8</span></a></li>
 		
-			<li><a href="/categories/#Tools">Tools<span>24</span></a></li>
+			<li><a href="/categories/#Tools">Tools<span>25</span></a></li>
 		
 		</ul>
 	</div>
@@ -512,48 +512,48 @@ var _hmt = _hmt || [];
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/#AWS Free Tier">AWS Free Tier<span>1</span></a></li>
+			<li><a href="/tags/#Docker">Docker<span>1</span></a></li>
 		
-			<li><a href="/tags/#Sysops">Sysops<span>1</span></a></li>
+			<li><a href="/tags/#PostgreSQL">PostgreSQL<span>3</span></a></li>
 		
-			<li><a href="/tags/#AutoScaling">AutoScaling<span>3</span></a></li>
-		
-			<li><a href="/tags/#HTTP">HTTP<span>5</span></a></li>
-		
-			<li><a href="/tags/#Yum">Yum<span>1</span></a></li>
-		
-			<li><a href="/tags/#Ruby">Ruby<span>9</span></a></li>
-		
-			<li><a href="/tags/#Github">Github<span>3</span></a></li>
-		
-			<li><a href="/tags/#Firewall">Firewall<span>1</span></a></li>
-		
-			<li><a href="/tags/#RVM">RVM<span>2</span></a></li>
-		
-			<li><a href="/tags/#Office">Office<span>2</span></a></li>
-		
-			<li><a href="/tags/#RDS">RDS<span>3</span></a></li>
-		
-			<li><a href="/tags/#Kubernetes">Kubernetes<span>1</span></a></li>
+			<li><a href="/tags/#Git">Git<span>2</span></a></li>
 		
 			<li><a href="/tags/#FFMPEG">FFMPEG<span>2</span></a></li>
 		
-			<li><a href="/tags/#DynamoDB">DynamoDB<span>1</span></a></li>
+			<li><a href="/tags/#AWS Tools">AWS Tools<span>2</span></a></li>
 		
-			<li><a href="/tags/#IAM">IAM<span>3</span></a></li>
+			<li><a href="/tags/#Video">Video<span>1</span></a></li>
 		
-			<li><a href="/tags/#Nginx">Nginx<span>7</span></a></li>
+			<li><a href="/tags/#Linux">Linux<span>15</span></a></li>
+		
+			<li><a href="/tags/#Udemy">Udemy<span>1</span></a></li>
+		
+			<li><a href="/tags/#AWS Deep Dive">AWS Deep Dive<span>2</span></a></li>
 		
 			<li><a href="/tags/#HTTPS">HTTPS<span>1</span></a></li>
 		
-			<li><a href="/tags/#Application Load Balancing">Application Load Balancing<span>1</span></a></li>
+			<li><a href="/tags/#感悟">感悟<span>1</span></a></li>
 		
-			<li><a href="/tags/#Hexo">Hexo<span>7</span></a></li>
+			<li><a href="/tags/#Douban">Douban<span>1</span></a></li>
 		
-			<li><a href="/tags/#Nodejs">Nodejs<span>2</span></a></li>
+			<li><a href="/tags/#AutoScaling">AutoScaling<span>3</span></a></li>
+		
+			<li><a href="/tags/#Ruby">Ruby<span>10</span></a></li>
+		
+			<li><a href="/tags/#CentOS">CentOS<span>8</span></a></li>
+		
+			<li><a href="/tags/#AWS Free Tier">AWS Free Tier<span>1</span></a></li>
+		
+			<li><a href="/tags/#SSH">SSH<span>5</span></a></li>
+		
+			<li><a href="/tags/#CodeCommit">CodeCommit<span>1</span></a></li>
+		
+			<li><a href="/tags/#RVM">RVM<span>3</span></a></li>
+		
+			<li><a href="/tags/#Elastic Beanstalk">Elastic Beanstalk<span>7</span></a></li>
 		
 		
-		   <li><a href="/tags">...<span>55</span></a></li>
+		   <li><a href="/tags">...<span>56</span></a></li>
 		 
 		</ul>
 	</div>
@@ -566,6 +566,14 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2020/02/29/how-to-use-rvm-to-instal-ruby-in-slow-network-connection/" ><i class="fa fa-file-o"></i>弱网络环境下如何使用rvm安装ruby</a>
+      </li>
+    
+      <li>
+        <a href="/2020/02/24/how-to-speed-yarn-install-interiorly/" ><i class="fa fa-file-o"></i>如何在国内加速yarn install</a>
+      </li>
+    
+      <li>
         <a href="/2020/01/31/How-to-install-rails-on-Ubuntu-18-04/" ><i class="fa fa-file-o"></i>在Ubuntu 18.04中安装Rails开发环境</a>
       </li>
     
@@ -575,14 +583,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2019/12/31/macos-youcompleteme-ERROR-root-code-for-hash-md5-was-not-found/" ><i class="fa fa-file-o"></i>Macos下vim中YouCompleteMe报错 E...</a>
-      </li>
-    
-      <li>
-        <a href="/2019/12/15/way-to-download-udemy-course/" ><i class="fa fa-file-o"></i>访问Udemy慢的一个解决办法</a>
-      </li>
-    
-      <li>
-        <a href="/2019/12/02/ImageMagick-watermark/" ><i class="fa fa-file-o"></i>使用ImageMagick来给图片打文字水印</a>
       </li>
     
   </ul>

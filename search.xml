@@ -2284,6 +2284,14 @@
 <p>设置socks5代理:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">export ALL_PROXY=socks5://proxyAddress:port</div></pre></td></tr></table></figure></p>
 <hr>
 <h3 id="openssl查看证书的几个命令"><a href="#openssl查看证书的几个命令" class="headerlink" title="openssl查看证书的几个命令"></a>openssl查看证书的几个命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># 查看KEY信息</div><div class="line">$ openssl rsa -noout -text -in server.key</div><div class="line"></div><div class="line"># 查看CSR信息</div><div class="line">$ openssl req -noout -text -in server.csr</div><div class="line"></div><div class="line"># 查看证书信息</div><div class="line">$ openssl x509 -noout -text -in ca.crt</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="crontab中如何设置奇数天和偶数天运行"><a href="#crontab中如何设置奇数天和偶数天运行" class="headerlink" title="crontab中如何设置奇数天和偶数天运行"></a>crontab中如何设置奇数天和偶数天运行</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># Will only run on odd days:</div><div class="line">0 0 1-31/2 * * /path/to/script</div><div class="line"></div><div class="line"># Will only run on even days:</div><div class="line">0 0 0-30/2 * * /path/to/script</div></pre></td></tr></table></figure>
+<p>Reference: <a href="https://unix.stackexchange.com/a/16094" target="_blank" rel="external">How can I tell cron to run a command every other day (odd/even)</a></p>
+<hr>
+<h3 id="Shell大小写转换"><a href="#Shell大小写转换" class="headerlink" title="Shell大小写转换"></a>Shell大小写转换</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">echo $name | tr &apos;[:lower:]&apos; &apos;[:upper:]&apos;</div></pre></td></tr></table></figure>
+<p>或者<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">echo $name | tr &apos;[a-z]&apos; &apos;[A-Z]&apos;</div></pre></td></tr></table></figure></p>
+<hr>
+<h3 id="du统计隐藏目录的大小"><a href="#du统计隐藏目录的大小" class="headerlink" title="du统计隐藏目录的大小"></a>du统计隐藏目录的大小</h3><p>du 统计目录大小的一些用法。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"># 统计非隐藏文件/目录的大小</div><div class="line">du -sh *</div><div class="line"></div><div class="line"># 统计隐藏文件/目录的大小</div><div class="line">du -sh .[!.]*</div><div class="line"></div><div class="line"># 统计全部文件/目录的大小</div><div class="line">du -sh .[!.]* *</div><div class="line"></div><div class="line"># 统计全部文件/目录的大小, 并按照大小排序</div><div class="line">du -sch .[!.]* * |sort -h</div></pre></td></tr></table></figure></p>
 ]]></content>
       
         <categories>
@@ -10793,6 +10801,9 @@ You can wait for the scheduled retirement date - when the instance is stopped - 
 <h3 id="AWS-词汇表"><a href="#AWS-词汇表" class="headerlink" title="AWS 词汇表"></a>AWS 词汇表</h3><ul>
 <li>中文版 <a href="https://docs.aws.amazon.com/zh_cn/general/latest/gr/glos-chap.html" target="_blank" rel="external">https://docs.aws.amazon.com/zh_cn/general/latest/gr/glos-chap.html</a></li>
 <li>英文版 <a href="https://docs.aws.amazon.com/general/latest/gr/glos-chap.html" target="_blank" rel="external">https://docs.aws.amazon.com/general/latest/gr/glos-chap.html</a></li>
+</ul>
+<h3 id="测试AWS各个region之间的网络数据"><a href="#测试AWS各个region之间的网络数据" class="headerlink" title="测试AWS各个region之间的网络数据"></a>测试AWS各个region之间的网络数据</h3><ul>
+<li><a href="http://www.awsguru.cn/" target="_blank" rel="external">AWS全球各区域间网络延迟数据</a></li>
 </ul>
 <h2 id="还没调查的"><a href="#还没调查的" class="headerlink" title="还没调查的"></a>还没调查的</h2><p><a href="https://gist.github.com/leonardofed/bbf6459ad154ad5215d354f3825435dc" target="_blank" rel="external">https://gist.github.com/leonardofed/bbf6459ad154ad5215d354f3825435dc</a></p>
 ]]></content>

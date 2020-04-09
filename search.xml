@@ -3,6 +3,46 @@
   
     
     <entry>
+      <title><![CDATA[豆瓣插件替换]]></title>
+      <url>/2020/04/09/replace-douban-book-plugin/</url>
+      <content type="html"><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>原先使用的<a href="https://github.com/Yikun/hexo-generator-douban" target="_blank" rel="external">Yikun/hexo-generator-douban</a>在豆瓣封了API之后，就彻底没法用了。另外一个插件<a href="https://github.com/mythsman/hexo-douban" target="_blank" rel="external">mythsman/hexo-douban</a>是靠解析网页来生成读书列表，还能工作。就决定换用<a href="https://github.com/mythsman/hexo-douban" target="_blank" rel="external">mythsman/hexo-douban</a>来生成读书列表。<br>以下记录插件替换的过程。</p>
+<h3 id="配置变更"><a href="#配置变更" class="headerlink" title="配置变更"></a>配置变更</h3><h4 id="hexo的配置-config-yml"><a href="#hexo的配置-config-yml" class="headerlink" title="hexo的配置_config.yml"></a>hexo的配置<code>_config.yml</code></h4><p>原先为:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">douban:</div><div class="line">  user: jibing57</div></pre></td></tr></table></figure></p>
+<p>修改为<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">douban:</div><div class="line">  user: jibing57 </div><div class="line">  builtin: false</div><div class="line">  book:</div><div class="line">    title: &apos;豆瓣读书记录&apos;</div><div class="line">    quote: &apos;不完全的读书记录，因为好久才会想起要去豆瓣去点亮一下。&apos;</div><div class="line">  timeout: 10000</div></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<h4 id="主题配置修改"><a href="#主题配置修改" class="headerlink" title="主题配置修改"></a>主题配置修改</h4><p>主题<code>freemind</code>下的配置<code>themes/freemind/_config.yml</code>。<br>原先为:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">menu:</div><div class="line">...</div><div class="line">  - title: Douban</div><div class="line">    url: douban </div><div class="line">    intro: &quot;Douban&quot;</div><div class="line">    icon: &quot;fa fa-book&quot;</div></pre></td></tr></table></figure></p>
+<p>修改为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">menu:</div><div class="line">...</div><div class="line">  - title: Douban</div><div class="line">    url: books</div><div class="line">    intro: &quot;Douban&quot;</div><div class="line">    icon: &quot;fa fa-book&quot;</div></pre></td></tr></table></figure></p>
+<h4 id="package-json修改"><a href="#package-json修改" class="headerlink" title="package.json修改"></a>package.json修改</h4><p>项目<code>package.json</code>中, 去除原先的<code>hexo-generator-douban</code>, 添加<code>hexo-douban</code>。<br>原先为:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  ...</div><div class="line">  &quot;dependencies&quot;: &#123;</div><div class="line">    ...</div><div class="line">    &quot;hexo-generator-douban&quot;: &quot;git+https://github.com/jibing57/hexo-generator-douban.git&quot;,</div><div class="line">    ...</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>修改为:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  ...</div><div class="line">  &quot;dependencies&quot;: &#123;</div><div class="line">    ...</div><div class="line">    &quot;hexo-douban&quot;: &quot;^1.1.3&quot;,</div><div class="line">    ...</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="hexo-douban-使用方法"><a href="#hexo-douban-使用方法" class="headerlink" title="hexo-douban 使用方法"></a>hexo-douban 使用方法</h3><p>安装方法:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ npm install hexo-douban --save</div></pre></td></tr></table></figure></p>
+<p>用法:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">$ hexo douban -h</div><div class="line">Usage: hexo douban</div><div class="line"></div><div class="line">Description:</div><div class="line">Generate pages from douban</div><div class="line"></div><div class="line">Options:</div><div class="line">  -b, --books   Generate douban books only</div><div class="line">  -g, --games   Generate douban games only</div><div class="line">  -m, --movies  Generate douban movies only</div></pre></td></tr></table></figure></p>
+<h3 id="发布方式改变"><a href="#发布方式改变" class="headerlink" title="发布方式改变"></a>发布方式改变</h3><p>因为<code>hexo douban</code>跟<code>hexo deploy</code>的前缀都是<code>hexo d</code>, 因此发布时不能使用简写<code>hexo d</code>而要使用完整形式<code>hexo deploy</code></p>
+<p>本地debug<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo clean &amp;&amp; hexo douban &amp;&amp; hexo s --debug</div></pre></td></tr></table></figure></p>
+<p>服务器发布<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">hexo clean &amp;&amp; hexo douban &amp;&amp; hexo generate</div><div class="line">hexo deploy</div></pre></td></tr></table></figure></p>
+<h3 id="题外话"><a href="#题外话" class="headerlink" title="题外话"></a>题外话</h3><p>豆瓣当时免费提供API出来供大家调用查询自己的资源时，肯定是抱着理想注意的情怀的。后续被大家不守规矩地乱用，不停的被爬后。慢慢就停掉了原先对外提供的API。<br>关于互联网的使用，大家都已经习惯了由雅虎开创，谷歌发展的免费模式。通过羊毛出在猪身上这种方式，慢慢养叼了互联网网民。但实际上任何资源的使用都是有成本的，有价值的产品，在基础功能免费的基础上，带有一些付费的feature，也是值得考虑的一种模式。</p>
+<h3 id="延伸阅读"><a href="#延伸阅读" class="headerlink" title="延伸阅读"></a>延伸阅读</h3><ul>
+<li><a href="/2018/04/24/douban-image-403/" title="豆瓣图片403问题">豆瓣图片403问题</a>
+</li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> Blog </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Hexo </tag>
+            
+            <tag> Douban </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[弱网络环境下如何使用rvm安装ruby]]></title>
       <url>/2020/02/29/how-to-use-rvm-to-instal-ruby-in-slow-network-connection/</url>
       <content type="html"><![CDATA[<p>下面介绍下如何在屏蔽比较严重的网络情况下使用rvm来半手工的安装ruby, 如下操作基于CentOS 7，其他操作系统可能有所不同。</p>
@@ -3773,6 +3813,10 @@
 <li><a href="https://github.com/LingYanSi/blog/issues/89" target="_blank" rel="external">豆瓣API访问图片403的解决方案</a></li>
 <li><a href="https://github.com/izzyleung/ZhihuDailyPurify/issues/24" target="_blank" rel="external">api获取图片403，请问你是怎么解决的?</a></li>
 <li><a href="https://stackoverflow.com/questions/17509669/how-to-install-an-npm-package-from-github-directly" target="_blank" rel="external">How to install an npm package from GitHub directly</a></li>
+</ul>
+<h3 id="延伸阅读"><a href="#延伸阅读" class="headerlink" title="延伸阅读"></a>延伸阅读</h3><ul>
+<li><a href="/2020/04/09/replace-douban-book-plugin/" title="豆瓣插件替换">豆瓣插件替换</a>
+</li>
 </ul>
 ]]></content>
       
@@ -10370,9 +10414,9 @@ You can wait for the scheduled retirement date - when the instance is stopped - 
             
             <tag> RDS </tag>
             
-            <tag> Ruby </tag>
-            
             <tag> AWS SDK </tag>
+            
+            <tag> Ruby </tag>
             
             <tag> PostgreSQL </tag>
             

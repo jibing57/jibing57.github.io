@@ -139,6 +139,42 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
+			<div class="date"> 2019-06-11 </div>
+			<div class="article-title"><a href="/2019/06/11/a-tool-goaccess-to-process-web-log/" >GoAccess-一个处理web日志的工具</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="GoAccess介绍"><a href="#GoAccess介绍" class="headerlink" title="GoAccess介绍"></a>GoAccess介绍</h3><p>GoAccess是一个开源的基于终端的快速日志分析器。<br>Github地址:<a href="https://github.com/allinurl/goaccess" target="_blank" rel="external">https://github.com/allinurl/goaccess</a><br>官网地址: <a href="https://goaccess.io/" target="_blank" rel="external">https://goaccess.io/</a><br>说明文档: <a href="https://goaccess.io/man" target="_blank" rel="external">https://goaccess.io/man</a></p>
+<p>通过自己配置，可以支持日志格式，默认已经集成的log格式</p>
+<ul>
+<li>Amazon CloudFront (Download Distribution).</li>
+<li>Amazon Simple Storage Service (S3)</li>
+<li>AWS Elastic Load Balancing</li>
+<li>Combined Log Format (XLF/ELF) Apache | Nginx</li>
+<li>Common Log Format (CLF) Apache</li>
+<li>Google Cloud Storage.</li>
+<li>Apache virtual hosts</li>
+<li>Squid Native Format.</li>
+<li>W3C format (IIS)</li>
+</ul>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><h4 id="MacOS下"><a href="#MacOS下" class="headerlink" title="MacOS下"></a>MacOS下</h4><p>使用brew来安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew install goaccess</div></pre></td></tr></table></figure></p>
+	
+	</div>
+  <a type="button" href="/2019/06/11/a-tool-goaccess-to-process-web-log/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
 			<div class="date"> 2019-06-04 </div>
 			<div class="article-title"><a href="/2019/06/04/how-to-make-local-yum-repository-on-centos-7/" >CentOS 7下制作本地yum源</a></div>						
 		</h3>
@@ -448,42 +484,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2019-04-26 </div>
-			<div class="article-title"><a href="/2019/04/26/manually-install-vmeare-tools-on-centos-7/" >Vmware Fusion中CentOS 7中安装Vmware Tools</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h3><ol>
-<li>虚拟机状态栏中选择 <strong>虚拟机 &gt; 安装Vmware Tools</strong><br>期间可能会报CDROM已经被占用等信息，选择还是挂载即可</li>
-<li><p>打开Terminal手动挂载CDROM, 如果已经挂载，则不需要挂载</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># 查看cdrom是否已经自动挂载</div><div class="line">mount | grep iso9660</div><div class="line"></div><div class="line"># 手动挂载cdrom</div><div class="line">mkdir /mnt/cdrom</div><div class="line">mount /dev/cdrom /mnt/cdrom</div></pre></td></tr></table></figure>
-</li>
-<li><p>拷贝cdrom内容到/tmp并安装<br>安装步骤:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"># 如果是CentOS最小化安装，则系统没有perl,gcc和kernel-devel，需要先安装</div><div class="line">yum install -y perl gcc make kernel-devel</div><div class="line"></div><div class="line"># 拷贝vmtools并安装</div><div class="line">cd /tmp/</div><div class="line">cp /mnt/cdrom/VMwareTools-x.x.x-yyyy.tar.gz ./</div><div class="line">tar xzvf VMwareTools-x.x.x-yyyy.tar.gz</div><div class="line">cd vmware-tools-distrib</div><div class="line"># 执行安装程序，没有特殊要求，一路回车即可</div><div class="line">bash ./vmware-install.pl</div><div class="line"></div><div class="line"># 清理文件</div><div class="line">rm -rf /tmp/VMwareTools-x.x.x-yyyy.tar.gz</div><div class="line">rm -rf /tmp/vmware-tools-distrib/</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
-<li><a href="https://docs.vmware.com/en/VMware-Fusion/10.0/com.vmware.fusion.using.doc/GUID-08BB9465-D40A-4E16-9E15-8C016CC8166F.html" target="_blank" rel="external">Manually Installing VMware Tools on a Linux Virtual Machine</a></li>
-<li><a href="https://kb.vmware.com/s/article/1018414" target="_blank" rel="external">Installing VMware Tools in a Linux virtual machine using a Compiler (1018414)</a></li>
-</ul>
-
-	
-	</div>
-  <a type="button" href="/2019/04/26/manually-install-vmeare-tools-on-centos-7/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -551,7 +551,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/#AWS Certified">AWS Certified<span>4</span></a></li>
 		
-			<li><a href="/categories/#Blog">Blog<span>5</span></a></li>
+			<li><a href="/categories/#Blog">Blog<span>6</span></a></li>
 		
 			<li><a href="/categories/#Code">Code<span>5</span></a></li>
 		
@@ -571,45 +571,45 @@ var _hmt = _hmt || [];
 		<h4>标签云</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/#AWS Deep Dive">AWS Deep Dive<span>2</span></a></li>
+			<li><a href="/tags/#Yum">Yum<span>1</span></a></li>
 		
-			<li><a href="/tags/#AWS Tools">AWS Tools<span>2</span></a></li>
-		
-			<li><a href="/tags/#SSH">SSH<span>5</span></a></li>
-		
-			<li><a href="/tags/#RVM">RVM<span>3</span></a></li>
-		
-			<li><a href="/tags/#Image">Image<span>2</span></a></li>
-		
-			<li><a href="/tags/#Tips">Tips<span>1</span></a></li>
-		
-			<li><a href="/tags/#Lightsail">Lightsail<span>2</span></a></li>
-		
-			<li><a href="/tags/#iOS">iOS<span>1</span></a></li>
-		
-			<li><a href="/tags/#Hexo">Hexo<span>7</span></a></li>
-		
-			<li><a href="/tags/#Kubernetes">Kubernetes<span>1</span></a></li>
-		
-			<li><a href="/tags/#Wkhtmltopdf">Wkhtmltopdf<span>1</span></a></li>
+			<li><a href="/tags/#Douban">Douban<span>2</span></a></li>
 		
 			<li><a href="/tags/#Office">Office<span>2</span></a></li>
 		
-			<li><a href="/tags/#Git">Git<span>2</span></a></li>
+			<li><a href="/tags/#Video">Video<span>1</span></a></li>
 		
-			<li><a href="/tags/#EC2 User Data">EC2 User Data<span>1</span></a></li>
+			<li><a href="/tags/#CentOS">CentOS<span>8</span></a></li>
 		
-			<li><a href="/tags/#Yarn">Yarn<span>1</span></a></li>
+			<li><a href="/tags/#感悟">感悟<span>1</span></a></li>
 		
-			<li><a href="/tags/#Sysops">Sysops<span>1</span></a></li>
-		
-			<li><a href="/tags/#Linux">Linux<span>15</span></a></li>
+			<li><a href="/tags/#Ubuntu">Ubuntu<span>1</span></a></li>
 		
 			<li><a href="/tags/#HTTPS">HTTPS<span>1</span></a></li>
 		
-			<li><a href="/tags/#CloudWatch">CloudWatch<span>1</span></a></li>
+			<li><a href="/tags/#Ruby">Ruby<span>10</span></a></li>
 		
-			<li><a href="/tags/#Ubuntu">Ubuntu<span>1</span></a></li>
+			<li><a href="/tags/#MacOS">MacOS<span>18</span></a></li>
+		
+			<li><a href="/tags/#AutoScaling">AutoScaling<span>3</span></a></li>
+		
+			<li><a href="/tags/#AWS CLI">AWS CLI<span>6</span></a></li>
+		
+			<li><a href="/tags/#CodeCommit">CodeCommit<span>1</span></a></li>
+		
+			<li><a href="/tags/#Github">Github<span>3</span></a></li>
+		
+			<li><a href="/tags/#AWS Tools">AWS Tools<span>2</span></a></li>
+		
+			<li><a href="/tags/#RDS">RDS<span>3</span></a></li>
+		
+			<li><a href="/tags/#Failover">Failover<span>1</span></a></li>
+		
+			<li><a href="/tags/#Git">Git<span>2</span></a></li>
+		
+			<li><a href="/tags/#iOS">iOS<span>1</span></a></li>
+		
+			<li><a href="/tags/#AWS Free Tier">AWS Free Tier<span>1</span></a></li>
 		
 		
 		   <li><a href="/tags">...<span>56</span></a></li>
@@ -625,6 +625,10 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2020/04/09/replace-douban-book-plugin/" ><i class="fa fa-file-o"></i>豆瓣插件替换</a>
+      </li>
+    
+      <li>
         <a href="/2020/02/29/how-to-use-rvm-to-instal-ruby-in-slow-network-connection/" ><i class="fa fa-file-o"></i>弱网络环境下如何使用rvm安装ruby</a>
       </li>
     
@@ -638,10 +642,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2019/12/31/after-upgrade-the-openssl-in-macos/" ><i class="fa fa-file-o"></i>MacOS下Brew升级openssl的后续处理</a>
-      </li>
-    
-      <li>
-        <a href="/2019/12/31/macos-youcompleteme-ERROR-root-code-for-hash-md5-was-not-found/" ><i class="fa fa-file-o"></i>Macos下vim中YouCompleteMe报错 E...</a>
       </li>
     
   </ul>

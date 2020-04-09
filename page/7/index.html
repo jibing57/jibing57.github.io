@@ -139,6 +139,38 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
+			<div class="date"> 2018-03-16 </div>
+			<div class="article-title"><a href="/2018/03/16/how-to-subscribe-RDS-event/" >订阅RDS事件</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>关于RDS状态的监控，除了常规的CloudWatch Metric以外。RDS还有一个事件机制，能够将RDS的事件通知到SNS。</p>
+<h3 id="RDS-Event简介"><a href="#RDS-Event简介" class="headerlink" title="RDS Event简介"></a>RDS Event简介</h3><h4 id="RDS-Event-Source-type"><a href="#RDS-Event-Source-type" class="headerlink" title="RDS Event - Source type"></a>RDS Event - Source type</h4><p>RDS的事件类型分为如下六大类:</p>
+<ul>
+<li>数据库实例(DB instance)</li>
+<li>数据库集群(DB cluster)</li>
+<li>数据库快照(DB snapshot)</li>
+<li>数据库集群快照(DB cluster snapshot)</li>
+<li>数据库安全组(DB security group)</li>
+<li>数据库参数组(DB parameter group)</li>
+</ul>
+	
+	</div>
+  <a type="button" href="/2018/03/16/how-to-subscribe-RDS-event/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
 			<div class="date"> 2018-03-15 </div>
 			<div class="article-title"><a href="/2018/03/15/how-to-set-chrome-to-use-google-with-NoCountryRedirect/" >在Chrome中设置Google搜索为NoCountryRedirect</a></div>						
 		</h3>
@@ -396,32 +428,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2017-12-25 </div>
-			<div class="article-title"><a href="/2017/12/25/how-to-add-shadow-of-images-in-freemind/" >在Freemind主题中开启图片阴影</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="添加图片阴影"><a href="#添加图片阴影" class="headerlink" title="添加图片阴影"></a>添加图片阴影</h3><p><a href="https://github.com/wzpan/hexo-theme-freemind" target="_blank" rel="external">hexo-theme-freemind</a>主题中，默认没有开启图片阴影。当图片的背景和文章的背景是同色的时候，有时会造成混淆，看不清楚哪部分是图片，哪部分是文章。</p>
-<p>打开源码看了一下，发现其实<a href="https://github.com/wzpan/hexo-theme-freemind" target="_blank" rel="external">hexo-theme-freemind</a>本身就已经支持图片shadow了。只是默认没有开启，而且也没有在README.md中提及。</p>
-<p>在<code>hexo-theme-freemind/layout/_partial/article.ejs</code>文件中有如下代码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;% if (item.shadow ) &#123; %&gt;</div><div class="line">   &lt;style type=&quot;text/css&quot;&gt;</div><div class="line">           img, video &#123;</div><div class="line">                -webkit-box-shadow:0 0 10px rgba(0, 0, 0, .5);</div><div class="line">                -moz-box-shadow:0 0 10px rgba(0, 0, 0, .5);</div><div class="line">                box-shadow:0 0 10px rgba(0, 0, 0, .5);</div><div class="line">           &#125;</div><div class="line">   &lt;/style&gt;</div><div class="line">&lt;% &#125; %&gt;</div></pre></td></tr></table></figure>
-	
-	</div>
-  <a type="button" href="/2017/12/25/how-to-add-shadow-of-images-in-freemind/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -489,7 +495,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/#AWS Certified">AWS Certified<span>4</span></a></li>
 		
-			<li><a href="/categories/#Blog">Blog<span>5</span></a></li>
+			<li><a href="/categories/#Blog">Blog<span>6</span></a></li>
 		
 			<li><a href="/categories/#Code">Code<span>5</span></a></li>
 		
@@ -509,45 +515,45 @@ var _hmt = _hmt || [];
 		<h4>标签云</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/#CloudWatch">CloudWatch<span>1</span></a></li>
-		
-			<li><a href="/tags/#FFMPEG">FFMPEG<span>2</span></a></li>
-		
-			<li><a href="/tags/#EC2">EC2<span>8</span></a></li>
-		
-			<li><a href="/tags/#Elastic Load Balancing">Elastic Load Balancing<span>6</span></a></li>
-		
-			<li><a href="/tags/#Yum">Yum<span>1</span></a></li>
-		
-			<li><a href="/tags/#Lightsail">Lightsail<span>2</span></a></li>
-		
-			<li><a href="/tags/#AWS Free Tier">AWS Free Tier<span>1</span></a></li>
-		
-			<li><a href="/tags/#Github">Github<span>3</span></a></li>
-		
-			<li><a href="/tags/#Image">Image<span>2</span></a></li>
-		
-			<li><a href="/tags/#Nginx">Nginx<span>7</span></a></li>
-		
-			<li><a href="/tags/#AWS SDK">AWS SDK<span>2</span></a></li>
-		
-			<li><a href="/tags/#IAM">IAM<span>3</span></a></li>
-		
-			<li><a href="/tags/#Git">Git<span>2</span></a></li>
-		
-			<li><a href="/tags/#Office">Office<span>2</span></a></li>
-		
-			<li><a href="/tags/#Network">Network<span>4</span></a></li>
+			<li><a href="/tags/#感悟">感悟<span>1</span></a></li>
 		
 			<li><a href="/tags/#AWS Deep Dive">AWS Deep Dive<span>2</span></a></li>
 		
-			<li><a href="/tags/#S3">S3<span>10</span></a></li>
+			<li><a href="/tags/#Kubernetes">Kubernetes<span>1</span></a></li>
 		
-			<li><a href="/tags/#Linux">Linux<span>15</span></a></li>
+			<li><a href="/tags/#EC2 User Data">EC2 User Data<span>1</span></a></li>
 		
 			<li><a href="/tags/#AWS CLI">AWS CLI<span>6</span></a></li>
 		
-			<li><a href="/tags/#PostgreSQL">PostgreSQL<span>3</span></a></li>
+			<li><a href="/tags/#Image">Image<span>2</span></a></li>
+		
+			<li><a href="/tags/#RDS">RDS<span>3</span></a></li>
+		
+			<li><a href="/tags/#Docker">Docker<span>1</span></a></li>
+		
+			<li><a href="/tags/#CodeCommit">CodeCommit<span>1</span></a></li>
+		
+			<li><a href="/tags/#AWS Tools">AWS Tools<span>2</span></a></li>
+		
+			<li><a href="/tags/#Elastic Load Balancing">Elastic Load Balancing<span>6</span></a></li>
+		
+			<li><a href="/tags/#Solutions Architect">Solutions Architect<span>1</span></a></li>
+		
+			<li><a href="/tags/#Git">Git<span>2</span></a></li>
+		
+			<li><a href="/tags/#Linux">Linux<span>15</span></a></li>
+		
+			<li><a href="/tags/#Nodejs">Nodejs<span>3</span></a></li>
+		
+			<li><a href="/tags/#iOS">iOS<span>1</span></a></li>
+		
+			<li><a href="/tags/#Video">Video<span>1</span></a></li>
+		
+			<li><a href="/tags/#Ubuntu">Ubuntu<span>1</span></a></li>
+		
+			<li><a href="/tags/#Github">Github<span>3</span></a></li>
+		
+			<li><a href="/tags/#Wkhtmltopdf">Wkhtmltopdf<span>1</span></a></li>
 		
 		
 		   <li><a href="/tags">...<span>56</span></a></li>
@@ -563,6 +569,10 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2020/04/09/replace-douban-book-plugin/" ><i class="fa fa-file-o"></i>豆瓣插件替换</a>
+      </li>
+    
+      <li>
         <a href="/2020/02/29/how-to-use-rvm-to-instal-ruby-in-slow-network-connection/" ><i class="fa fa-file-o"></i>弱网络环境下如何使用rvm安装ruby</a>
       </li>
     
@@ -576,10 +586,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2019/12/31/after-upgrade-the-openssl-in-macos/" ><i class="fa fa-file-o"></i>MacOS下Brew升级openssl的后续处理</a>
-      </li>
-    
-      <li>
-        <a href="/2019/12/31/macos-youcompleteme-ERROR-root-code-for-hash-md5-was-not-found/" ><i class="fa fa-file-o"></i>Macos下vim中YouCompleteMe报错 E...</a>
       </li>
     
   </ul>

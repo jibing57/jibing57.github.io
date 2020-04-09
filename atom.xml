@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.jibing57.com/"/>
-  <updated>2020-03-02T01:18:38.417Z</updated>
+  <updated>2020-04-09T15:17:12.211Z</updated>
   <id>https://www.jibing57.com/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>豆瓣插件替换</title>
+    <link href="https://www.jibing57.com/2020/04/09/replace-douban-book-plugin/"/>
+    <id>https://www.jibing57.com/2020/04/09/replace-douban-book-plugin/</id>
+    <published>2020-04-09T14:44:02.000Z</published>
+    <updated>2020-04-09T15:17:12.211Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;原先使用的&lt;a href=&quot;https://github.com/Yikun/hexo-generator-douban&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Yikun/hexo-generator-douban&lt;/a&gt;在豆瓣封了API之后，就彻底没法用了。另外一个插件&lt;a href=&quot;https://github.com/mythsman/hexo-douban&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;mythsman/hexo-douban&lt;/a&gt;是靠解析网页来生成读书列表，还能工作。就决定换用&lt;a href=&quot;https://github.com/mythsman/hexo-douban&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;mythsman/hexo-douban&lt;/a&gt;来生成读书列表。&lt;br&gt;以下记录插件替换的过程。&lt;/p&gt;
+&lt;h3 id=&quot;配置变更&quot;&gt;&lt;a href=&quot;#配置变更&quot; class=&quot;headerlink&quot; title=&quot;配置变更&quot;&gt;&lt;/a&gt;配置变更&lt;/h3&gt;&lt;h4 id=&quot;hexo的配置-config-yml&quot;&gt;&lt;a href=&quot;#hexo的配置-config-yml&quot; class=&quot;headerlink&quot; title=&quot;hexo的配置_config.yml&quot;&gt;&lt;/a&gt;hexo的配置&lt;code&gt;_config.yml&lt;/code&gt;&lt;/h4&gt;&lt;p&gt;原先为:&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;douban:&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  user: jibing57&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;修改为&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;douban:&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  user: jibing57 &lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  builtin: false&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  book:&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    title: &amp;apos;豆瓣读书记录&amp;apos;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    quote: &amp;apos;不完全的读书记录，因为好久才会想起要去豆瓣去点亮一下。&amp;apos;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  timeout: 10000&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Blog" scheme="https://www.jibing57.com/categories/Blog/"/>
+    
+    
+      <category term="Hexo" scheme="https://www.jibing57.com/tags/Hexo/"/>
+    
+      <category term="Douban" scheme="https://www.jibing57.com/tags/Douban/"/>
+    
+  </entry>
   
   <entry>
     <title>弱网络环境下如何使用rvm安装ruby</title>
@@ -548,41 +572,6 @@
       <category term="Network" scheme="https://www.jibing57.com/tags/Network/"/>
     
       <category term="CentOS" scheme="https://www.jibing57.com/tags/CentOS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>GoAccess-一个处理web日志的工具</title>
-    <link href="https://www.jibing57.com/2019/06/11/a-tool-goaccess-to-process-web-log/"/>
-    <id>https://www.jibing57.com/2019/06/11/a-tool-goaccess-to-process-web-log/</id>
-    <published>2019-06-11T05:58:15.000Z</published>
-    <updated>2019-06-12T07:00:26.047Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;GoAccess介绍&quot;&gt;&lt;a href=&quot;#GoAccess介绍&quot; class=&quot;headerlink&quot; title=&quot;GoAccess介绍&quot;&gt;&lt;/a&gt;GoAccess介绍&lt;/h3&gt;&lt;p&gt;GoAccess是一个开源的基于终端的快速日志分析器。&lt;br&gt;Github地址:&lt;a href=&quot;https://github.com/allinurl/goaccess&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/allinurl/goaccess&lt;/a&gt;&lt;br&gt;官网地址: &lt;a href=&quot;https://goaccess.io/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://goaccess.io/&lt;/a&gt;&lt;br&gt;说明文档: &lt;a href=&quot;https://goaccess.io/man&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://goaccess.io/man&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;通过自己配置，可以支持日志格式，默认已经集成的log格式&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Amazon CloudFront (Download Distribution).&lt;/li&gt;
-&lt;li&gt;Amazon Simple Storage Service (S3)&lt;/li&gt;
-&lt;li&gt;AWS Elastic Load Balancing&lt;/li&gt;
-&lt;li&gt;Combined Log Format (XLF/ELF) Apache | Nginx&lt;/li&gt;
-&lt;li&gt;Common Log Format (CLF) Apache&lt;/li&gt;
-&lt;li&gt;Google Cloud Storage.&lt;/li&gt;
-&lt;li&gt;Apache virtual hosts&lt;/li&gt;
-&lt;li&gt;Squid Native Format.&lt;/li&gt;
-&lt;li&gt;W3C format (IIS)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&quot;安装&quot;&gt;&lt;a href=&quot;#安装&quot; class=&quot;headerlink&quot; title=&quot;安装&quot;&gt;&lt;/a&gt;安装&lt;/h3&gt;&lt;h4 id=&quot;MacOS下&quot;&gt;&lt;a href=&quot;#MacOS下&quot; class=&quot;headerlink&quot; title=&quot;MacOS下&quot;&gt;&lt;/a&gt;MacOS下&lt;/h4&gt;&lt;p&gt;使用brew来安装&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;brew install goaccess&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
-    
-    
-      <category term="Nginx" scheme="https://www.jibing57.com/tags/Nginx/"/>
-    
-      <category term="HTTP" scheme="https://www.jibing57.com/tags/HTTP/"/>
     
   </entry>
   

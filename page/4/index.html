@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Page 4 | Recording</title>
+  <title>第 4 页 | Recording</title>
   <meta name="author" content="jibing57">
   
   <meta name="description" content="AWS, 阅读, Architecture, PostgreSQL">
@@ -99,7 +99,7 @@ var _hmt = _hmt || [];
 		  </li>
 		  
 		  <li>
-			<a href="/douban" title="Douban">
+			<a href="/books" title="Douban">
 			  <i class="fa fa-book"></i>Douban
 			</a>
 		  </li>
@@ -156,7 +156,7 @@ var _hmt = _hmt || [];
 <h3 id="CentoOS-7-最小化安装后可能需要的一些命令"><a href="#CentoOS-7-最小化安装后可能需要的一些命令" class="headerlink" title="CentoOS 7 最小化安装后可能需要的一些命令"></a>CentoOS 7 最小化安装后可能需要的一些命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">yum install wget curl</div><div class="line">yum install unzip</div><div class="line">yum install tree</div><div class="line">yum install net-tools</div></pre></td></tr></table></figure>
 	
 	</div>
-  <a type="button" href="/2019/04/26/command-tips/#more" class="btn btn-default more">Read More</a>
+  <a type="button" href="/2019/04/26/command-tips/#more" class="btn btn-default more">阅读此文</a>
 </div>
 
            
@@ -185,7 +185,7 @@ var _hmt = _hmt || [];
 <p>比较系统的各个命令，期待有空时每个粗略一遍，需要时再来查询</p>
 	
 	</div>
-  <a type="button" href="/2019/04/20/niu-x-resource/#more" class="btn btn-default more">Read More</a>
+  <a type="button" href="/2019/04/20/niu-x-resource/#more" class="btn btn-default more">阅读此文</a>
 </div>
 
            
@@ -214,7 +214,7 @@ var _hmt = _hmt || [];
 </ul>
 	
 	</div>
-  <a type="button" href="/2019/04/20/firewall-cmd-basic-usage/#more" class="btn btn-default more">Read More</a>
+  <a type="button" href="/2019/04/20/firewall-cmd-basic-usage/#more" class="btn btn-default more">阅读此文</a>
 </div>
 
            
@@ -249,7 +249,7 @@ var _hmt = _hmt || [];
 <h3 id="几个例子"><a href="#几个例子" class="headerlink" title="几个例子"></a>几个例子</h3><p>使用在线工具画的项目的架构图<br><img src="/images/AWS/Tools/architecture_diagram.png" alt="architecture_diagram.png"><br>
 	
 	</div>
-  <a type="button" href="/2019/04/09/online-visual-paradigm/#more" class="btn btn-default more">Read More</a>
+  <a type="button" href="/2019/04/09/online-visual-paradigm/#more" class="btn btn-default more">阅读此文</a>
 </div>
 
            
@@ -276,7 +276,7 @@ var _hmt = _hmt || [];
 <p>Bucket下的日志，默认不会自动清理，日积月累,instance-id路径下的文件会越来越多，而目前aws cli的<code>s3 cp</code>或<code>s3 sync</code>,并没有提供根据创建时间的filter,有时候获取固定哪段时间的文件就不太方便。<br>
 	
 	</div>
-  <a type="button" href="/2019/04/08/some-command-to-parse-EB-logs/#more" class="btn btn-default more">Read More</a>
+  <a type="button" href="/2019/04/08/some-command-to-parse-EB-logs/#more" class="btn btn-default more">阅读此文</a>
 </div>
 
            
@@ -304,7 +304,7 @@ var _hmt = _hmt || [];
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">$ sudo modprobe tcp_bbr</div><div class="line"></div><div class="line">$ sudo modprobe sch_fq</div><div class="line"></div><div class="line">$ sudo sysctl -w net.ipv4.tcp_congestion_control=bbr</div><div class="line"></div><div class="line">Persistent configuration should look like:</div><div class="line"></div><div class="line">$ sudo su -</div><div class="line"></div><div class="line"># cat &lt;&lt;EOF&gt;&gt; /etc/sysconfig/modules/tcpcong.modules  </div><div class="line"></div><div class="line">&gt;#!/bin/bash</div><div class="line"></div><div class="line">&gt; exec /sbin/modprobe tcp_bbr &gt;/dev/null 2&gt;&amp;1</div><div class="line"></div><div class="line">&gt; exec /sbin/modprobe sch_fq &gt;/dev/null 2&gt;&amp;1</div><div class="line"></div><div class="line">&gt; EOF</div><div class="line"></div><div class="line"># chmod 755 /etc/sysconfig/modules/tcpcong.modules</div><div class="line"></div><div class="line"># echo &quot;net.ipv4.tcp_congestion_control = bbr&quot; &gt;&gt; /etc/sysctl.d/00-tcpcong.conf</div></pre></td></tr></table></figure>
 	
 	</div>
-  <a type="button" href="/2019/04/02/bbr-on-aws-ec2/#more" class="btn btn-default more">Read More</a>
+  <a type="button" href="/2019/04/02/bbr-on-aws-ec2/#more" class="btn btn-default more">阅读此文</a>
 </div>
 
            
@@ -329,7 +329,7 @@ var _hmt = _hmt || [];
 <p>Terminal中输入<code>ifconfig</code>查看Mac的IP地址, 供iPhone设置时使用。此处是<code>192.168.3.18</code><br>
 	
 	</div>
-  <a type="button" href="/2019/03/24/share-ShadowsocksX-NG-to-iOS/#more" class="btn btn-default more">Read More</a>
+  <a type="button" href="/2019/03/24/share-ShadowsocksX-NG-to-iOS/#more" class="btn btn-default more">阅读此文</a>
 </div>
 
            
@@ -358,7 +358,7 @@ var _hmt = _hmt || [];
 </ol>
 	
 	</div>
-  <a type="button" href="/2019/03/21/ctrl-c-invalid-on-Centos-7/#more" class="btn btn-default more">Read More</a>
+  <a type="button" href="/2019/03/21/ctrl-c-invalid-on-Centos-7/#more" class="btn btn-default more">阅读此文</a>
 </div>
 
            
@@ -394,7 +394,7 @@ var _hmt = _hmt || [];
 </ul>
 	
 	</div>
-  <a type="button" href="/2019/03/11/ways-to-support-public-s3-file-in-nginx/#more" class="btn btn-default more">Read More</a>
+  <a type="button" href="/2019/03/11/ways-to-support-public-s3-file-in-nginx/#more" class="btn btn-default more">阅读此文</a>
 </div>
 
            
@@ -420,7 +420,7 @@ var _hmt = _hmt || [];
 <p>同样的问题，在Amazon Linux 2 AMI中也同样存在。</p>
 	
 	</div>
-  <a type="button" href="/2019/03/10/passenger-status-not-work-on-CentOS-7/#more" class="btn btn-default more">Read More</a>
+  <a type="button" href="/2019/03/10/passenger-status-not-work-on-CentOS-7/#more" class="btn btn-default more">阅读此文</a>
 </div>
 
            
@@ -435,13 +435,13 @@ var _hmt = _hmt || [];
 <ul class="pagination">
 	 
 		
-    	<li class="prev"><a href="/page/3/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i> Prev</a></li>
+    	<li class="prev"><a href="/page/3/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i> 上一页</a></li>
   		
 
         <li><a href="/"><i class="fa fa-home"></i>Home</a></li>
 
 		
-		   <li class="next"> <a href="/page/5/" class="alignright next">Next<i class="fa fa-arrow-circle-o-right"></i></a> </li>          
+		   <li class="next"> <a href="/page/5/" class="alignright next">下一页<i class="fa fa-arrow-circle-o-right"></i></a> </li>          
         
 	
 </ul>
@@ -461,7 +461,7 @@ var _hmt = _hmt || [];
 			
   <div id="site_search">
    <div class="form-group">
-    <input type="text" id="local-search-input" name="q" results="0" placeholder="Search" class="st-search-input st-default-search-input form-control"/>
+    <input type="text" id="local-search-input" name="q" results="0" placeholder="搜索" class="st-search-input st-default-search-input form-control"/>
    </div>  
   <div id="local-search-result"></div>
   </div>
@@ -485,7 +485,7 @@ var _hmt = _hmt || [];
 		
 			
 	<div class="widget">
-		<h4>Categories</h4>
+		<h4>分类</h4>
 		<ul class="tag_box inline list-unstyled">
 		
 			<li><a href="/categories/#AWS">AWS<span>35</span></a></li>
@@ -509,48 +509,48 @@ var _hmt = _hmt || [];
 		
 			
 	<div class="widget">
-		<h4>Tag Cloud</h4>
+		<h4>标签云</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/#EC2">EC2<span>8</span></a></li>
+			<li><a href="/tags/#Ubuntu">Ubuntu<span>1</span></a></li>
 		
-			<li><a href="/tags/#Docker">Docker<span>1</span></a></li>
+			<li><a href="/tags/#AWS Deep Dive">AWS Deep Dive<span>2</span></a></li>
 		
-			<li><a href="/tags/#Elastic Load Balancing">Elastic Load Balancing<span>6</span></a></li>
+			<li><a href="/tags/#Solutions Architect">Solutions Architect<span>1</span></a></li>
 		
-			<li><a href="/tags/#Git">Git<span>2</span></a></li>
-		
-			<li><a href="/tags/#CloudWatch">CloudWatch<span>1</span></a></li>
-		
-			<li><a href="/tags/#PostgreSQL">PostgreSQL<span>3</span></a></li>
-		
-			<li><a href="/tags/#Wkhtmltopdf">Wkhtmltopdf<span>1</span></a></li>
-		
-			<li><a href="/tags/#Failover">Failover<span>1</span></a></li>
-		
-			<li><a href="/tags/#Firewall">Firewall<span>1</span></a></li>
-		
-			<li><a href="/tags/#Linux">Linux<span>15</span></a></li>
-		
-			<li><a href="/tags/#AWS SDK">AWS SDK<span>2</span></a></li>
-		
-			<li><a href="/tags/#DynamoDB">DynamoDB<span>1</span></a></li>
-		
-			<li><a href="/tags/#HTTP">HTTP<span>5</span></a></li>
-		
-			<li><a href="/tags/#Yum">Yum<span>1</span></a></li>
-		
-			<li><a href="/tags/#AWS Tools">AWS Tools<span>2</span></a></li>
-		
-			<li><a href="/tags/#Video">Video<span>1</span></a></li>
+			<li><a href="/tags/#RVM">RVM<span>3</span></a></li>
 		
 			<li><a href="/tags/#CentOS">CentOS<span>8</span></a></li>
 		
-			<li><a href="/tags/#Rails">Rails<span>4</span></a></li>
+			<li><a href="/tags/#Application Load Balancing">Application Load Balancing<span>1</span></a></li>
 		
-			<li><a href="/tags/#FFMPEG">FFMPEG<span>2</span></a></li>
+			<li><a href="/tags/#HTTP">HTTP<span>5</span></a></li>
 		
-			<li><a href="/tags/#Sysops">Sysops<span>1</span></a></li>
+			<li><a href="/tags/#AutoScaling">AutoScaling<span>3</span></a></li>
+		
+			<li><a href="/tags/#AWS Tools">AWS Tools<span>2</span></a></li>
+		
+			<li><a href="/tags/#SSH">SSH<span>5</span></a></li>
+		
+			<li><a href="/tags/#Ruby">Ruby<span>10</span></a></li>
+		
+			<li><a href="/tags/#Lightsail">Lightsail<span>2</span></a></li>
+		
+			<li><a href="/tags/#Github">Github<span>3</span></a></li>
+		
+			<li><a href="/tags/#Video">Video<span>1</span></a></li>
+		
+			<li><a href="/tags/#AWS CLI">AWS CLI<span>6</span></a></li>
+		
+			<li><a href="/tags/#Linux">Linux<span>15</span></a></li>
+		
+			<li><a href="/tags/#Yum">Yum<span>1</span></a></li>
+		
+			<li><a href="/tags/#Nodejs">Nodejs<span>3</span></a></li>
+		
+			<li><a href="/tags/#Nginx">Nginx<span>7</span></a></li>
+		
+			<li><a href="/tags/#HTTPS">HTTPS<span>1</span></a></li>
 		
 		
 		   <li><a href="/tags">...<span>56</span></a></li>
@@ -562,7 +562,7 @@ var _hmt = _hmt || [];
 		
 			
 <div class="widget">
-  <h4>Recent Posts</h4>
+  <h4>最新文章</h4>
   <ul class="entry list-unstyled">
     
       <li>
@@ -591,7 +591,7 @@ var _hmt = _hmt || [];
 		
 			
 <div class="widget">
-	<h4>Links</h4>
+	<h4>链接</h4>
 	<ul class="blogroll list-unstyled">
 	
 		<li><i class="fa fa-github"></i><a href="https://github.com/jibing57/" title="My Github repository." target="_blank"]);">My Github</a></li>

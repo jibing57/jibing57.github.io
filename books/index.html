@@ -1,0 +1,1356 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>豆瓣读书记录 | Recording</title>
+  <meta name="author" content="jibing57">
+  
+  <meta name="description" content="AWS, 阅读, Architecture, PostgreSQL">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="豆瓣读书记录"/>
+  <meta property="og:site_name" content="Recording"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/css/themes/bootstrap.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/comment.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+  
+  <!-- analytics -->
+  
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-111771042-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?59d3e14cdc96877383afed646f44d216";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+</head>
+
+ <body>  
+  <nav id="main-nav" class="navbar  navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+	<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+       <a class="navbar-brand" href="/">Recording</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class="fa fa-archive"></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class="fa fa-folder"></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class="fa fa-tags"></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/books" title="Douban">
+			  <i class="fa fa-book"></i>Douban
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+	
+		<div class="page-header ">		
+			<h1 class="title "> 豆瓣读书记录</h1>
+		</div>		
+	
+
+
+
+
+
+
+<div class="row page">
+	<!-- cols -->
+	
+	<div class="col-md-12">
+	
+
+	<!-- content -->
+	<div class="mypage">		
+	  		
+
+	  <blockquote>
+    <p>不完全的读书记录，因为好久才会想起要去豆瓣去点亮一下。</p>
+</blockquote>
+
+<style>
+    
+.hexo-douban-tabs {
+    margin-bottom: 15px;
+    margin-top: 15px;
+}
+
+.hexo-douban-tab {
+    padding: 5px;
+}
+
+.hexo-douban-active {
+    background: #657b83;
+    color: #fff;
+}
+
+.hexo-douban-item {
+    padding-bottom: 10px;
+    position: relative;
+    clear: both;
+    min-height: 170px;
+    padding: 10px 0;
+    border-bottom: 1px #ddd solid;
+}
+
+@media screen and (max-width: 600px) {
+    .hexo-douban-item {
+        width: 100%;
+    }
+}
+
+.hexo-douban-picture {
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 100px;
+}
+
+.hexo-douban-info {
+    padding-left: 120px;
+}
+
+.hexo-douban-meta {
+    font-size: 12px;
+    padding-right: 10px;
+}
+
+.hexo-douban-comments {
+    font-size: 12px;
+}
+
+.hexo-douban-pagination {
+    margin-top: 15px;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.hexo-douban-button {
+    padding: 5px;
+}
+
+.hexo-douban-button:hover {
+    background: #657b83;
+    color: #fff;
+}
+
+.hexo-douban-hide {
+    display: none;
+}
+
+.hexo-douban-show {
+    display: block;
+}
+
+
+</style>
+
+<div class="hexo-douban-tabs">
+    <a class="hexo-douban-tab" id="hexo-douban-tab1" href="javascript:;"
+       rel="external">
+        在读
+        (1)</a>
+    <a class="hexo-douban-tab" id="hexo-douban-tab2" href="javascript:;"
+       rel="external">
+        想读
+        (4)</a>
+    <a class="hexo-douban-tab" id="hexo-douban-tab3" href="javascript:;"
+       rel="external">
+        已读
+        (42)</a>
+</div>
+<div>
+    <div id="hexo-douban-item1">
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img1.doubanio.com/view/subject/s/public/s33300108.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/26734748/"> 大转换</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  尼古拉斯·卡尔 / 闫鲜宁、张付国 / 中信 / 2016-2 / 49
+
+        </div>
+        <div class="hexo-douban-meta">2018-01-03
+      在读 / </div>
+        <div class="hexo-douban-comments">
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-pagination">
+    <a class="hexo-douban-button hexo-douban-firstpage" href="javascript:;"> 首页</a>
+    <a class="hexo-douban-button hexo-douban-previouspage" href="javascript:;">上一页</a>
+    <span class="hexo-douban-pagenum">2 / 3</span>
+    <a class="hexo-douban-button hexo-douban-nextpage" href="javascript:;">下一页</a>
+    <a class="hexo-douban-button hexo-douban-lastpage" href="javascript:;">尾页</a>
+</div>
+    </div>
+    <div id="hexo-douban-item2">
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img3.doubanio.com/view/subject/s/public/s29649603.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/27182584/"> 从一到无穷大</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  [美] G.伽莫夫 / 暴永宁 译、吴伯泽 校 / 科学出版社 / 2017-11
+
+      
+        </div>
+        <div class="hexo-douban-meta">2018-09-21
+      想读 / </div>
+        <div class="hexo-douban-comments">
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img3.doubanio.com/view/subject/s/public/s10353262.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/10510747/"> 计算机网络（第5版）</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  Andrew S. Tanenbaum、David J. Wetherall / 严伟、潘爱民 / 清华大学出版社 / 2012-3-1 / 89.50元
+
+      
+        </div>
+        <div class="hexo-douban-meta">2018-09-17
+      想读 / </div>
+        <div class="hexo-douban-comments">
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img3.doubanio.com/view/subject/s/public/s4518521.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/5338024/"> 与孩子一起学编程</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  [美] 桑德Warren Sande、Carter Sande / 苏金国、姚曜 等 / 人民邮电出版社 / 2010-11 / 65.00元
+
+      
+        </div>
+        <div class="hexo-douban-meta">2018-09-13
+      想读 / </div>
+        <div class="hexo-douban-comments">
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img9.doubanio.com/view/subject/s/public/s27250675.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/25723064/"> 大型网站技术架构</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  李智慧 / 电子工业出版社 / 2013-9-1 / 59.00元
+
+      
+        </div>
+        <div class="hexo-douban-meta">2015-03-19
+      想读 / </div>
+        <div class="hexo-douban-comments">
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-pagination">
+    <a class="hexo-douban-button hexo-douban-firstpage" href="javascript:;"> 首页</a>
+    <a class="hexo-douban-button hexo-douban-previouspage" href="javascript:;">上一页</a>
+    <span class="hexo-douban-pagenum">2 / 3</span>
+    <a class="hexo-douban-button hexo-douban-nextpage" href="javascript:;">下一页</a>
+    <a class="hexo-douban-button hexo-douban-lastpage" href="javascript:;">尾页</a>
+</div>
+
+    </div>
+    <div id="hexo-douban-item3">
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img9.doubanio.com/view/subject/s/public/s29585484.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/26985299/"> 小岛经济学</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  彼得·希夫、安德鲁·希夫 / 胡晓姣、吕靖纬、陈志超 / 中信出版集团股份有限公司 / 2017-3 / 48
+
+      </div>
+        <div class="hexo-douban-meta">2020-03-16
+      读过 /  / ★★★★☆ 推荐</div>
+        <div class="hexo-douban-comments">
+      从来就没有不含政治成分的经济。如果纯粹地以市场来决定一切，那最没有价值的，就是经济学家。
+      
+  
+
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img3.doubanio.com/view/subject/s/public/s29952640.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/30348776/"> 筚路蓝缕</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  张国宝 / 人民出版社 / 2018-9 / 138元
+
+      </div>
+        <div class="hexo-douban-meta">2020-03-16
+      读过 /  工程 回忆录 / ★★★★★ 力荐</div>
+        <div class="hexo-douban-comments">
+      普通人能够看到各大项目的决策历程，实属幸哉！
+      
+  
+
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img3.doubanio.com/view/subject/s/public/s16844300.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/19920715/"> 论中国</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  [美]基辛格 / 胡利平、林华、杨韵琴、朱敬文 / 中信出版社 / 2012-10 / 68.00元
+
+      </div>
+        <div class="hexo-douban-meta">2019-01-02
+      读过 /  / ★★★★★ 力荐</div>
+        <div class="hexo-douban-comments">
+      由亲身经历者梳理的历史进程
+      
+  
+
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img3.doubanio.com/view/subject/s/public/s29835971.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/27176192/"> AWS Lambda实战</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  达尼洛·波恰 (Danilo Poccia) / 机械工业出版社 / 2017-9-1 / CNY 79.00
+
+      </div>
+        <div class="hexo-douban-meta">2018-11-28
+      读过 /  / ★★★★☆ 推荐</div>
+        <div class="hexo-douban-comments">
+      - https://github.com/danilop/AWS_Lambda_in_Action
+- https://www.manning.com/books/aws-lambda-in-action
+      
+  
+
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img1.doubanio.com/view/subject/s/public/s29929118.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/30384810/"> AWS Certified Solutions Architect Associate All-in-One Exam Guide (Exam SAA-C01)</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  Joyjeet Banerjee / McGraw-Hill Education / 2018-8-31
+
+      </div>
+        <div class="hexo-douban-meta">2018-11-28
+      读过 /  / ★★★★★ 力荐</div>
+        <div class="hexo-douban-comments">
+      用来了解一下AWS的服务蛮好的
+      
+  
+
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img9.doubanio.com/view/subject/s/public/s29774114.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/30218923/"> 失踪的总统</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  (美) 比尔·克林顿 (Bill Clinton)、[美] 詹姆斯·帕特森 / 刘勇军、苏伊达 / 江苏凤凰文艺出版社 / 2018-6 / 49
+
+      </div>
+        <div class="hexo-douban-meta">2018-09-04
+      读过 /  / ★★★☆☆ 还行</div>
+        <div class="hexo-douban-comments">
+      Just a fiction
+      
+  
+
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img9.doubanio.com/view/subject/s/public/s29542864.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/27139170/"> 疯狂的独角兽</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  丹·莱昂斯 / 王天任 / 海南出版社 / 2017-10 / 42
+
+      </div>
+        <div class="hexo-douban-meta">2018-04-08
+      读过 /  / ★★★★☆ 推荐</div>
+        <div class="hexo-douban-comments">
+      1. 提供了传统行业从业人员对于互联网创业的视角。但是在满满的怨气中写下的内容，可能并不是十分的客观。
+2. 任何昂扬向上的行业和事物，兴起的时候或多或少的会有投机和泡沫成分，但最终会随着时间的推移逐渐回归理性。
+      
+  
+
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img3.doubanio.com/view/subject/s/public/s29402552.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/26899255/"> 进击的局座</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  张召忠 / 长江文艺出版社 / 2016-11-1 / CNY 42.00
+
+      </div>
+        <div class="hexo-douban-meta">2018-03-09
+      读过 /  / ★★★★★ 力荐</div>
+        <div class="hexo-douban-comments">
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img9.doubanio.com/view/subject/s/public/s29458844.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/27053004/"> 以幽默的方式过一生</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  琢磨先生 / 中信出版社 / 2017-6
+
+      </div>
+        <div class="hexo-douban-meta">2018-02-11
+      读过 /  / ★★★★☆ 推荐</div>
+        <div class="hexo-douban-comments">
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img3.doubanio.com/view/subject/s/public/s29142393.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/26838557/"> 智能时代</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  吴军 / 中信出版集团 / 2016-8 / 68.00
+
+      </div>
+        <div class="hexo-douban-meta">2018-01-21
+      读过 /  / ★★★★★ 力荐</div>
+        <div class="hexo-douban-comments">
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img1.doubanio.com/view/subject/s/public/s29370067.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/26941639/"> 网络是怎样连接的</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  [日]户根勤 / 周自恒 / 人民邮电出版社 / 2017-1-1 / CNY 49.00
+
+      </div>
+        <div class="hexo-douban-meta">2018-01-03
+      读过 /  计算机网络 / ★★★★★ 力荐</div>
+        <div class="hexo-douban-comments">
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img1.doubanio.com/view/subject/s/public/s29074967.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/26885117/"> 在线</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  王坚 / 中信出版集团股份有限公司 / 2016-9-1 / CNY 58.00
+
+      </div>
+        <div class="hexo-douban-meta">2017-12-05
+      读过 /  / ★★★★★ 力荐</div>
+        <div class="hexo-douban-comments">
+      互联网是基础设施，数据是生产资料，计算要成为公共服务。
+      
+  
+
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img3.doubanio.com/view/subject/s/public/s28040043.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/26314955/"> 创新公司</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  [美]艾德·卡特姆、埃米·华莱士 / 靳婷婷 / 中信出版社 / 2015-2 / 49.00元
+
+      </div>
+        <div class="hexo-douban-meta">2017-10-31
+      读过 /  / ★★★★★ 力荐</div>
+        <div class="hexo-douban-comments">
+      以为是本故事书，结果是本管理书，但还是被深深的吸引住了~~作者从一个个故事入手来讲解自己对公司管理的理解，不会让人觉得枯燥~
+      
+  
+
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img3.doubanio.com/view/subject/s/public/s28687642.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/26785900/"> 永不放弃</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  （美）唐纳德•特朗普、（美）梅瑞迪斯·麦基沃 / 蒋旭峰、刘佳 / 上海译文出版社 / 2016-4 / 38
+
+      </div>
+        <div class="hexo-douban-meta">2017-10-31
+      读过 /  / ★★★★☆ 推荐</div>
+        <div class="hexo-douban-comments">
+      碰到问题，不要抱怨，而是抓紧时间尽力去解决
+      
+  
+
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img3.doubanio.com/view/subject/s/public/s24402440.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/11511351/"> AWS云端企业实战圣经</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  林允溥 / 2012-8 / 55.00元
+
+      </div>
+        <div class="hexo-douban-meta">2017-07-17
+      读过 /  AWS / </div>
+        <div class="hexo-douban-comments">
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img1.doubanio.com/view/subject/s/public/s29504429.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/27073429/"> 荒野求生：贝尔自传</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  贝尔·格里尔斯 / 接力出版社 / 2017-1-1 / CNY 49.80
+
+      </div>
+        <div class="hexo-douban-meta">2017-07-17
+      读过 /  / </div>
+        <div class="hexo-douban-comments">
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img9.doubanio.com/view/subject/s/public/s28007966.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/26306686/"> 创业维艰</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  本·霍洛维茨 Ben Horowitz / 杨晓红、钟莉婷 / 中信出版社 / 2015-2 / 49
+
+      </div>
+        <div class="hexo-douban-meta">2017-07-17
+      读过 /  / </div>
+        <div class="hexo-douban-comments">
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img3.doubanio.com/view/subject/s/public/s27338593.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/25927672/"> 时寒冰说：未来二十年，经济大趋势（未来篇）</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  时寒冰 / 上海财经大学出版社 / 2014-7-1 / 59.80元
+
+      </div>
+        <div class="hexo-douban-meta">2017-07-17
+      读过 /  / </div>
+        <div class="hexo-douban-comments">
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img3.doubanio.com/view/subject/s/public/s27306653.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/25902226/"> 时寒冰说：未来二十年，经济大趋势（现实篇）</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  时寒冰 / 上海财经大学出版社 / 2014-7-1 / CNY 49.80
+
+      </div>
+        <div class="hexo-douban-meta">2017-07-17
+      读过 /  / </div>
+        <div class="hexo-douban-comments">
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img9.doubanio.com/view/subject/s/public/s28571694.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/26759508/"> 硅谷钢铁侠</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  [美] 阿什利·万斯 / 周恒星 / 中信出版集团 / 2016-4 / 68.00元
+
+      </div>
+        <div class="hexo-douban-meta">2017-07-17
+      读过 /  / </div>
+        <div class="hexo-douban-comments">
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img9.doubanio.com/view/subject/s/public/s27517566.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/26032227/"> 金融的解释</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  王福重 / 中信出版社 / 2014-11 / 49.00元
+
+      </div>
+        <div class="hexo-douban-meta">2017-07-17
+      读过 /  / </div>
+        <div class="hexo-douban-comments">
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img1.doubanio.com/view/subject/s/public/s27331559.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/25928983/"> 周鸿祎自述</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  周鸿祎 / 中信出版社 / 2014-8 / 45.00元
+
+      </div>
+        <div class="hexo-douban-meta">2017-07-17
+      读过 /  / </div>
+        <div class="hexo-douban-comments">
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img9.doubanio.com/view/subject/s/public/s28948876.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/26849305/"> 成为乔布斯</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  [美] 布伦特·施兰德、[美] 里克·特策利 / 陶亮 / 中信出版集团 / 2016-10 / 69.00元
+
+      </div>
+        <div class="hexo-douban-meta">2017-07-17
+      读过 /  / </div>
+        <div class="hexo-douban-comments">
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img9.doubanio.com/view/subject/s/public/s29420424.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/26952485/"> 人民的名义</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  周梅森 / 北京十月文艺出版社 / 2017-1-1 / CNY 46.90
+
+      </div>
+        <div class="hexo-douban-meta">2017-07-17
+      读过 /  / </div>
+        <div class="hexo-douban-comments">
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img9.doubanio.com/view/subject/s/public/s28299265.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/26297606/"> 从0到1</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  彼得·蒂尔、布莱克·马斯特斯 / 高玉芳 / 中信出版股份有限公司 / 2015-1-1 / CNY 45.00
+
+      </div>
+        <div class="hexo-douban-meta">2017-07-17
+      读过 /  / </div>
+        <div class="hexo-douban-comments">
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img3.doubanio.com/view/subject/s/public/s8977570.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/10546925/"> 白帽子讲Web安全</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  吴翰清 / 电子工业出版社 / 2012-3 / 69.00元
+
+      </div>
+        <div class="hexo-douban-meta">2017-07-17
+      读过 /  / </div>
+        <div class="hexo-douban-comments">
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img3.doubanio.com/view/subject/s/public/s27246570.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/25730239/"> 李光耀论中国与世界</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  李光耀 口述；[美]格雷厄姆•艾利森（Graham Allison） 罗伯特•D•布莱克威尔（Robert D. Blackwill）阿里•温尼（Ali Wyne） 编著 / 蒋宗强 / 中信出版社 / 2013-10-1 / 39.00元
+
+      </div>
+        <div class="hexo-douban-meta">2017-07-17
+      读过 /  / </div>
+        <div class="hexo-douban-comments">
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img1.doubanio.com/view/subject/s/public/s28264119.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/26579870/"> 普京传</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  [美]菲欧娜•希尔、[美]克利福德•加迪 / 余莉 / 红旗出版社 / 2015-8 / 59.00
+
+      </div>
+        <div class="hexo-douban-meta">2017-07-17
+      读过 /  / </div>
+        <div class="hexo-douban-comments">
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img3.doubanio.com/view/subject/s/public/s28059650.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/26377181/"> 石油战争</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  王伟 / 九州出版社 / 2015-5 / 38.00元
+
+      </div>
+        <div class="hexo-douban-meta">2017-07-17
+      读过 /  / </div>
+        <div class="hexo-douban-comments">
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img3.doubanio.com/view/subject/s/public/s28381683.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/26706961/"> 鱼羊野史·第5卷</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  高晓松 / 广东人民出版社 / 2016-1 / 45.00
+
+      </div>
+        <div class="hexo-douban-meta">2017-07-17
+      读过 /  / </div>
+        <div class="hexo-douban-comments">
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img3.doubanio.com/view/subject/s/public/s28772430.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/26807171/"> 鱼羊野史·第6卷</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  高晓松 / 广东人民出版社 / 2016-6 / 45元
+
+      </div>
+        <div class="hexo-douban-meta">2017-07-17
+      读过 /  / </div>
+        <div class="hexo-douban-comments">
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img3.doubanio.com/view/subject/s/public/s28277141.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/26592869/"> 鱼羊野史•第4卷</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  高晓松 / 广东人民出版社 / 2015-9-15 / 45.00
+
+      </div>
+        <div class="hexo-douban-meta">2017-07-17
+      读过 /  / </div>
+        <div class="hexo-douban-comments">
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img3.doubanio.com/view/subject/s/public/s28031301.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/26349048/"> 鱼羊野史·第3卷</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  高晓松 / 民主与建设出版社 / 2015-4 / 39.80元
+
+      </div>
+        <div class="hexo-douban-meta">2017-07-17
+      读过 /  / </div>
+        <div class="hexo-douban-comments">
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img9.doubanio.com/view/subject/s/public/s27371874.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/25945487/"> 鱼羊野史·第2卷</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  高晓松 / 湖南文艺出版社 / 2014-8 / 39.8元
+
+      </div>
+        <div class="hexo-douban-meta">2017-07-17
+      读过 /  / </div>
+        <div class="hexo-douban-comments">
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img1.doubanio.com/view/subject/s/public/s27237948.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/25846182/"> 鱼羊野史·第1卷</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  高晓松 / 湖南文艺出版社 / 2014-4-1 / 39.80元
+
+      </div>
+        <div class="hexo-douban-meta">2017-07-17
+      读过 /  / </div>
+        <div class="hexo-douban-comments">
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img9.doubanio.com/view/subject/s/public/s29653026.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/26929955/"> 腾讯传</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  吴晓波 / 浙江大学出版社 / 2017-1-1 / 58.00元
+
+      </div>
+        <div class="hexo-douban-meta">2017-04-19
+      读过 /  / </div>
+        <div class="hexo-douban-comments">
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img1.doubanio.com/view/subject/s/public/s28051567.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/26364209/"> 那些古怪又让人忧心的问题</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  兰道尔·门罗 / 朱君玺 / 北京联合出版公司 / 2015-5 / CNY 49.80
+
+      </div>
+        <div class="hexo-douban-meta">2015-11-19
+      读过 /  科普类 / ★★★★★ 力荐</div>
+        <div class="hexo-douban-comments">
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img9.doubanio.com/view/subject/s/public/s7043254.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/1451172/"> Just for Fun</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  Linus Torvalds、David Diamond / HarperBusiness / 2002-6-4 / USD 14.99
+
+      </div>
+        <div class="hexo-douban-meta">2015-03-15
+      读过 /  / </div>
+        <div class="hexo-douban-comments">
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img9.doubanio.com/view/subject/s/public/s4669554.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/6021440/"> 黑客与画家</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  [美] Paul Graham / 阮一峰 / 人民邮电出版社 / 2011-4 / 49.00元
+
+      </div>
+        <div class="hexo-douban-meta">2015-03-15
+      读过 /  / </div>
+        <div class="hexo-douban-comments">
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img1.doubanio.com/view/subject/s/public/s9041899.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/10571273/"> 给你一个亿-你能干什么？</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  查立 / 中国华侨出版社 / 2012-4 / 39.80元
+
+      </div>
+        <div class="hexo-douban-meta">2015-03-15
+      读过 /  / </div>
+        <div class="hexo-douban-comments">
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img9.doubanio.com/view/subject/s/public/s9114855.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/10750155/"> 数学之美</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  吴军 / 人民邮电出版社 / 2012-5-1 / 45.00元
+
+      </div>
+        <div class="hexo-douban-meta">2015-03-15
+      读过 /  / </div>
+        <div class="hexo-douban-comments">
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img3.doubanio.com/view/subject/s/public/s27932441.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/24738302/"> 浪潮之巅（第2版）（套装上下册）</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  吴军 / 人民邮电出版社 / 2013-7 / 80.00元
+
+      </div>
+        <div class="hexo-douban-meta">2015-03-15
+      读过 /  / </div>
+        <div class="hexo-douban-comments">
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-pagination">
+    <a class="hexo-douban-button hexo-douban-firstpage" href="javascript:;"> 首页</a>
+    <a class="hexo-douban-button hexo-douban-previouspage" href="javascript:;">上一页</a>
+    <span class="hexo-douban-pagenum">2 / 3</span>
+    <a class="hexo-douban-button hexo-douban-nextpage" href="javascript:;">下一页</a>
+    <a class="hexo-douban-button hexo-douban-lastpage" href="javascript:;">尾页</a>
+</div>
+    </div>
+
+</div>
+
+<script>
+    /**
+ * Created by myths on 18-2-8.
+ */
+
+Element.prototype.siblings = function () {
+    var siblingElement = [];
+    var sibs = this.parentNode.children;
+    for (var i = 0; i < sibs.length; i++) {
+        if (sibs[i] !== this) {
+            siblingElement.push(sibs[i]);
+        }
+    }
+    return siblingElement;
+};
+function tabClick() {
+    //修改标签样式
+    this.classList.add('hexo-douban-active');
+    var sibs = this.siblings();
+    for (var j = 0; j < sibs.length; j++) {
+        sibs[j].classList.remove('hexo-douban-active');
+    }
+    //显示对应板块
+    var itemId = this.id.replace('tab', 'item');
+    var target = document.getElementById(itemId);
+    target.classList.remove('hexo-douban-hide');
+    target.classList.add('hexo-douban-show');
+    sibs = document.getElementById(itemId).siblings();
+    for (var k = 0; k < sibs.length; k++) {
+        sibs[k].classList.remove('hexo-douban-show');
+        sibs[k].classList.add('hexo-douban-hide');
+    }
+}
+var tabs = document.getElementsByClassName("hexo-douban-tab");
+for (var i = 0; i < tabs.length; i++) {
+    tabs[i].onclick = tabClick;
+    tabs[i].onclick.apply(tabs[i]);
+}
+tabs[2].click();
+
+    var firstpages = document.getElementsByClassName("hexo-douban-firstpage");
+var previouspages = document.getElementsByClassName("hexo-douban-previouspage");
+var nextpages = document.getElementsByClassName("hexo-douban-nextpage");
+var lastpages = document.getElementsByClassName("hexo-douban-lastpage");
+var pagenums = document.getElementsByClassName("hexo-douban-pagenum");
+
+function makePageNum(num, arr) {
+    return (num + 1) + ' / ' + (Math.ceil(arr.length / 10 === 0 ? 1 : Math.ceil(arr.length / 10)));
+}
+
+function firstBtn() {
+    var sibs = this.parentNode.siblings();
+    displayPage(sibs, 0);
+    this.parentNode.getElementsByClassName('hexo-douban-pagenum')[0].innerText = makePageNum(0, sibs);
+}
+
+function previousBtn() {
+    var sibs = this.parentNode.siblings();
+    var currNum = this.parentNode.getElementsByClassName('hexo-douban-pagenum')[0].innerText;
+    currNum = currNum.substr(0, currNum.indexOf('/') - 1);
+    currNum = parseInt(currNum, 10) - 1;
+    if (currNum > 0) {
+        currNum--;
+    }
+    displayPage(sibs, currNum);
+    this.parentNode.getElementsByClassName('hexo-douban-pagenum')[0].innerText = makePageNum(currNum, sibs);
+}
+
+function nextBtn() {
+    var sibs = this.parentNode.siblings();
+    var currNum = this.parentNode.getElementsByClassName('hexo-douban-pagenum')[0].innerText;
+    currNum = currNum.substr(0, currNum.indexOf('/') - 1);
+    currNum = parseInt(currNum, 10) - 1;
+    if (currNum < Math.ceil(sibs.length / 10) - 1) {
+        currNum++;
+    }
+    displayPage(sibs, currNum);
+    this.parentNode.getElementsByClassName('hexo-douban-pagenum')[0].innerText = makePageNum(currNum, sibs);
+}
+
+function lastBtn() {
+    var sibs = this.parentNode.siblings();
+    displayPage(sibs, Math.ceil(sibs.length / 10) - 1);
+    this.parentNode.getElementsByClassName('hexo-douban-pagenum')[0].innerText = makePageNum(Math.ceil(sibs.length / 10) - 1 === -1 ? 0 : Math.ceil(sibs.length / 10) - 1, sibs);
+}
+
+function displayPage(arr, num) {
+    for (var i = 0; i < arr.length; i++) {
+        if (Math.floor(i / 10) === num) {
+            arr[i].classList.remove('hexo-douban-hide');
+            var img = arr[i].getElementsByTagName('img')[0];
+            img.src = img.getAttribute('data-src');
+        } else {
+            arr[i].classList.add('hexo-douban-hide');
+        }
+    }
+}
+
+for (var i = 0; i < firstpages.length; i++) {
+
+    //add listener
+    firstpages[i].onclick = firstBtn;
+    previouspages[i].onclick = previousBtn;
+    nextpages[i].onclick = nextBtn;
+    lastpages[i].onclick = lastBtn;
+
+    //set page num
+    var size = pagenums[i].parentNode.siblings().length;
+    pagenums[i].innerText = '1 / ' + (Math.ceil(size / 10) === 0 ? 1 : Math.ceil(size / 10));
+    firstpages[i].click();
+}
+
+</script>
+
+	  
+	</div>
+
+	<div>
+  	<center>
+	<div class="pagination">
+<ul class="pagination">
+	 
+</ul>
+</div>
+
+    </center>
+	</div>
+
+    <!-- share -->
+    
+	
+	<!-- comment -->
+	
+
+	</div> <!-- col-md-9/col-md-12 -->
+		
+		
+
+</div><!-- row -->
+
+<script type="text/javascript">
+var disqus_shortname = 'jibing57-blog';
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  &copy; 2020 jibing57
+  
+      with help from <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>.    
+</p> </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>

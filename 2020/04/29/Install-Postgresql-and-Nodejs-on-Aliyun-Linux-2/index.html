@@ -1,0 +1,369 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>在Aliyun Linux 2上安装Postgresql和Node.js | Recording</title>
+  <meta name="author" content="jibing57">
+  
+  <meta name="description" content="AWS, 阅读, Architecture, PostgreSQL">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="在Aliyun Linux 2上安装Postgresql和Node.js"/>
+  <meta property="og:site_name" content="Recording"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/css/themes/bootstrap.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/comment.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+  
+  <!-- analytics -->
+  
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-111771042-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?59d3e14cdc96877383afed646f44d216";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+</head>
+
+ <body>  
+  <nav id="main-nav" class="navbar  navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+	<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+       <a class="navbar-brand" href="/">Recording</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class="fa fa-archive"></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class="fa fa-folder"></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class="fa fa-tags"></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/books" title="Douban">
+			  <i class="fa fa-book"></i>Douban
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header ">		
+			<h1 class="title "> 在Aliyun Linux 2上安装Postgresql和Node.js</h1>
+		</div>		
+	
+
+
+
+
+   <style type="text/css">
+           img, video {
+                -webkit-box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+                -moz-box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+                box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+           }
+   </style>
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
+
+	<!-- content -->
+	<div class="mypage">		
+	  		
+
+	  <p>Aliyun Linux 2上部署环境，遇到了几个问题。记录如下。</p>
+<h3 id="安装Postgresql-11-client"><a href="#安装Postgresql-11-client" class="headerlink" title="安装Postgresql 11 client"></a>安装Postgresql 11 client</h3><h4 id="官方Guide"><a href="#官方Guide" class="headerlink" title="官方Guide"></a>官方Guide</h4><ul>
+<li>Postgresql官方在红帽系Linux的安装Guide地址: <a href="https://www.postgresql.org/download/linux/redhat/" target="_blank" rel="external">https://www.postgresql.org/download/linux/redhat/</a></li>
+<li>Guide中选取对应操作系统后，可以得到Postgresql在RHEL 7系列上的yum源地址是: <a href="https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm" target="_blank" rel="external">https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm</a></li>
+</ul>
+<p>在RHEL 7系列上安装方法为:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">yum install https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm</div><div class="line">yum install postgresql11</div></pre></td></tr></table></figure>
+<h4 id="Aliyun-Linux-2安装问题"><a href="#Aliyun-Linux-2安装问题" class="headerlink" title="Aliyun Linux 2安装问题"></a>Aliyun Linux 2安装问题</h4><p>但该方法在Alinux Linux 2上没法成功安装，因为官方源依赖于yum的变量$releasever,$basearch。在Aliyun Linux 2中，这些变量和RHEL和CentOS上不相同。导致没法直接用官方rpm yum包来安装postgresql11。</p>
+<a id="more"></a>
+<h4 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h4><p>在安装完pgdg-redhat-all.repo过后，可以手动来修改yum源，<a href="https://help.aliyun.com/document_detail/111881.html" target="_blank" rel="external">Aliyun Linux 2的官方描述</a>中说Aliyun Linux 2兼容CentOS 7。使用下列命令修改<code>/etc/yum.repos.d/pgdg-redhat-all.repo</code>中的baseurl为具体的RHEL 7的地址即可。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sed -i.bak &apos;s/$releasever/7/g&apos; /etc/yum.repos.d/pgdg-redhat-all.repo</div></pre></td></tr></table></figure>
+<p>然后再<code>yum install postgresql11</code>即可安装。</p>
+<h3 id="安装高版本Node-js"><a href="#安装高版本Node-js" class="headerlink" title="安装高版本Node.js"></a>安装高版本Node.js</h3><h4 id="安装高版本的原因"><a href="#安装高版本的原因" class="headerlink" title="安装高版本的原因"></a>安装高版本的原因</h4><p>Aliyun Linux 2中的Node.js版本和CentOS 7的版本一样，都是6.x版本。但现在很多npm包都需要8.x以上版本。 因此需要手动安装高版本Node.js。</p>
+<h4 id="安装问题"><a href="#安装问题" class="headerlink" title="安装问题"></a>安装问题</h4><p>安装nodejs多种方法，可以源码编译，也可以使用nvm。不过我比较偏爱的方式是从NodeSource Repository中安装。<br>以nodejs 10.x为例，正常安装方法是<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">curl –sL https://rpm.nodesource.com/setup_10.x | sudo bash -</div><div class="line">sudo yum install –y nodejs</div></pre></td></tr></table></figure></p>
+<p>这个步骤在CentOS 7.x和Amazon Linux上都可以work, 但是在Aliyun Linux 2上会提示系统版本不兼容。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">## You don&apos;t appear to be running a supported version of Enterprise Linux. Please contact NodeSource at https://github.com/nodesource/distributions/issues if you think this is incorrect or would like your architecture to be considered for support. Include your &apos;distribution package&apos; name: alinux-release-2.1903-4.al7.x86_64.</div></pre></td></tr></table></figure>
+<h4 id="原因调查"><a href="#原因调查" class="headerlink" title="原因调查"></a>原因调查</h4><p>下载了<code>setup_10.x</code>的源码来进行查看，发现有这么一段检查OS的代码。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">DISTRO_PKG=$(rpm -q --whatprovides redhat-release || rpm -q --whatprovides centos-release || rpm -q --whatprovides cloudlinux-release || rpm -q --whatprovides sl-release)</div><div class="line"></div><div class="line">...</div><div class="line"></div><div class="line">if [[ $DISTRO_PKG =~ ^(redhat|centos|cloudlinux|sl)- ]]; then</div><div class="line">    DIST_TYPE=el</div><div class="line">elif [[ $DISTRO_PKG =~ ^(enterprise|system)-release- ]]; then # Oracle Linux &amp; Amazon Linux</div><div class="line">    DIST_TYPE=el</div><div class="line">elif [[ $DISTRO_PKG =~ ^(fedora|korora)- ]]; then</div><div class="line">    DIST_TYPE=fc</div><div class="line">else</div><div class="line"></div><div class="line">  print_status &quot;\</div><div class="line">You don&apos;t appear to be running a supported version of Enterprise Linux. \</div><div class="line">Please contact NodeSource at \</div><div class="line">https://github.com/nodesource/distributions/issues if you think this is \</div><div class="line">incorrect or would like your architecture to be considered for support. \</div><div class="line">Include your &apos;distribution package&apos; name: $&#123;DISTRO_PKG&#125;. \</div><div class="line">&quot;</div><div class="line">  exit 1</div><div class="line"></div><div class="line">fi</div></pre></td></tr></table></figure>
+<p>哈哈，从逻辑上看，setup_10.x的脚本能识别Oracle Linux和Amazon Linux，但是貌似并不支持Aliyun Linux。</p>
+<h4 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h4><p>简单修改了下，让脚本将Aliyun Linux识别为el 7。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sed -i.bak &apos;s/\^(enterprise|system)-release-/\^(enterprise|system|alinux)-release-/g&apos; setup_10.x</div><div class="line">sed -i &apos;s/\$DISTRO_PKG =~ \^system-release/\$DISTRO_PKG =~ \^(system|alinux)-release/g&apos; setup_10.x</div></pre></td></tr></table></figure>
+<p>再进行安装，就能够work了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo bash setup_10.x</div><div class="line">yum install nodejs</div></pre></td></tr></table></figure></p>
+<h3 id="额外延伸"><a href="#额外延伸" class="headerlink" title="额外延伸"></a>额外延伸</h3><h4 id="获取yum变量的小命令"><a href="#获取yum变量的小命令" class="headerlink" title="获取yum变量的小命令"></a>获取yum变量的小命令</h4><p>可以使用如下python命令来获取yum的变量<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">python -c &apos;import yum, pprint; yb = yum.YumBase(); pprint.pprint(yb.conf.yumvar, width=1)&apos;</div></pre></td></tr></table></figure></p>
+<p>下面是该命令在<code>Aliyun Linux 2</code>,<code>Amazon Linux 2</code>和<code>CentOS 7.6</code>上的输出。</p>
+<p><strong> Aliyun Linux 2的结果 </strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">$ python -c &apos;import yum, pprint; yb = yum.YumBase(); pprint.pprint(yb.conf.yumvar, width=1)&apos;</div><div class="line">Loaded plugins: fastestmirror</div><div class="line">&#123;&apos;arch&apos;: &apos;ia32e&apos;,</div><div class="line"> &apos;basearch&apos;: &apos;x86_64&apos;,</div><div class="line"> &apos;releasever&apos;: &apos;2.1903&apos;,</div><div class="line"> &apos;uuid&apos;: &apos;33f759f5-349a-4c14-bb77-3ccd32b7a675&apos;&#125;</div><div class="line">$</div></pre></td></tr></table></figure></p>
+<p><strong> Amazon Linux 2上的运行结果 </strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">$ python -c &apos;import yum, pprint; yb = yum.YumBase(); pprint.pprint(yb.conf.yumvar, width=1)&apos;</div><div class="line">Loaded plugins: extras_suggestions, langpacks, priorities, update-motd</div><div class="line">&#123;&apos;arch&apos;: &apos;ia32e&apos;,</div><div class="line"> &apos;awsdomain&apos;: &apos;amazonaws.com&apos;,</div><div class="line"> &apos;awsregion&apos;: &apos;us-west-2&apos;,</div><div class="line"> &apos;basearch&apos;: &apos;x86_64&apos;,</div><div class="line"> &apos;product&apos;: &apos;core&apos;,</div><div class="line"> &apos;releasever&apos;: &apos;2&apos;,</div><div class="line"> &apos;target&apos;: &apos;latest&apos;,</div><div class="line"> &apos;uuid&apos;: &apos;3f6395c1-b6c3-45e1-b7e4-aeaa76bf67a6&apos;&#125;</div><div class="line">$</div></pre></td></tr></table></figure>
+<p><strong> CentOS 7.6上的运行结果 </strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">$ python -c &apos;import yum, pprint; yb = yum.YumBase(); pprint.pprint(yb.conf.yumvar, width=1)&apos;</div><div class="line">Loaded plugins: fastestmirror</div><div class="line">&#123;&apos;arch&apos;: &apos;ia32e&apos;,</div><div class="line"> &apos;basearch&apos;: &apos;x86_64&apos;,</div><div class="line"> &apos;contentdir&apos;: &apos;centos&apos;,</div><div class="line"> &apos;infra&apos;: &apos;stock&apos;,</div><div class="line"> &apos;releasever&apos;: &apos;7&apos;,</div><div class="line"> &apos;uuid&apos;: &apos;679cafd0-f0f5-4bc4-9055-eddca793d302&apos;&#125;</div><div class="line">$</div></pre></td></tr></table></figure>
+<h4 id="各系统redhat-release的信息"><a href="#各系统redhat-release的信息" class="headerlink" title="各系统redhat-release的信息"></a>各系统redhat-release的信息</h4><p>命令<code>rpm -q --whatprovides redhat-release</code>在各个系统<code>Aliyun Linux 2</code>,<code>Amazon Linux 2</code>和<code>CentOS 7.6</code>上的输出。</p>
+<p><strong> Aliyun Linux 2的结果 </strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ rpm -q --whatprovides redhat-release</div><div class="line">alinux-release-2.1903-4.al7.x86_64</div><div class="line">$</div></pre></td></tr></table></figure></p>
+<p><strong> Amazon Linux 2上的运行结果 </strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ rpm -q --whatprovides redhat-release</div><div class="line">system-release-2-11.amzn2.x86_64 </div><div class="line">$</div></pre></td></tr></table></figure>
+<p><strong> CentOS 7.6上的运行结果 </strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ rpm -q --whatprovides redhat-release</div><div class="line">centos-release-7-6.1810.2.el7.centos.x86_64</div><div class="line">$</div></pre></td></tr></table></figure>
+<h4 id="安装Postgresql-11-Server"><a href="#安装Postgresql-11-Server" class="headerlink" title="安装Postgresql 11 Server"></a>安装Postgresql 11 Server</h4><p>按照上文所述，添加pgdg的repository。<br>安装Server包<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install -y postgresql11-server</div></pre></td></tr></table></figure></p>
+<p>初始化数据库和开启开机启动。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">/usr/pgsql-11/bin/postgresql-11-setup initdb</div><div class="line">systemctl enable postgresql-11.service</div><div class="line">systemctl start postgresql-11.service</div></pre></td></tr></table></figure></p>
+<p>根据实际需要，修改绑定地址<br>打开<code>/var/lib/pgsql/11/data/postgresql.conf</code>, 找到<code>listen_address</code>, 进行修改。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">listen_address = &apos;*&apos;  # defaults to &apos;localhost&apos;; use &apos;*&apos; for all</div></pre></td></tr></table></figure></p>
+<p>修改postgres账号默认密码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ su - postgres</div><div class="line">postgresql=$ psql -c &quot;alter user postgres with password &apos;password&apos;&quot;</div><div class="line">ALTER ROLE</div><div class="line">postgresql=$</div></pre></td></tr></table></figure></p>
+<p>修改/var/lib/pgsql/11/data/pg_hba.conf, 添加如下允许任意地址访问或修改为实际允许访问的地址。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># Accept from anywhere</div><div class="line">host all all 0.0.0.0/0 md5</div></pre></td></tr></table></figure></p>
+<h3 id="感悟"><a href="#感悟" class="headerlink" title="感悟"></a>感悟</h3><p>写一个或者定制一个系统，已经是一件不容易的事情了。需要构建一个生态，就更加地不容易。<br>查了下nodesource最新的<a href="https://rpm.nodesource.com/setup_14.x" target="_blank" rel="external">setup_14.x</a>脚本, 发现还是没支持Aliyun自定制的Linux。<br>为了方便以后可能还要用到，每次手动改脚本比较麻烦。就fork了一份<a href="https://github.com/nodesource/distributions" target="_blank" rel="external">nodesource/distributions</a>到自己的Github上<a href="https://github.com/jibing57/distributions" target="_blank" rel="external">jibing57/distributions</a>, 研究了一下，添加了Aliyun Linux 2的支持。commit - <a href="https://github.com/jibing57/distributions/commit/2ab31aa7186d4f6b30eca337d05219628b6ee132" target="_blank" rel="external">Add Aliyun Linux 2 support</a><br>以后要安装时，可以直接从自己的Github上拿setup脚本安装。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">curl -sL &apos;https://raw.githubusercontent.com/jibing57/distributions/master/rpm/setup_10.x&apos; | sudo bash -</div><div class="line">sudo yum install –y nodejs</div></pre></td></tr></table></figure>
+<p>添加完后，顺带也给<a href="https://github.com/nodesource/distributions" target="_blank" rel="external">nodesource/distributions</a>提了个<a href="https://github.com/nodesource/distributions/pull/1046" target="_blank" rel="external">pull request</a>, 不知道会不会被采纳。</p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://unix.stackexchange.com/questions/19701/yum-how-can-i-view-variables-like-releasever-basearch-yum0" target="_blank" rel="external">Yum: How can I view variables like $releasever, $basearch &amp; $YUM0?</a></li>
+</ul>
+	  
+	</div>
+
+	<div>
+  	<center>
+	<div class="pagination">
+<ul class="pagination">
+	 
+				
+    	<li class="prev"><a href="/2020/05/04/imageMagick-fonts-issue-on-Aliyun-Linux-2/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>上一页</a></li>
+  		
+
+        <li><a href="/archives"><i class="fa fa-archive"></i>Archive</a></li>
+
+		
+		   <li class="next"><a href="/2020/04/09/replace-douban-book-plugin/" class="alignright next">下一页<i class="fa fa-arrow-circle-o-right"></i></a></li>         
+        
+	
+</ul>
+</div>
+
+    </center>
+	</div>
+
+    <!-- share -->
+    
+        
+    <div class="bdsharebuttonbox">
+        <a href="#" class="bds_more" data-cmd="more"></a>
+        <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+        <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+        <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+        <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+        <a href="#" class="bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+        <a href="#" class="bds_evernotecn" data-cmd="evernotecn" title="分享到印象笔记"></a>
+        <a href="#" class="bds_youdao" data-cmd="youdao" title="分享到有道云笔记"></a>
+        <a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+    </div>
+    <script>
+        window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"24"},"share":{}};
+        with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+    </script>
+
+
+        
+
+    
+	
+	<!-- comment -->
+	
+<section id="comment">
+  <h2 class="title">留言</h2>
+  
+  	 <div id="disqus_thread">
+     <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  	 </div>
+  
+</section>
+
+
+	</div> <!-- col-md-9/col-md-12 -->
+		
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta">
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2020-04-29
+	</div>
+	
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
+	   <div id="toc" class="toc collapse in">
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#安装Postgresql-11-client"><span class="toc-article-text">安装Postgresql 11 client</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#官方Guide"><span class="toc-article-text">官方Guide</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#Aliyun-Linux-2安装问题"><span class="toc-article-text">Aliyun Linux 2安装问题</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#解决方法"><span class="toc-article-text">解决方法</span></a></li></ol></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#安装高版本Node-js"><span class="toc-article-text">安装高版本Node.js</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#安装高版本的原因"><span class="toc-article-text">安装高版本的原因</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#安装问题"><span class="toc-article-text">安装问题</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#原因调查"><span class="toc-article-text">原因调查</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#解决办法"><span class="toc-article-text">解决办法</span></a></li></ol></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#额外延伸"><span class="toc-article-text">额外延伸</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#获取yum变量的小命令"><span class="toc-article-text">获取yum变量的小命令</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#各系统redhat-release的信息"><span class="toc-article-text">各系统redhat-release的信息</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#安装Postgresql-11-Server"><span class="toc-article-text">安装Postgresql 11 Server</span></a></li></ol></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#感悟"><span class="toc-article-text">感悟</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#Reference"><span class="toc-article-text">Reference</span></a></li></ol>
+		</div>
+	
+	</div>
+
+	<!-- categories -->
+    
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>
+    <ul id="categorys" class="tag_box list-unstyled collapse in">
+          
+  <li>
+    <li><a href="/categories/Linux/">Linux<span>10</span></a></li>
+  </li>
+
+    </ul>
+	</div>
+	
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>
+    <ul id="tags" class="tag_box list-unstyled collapse in">
+	    
+  <li><a href="/tags/PostgreSQL/">PostgreSQL<span>4</span></a></li> <li><a href="/tags/Aliyun/">Aliyun<span>2</span></a></li> <li><a href="/tags/Nodejs/">Nodejs<span>4</span></a></li> <li><a href="/tags/Github/">Github<span>4</span></a></li>
+    </ul>
+	</div>
+	
+
+    <hr>
+
+</div><!-- col-md-3 -->
+
+	</div>
+		
+
+</div><!-- row -->
+
+<script type="text/javascript">
+var disqus_shortname = 'jibing57-blog';
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  &copy; 2020 jibing57
+  
+      with help from <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>.    
+</p> </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>

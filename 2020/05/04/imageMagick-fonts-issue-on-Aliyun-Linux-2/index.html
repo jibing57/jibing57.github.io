@@ -1,0 +1,401 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Aliyun Linux 2上imageMagick的fonts配置问题 | Recording</title>
+  <meta name="author" content="jibing57">
+  
+  <meta name="description" content="AWS, 阅读, Architecture, PostgreSQL">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Aliyun Linux 2上imageMagick的fonts配置问题"/>
+  <meta property="og:site_name" content="Recording"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/css/themes/bootstrap.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/comment.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+  
+  <!-- analytics -->
+  
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-111771042-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?59d3e14cdc96877383afed646f44d216";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+</head>
+
+ <body>  
+  <nav id="main-nav" class="navbar  navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+	<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+       <a class="navbar-brand" href="/">Recording</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class="fa fa-archive"></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class="fa fa-folder"></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class="fa fa-tags"></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/books" title="Douban">
+			  <i class="fa fa-book"></i>Douban
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header ">		
+			<h1 class="title "> Aliyun Linux 2上imageMagick的fonts配置问题</h1>
+		</div>		
+	
+
+
+
+
+   <style type="text/css">
+           img, video {
+                -webkit-box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+                -moz-box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+                box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+           }
+   </style>
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
+
+	<!-- content -->
+	<div class="mypage">		
+	  		
+
+	  <h3 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h3><p>公司阿里云服务器部署Rails程序时，发现Gem <a href="https://github.com/pludoni/simple-captcha" target="_blank" rel="external">simple_captcha2</a>生成的验证码图片，和以前的不太一样。图片中的数字会比正常情况下靠上很多, 影响用户体验。</p>
+<p>正常情况下的图片:<br><img src="/images/ImageMagick/fonts_normal.jpeg" alt="fonts_normal.jpeg"></p>
+<p>有问题的图片:<br><img src="/images/ImageMagick/fonts_crooked_image.jpeg" alt="crooked_image.jpeg"></p>
+<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>Aliyun Linux 2(也包含最新的CentOS 7)中升级了ImageMagick的版本到<code>ImageMagick 6.9.10-68</code>, 字体配置文件<code>/etc/ImageMagick-6/type.xml</code>中默认改用了<code>urw-base35-fonts</code>，而不是之前的<code>ghostscript-fonts</code>。</p>
+<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><p>安装并修改ImageMagick使用旧字体。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"># 安装urw-base35-fonts-legacy, fonts在/usr/share/X11/fonts/urw-fonts目录下</div><div class="line">yum install urw-base35-fonts-legacy</div><div class="line"></div><div class="line"># 修改/etc/ImageMagick-6/type.xml配置文件为使用type-ghostscript.xml</div><div class="line">sed -i.bak &apos;s,type-urw-base35.xml,type-ghostscript.xml,g&apos; /etc/ImageMagick-6/type.xml</div><div class="line"></div><div class="line"># 修改 /etc/ImageMagick-6/type-ghostscript.xml为/usr/share/X11/fonts/urw-fonts/</div><div class="line">sed -i.bak &apos;s,metrics=&quot;,metrics=&quot;/usr/share/X11/fonts/urw-fonts/,g&apos; /etc/ImageMagick-6/type-ghostscript.xml</div><div class="line">sed -i &apos;s,glyphs=&quot;,glyphs=&quot;/usr/share/X11/fonts/urw-fonts/,g&apos; /etc/ImageMagick-6/type-ghostscript.xml</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<h3 id="调查过程"><a href="#调查过程" class="headerlink" title="调查过程"></a>调查过程</h3><h4 id="查找生成图片的命令"><a href="#查找生成图片的命令" class="headerlink" title="查找生成图片的命令"></a>查找生成图片的命令</h4><p>首先翻<a href="https://github.com/pludoni/simple-captcha" target="_blank" rel="external">simple_captcha2</a>的源码, 看Gem是怎么生成图片的。后来定位到是<code>lib/simple_captcha/image.rb</code>文件中的<code>generate_simple_captcha_image</code>方法调用了ImageMagick的convert命令来生成图片。<br>命令形式类似如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">convert -background &apos;#F5F7FA&apos; -fill &apos;#409EFF&apos; -border 0 -bordercolor &apos;none&apos; -size 80x30 -wave 1x89 -gravity Center -pointsize 22 -implode 0.2 label:1441 jpeg:-</div></pre></td></tr></table></figure></p>
+<p>在Aliyun Linux 2上，简单试验了下，使用yum源安装的ImageMagick，使用如下<a href="https://www.imagemagick.org/Usage/text/#label" target="_blank" rel="external">官方Label</a>的最简单的用法来生成图片。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">convert -background lightblue -fill blue -pointsize 72 label:Anthony label.gif</div></pre></td></tr></table></figure></p>
+<p>可生成的图片的高度size只有1, 明显存在问题。<br><img src="/images/ImageMagick/fonts_label.gif" alt="label.gif"></p>
+<h4 id="编译源码版本"><a href="#编译源码版本" class="headerlink" title="编译源码版本"></a>编译源码版本</h4><p>看了下Aliyun Linux 2中通过yum安装的ImageMagick版本是<code>ImageMagick 6.9.10-68 Q16 x86_64</code>, 和经常使用的版本<code>ImageMagick 6.7.8-9 2016-03-31</code>不相同。<br>猜想可能是ImageMagick版本变化导致了图片的位置不对。</p>
+<p>尝试使用源码来进行安装<code>6.7.8</code>版本, 在帖子<a href="https://imagemagick.org/discourse-server/viewtopic.php?f=2&amp;t=33370" target="_blank" rel="external">Old releases source code</a>中找到了官方的<a href="https://www.imagemagick.org/download/releases/" target="_blank" rel="external">源码目录</a>，但已经没有<code>6.7.8-9</code>的源码提供了，因此下载了<code>6.7.8-10</code>的源码, 按照官网<a href="https://imagemagick.org/script/install-source.php" target="_blank" rel="external">Install from Unix Source</a>的说明进行编译安装。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">wget &apos;https://www.imagemagick.org/download/releases/ImageMagick-6.7.8-10.tar.xz&apos;</div><div class="line">tar xJvf ImageMagick-6.7.8-10.tar.xz</div><div class="line">cd ImageMagick-6.7.8-10</div><div class="line">./configure</div><div class="line">make</div><div class="line">make install</div></pre></td></tr></table></figure>
+<p>尝试使用该版本的convert生成图片。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">$ /usr/local/bin/convert --version</div><div class="line">Version: ImageMagick 6.7.8-10 2020-05-06 Q16 http://www.imagemagick.org</div><div class="line">Copyright: Copyright (C) 1999-2012 ImageMagick Studio LLC</div><div class="line">Features: OpenMP</div><div class="line"></div><div class="line">$</div><div class="line">$ /usr/local/bin/convert -background &apos;#F5F7FA&apos; -fill &apos;#409EFF&apos; -border 0 -bordercolor &apos;none&apos; -size 80x30 -wave 1x89 -gravity Center -pointsize 22 -implode 0.2 label:1441 jpeg:- &gt; compiled.jpeg</div><div class="line">convert: unable to read font `/usr/share/ghostscript/fonts/n019003l.pfb&apos; @ error/annotate.c/RenderFreetype/1124.</div><div class="line">convert: unable to read font `/usr/share/ghostscript/fonts/n019003l.pfb&apos; @ error/annotate.c/RenderFreetype/1124.</div><div class="line">convert: unable to read font `/usr/share/ghostscript/fonts/n019003l.pfb&apos; @ error/annotate.c/RenderFreetype/1124.</div><div class="line">$</div></pre></td></tr></table></figure></p>
+<p>会有找不到font的报错, 但是能生成图片，并且图片中的数字没有出现上移情况。<br><img src="/images/ImageMagick/fonts_compiled_6.7.9_10.jpeg" alt="compiled_6.7.9_10.jpeg"></p>
+<h4 id="寻找fonts问题"><a href="#寻找fonts问题" class="headerlink" title="寻找fonts问题"></a>寻找fonts问题</h4><p>根据font的报错信息，调查了ImageMagick的fonts配置。<br>yum安装的ImageMagick的配置文件目录为<code>/etc/ImageMagick-6/</code>, 自编译的ImageMagick的配置文件目录为<code>/usr/local/etc/ImageMagick/</code>。<br>尝试着让自编译版本的ImageMagick使用yum安装的字体配置type-urw-base35.xml。</p>
+<p><del>我把yum安装的ImageMagick的字体配置type-urw-base35.xml拷贝到了自编译的配置目录下<code>/usr/local/etc/ImageMagick/</code>, 再修改<code>type.xml</code>为使用<code>type-urw-base35.xml</code></del><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cp /etc/ImageMagick-6/type-urw-base35.xml /usr/local/etc/ImageMagick/</div><div class="line">sed -i.bak &apos;s,type-ghostscript.xml,type-urw-base35.xml,g&apos; /usr/local/etc/ImageMagick/type.xml</div></pre></td></tr></table></figure></p>
+<p>然后尝试执行自编译的6.7.8_10版本的convert来生成验证码图片。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/local/bin/convert -background &apos;#F5F7FA&apos; -fill &apos;#409EFF&apos; -border 0 -bordercolor &apos;none&apos; -size 80x30 -wave 1x89 -gravity Center -pointsize 22 -implode 0.2 label:1441 jpeg:- &gt; fonts_compiled_with_urw-base35.jpeg</div></pre></td></tr></table></figure></p>
+<p>本以为这事就可以这么搞定了。结果却发现，命令的错误信息是没了，但是生成的图片上的数字居然又是偏上的。<br><img src="/images/ImageMagick/fonts_compiled_with_urw-base35.jpeg" alt="compiled_with_urw-base35"></p>
+<p>这说明有问题的可能不是ImageMagick命令，而是字体问题。</p>
+<h4 id="验证fonts问题"><a href="#验证fonts问题" class="headerlink" title="验证fonts问题"></a>验证fonts问题</h4><p>为了验证是不是font问题，我先是尝试修改yum的ImageMagick使用自带的type-ghostscript.xml配置文件。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sed -i.bak &apos;s,type-urw-base35.xml,type-ghostscript.xml,g&apos; /etc/ImageMagick-6/type.xml</div></pre></td></tr></table></figure></p>
+<p>可运行时就直接报错了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ /usr/bin/convert -background &apos;#F5F7FA&apos; -fill &apos;#409EFF&apos; -border 0 -bordercolor &apos;none&apos; -size 80x30 -wave 1x89 -gravity Center -pointsize 22 -implode 0.2 label:1441 jpeg:- &gt; yum_with_type-ghostscript.jpeg</div><div class="line">convert: unable to read font `helvetica&apos; @ error/annotate.c/RenderFreetype/1336.</div><div class="line">convert: no images defined `jpeg:-&apos; @ error/convert.c/ConvertImageCommand/3235.</div><div class="line">$</div></pre></td></tr></table></figure>
+<p>失败后，再尝试让yum的ImageMagick使用编译版本的type-ghostscript.xml配置文件，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cp /usr/local/etc/ImageMagick/type-ghostscript.xml /etc/ImageMagick-6/</div></pre></td></tr></table></figure></p>
+<p>可运行后还是报错。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ /usr/bin/convert -background &apos;#F5F7FA&apos; -fill &apos;#409EFF&apos; -border 0 -bordercolor &apos;none&apos; -size 80x30 -wave 1x89 -gravity Center -pointsize 22 -implode 0.2 label:1441 jpeg:- &gt; yum_with_compiled_type-ghostscript.jpeg</div><div class="line">convert: unable to read font `helvetica&apos; @ error/annotate.c/RenderFreetype/1336.</div><div class="line">convert: no images defined `jpeg:-&apos; @ error/convert.c/ConvertImageCommand/3235.</div><div class="line">$</div></pre></td></tr></table></figure></p>
+<p>一通操作后，得了一堆的错，不得不来挖一下ImageMagick是怎么使用系统的fonts了。</p>
+<h4 id="深挖fonts问题"><a href="#深挖fonts问题" class="headerlink" title="深挖fonts问题"></a>深挖fonts问题</h4><p>在RHEL 7.7之后，使用了urw-base35-fonts代替了原先默认的urw-fonts, 期间导致了一些软件出现了些问题。</p>
+<ul>
+<li><a href="https://forums.centos.org/viewtopic.php?t=71747&amp;p=302928" target="_blank" rel="external">CentOS 7.7.1908 ImageMagick montage does not work with urw-base35-fonts replacing urw-fonts</a></li>
+<li><a href="https://bugs.centos.org/view.php?id=16443" target="_blank" rel="external">CentOS Bug Tracker</a></li>
+<li><a href="https://bugzilla.redhat.com/show_bug.cgi?id=1756521" target="_blank" rel="external">Bug 1756521 - urw-base35-fonts-20170801-10.el7.noarch.rpm removes fonts in /usr/share/fonts/default/Type1 and breaks htmldoc symlinks in /usr/share/htmldoc/fonts</a></li>
+</ul>
+<p>在7.7之后，默认的yum源中有三组相关的font</p>
+<ul>
+<li>urw-fonts</li>
+<li>urw-base35-fonts</li>
+<li>urw-base35-fonts-legacy</li>
+</ul>
+<p>其中<code>urw-fonts</code>被<code>urw-base35-fonts</code>废弃替换了。但可以通过手动下载手动安装的方式来进行安装。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rpm -ivh --nodeps urw-fonts-2.4-16.1.al7.noarch.rpm</div></pre></td></tr></table></figure></p>
+<p>安装后，三个的目录分别为:</p>
+<ul>
+<li>/usr/share/fonts/default/Type1</li>
+<li>/usr/share/fonts/urw-base35</li>
+<li>/usr/share/X11/fonts/urw-fonts</li>
+</ul>
+<p>yum源中的ImageMagick后续应该是解决了使用urw-base35-fonts的问题, 因为字体配置文件<code>/etc/ImageMagick-6/type.xml</code>中默认是使用了<code>type-urw-base35.xml</code>。但不知为啥，ImageMagick使用字体urw-base35-fonts，用label生成图片的时候，存在着文字上移的问题。</p>
+<p>试验下来，最终解决方案如下:</p>
+<ol>
+<li>使用<code>yum install ImageMagick</code>安装ImageMagick</li>
+<li>再安装<code>urw-base35-fonts-legacy</code>字体，</li>
+<li>最后修改ImageMagick的配置文件来使用legacy的字体，最终解决了该问题。</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"># 安装urw-base35-fonts-legacy, fonts在/usr/share/X11/fonts/urw-fonts目录下</div><div class="line">yum install urw-base35-fonts-legacy</div><div class="line"></div><div class="line"># 修改/etc/ImageMagick-6/type.xml配置文件为使用type-ghostscript.xml</div><div class="line">sed -i.bak &apos;s,type-urw-base35.xml,type-ghostscript.xml,g&apos; /etc/ImageMagick-6/type.xml</div><div class="line"></div><div class="line"># 修改 /etc/ImageMagick-6/type-ghostscript.xml为/usr/share/X11/fonts/urw-fonts/</div><div class="line">sed -i.bak &apos;s,metrics=&quot;,metrics=&quot;/usr/share/X11/fonts/urw-fonts/,g&apos; /etc/ImageMagick-6/type-ghostscript.xml</div><div class="line">sed -i &apos;s,glyphs=&quot;,glyphs=&quot;/usr/share/X11/fonts/urw-fonts/,g&apos; /etc/ImageMagick-6/type-ghostscript.xml</div></pre></td></tr></table></figure>
+<h3 id="额外延伸"><a href="#额外延伸" class="headerlink" title="额外延伸"></a>额外延伸</h3><h4 id="ImageMagick的font配置文件"><a href="#ImageMagick的font配置文件" class="headerlink" title="ImageMagick的font配置文件"></a>ImageMagick的font配置文件</h4><p>ImageMagick使用配置目录下的<code>type.xml</code>来控制使用哪个fonts</p>
+<ul>
+<li>yum原生安装的ImageMagick，配置文件目录:<code>/etc/ImageMagick-6/type.xml</code>或<code>/etc/ImageMagick/type.xml</code></li>
+<li>源码编译的ImageMagick, 默认配置文件目录: <code>/usr/local/etc/ImageMagick/type.xml</code></li>
+</ul>
+<p>可使用如下命令列出配置中支持的fonts。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">convert -list type       # for IM older than v6.3.5-7</div><div class="line">convert -list font       # for newer versions</div></pre></td></tr></table></figure></p>
+<h4 id="ImageMagick使用urw-fonts字体"><a href="#ImageMagick使用urw-fonts字体" class="headerlink" title="ImageMagick使用urw-fonts字体"></a>ImageMagick使用urw-fonts字体</h4><p>下载yum中的rpm包</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># yum install yum-utils</div><div class="line"># yumdownloader --urls urw-fonts</div><div class="line">Loaded plugins: fastestmirror</div><div class="line">Loading mirror speeds from cached hostfile</div><div class="line">http://mirrors.cloud.aliyuncs.com/alinux/2.1903/os/x86_64/Packages/urw-fonts-2.4-16.1.al7.noarch.rpm</div><div class="line">#</div><div class="line"></div><div class="line"># wget &apos;http://mirrors.cloud.aliyuncs.com/alinux/2.1903/os/x86_64/Packages/urw-fonts-2.4-16.1.al7.noarch.rpm&apos;</div></pre></td></tr></table></figure>
+<p>使用<code>--nodeps</code>安装rpm包<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># rpm -ivh --nodeps urw-fonts-2.4-16.1.al7.noarch.rpm</div></pre></td></tr></table></figure></p>
+<p>删除rpm包命令: <code>rpm -e urw-fonts-2.4-16.1.al7.noarch</code></p>
+<p>配置ImageMagick使用urw-fonts字体</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">修改 /etc/ImageMagick-6/type.xml</div><div class="line">sed -i.bak &apos;s,type-urw-base35.xml,type-ghostscript.xml,g&apos; /etc/ImageMagick-6/type.xml</div><div class="line"></div><div class="line">修改 /etc/ImageMagick-6/type-ghostscript.xml</div><div class="line">sed -i.bak &apos;s,metrics=&quot;,metrics=&quot;/usr/share/fonts/default/Type1/,g&apos; /etc/ImageMagick-6/type-ghostscript.xml</div><div class="line">sed -i &apos;s,glyphs=&quot;,glyphs=&quot;/usr/share/fonts/default/Type1/,g&apos; /etc/ImageMagick-6/type-ghostscript.xml</div></pre></td></tr></table></figure>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://stackoverflow.com/questions/1392858/with-imagemagick-how-can-you-see-all-available-fonts" target="_blank" rel="external">With ImageMagick, how can you see all available fonts?</a></li>
+<li><a href="https://stackoverflow.com/questions/2650882/make-imagemagick-recognize-a-font" target="_blank" rel="external">Make ImageMagick recognize a font</a></li>
+<li><a href="https://forums.centos.org/viewtopic.php?t=71747&amp;p=302928" target="_blank" rel="external">CentOS 7.7.1908 ImageMagick montage does not work with urw-base35-fonts replacing urw-fonts</a></li>
+<li><a href="https://bugs.centos.org/view.php?id=16443" target="_blank" rel="external">CentOS Bug Tracker</a></li>
+<li><a href="https://bugzilla.redhat.com/show_bug.cgi?id=1756521" target="_blank" rel="external">Bug 1756521 - urw-base35-fonts-20170801-10.el7.noarch.rpm removes fonts in /usr/share/fonts/default/Type1 and breaks htmldoc symlinks in /usr/share/htmldoc/fonts</a></li>
+<li><a href="https://bugzilla.redhat.com/show_bug.cgi?id=1743658" target="_blank" rel="external">Bug 1743658 - [config/type-ghostscript.xml.in] using outdated hardcoded paths for (URW)++ fonts</a></li>
+<li><a href="https://bugzilla.redhat.com/show_bug.cgi?id=1500104" target="_blank" rel="external">Bug 1500104 - urw-base35-fonts only partially provides urw-fonts and should at least obsolete ghostscript-fonts, too.</a></li>
+<li><a href="https://qiita.com/7of9/items/7c8e34e29d0dc338f5ea" target="_blank" rel="external">CentOS 7.7 &gt; ImageMagick &gt; フォントがない &gt; unable to read font `/usr/share/fonts/default/Type1/n019003l.pfb’ | link:yumとrpmでのパッケージ情報表示 | yum whatprovides /usr/share/fonts/default</a></li>
+<li><a href="https://stackoverflow.com/questions/55469545/difference-between-caption-draw-annotate-label-while-adding-text-to-imagemagi" target="_blank" rel="external">Difference between caption, draw, annotate, label while adding text to ImageMagick</a></li>
+<li><a href="https://blog.csdn.net/lan861698789/article/details/7738383" target="_blank" rel="external">ImageMagick用法</a></li>
+<li><a href="https://www.imagemagick.org/discourse-server/viewtopic.php?f=3&amp;t=34142" target="_blank" rel="external">Issue with stroke and label: text - IM 7.0.7-39 and 6.9.9-50</a></li>
+</ul>
+	  
+	</div>
+
+	<div>
+  	<center>
+	<div class="pagination">
+<ul class="pagination">
+	 
+		
+          <li class="prev disabled"><a><i class="fa fa-arrow-circle-o-left"></i>上一页</a></li>
+        
+
+        <li><a href="/archives"><i class="fa fa-archive"></i>Archive</a></li>
+
+		
+		   <li class="next"><a href="/2020/04/29/Install-Postgresql-and-Nodejs-on-Aliyun-Linux-2/" class="alignright next">下一页<i class="fa fa-arrow-circle-o-right"></i></a></li>         
+        
+	
+</ul>
+</div>
+
+    </center>
+	</div>
+
+    <!-- share -->
+    
+        
+    <div class="bdsharebuttonbox">
+        <a href="#" class="bds_more" data-cmd="more"></a>
+        <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+        <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+        <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+        <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+        <a href="#" class="bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+        <a href="#" class="bds_evernotecn" data-cmd="evernotecn" title="分享到印象笔记"></a>
+        <a href="#" class="bds_youdao" data-cmd="youdao" title="分享到有道云笔记"></a>
+        <a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+    </div>
+    <script>
+        window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"24"},"share":{}};
+        with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+    </script>
+
+
+        
+
+    
+	
+	<!-- comment -->
+	
+<section id="comment">
+  <h2 class="title">留言</h2>
+  
+  	 <div id="disqus_thread">
+     <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  	 </div>
+  
+</section>
+
+
+	</div> <!-- col-md-9/col-md-12 -->
+		
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta">
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2020-05-04
+	</div>
+	
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
+	   <div id="toc" class="toc collapse in">
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#现象"><span class="toc-article-text">现象</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#原因"><span class="toc-article-text">原因</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#解决方法"><span class="toc-article-text">解决方法</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#调查过程"><span class="toc-article-text">调查过程</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#查找生成图片的命令"><span class="toc-article-text">查找生成图片的命令</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#编译源码版本"><span class="toc-article-text">编译源码版本</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#寻找fonts问题"><span class="toc-article-text">寻找fonts问题</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#验证fonts问题"><span class="toc-article-text">验证fonts问题</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#深挖fonts问题"><span class="toc-article-text">深挖fonts问题</span></a></li></ol></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#额外延伸"><span class="toc-article-text">额外延伸</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#ImageMagick的font配置文件"><span class="toc-article-text">ImageMagick的font配置文件</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#ImageMagick使用urw-fonts字体"><span class="toc-article-text">ImageMagick使用urw-fonts字体</span></a></li></ol></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#Reference"><span class="toc-article-text">Reference</span></a></li></ol>
+		</div>
+	
+	</div>
+
+	<!-- categories -->
+    
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>
+    <ul id="categorys" class="tag_box list-unstyled collapse in">
+          
+  <li>
+    <li><a href="/categories/Linux/">Linux<span>10</span></a></li>
+  </li>
+
+    </ul>
+	</div>
+	
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>
+    <ul id="tags" class="tag_box list-unstyled collapse in">
+	    
+  <li><a href="/tags/Image/">Image<span>3</span></a></li> <li><a href="/tags/Aliyun/">Aliyun<span>2</span></a></li> <li><a href="/tags/CentOS/">CentOS<span>9</span></a></li>
+    </ul>
+	</div>
+	
+
+    <hr>
+
+</div><!-- col-md-3 -->
+
+	</div>
+		
+
+</div><!-- row -->
+
+<script type="text/javascript">
+var disqus_shortname = 'jibing57-blog';
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  &copy; 2020 jibing57
+  
+      with help from <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>.    
+</p> </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>

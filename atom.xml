@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.jibing57.com/"/>
-  <updated>2020-04-10T01:26:11.565Z</updated>
+  <updated>2020-05-06T07:47:14.946Z</updated>
   <id>https://www.jibing57.com/</id>
   
   <author>
@@ -15,6 +15,68 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Aliyun Linux 2上imageMagick的fonts配置问题</title>
+    <link href="https://www.jibing57.com/2020/05/04/imageMagick-fonts-issue-on-Aliyun-Linux-2/"/>
+    <id>https://www.jibing57.com/2020/05/04/imageMagick-fonts-issue-on-Aliyun-Linux-2/</id>
+    <published>2020-05-04T02:10:19.000Z</published>
+    <updated>2020-05-06T07:47:14.946Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;现象&quot;&gt;&lt;a href=&quot;#现象&quot; class=&quot;headerlink&quot; title=&quot;现象&quot;&gt;&lt;/a&gt;现象&lt;/h3&gt;&lt;p&gt;公司阿里云服务器部署Rails程序时，发现Gem &lt;a href=&quot;https://github.com/pludoni/simple-captcha&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;simple_captcha2&lt;/a&gt;生成的验证码图片，和以前的不太一样。图片中的数字会比正常情况下靠上很多, 影响用户体验。&lt;/p&gt;
+&lt;p&gt;正常情况下的图片:&lt;br&gt;&lt;img src=&quot;/images/ImageMagick/fonts_normal.jpeg&quot; alt=&quot;fonts_normal.jpeg&quot;&gt;&lt;/p&gt;
+&lt;p&gt;有问题的图片:&lt;br&gt;&lt;img src=&quot;/images/ImageMagick/fonts_crooked_image.jpeg&quot; alt=&quot;crooked_image.jpeg&quot;&gt;&lt;/p&gt;
+&lt;h3 id=&quot;原因&quot;&gt;&lt;a href=&quot;#原因&quot; class=&quot;headerlink&quot; title=&quot;原因&quot;&gt;&lt;/a&gt;原因&lt;/h3&gt;&lt;p&gt;Aliyun Linux 2(也包含最新的CentOS 7)中升级了ImageMagick的版本到&lt;code&gt;ImageMagick 6.9.10-68&lt;/code&gt;, 字体配置文件&lt;code&gt;/etc/ImageMagick-6/type.xml&lt;/code&gt;中默认改用了&lt;code&gt;urw-base35-fonts&lt;/code&gt;，而不是之前的&lt;code&gt;ghostscript-fonts&lt;/code&gt;。&lt;/p&gt;
+&lt;h3 id=&quot;解决方法&quot;&gt;&lt;a href=&quot;#解决方法&quot; class=&quot;headerlink&quot; title=&quot;解决方法&quot;&gt;&lt;/a&gt;解决方法&lt;/h3&gt;&lt;p&gt;安装并修改ImageMagick使用旧字体。&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;# 安装urw-base35-fonts-legacy, fonts在/usr/share/X11/fonts/urw-fonts目录下&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;yum install urw-base35-fonts-legacy&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;# 修改/etc/ImageMagick-6/type.xml配置文件为使用type-ghostscript.xml&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;sed -i.bak &amp;apos;s,type-urw-base35.xml,type-ghostscript.xml,g&amp;apos; /etc/ImageMagick-6/type.xml&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;# 修改 /etc/ImageMagick-6/type-ghostscript.xml为/usr/share/X11/fonts/urw-fonts/&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;sed -i.bak &amp;apos;s,metrics=&amp;quot;,metrics=&amp;quot;/usr/share/X11/fonts/urw-fonts/,g&amp;apos; /etc/ImageMagick-6/type-ghostscript.xml&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;sed -i &amp;apos;s,glyphs=&amp;quot;,glyphs=&amp;quot;/usr/share/X11/fonts/urw-fonts/,g&amp;apos; /etc/ImageMagick-6/type-ghostscript.xml&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+    
+    </summary>
+    
+      <category term="Linux" scheme="https://www.jibing57.com/categories/Linux/"/>
+    
+    
+      <category term="Image" scheme="https://www.jibing57.com/tags/Image/"/>
+    
+      <category term="Aliyun" scheme="https://www.jibing57.com/tags/Aliyun/"/>
+    
+      <category term="CentOS" scheme="https://www.jibing57.com/tags/CentOS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>在Aliyun Linux 2上安装Postgresql和Node.js</title>
+    <link href="https://www.jibing57.com/2020/04/29/Install-Postgresql-and-Nodejs-on-Aliyun-Linux-2/"/>
+    <id>https://www.jibing57.com/2020/04/29/Install-Postgresql-and-Nodejs-on-Aliyun-Linux-2/</id>
+    <published>2020-04-29T13:03:55.000Z</published>
+    <updated>2020-05-06T08:10:36.427Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Aliyun Linux 2上部署环境，遇到了几个问题。记录如下。&lt;/p&gt;
+&lt;h3 id=&quot;安装Postgresql-11-client&quot;&gt;&lt;a href=&quot;#安装Postgresql-11-client&quot; class=&quot;headerlink&quot; title=&quot;安装Postgresql 11 client&quot;&gt;&lt;/a&gt;安装Postgresql 11 client&lt;/h3&gt;&lt;h4 id=&quot;官方Guide&quot;&gt;&lt;a href=&quot;#官方Guide&quot; class=&quot;headerlink&quot; title=&quot;官方Guide&quot;&gt;&lt;/a&gt;官方Guide&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;Postgresql官方在红帽系Linux的安装Guide地址: &lt;a href=&quot;https://www.postgresql.org/download/linux/redhat/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://www.postgresql.org/download/linux/redhat/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Guide中选取对应操作系统后，可以得到Postgresql在RHEL 7系列上的yum源地址是: &lt;a href=&quot;https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;在RHEL 7系列上安装方法为:&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;yum install https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;yum install postgresql11&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h4 id=&quot;Aliyun-Linux-2安装问题&quot;&gt;&lt;a href=&quot;#Aliyun-Linux-2安装问题&quot; class=&quot;headerlink&quot; title=&quot;Aliyun Linux 2安装问题&quot;&gt;&lt;/a&gt;Aliyun Linux 2安装问题&lt;/h4&gt;&lt;p&gt;但该方法在Alinux Linux 2上没法成功安装，因为官方源依赖于yum的变量$releasever,$basearch。在Aliyun Linux 2中，这些变量和RHEL和CentOS上不相同。导致没法直接用官方rpm yum包来安装postgresql11。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Linux" scheme="https://www.jibing57.com/categories/Linux/"/>
+    
+    
+      <category term="PostgreSQL" scheme="https://www.jibing57.com/tags/PostgreSQL/"/>
+    
+      <category term="Aliyun" scheme="https://www.jibing57.com/tags/Aliyun/"/>
+    
+      <category term="Nodejs" scheme="https://www.jibing57.com/tags/Nodejs/"/>
+    
+      <category term="Github" scheme="https://www.jibing57.com/tags/Github/"/>
+    
+  </entry>
   
   <entry>
     <title>豆瓣插件替换</title>
@@ -513,65 +575,6 @@
       <category term="EC2" scheme="https://www.jibing57.com/tags/EC2/"/>
     
       <category term="Linux" scheme="https://www.jibing57.com/tags/Linux/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>关闭Mac系统中的自动拼写纠正功能</title>
-    <link href="https://www.jibing57.com/2019/07/04/how-to-cancel-automatic-spelling-in-macos/"/>
-    <id>https://www.jibing57.com/2019/07/04/how-to-cancel-automatic-spelling-in-macos/</id>
-    <published>2019-07-04T13:48:33.000Z</published>
-    <updated>2019-07-04T06:58:33.589Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;Mac系统中输入英文字母的时候,有一些贴心的设置。拼写错误的时候，系统会自动纠正拼写错误。句子的首字母，会自动帮你设为大写。&lt;br&gt;对于写书来说，这些功能很是贴心，对于码农来说，这些功能有时候就显得很烦人。&lt;/p&gt;
-&lt;h3 id=&quot;关闭方法&quot;&gt;&lt;a href=&quot;#关闭方法&quot; class=&quot;headerlink&quot; title=&quot;关闭方法&quot;&gt;&lt;/a&gt;关闭方法&lt;/h3&gt;&lt;p&gt;在设置中，可以关闭自动纠正功能。[System preference] -&amp;gt; [Keyboard] -&amp;gt; [Text]&lt;/p&gt;
-&lt;p&gt;下面三个选项前面的勾去掉即可。&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Correct spelling automatically&lt;/li&gt;
-&lt;li&gt;Capitalize words automatically&lt;/li&gt;
-&lt;li&gt;Add period with double-space&lt;/li&gt;
-&lt;/ul&gt;
-    
-    </summary>
-    
-      <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
-    
-    
-      <category term="MacOS" scheme="https://www.jibing57.com/tags/MacOS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>SACK Panic</title>
-    <link href="https://www.jibing57.com/2019/06/24/SACK-Panic-in-CentOS-7/"/>
-    <id>https://www.jibing57.com/2019/06/24/SACK-Panic-in-CentOS-7/</id>
-    <published>2019-06-24T13:43:40.000Z</published>
-    <updated>2019-06-25T05:45:49.702Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;在2019-06-17，Netfilx爆出了FreeBSD and Linux系统中的内核上存在严重远程DoS漏洞，攻击者可以构造特定的SACK请求到目标服务器，引起服务器内核奔溃。&lt;br&gt;漏洞编号为: &lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-11477&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;CVE-2019-11477&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-11478&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;CVE-2019-11478&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-11479&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;CVE-2019-11479&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;几家公司的通告如下:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;https://github.com/Netflix/security-bulletins/blob/master/advisories/third-party/2019-001.md&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Netflix官方通告&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://access.redhat.com/security/vulnerabilities/tcpsack&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;红帽公告&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-    
-    </summary>
-    
-      <category term="Linux" scheme="https://www.jibing57.com/categories/Linux/"/>
-    
-    
-      <category term="Network" scheme="https://www.jibing57.com/tags/Network/"/>
-    
-      <category term="CentOS" scheme="https://www.jibing57.com/tags/CentOS/"/>
     
   </entry>
   

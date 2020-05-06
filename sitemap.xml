@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://www.jibing57.com/2020/04/29/Install-Postgresql-and-Nodejs-on-Aliyun-Linux-2/</loc>
+    
+    <lastmod>2020-05-06T08:10:36.427Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.jibing57.com/2020/05/04/imageMagick-fonts-issue-on-Aliyun-Linux-2/</loc>
+    
+    <lastmod>2020-05-06T07:47:14.946Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.jibing57.com/2020/04/09/replace-douban-book-plugin/</loc>
     
     <lastmod>2020-04-10T01:26:11.565Z</lastmod>
@@ -562,6 +576,13 @@
   </url>
   
   <url>
+    <loc>https://www.jibing57.com/2017/10/30/how-to-use-post-link-on-hexo/</loc>
+    
+    <lastmod>2017-12-25T07:09:02.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.jibing57.com/2017/12/12/how-to-write-multiline-to-file-by-shell/</loc>
     
     <lastmod>2017-12-25T07:09:02.000Z</lastmod>
@@ -590,20 +611,6 @@
   </url>
   
   <url>
-    <loc>https://www.jibing57.com/2017/10/30/how-to-use-post-link-on-hexo/</loc>
-    
-    <lastmod>2017-12-25T07:09:02.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.jibing57.com/2017/12/14/deep-dig-on-s3-bucket-permission/</loc>
-    
-    <lastmod>2017-12-25T07:08:09.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://www.jibing57.com/2017/12/19/deep-dig-on-s3-bucket-permission-exam/</loc>
     
     <lastmod>2017-12-25T07:08:09.000Z</lastmod>
@@ -611,7 +618,14 @@
   </url>
   
   <url>
-    <loc>https://www.jibing57.com/2017/10/31/hexo-bind-domain-to-github-pages/</loc>
+    <loc>https://www.jibing57.com/2017/12/20/expired-of-S3-RRS/</loc>
+    
+    <lastmod>2017-12-25T07:08:09.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.jibing57.com/2017/12/14/deep-dig-on-s3-bucket-permission/</loc>
     
     <lastmod>2017-12-25T07:08:09.000Z</lastmod>
     
@@ -632,7 +646,7 @@
   </url>
   
   <url>
-    <loc>https://www.jibing57.com/2017/12/20/expired-of-S3-RRS/</loc>
+    <loc>https://www.jibing57.com/2017/10/31/hexo-bind-domain-to-github-pages/</loc>
     
     <lastmod>2017-12-25T07:08:09.000Z</lastmod>
     

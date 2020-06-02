@@ -3,6 +3,105 @@
   
     
     <entry>
+      <title><![CDATA[在MacOS上加速Minecraft Launcher]]></title>
+      <url>/2020/05/31/how-to-speed-minecraft-launcher-on-macos/</url>
+      <content type="html"><![CDATA[<h3 id="状况"><a href="#状况" class="headerlink" title="状况"></a>状况</h3><p>周末小朋友在家玩Minecraft，可能是近期网络环境有什么变动。官方启动器下载更新文件特别的慢。十分钟进度条才动了一小格子。</p>
+<p>看着进度条好久也不更新，小朋友渐渐地就变得烦躁起来。</p>
+<p>我把梯子开了全局代理，重新启动了Minecraft客户端，但貌似没效果。流量压根不从梯子走。</p>
+<p>后来自己折腾了一下，找到了一个方法，记录如下:</p>
+<h3 id="方法步骤"><a href="#方法步骤" class="headerlink" title="方法步骤"></a>方法步骤</h3><ol>
+<li><p>从App中点开Minecraft，然后开启Terminal，找到启动器的进程信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ ps -ef | grep -i minecraft</div><div class="line">  501 11957     1   0  3:45PM ??         0:00.21 /Applications/Minecraft.app/Contents/MacOS/launcher</div><div class="line">  501 11959 11957   0  3:45PM ??         0:01.98 /Applications/Minecraft.app/Contents/Minecraft Updater.app/Contents/MacOS/nativeUpdater --nativePath /Applications/Minecraft.app --nativeStartupPath /Applications/Minecraft.app/Contents --nativeExecutable /Applicati      ons/Minecraft.app/Contents/MacOS/launcher</div><div class="line">  501 12917 12152   0  3:46PM ttys014    0:00.00 ggrep -i minecraft</div><div class="line">$</div></pre></td></tr></table></figure>
+</li>
+<li><p>在Terminal中启动HTTP proxy(我本地翻墙的proxy端口绑定的是8001端口，可根据实际情况进行修改。)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ export http_proxy=&quot;http://127.0.0.1:8001&quot;; export HTTP_PROXY=&quot;http://127.0.0.1:8001&quot;; export https_proxy=&quot;http://127.0.0.1:8001&quot;; export HTTPS_PROXY=&quot;http://127.0.0.1:8001&quot;</div></pre></td></tr></table></figure>
+</li>
+<li><p>关闭GUI的启动器界面, 然后手动在Terminal中启动Launcher</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ /Applications/Minecraft.app/Contents/MacOS/launcher</div><div class="line">2020-05-30 15:48:55.733 launcher[14037:45644] Claimed it found a path: /Applications/Minecraft.app/Contents/MacOS/launcher (/Applications/Minecraft.app/Contents/MacOS/launcher) 4096</div><div class="line">https://launchermeta.mojang.com/v1/products/launcher/022631aeac4a9addbce8e0503dce662152dc398d/mac-os.json</div><div class="line">2020-05-30 15:48:58.496 nativeUpdater[14040:45717] Found executable path: /Applications/Minecraft.app/Contents/MacOS/launcher</div><div class="line">2020-05-30 15:48:58.506 nativeUpdater[14040:45717] Found executable path: /Applications/Minecraft.app/Contents/MacOS/launcher</div><div class="line">https://launchermeta.mojang.com/v1/products/launcher/022631aeac4a9addbce8e0503dce662152dc398d/mac-os.json</div></pre></td></tr></table></figure>
+</li>
+<li><p>此时，也会启动GUI画面的启动器，但是下载文件时，启动器就会走proxy了。</p>
+</li>
+</ol>
+]]></content>
+      
+        <categories>
+            
+            <category> Tools </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> MacOS </tag>
+            
+            <tag> Minecraft </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Docker添加国内镜像源]]></title>
+      <url>/2020/05/27/Add-registry-mirror-to-docker/</url>
+      <content type="html"><![CDATA[<p>在国内访问<a href="https://hub.docker.com/" target="_blank" rel="external">Docker Hub</a>的速度有点慢，换国内源会稳定和快一点。</p>
+<h3 id="国内的几个源"><a href="#国内的几个源" class="headerlink" title="国内的几个源:"></a>国内的几个源:</h3><ul>
+<li><a href="https://dockerhub.azk8s.cn" target="_blank" rel="external">https://dockerhub.azk8s.cn</a> - Azure镜像</li>
+<li><a href="http://hub-mirror.c.163.com" target="_blank" rel="external">http://hub-mirror.c.163.com</a>  - 网易镜像</li>
+<li><a href="https://docker.mirrors.ustc.edu.cn" target="_blank" rel="external">https://docker.mirrors.ustc.edu.cn</a> - 科大镜像站</li>
+<li><a href="https://registry.docker-cn.com" target="_blank" rel="external">https://registry.docker-cn.com</a> - Docker中国官方镜像 </li>
+<li>阿里云也有镜像，只不过需要登录<a href="https://cr.console.aliyun.com/" target="_blank" rel="external">阿里云控制台</a>后获取自己专属的镜像源。</li>
+</ul>
+<h3 id="设置方法"><a href="#设置方法" class="headerlink" title="设置方法"></a>设置方法</h3><p>参照<a href="https://cloud.google.com/container-registry/docs/using-dockerhub-mirroring" target="_blank" rel="external">Using Container Registry’s Docker Hub mirror</a>这边描述，共有这么几个设置方法</p>
+<ol>
+<li><p>在配置文件中添加<code>registry-mirrors</code>的配置。启动时自动配置，Linux下的默认配置文件是<code>/etc/docker/daemon.json</code>.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  &quot;registry-mirrors&quot;: [&quot;https://&lt;my-docker-mirror-host&gt;&quot;]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>手动启动dockerd的时候，添加<code>--registry-mirror</code>参数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dockerd --registry-mirror=https://&lt;my-docker-mirror-host&gt;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<a id="more"></a>
+<h4 id="Macos下Docker-Desktop设置方法"><a href="#Macos下Docker-Desktop设置方法" class="headerlink" title="Macos下Docker Desktop设置方法"></a>Macos下Docker Desktop设置方法</h4><p>MacOS下Docker Desktop 2.2.0.5中的设置方法如下:</p>
+<ol>
+<li><p>打开Docker Desktop的设置界面<br><img src="/images/Kubernetes/Register/docker_desktop_preference.png" alt="docker_desktop_preference.png"></p>
+</li>
+<li><p>在打开的Setting界面中选中<code>Docker Engine</code>选项，然后在配置文件中添加<code>registry-mirrors</code>配置。然后点击”Apply &amp; Restart”重启Docker Desktop。<br><img src="/images/Kubernetes/Register/docker_desktop_setting.png" alt="docker_desktop_setting.png"></p>
+</li>
+</ol>
+<p>旧版本Docker Desktop的Preferences界面和上图中不太一样, 但大同小异。</p>
+<h3 id="检查是否生效"><a href="#检查是否生效" class="headerlink" title="检查是否生效"></a>检查是否生效</h3><p>运行命令 <code>docker info</code>, 在输出中查看<code>Registry Mirrors</code>下是否有设置的内容，有的话就说明成功了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">$ docker info</div><div class="line"> ...</div><div class="line"> Registry Mirrors:</div><div class="line">  https://registry.docker-cn.com/</div><div class="line">  https://dockerhub.azk8s.cn/</div><div class="line">  http://hub-mirror.c.163.com/</div><div class="line">  ...</div><div class="line">$</div></pre></td></tr></table></figure>
+<h3 id="检查速度"><a href="#检查速度" class="headerlink" title="检查速度"></a>检查速度</h3><p>在Macos下, 使用node镜像做测试，先删除再pull，查看速度。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ docker rmi node:latest</div><div class="line">$ time docker pull node:latest</div></pre></td></tr></table></figure></p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://docs.docker.com/registry/recipes/mirror/" target="_blank" rel="external">Registry as a pull through cache</a></li>
+<li><a href="https://cloud.google.com/container-registry/docs/using-dockerhub-mirroring" target="_blank" rel="external">Using Container Registry’s Docker Hub mirror</a></li>
+<li><a href="https://mirrors.ustc.edu.cn/help/dockerhub.html" target="_blank" rel="external">Docker Hub 源使用帮助</a></li>
+<li><a href="https://github.com/yeasy/docker_practice/blob/master/install/mirror.md" target="_blank" rel="external">镜像加速器</a></li>
+<li><a href="https://juejin.im/post/5cd2cf01f265da0374189441" target="_blank" rel="external">Docker Hub 镜像加速器</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> Kubernetes </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Docker </tag>
+            
+            <tag> Docker Hub </tag>
+            
+            <tag> MacOS </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[Aliyun Linux 2上imageMagick的fonts配置问题]]></title>
       <url>/2020/05/04/imageMagick-fonts-issue-on-Aliyun-Linux-2/</url>
       <content type="html"><![CDATA[<h3 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h3><p>公司阿里云服务器部署Rails程序时，发现Gem <a href="https://github.com/pludoni/simple-captcha" target="_blank" rel="external">simple_captcha2</a>生成的验证码图片，和以前的不太一样。图片中的数字会比正常情况下靠上很多, 影响用户体验。</p>
@@ -392,11 +491,11 @@
         
         <tags>
             
+            <tag> MacOS </tag>
+            
             <tag> Ruby </tag>
             
             <tag> FFMPEG </tag>
-            
-            <tag> MacOS </tag>
             
         </tags>
         
@@ -2224,9 +2323,9 @@
         
         <tags>
             
-            <tag> CentOS </tag>
-            
             <tag> MacOS </tag>
+            
+            <tag> CentOS </tag>
             
         </tags>
         
@@ -2507,6 +2606,8 @@
 <p>或者<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">echo $name | tr &apos;[a-z]&apos; &apos;[A-Z]&apos;</div></pre></td></tr></table></figure></p>
 <hr>
 <h3 id="du统计隐藏目录的大小"><a href="#du统计隐藏目录的大小" class="headerlink" title="du统计隐藏目录的大小"></a>du统计隐藏目录的大小</h3><p>du 统计目录大小的一些用法。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"># 统计非隐藏文件/目录的大小</div><div class="line">du -sh *</div><div class="line"></div><div class="line"># 统计隐藏文件/目录的大小</div><div class="line">du -sh .[!.]*</div><div class="line"></div><div class="line"># 统计全部文件/目录的大小</div><div class="line">du -sh .[!.]* *</div><div class="line"></div><div class="line"># 统计全部文件/目录的大小, 并按照大小排序</div><div class="line">du -sch .[!.]* * |sort -h</div></pre></td></tr></table></figure></p>
+<hr>
+<h3 id="Linux下网络使用工具"><a href="#Linux下网络使用工具" class="headerlink" title="Linux下网络使用工具"></a>Linux下网络使用工具</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install iftop</div></pre></td></tr></table></figure>
 ]]></content>
       
         <categories>
@@ -2570,9 +2671,9 @@
         
         <tags>
             
-            <tag> Github </tag>
-            
             <tag> MacOS </tag>
+            
+            <tag> Github </tag>
             
             <tag> Linux </tag>
             
@@ -3087,11 +3188,11 @@
         
         <tags>
             
+            <tag> MacOS </tag>
+            
             <tag> Ruby </tag>
             
             <tag> Rails </tag>
-            
-            <tag> MacOS </tag>
             
         </tags>
         
@@ -3719,9 +3820,9 @@
         
         <tags>
             
-            <tag> EC2 </tag>
-            
             <tag> MacOS </tag>
+            
+            <tag> EC2 </tag>
             
             <tag> SSH </tag>
             
@@ -3930,9 +4031,9 @@
         
         <tags>
             
-            <tag> Image </tag>
-            
             <tag> MacOS </tag>
+            
+            <tag> Image </tag>
             
         </tags>
         
@@ -10587,9 +10688,9 @@ You can wait for the scheduled retirement date - when the instance is stopped - 
         
         <tags>
             
-            <tag> AWS SDK </tag>
-            
             <tag> RDS </tag>
+            
+            <tag> AWS SDK </tag>
             
             <tag> Ruby </tag>
             

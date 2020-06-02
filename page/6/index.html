@@ -139,6 +139,60 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
+			<div class="date"> 2018-12-24 </div>
+			<div class="article-title"><a href="/2018/12/24/404-on-Scale-Up-of-ElasticBeanstalk/" >ElasticBeanstalk伸缩时偶发404的原因</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>使用EB Passenger with Ruby部署rails时，如果是以默认配置启动，没有做对应的配置，在ASG Scale Up的时候，可能会有请求没法正常处理，返回404。</p>
+<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><ol>
+<li>EB中创建的ELB，默认是使用TCP:80的方式来检查Instance的健康状态的。</li>
+<li>ELB的<code>health check</code>的默认<code>Interval</code>是10 seconds，<code>Healthy threshold</code>是3 requests。</li>
+<li>当ASG Scale Up时，新建的Instance中Passenger在Rails APP部署完成之前就已经在监听80端口了。</li>
+<li>Passenger启动30秒之后，因为超过了<code>Healthy threshold * Interval</code>的时间, 并且每次检查都是OK的，ELB会判定Instance是可用的，就会将流量导入到该Instance中。</li>
+<li>但此时rails APP可能并没有部署完成(bundle install加上precompile，部署一个新的APP可能需要5分钟左右)，所以client会得到404的错误。</li>
+</ol>
+	
+	</div>
+  <a type="button" href="/2018/12/24/404-on-Scale-Up-of-ElasticBeanstalk/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2018-12-17 </div>
+			<div class="article-title"><a href="/2018/12/17/how-to-handle-heap-out-of-memory-in-node/" >Node中heap out of memory的解决办法</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h3><p>公司一个ReactOnRails的项目，之前一直都是跑的好好的。上次一个小修改后，发布预编译React代码的时候，屡次出现<code>FATAL ERROR: CALL_AND_RETRY_LAST Allocation failed - JavaScript heap out of memory</code> 的错误。</p>
+<h3 id="调查"><a href="#调查" class="headerlink" title="调查"></a>调查</h3><p>项目使用的是webpacker打包js代码，一开始是以为webpacker的问题，调查了一圈下来，最终发现是node中V8的限制。默认情况下，在64位系统下内存使用是有限制的，有一说是1.4GB，有一说是1.76GB。但在node官网搜了一圈也没找到明确说现在的限制是多少。</p>
+	
+	</div>
+  <a type="button" href="/2018/12/17/how-to-handle-heap-out-of-memory-in-node/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
 			<div class="date"> 2018-12-11 </div>
 			<div class="article-title"><a href="/2018/12/11/how-to-enable-cors-on-S3/" >在S3上开启CORS</a></div>						
 		</h3>
@@ -334,55 +388,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2018-04-24 </div>
-			<div class="article-title"><a href="/2018/04/24/douban-image-403/" >豆瓣图片403问题</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="起由"><a href="#起由" class="headerlink" title="起由"></a>起由</h3><p>发布了一版blog到github上。偶然间发现<a href="/douban">豆瓣页面</a>中书的图片都无法显示了。打开Inspector调查了下，发现请求豆瓣图片的链接返回的都是403 Forbidden。<br><img src="/images/Hexo/douban_image_403.png" alt="douban_image_403.png"></p>
-<p>网上搜索了一下，可能的原因就是豆瓣为了封杀微信小程序在页面上直接请求豆瓣的图片，封杀了图片的外链。</p>
-<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>尝试着将豆瓣API返回的图片链接拷贝到浏览器中直接访问，发现可以加载图片，那估计豆瓣是通过检测HTTP Request中的referer Header来实现防盗链。</p>
-	
-	</div>
-  <a type="button" href="/2018/04/24/douban-image-403/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2018-04-21 </div>
-			<div class="article-title"><a href="/2018/04/21/aws-s3-master-permission/" >S3进阶系列(二) ——权限管理</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="什么是S3的权限管理"><a href="#什么是S3的权限管理" class="headerlink" title="什么是S3的权限管理"></a>什么是S3的权限管理</h3><p>S3的权限管理是任何使用S3的人都无法绕开的功能,决定了S3中的Object是否能够被访问。</p>
-<p>权限管理本质上解决了这么一个问题: 谁(Principal)能够在何种条件(condition)下被允许或拒绝(Effect)对哪些资源(Resource)做何种操作(Action)</p>
-	
-	</div>
-  <a type="button" href="/2018/04/21/aws-s3-master-permission/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -454,11 +459,13 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/#Code">Code<span>5</span></a></li>
 		
+			<li><a href="/categories/#Kubernetes">Kubernetes<span>1</span></a></li>
+		
 			<li><a href="/categories/#Linux">Linux<span>10</span></a></li>
 		
 			<li><a href="/categories/#Shell">Shell<span>8</span></a></li>
 		
-			<li><a href="/categories/#Tools">Tools<span>25</span></a></li>
+			<li><a href="/categories/#Tools">Tools<span>26</span></a></li>
 		
 		</ul>
 	</div>
@@ -470,48 +477,48 @@ var _hmt = _hmt || [];
 		<h4>标签云</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/#Elastic Beanstalk">Elastic Beanstalk<span>7</span></a></li>
-		
-			<li><a href="/tags/#Aliyun">Aliyun<span>2</span></a></li>
-		
-			<li><a href="/tags/#iOS">iOS<span>1</span></a></li>
-		
-			<li><a href="/tags/#Yum">Yum<span>1</span></a></li>
-		
-			<li><a href="/tags/#Sysops">Sysops<span>1</span></a></li>
-		
-			<li><a href="/tags/#Failover">Failover<span>1</span></a></li>
-		
-			<li><a href="/tags/#AWS Deep Dive">AWS Deep Dive<span>2</span></a></li>
-		
-			<li><a href="/tags/#EC2">EC2<span>8</span></a></li>
-		
-			<li><a href="/tags/#AWS CLI">AWS CLI<span>6</span></a></li>
-		
-			<li><a href="/tags/#Lightsail">Lightsail<span>2</span></a></li>
-		
-			<li><a href="/tags/#AutoScaling">AutoScaling<span>3</span></a></li>
-		
-			<li><a href="/tags/#Yarn">Yarn<span>1</span></a></li>
-		
-			<li><a href="/tags/#Chrome">Chrome<span>1</span></a></li>
-		
-			<li><a href="/tags/#Douban">Douban<span>2</span></a></li>
-		
-			<li><a href="/tags/#S3">S3<span>10</span></a></li>
-		
-			<li><a href="/tags/#Linux">Linux<span>15</span></a></li>
-		
-			<li><a href="/tags/#RDS">RDS<span>3</span></a></li>
-		
-			<li><a href="/tags/#Ubuntu">Ubuntu<span>1</span></a></li>
+			<li><a href="/tags/#Git">Git<span>2</span></a></li>
 		
 			<li><a href="/tags/#Kubernetes">Kubernetes<span>1</span></a></li>
 		
-			<li><a href="/tags/#Tips">Tips<span>1</span></a></li>
+			<li><a href="/tags/#RVM">RVM<span>3</span></a></li>
+		
+			<li><a href="/tags/#PostgreSQL">PostgreSQL<span>4</span></a></li>
+		
+			<li><a href="/tags/#Ubuntu">Ubuntu<span>1</span></a></li>
+		
+			<li><a href="/tags/#CentOS">CentOS<span>9</span></a></li>
+		
+			<li><a href="/tags/#Chrome">Chrome<span>1</span></a></li>
+		
+			<li><a href="/tags/#Failover">Failover<span>1</span></a></li>
+		
+			<li><a href="/tags/#CloudWatch">CloudWatch<span>1</span></a></li>
+		
+			<li><a href="/tags/#Network">Network<span>4</span></a></li>
+		
+			<li><a href="/tags/#Lightsail">Lightsail<span>2</span></a></li>
+		
+			<li><a href="/tags/#Docker Hub">Docker Hub<span>1</span></a></li>
+		
+			<li><a href="/tags/#Github">Github<span>4</span></a></li>
+		
+			<li><a href="/tags/#Image">Image<span>3</span></a></li>
+		
+			<li><a href="/tags/#Wkhtmltopdf">Wkhtmltopdf<span>1</span></a></li>
+		
+			<li><a href="/tags/#HTTP">HTTP<span>5</span></a></li>
+		
+			<li><a href="/tags/#CodeCommit">CodeCommit<span>1</span></a></li>
+		
+			<li><a href="/tags/#MacOS">MacOS<span>20</span></a></li>
+		
+			<li><a href="/tags/#Yum">Yum<span>1</span></a></li>
+		
+			<li><a href="/tags/#AWS Deep Dive">AWS Deep Dive<span>2</span></a></li>
 		
 		
-		   <li><a href="/tags">...<span>57</span></a></li>
+		   <li><a href="/tags">...<span>59</span></a></li>
 		 
 		</ul>
 	</div>
@@ -524,6 +531,14 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2020/05/31/how-to-speed-minecraft-launcher-on-macos/" ><i class="fa fa-file-o"></i>在MacOS上加速Minecraft Launcher</a>
+      </li>
+    
+      <li>
+        <a href="/2020/05/27/Add-registry-mirror-to-docker/" ><i class="fa fa-file-o"></i>Docker添加国内镜像源</a>
+      </li>
+    
+      <li>
         <a href="/2020/05/04/imageMagick-fonts-issue-on-Aliyun-Linux-2/" ><i class="fa fa-file-o"></i>Aliyun Linux 2上imageMagick的...</a>
       </li>
     
@@ -533,14 +548,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2020/04/09/replace-douban-book-plugin/" ><i class="fa fa-file-o"></i>豆瓣插件替换</a>
-      </li>
-    
-      <li>
-        <a href="/2020/02/29/how-to-use-rvm-to-instal-ruby-in-slow-network-connection/" ><i class="fa fa-file-o"></i>弱网络环境下如何使用rvm安装ruby</a>
-      </li>
-    
-      <li>
-        <a href="/2020/02/24/how-to-speed-yarn-install-interiorly/" ><i class="fa fa-file-o"></i>如何在国内加速yarn install</a>
       </li>
     
   </ul>

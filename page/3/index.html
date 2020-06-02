@@ -139,6 +139,76 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
+			<div class="date"> 2019-07-24 </div>
+			<div class="article-title"><a href="/2019/07/24/setlocale-LC-CTYPE-cannot-change-locale-UTF-8-issue-when-ssh-to-linux-in-Mac/" >在Mac下远程登录Linux时,提示cannot change locale (UTF-8) No such file or directory</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><ul>
+<li>Mac下设置第一语言为English</li>
+<li>在Terminal或者iTerm2上登录远端Linux时，Linux的prompt提示 <code>setlocale: LC_CTYPE: cannot change locale (UTF-8): No such file or directory</code></li>
+<li>登录Linux后无法正常显示中文</li>
+</ul>
+<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><ol>
+<li>Mac下设置为英文后，locale字符集默认是”C”，Terminal或者iTerm2中有选项会自动设置LC_CTYPE或者LC_LANG为UTF-8</li>
+<li>Mac下ssh客户端的配置文件<code>/etc/ssh/ssh_config</code>中，会尝试设置本地的LANG到远端服务器中。</li>
+<li>远端Linux服务器，没有UTF-8的字符集，就导致了setlocale的警报</li>
+</ol>
+<h3 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h3><p>为了登录而来，修改每个服务器的字符集，操作上是不可行的。最简单的办法就是修改Mac本地的ssh客户端配置，不要将LANG设置发送到服务器端。<br>打开ssh配置文件，<code>sudo vim /etc/ssh/ssh_config</code>, 注释掉如下几行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Host *</div><div class="line">	SendEnv LANG LC_*</div></pre></td></tr></table></figure></p>
+<p>重新ssh到服务器，就不会再有setlocale的告警了。</p>
+
+	
+	</div>
+  <a type="button" href="/2019/07/24/setlocale-LC-CTYPE-cannot-change-locale-UTF-8-issue-when-ssh-to-linux-in-Mac/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2019-07-06 </div>
+			<div class="article-title"><a href="/2019/07/06/how-to-check-network-throughput-on-aws-EC2/" >AWS EC2各个类型的网络性能的测试方法</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>在AWS中，不同类型的EC2 instance,拥有的网络带宽是不同的。</p>
+<p>让人犯糊的是，在<a href="https://amazonaws-china.com/ec2/instance-types/" target="_blank" rel="external">AWS EC2的介绍页面</a>中,并没有清晰的标明每种类型的Instance的带宽具体是多少？一些类型的Instance只是标注了网络性能(Network Performance)为<code>Up to 5</code>,<code>Low</code>,<code>Moderate</code>或者<code>High</code>。</p>
+<p>老外的<a href="https://cloudonaut.io/ec2-network-performance-cheat-sheet/" target="_blank" rel="external">EC2 Network Performance Cheat Sheet</a>这篇文章中，记录了作者使用<a href="(https://github.com/esnet/iperf)">iperf3</a>测试出来的各个Instance类型的带宽。如果选取类型的时候比较在意带宽，可以用来参考下。</p>
+<p>顺带介绍一下如何在AWS EC2中使用<a href="(https://github.com/esnet/iperf)">iperf3</a>来测试Instance带宽。如果确实有需要，就可以自己来进行测速。<br>测试环境如下:</p>
+<ul>
+<li>测试Region是美国Oregon</li>
+<li>使用两台m4.large的EC2，一台运行服务，一台用作客户端。</li>
+<li>介绍两种Amazon Linux的测试方法<ul>
+<li>Amazon Linux AMI 2018.03.0 (HVM), SSD Volume Type</li>
+<li>Amazon Linux 2 AMI (HVM), SSD Volume Type</li>
+</ul>
+</li>
+</ul>
+	
+	</div>
+  <a type="button" href="/2019/07/06/how-to-check-network-throughput-on-aws-EC2/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
 			<div class="date"> 2019-07-04 </div>
 			<div class="article-title"><a href="/2019/07/04/how-to-cancel-automatic-spelling-in-macos/" >关闭Mac系统中的自动拼写纠正功能</a></div>						
 		</h3>
@@ -431,56 +501,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2019-05-10 </div>
-			<div class="article-title"><a href="/2019/05/10/how-to-change-office-UI-language-on-macos/" >在Mac下修改Office的界面显示语言</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>在Macos中，微软的Office套件的UI，是根据系统默认语言来设置的。系统是中文，Office就是中文UI，系统是英文，Office就是英文UI。微软并没有在Office的偏好设置中，设置一个可以切换语言的设置。<br>这让我这种想保持系统英文，Office中文的人感到很难受。<br>官网上搜了一圈，都没有找到可用的办法。功夫不负有心人，最终在office社区里面的这篇帖子提供了解决办法<a href="https://answers.microsoft.com/en-us/msoffice/forum/msoffice_other-mso_mac-mso_mac2016/how-to-manually-change-the-language-used-in-office/abe2a9c1-f550-45de-9d0e-58b99f206c41?page=2" target="_blank" rel="external">How to manually change the language used in Office for Mac 2016 without changing OS language?</a>, 还是我最喜欢的命令行方式。虽然是15，16年的帖子，但是对应的方法，在最新版的Office(版本16.24-19041401)中仍然可用。</p>
-<h3 id="修改方法"><a href="#修改方法" class="headerlink" title="修改方法"></a>修改方法</h3><p>以work为例，记录相关命令如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"># 修改word的语言</div><div class="line">$ defaults write com.microsoft.Word AppleLanguages &apos;(&quot;zh-cn&quot;)&apos;</div><div class="line"></div><div class="line"># 读取word的设置, 可以看到多了一个AppleLanguages的选项。</div><div class="line">$ defaults read com.microsoft.Word</div><div class="line">&#123;</div><div class="line">    ...</div><div class="line">    AppleLanguages =     (</div><div class="line">        &quot;zh-cn&quot;</div><div class="line">    );</div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-	
-	</div>
-  <a type="button" href="/2019/05/10/how-to-change-office-UI-language-on-macos/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2019-05-01 </div>
-			<div class="article-title"><a href="/2019/05/01/way-to-make-centos7-bootable-usb-on-macos/" >Macos下制作CentOS 7 USB启动盘</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>记录下在MacOS中制作Linux USB启动盘的操作步骤。</p>
-<h3 id="操作步骤"><a href="#操作步骤" class="headerlink" title="操作步骤"></a>操作步骤</h3><h4 id="查看磁盘挂载分区"><a href="#查看磁盘挂载分区" class="headerlink" title="查看磁盘挂载分区"></a>查看磁盘挂载分区</h4><p>使用命令<code>diskutil list</code>查看所在U盘的分区，找到U盘的挂载点，此处挂载点为<code>/dev/disk2</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">$ diskutil list</div><div class="line">...</div><div class="line"></div><div class="line">/dev/disk2 (external, physical):</div><div class="line">   #:                       TYPE NAME                    SIZE       IDENTIFIER</div><div class="line">   0:     FDisk_partition_scheme                        *31.0 GB    disk2</div><div class="line">   1:                 DOS_FAT_32 UNTITLED                31.0 GB    disk2s1</div><div class="line"></div><div class="line">$</div></pre></td></tr></table></figure></p>
-<h4 id="卸载U盘挂载"><a href="#卸载U盘挂载" class="headerlink" title="卸载U盘挂载"></a>卸载U盘挂载</h4><p>使用<code>diskutil unmountDisk</code>命令，卸载U盘的挂载。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ diskutil unmountDisk /dev/disk2</div><div class="line">Unmount of all volumes on disk2 was successful</div><div class="line">$</div></pre></td></tr></table></figure></p>
-<p>如果不卸载挂载点就写入启动盘，则会提示<code>dd: /dev/disk2: Resource busy</code>。</p>
-	
-	</div>
-  <a type="button" href="/2019/05/01/way-to-make-centos7-bootable-usb-on-macos/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -552,11 +572,13 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/#Code">Code<span>5</span></a></li>
 		
+			<li><a href="/categories/#Kubernetes">Kubernetes<span>1</span></a></li>
+		
 			<li><a href="/categories/#Linux">Linux<span>10</span></a></li>
 		
 			<li><a href="/categories/#Shell">Shell<span>8</span></a></li>
 		
-			<li><a href="/categories/#Tools">Tools<span>25</span></a></li>
+			<li><a href="/categories/#Tools">Tools<span>26</span></a></li>
 		
 		</ul>
 	</div>
@@ -568,48 +590,48 @@ var _hmt = _hmt || [];
 		<h4>标签云</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/#Douban">Douban<span>2</span></a></li>
-		
-			<li><a href="/tags/#Network">Network<span>4</span></a></li>
-		
-			<li><a href="/tags/#AWS Tools">AWS Tools<span>2</span></a></li>
-		
-			<li><a href="/tags/#Ubuntu">Ubuntu<span>1</span></a></li>
-		
-			<li><a href="/tags/#Github">Github<span>4</span></a></li>
-		
-			<li><a href="/tags/#AutoScaling">AutoScaling<span>3</span></a></li>
+			<li><a href="/tags/#IAM">IAM<span>3</span></a></li>
 		
 			<li><a href="/tags/#HTTPS">HTTPS<span>1</span></a></li>
 		
-			<li><a href="/tags/#CentOS">CentOS<span>9</span></a></li>
+			<li><a href="/tags/#Elastic Load Balancing">Elastic Load Balancing<span>6</span></a></li>
 		
-			<li><a href="/tags/#Failover">Failover<span>1</span></a></li>
-		
-			<li><a href="/tags/#RVM">RVM<span>3</span></a></li>
-		
-			<li><a href="/tags/#Yum">Yum<span>1</span></a></li>
-		
-			<li><a href="/tags/#IAM">IAM<span>3</span></a></li>
-		
-			<li><a href="/tags/#FFMPEG">FFMPEG<span>2</span></a></li>
-		
-			<li><a href="/tags/#Solutions Architect">Solutions Architect<span>1</span></a></li>
-		
-			<li><a href="/tags/#CloudWatch">CloudWatch<span>1</span></a></li>
-		
-			<li><a href="/tags/#AWS Free Tier">AWS Free Tier<span>1</span></a></li>
-		
-			<li><a href="/tags/#Linux">Linux<span>15</span></a></li>
-		
-			<li><a href="/tags/#PostgreSQL">PostgreSQL<span>4</span></a></li>
+			<li><a href="/tags/#EC2">EC2<span>8</span></a></li>
 		
 			<li><a href="/tags/#Office">Office<span>2</span></a></li>
 		
+			<li><a href="/tags/#AWS SDK">AWS SDK<span>2</span></a></li>
+		
+			<li><a href="/tags/#Passenger">Passenger<span>2</span></a></li>
+		
+			<li><a href="/tags/#AWS Free Tier">AWS Free Tier<span>1</span></a></li>
+		
+			<li><a href="/tags/#Nginx">Nginx<span>7</span></a></li>
+		
+			<li><a href="/tags/#AWS Deep Dive">AWS Deep Dive<span>2</span></a></li>
+		
+			<li><a href="/tags/#CentOS">CentOS<span>9</span></a></li>
+		
+			<li><a href="/tags/#Udemy">Udemy<span>1</span></a></li>
+		
+			<li><a href="/tags/#PostgreSQL">PostgreSQL<span>4</span></a></li>
+		
+			<li><a href="/tags/#Kubernetes">Kubernetes<span>1</span></a></li>
+		
+			<li><a href="/tags/#感悟">感悟<span>1</span></a></li>
+		
+			<li><a href="/tags/#Git">Git<span>2</span></a></li>
+		
 			<li><a href="/tags/#Tips">Tips<span>1</span></a></li>
 		
+			<li><a href="/tags/#VMware">VMware<span>2</span></a></li>
 		
-		   <li><a href="/tags">...<span>57</span></a></li>
+			<li><a href="/tags/#Application Load Balancing">Application Load Balancing<span>1</span></a></li>
+		
+			<li><a href="/tags/#Minecraft">Minecraft<span>1</span></a></li>
+		
+		
+		   <li><a href="/tags">...<span>59</span></a></li>
 		 
 		</ul>
 	</div>
@@ -622,6 +644,14 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2020/05/31/how-to-speed-minecraft-launcher-on-macos/" ><i class="fa fa-file-o"></i>在MacOS上加速Minecraft Launcher</a>
+      </li>
+    
+      <li>
+        <a href="/2020/05/27/Add-registry-mirror-to-docker/" ><i class="fa fa-file-o"></i>Docker添加国内镜像源</a>
+      </li>
+    
+      <li>
         <a href="/2020/05/04/imageMagick-fonts-issue-on-Aliyun-Linux-2/" ><i class="fa fa-file-o"></i>Aliyun Linux 2上imageMagick的...</a>
       </li>
     
@@ -631,14 +661,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2020/04/09/replace-douban-book-plugin/" ><i class="fa fa-file-o"></i>豆瓣插件替换</a>
-      </li>
-    
-      <li>
-        <a href="/2020/02/29/how-to-use-rvm-to-instal-ruby-in-slow-network-connection/" ><i class="fa fa-file-o"></i>弱网络环境下如何使用rvm安装ruby</a>
-      </li>
-    
-      <li>
-        <a href="/2020/02/24/how-to-speed-yarn-install-interiorly/" ><i class="fa fa-file-o"></i>如何在国内加速yarn install</a>
       </li>
     
   </ul>

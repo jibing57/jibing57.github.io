@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.jibing57.com/"/>
-  <updated>2020-05-06T07:47:14.946Z</updated>
+  <updated>2020-06-01T05:22:43.802Z</updated>
   <id>https://www.jibing57.com/</id>
   
   <author>
@@ -15,6 +15,72 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>在MacOS上加速Minecraft Launcher</title>
+    <link href="https://www.jibing57.com/2020/05/31/how-to-speed-minecraft-launcher-on-macos/"/>
+    <id>https://www.jibing57.com/2020/05/31/how-to-speed-minecraft-launcher-on-macos/</id>
+    <published>2020-05-31T06:58:38.000Z</published>
+    <updated>2020-06-01T05:22:43.802Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;状况&quot;&gt;&lt;a href=&quot;#状况&quot; class=&quot;headerlink&quot; title=&quot;状况&quot;&gt;&lt;/a&gt;状况&lt;/h3&gt;&lt;p&gt;周末小朋友在家玩Minecraft，可能是近期网络环境有什么变动。官方启动器下载更新文件特别的慢。十分钟进度条才动了一小格子。&lt;/p&gt;
+&lt;p
+      
+    
+    </summary>
+    
+      <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
+    
+    
+      <category term="MacOS" scheme="https://www.jibing57.com/tags/MacOS/"/>
+    
+      <category term="Minecraft" scheme="https://www.jibing57.com/tags/Minecraft/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Docker添加国内镜像源</title>
+    <link href="https://www.jibing57.com/2020/05/27/Add-registry-mirror-to-docker/"/>
+    <id>https://www.jibing57.com/2020/05/27/Add-registry-mirror-to-docker/</id>
+    <published>2020-05-27T13:14:04.000Z</published>
+    <updated>2020-05-27T08:34:50.838Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在国内访问&lt;a href=&quot;https://hub.docker.com/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Docker Hub&lt;/a&gt;的速度有点慢，换国内源会稳定和快一点。&lt;/p&gt;
+&lt;h3 id=&quot;国内的几个源&quot;&gt;&lt;a href=&quot;#国内的几个源&quot; class=&quot;headerlink&quot; title=&quot;国内的几个源:&quot;&gt;&lt;/a&gt;国内的几个源:&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://dockerhub.azk8s.cn&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://dockerhub.azk8s.cn&lt;/a&gt; - Azure镜像&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://hub-mirror.c.163.com&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://hub-mirror.c.163.com&lt;/a&gt;  - 网易镜像&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://docker.mirrors.ustc.edu.cn&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://docker.mirrors.ustc.edu.cn&lt;/a&gt; - 科大镜像站&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://registry.docker-cn.com&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://registry.docker-cn.com&lt;/a&gt; - Docker中国官方镜像 &lt;/li&gt;
+&lt;li&gt;阿里云也有镜像，只不过需要登录&lt;a href=&quot;https://cr.console.aliyun.com/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;阿里云控制台&lt;/a&gt;后获取自己专属的镜像源。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;设置方法&quot;&gt;&lt;a href=&quot;#设置方法&quot; class=&quot;headerlink&quot; title=&quot;设置方法&quot;&gt;&lt;/a&gt;设置方法&lt;/h3&gt;&lt;p&gt;参照&lt;a href=&quot;https://cloud.google.com/container-registry/docs/using-dockerhub-mirroring&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Using Container Registry’s Docker Hub mirror&lt;/a&gt;这边描述，共有这么几个设置方法&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;在配置文件中添加&lt;code&gt;registry-mirrors&lt;/code&gt;的配置。启动时自动配置，Linux下的默认配置文件是&lt;code&gt;/etc/docker/daemon.json&lt;/code&gt;.&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &amp;quot;registry-mirrors&amp;quot;: [&amp;quot;https://&amp;lt;my-docker-mirror-host&amp;gt;&amp;quot;]&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#125;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;手动启动dockerd的时候，添加&lt;code&gt;--registry-mirror&lt;/code&gt;参数&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;dockerd --registry-mirror=https://&amp;lt;my-docker-mirror-host&amp;gt;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+    
+    </summary>
+    
+      <category term="Kubernetes" scheme="https://www.jibing57.com/categories/Kubernetes/"/>
+    
+    
+      <category term="Docker" scheme="https://www.jibing57.com/tags/Docker/"/>
+    
+      <category term="Docker Hub" scheme="https://www.jibing57.com/tags/Docker-Hub/"/>
+    
+      <category term="MacOS" scheme="https://www.jibing57.com/tags/MacOS/"/>
+    
+  </entry>
   
   <entry>
     <title>Aliyun Linux 2上imageMagick的fonts配置问题</title>
@@ -207,11 +273,11 @@
       <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
     
     
+      <category term="MacOS" scheme="https://www.jibing57.com/tags/MacOS/"/>
+    
       <category term="Ruby" scheme="https://www.jibing57.com/tags/Ruby/"/>
     
       <category term="FFMPEG" scheme="https://www.jibing57.com/tags/FFMPEG/"/>
-    
-      <category term="MacOS" scheme="https://www.jibing57.com/tags/MacOS/"/>
     
   </entry>
   
@@ -512,67 +578,6 @@
     
     
       <category term="CentOS" scheme="https://www.jibing57.com/tags/CentOS/"/>
-    
-      <category term="Linux" scheme="https://www.jibing57.com/tags/Linux/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>在Mac下远程登录Linux时,提示cannot change locale (UTF-8) No such file or directory</title>
-    <link href="https://www.jibing57.com/2019/07/24/setlocale-LC-CTYPE-cannot-change-locale-UTF-8-issue-when-ssh-to-linux-in-Mac/"/>
-    <id>https://www.jibing57.com/2019/07/24/setlocale-LC-CTYPE-cannot-change-locale-UTF-8-issue-when-ssh-to-linux-in-Mac/</id>
-    <published>2019-07-24T13:06:54.000Z</published>
-    <updated>2019-07-24T05:30:46.608Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h3 id=&quot;问题描述&quot;&gt;&lt;a href=&quot;#问题描述&quot; class=&quot;headerlink&quot; title=&quot;问题描述&quot;&gt;&lt;/a&gt;问题描述&lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;Mac下设置第一语言为English&lt;/li&gt;
-&lt;li&gt;在Terminal或者iTerm2上登录远端Linux时
-      
-    
-    </summary>
-    
-      <category term="Linux" scheme="https://www.jibing57.com/categories/Linux/"/>
-    
-    
-      <category term="MacOS" scheme="https://www.jibing57.com/tags/MacOS/"/>
-    
-      <category term="SSH" scheme="https://www.jibing57.com/tags/SSH/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>AWS EC2各个类型的网络性能的测试方法</title>
-    <link href="https://www.jibing57.com/2019/07/06/how-to-check-network-throughput-on-aws-EC2/"/>
-    <id>https://www.jibing57.com/2019/07/06/how-to-check-network-throughput-on-aws-EC2/</id>
-    <published>2019-07-06T02:49:06.000Z</published>
-    <updated>2019-07-06T07:28:40.959Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;介绍&quot;&gt;&lt;a href=&quot;#介绍&quot; class=&quot;headerlink&quot; title=&quot;介绍&quot;&gt;&lt;/a&gt;介绍&lt;/h3&gt;&lt;p&gt;在AWS中，不同类型的EC2 instance,拥有的网络带宽是不同的。&lt;/p&gt;
-&lt;p&gt;让人犯糊的是，在&lt;a href=&quot;https://amazonaws-china.com/ec2/instance-types/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;AWS EC2的介绍页面&lt;/a&gt;中,并没有清晰的标明每种类型的Instance的带宽具体是多少？一些类型的Instance只是标注了网络性能(Network Performance)为&lt;code&gt;Up to 5&lt;/code&gt;,&lt;code&gt;Low&lt;/code&gt;,&lt;code&gt;Moderate&lt;/code&gt;或者&lt;code&gt;High&lt;/code&gt;。&lt;/p&gt;
-&lt;p&gt;老外的&lt;a href=&quot;https://cloudonaut.io/ec2-network-performance-cheat-sheet/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;EC2 Network Performance Cheat Sheet&lt;/a&gt;这篇文章中，记录了作者使用&lt;a href=&quot;(https://github.com/esnet/iperf)&quot;&gt;iperf3&lt;/a&gt;测试出来的各个Instance类型的带宽。如果选取类型的时候比较在意带宽，可以用来参考下。&lt;/p&gt;
-&lt;p&gt;顺带介绍一下如何在AWS EC2中使用&lt;a href=&quot;(https://github.com/esnet/iperf)&quot;&gt;iperf3&lt;/a&gt;来测试Instance带宽。如果确实有需要，就可以自己来进行测速。&lt;br&gt;测试环境如下:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;测试Region是美国Oregon&lt;/li&gt;
-&lt;li&gt;使用两台m4.large的EC2，一台运行服务，一台用作客户端。&lt;/li&gt;
-&lt;li&gt;介绍两种Amazon Linux的测试方法&lt;ul&gt;
-&lt;li&gt;Amazon Linux AMI 2018.03.0 (HVM), SSD Volume Type&lt;/li&gt;
-&lt;li&gt;Amazon Linux 2 AMI (HVM), SSD Volume Type&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-    
-    </summary>
-    
-      <category term="AWS" scheme="https://www.jibing57.com/categories/AWS/"/>
-    
-    
-      <category term="EC2" scheme="https://www.jibing57.com/tags/EC2/"/>
     
       <category term="Linux" scheme="https://www.jibing57.com/tags/Linux/"/>
     

@@ -139,6 +139,55 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
+			<div class="date"> 2018-04-24 </div>
+			<div class="article-title"><a href="/2018/04/24/douban-image-403/" >豆瓣图片403问题</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="起由"><a href="#起由" class="headerlink" title="起由"></a>起由</h3><p>发布了一版blog到github上。偶然间发现<a href="/douban">豆瓣页面</a>中书的图片都无法显示了。打开Inspector调查了下，发现请求豆瓣图片的链接返回的都是403 Forbidden。<br><img src="/images/Hexo/douban_image_403.png" alt="douban_image_403.png"></p>
+<p>网上搜索了一下，可能的原因就是豆瓣为了封杀微信小程序在页面上直接请求豆瓣的图片，封杀了图片的外链。</p>
+<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>尝试着将豆瓣API返回的图片链接拷贝到浏览器中直接访问，发现可以加载图片，那估计豆瓣是通过检测HTTP Request中的referer Header来实现防盗链。</p>
+	
+	</div>
+  <a type="button" href="/2018/04/24/douban-image-403/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2018-04-21 </div>
+			<div class="article-title"><a href="/2018/04/21/aws-s3-master-permission/" >S3进阶系列(二) ——权限管理</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="什么是S3的权限管理"><a href="#什么是S3的权限管理" class="headerlink" title="什么是S3的权限管理"></a>什么是S3的权限管理</h3><p>S3的权限管理是任何使用S3的人都无法绕开的功能,决定了S3中的Object是否能够被访问。</p>
+<p>权限管理本质上解决了这么一个问题: 谁(Principal)能够在何种条件(condition)下被允许或拒绝(Effect)对哪些资源(Resource)做何种操作(Action)</p>
+	
+	</div>
+  <a type="button" href="/2018/04/21/aws-s3-master-permission/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
 			<div class="date"> 2018-04-19 </div>
 			<div class="article-title"><a href="/2018/04/19/how-to-remove-the-passphrase-of-ssh-key/" >如何去除SSH key中的passphrase</a></div>						
 		</h3>
@@ -341,84 +390,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2018-02-09 </div>
-			<div class="article-title"><a href="/2018/02/09/non-greedy-match-in-grep-on-macos/" >Macos下如何实现grep的非贪婪模式</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>有时候需要使用正则的<code>非贪婪模式(non-greedy或者叫lazy模式)</code>来搜一些内容，但Macos系统自带的<code>grep</code>无法胜任。<br>Mac下的<code>grep</code>是BSD系的，不能使用-P参数来使用perl模式。Linux下的<code>GNU grep</code>就可以使用-P参数来支持非贪婪模式。</p>
-<p>MacOS自带的<code>grep</code>的示例:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">$ cat grep_on_macos.txt</div><div class="line">carl has a nice car. the car has four wheels.</div><div class="line">$</div><div class="line"># 支持普通正则</div><div class="line">$ grep -o &quot;car.*has&quot; grep_on_macos.txt</div><div class="line">carl has a nice car. the car has</div><div class="line">$</div><div class="line"># 不支持带?的非贪婪模式</div><div class="line">$ grep -o &quot;car.*?has&quot; grep_on_macos.txt</div><div class="line">$</div></pre></td></tr></table></figure>
-<p>此处记录两个可行的方法来解决该问题</p>
-	
-	</div>
-  <a type="button" href="/2018/02/09/non-greedy-match-in-grep-on-macos/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2018-02-07 </div>
-			<div class="article-title"><a href="/2018/02/07/AWS-Certified-Solutions-Architect-Professional/" >AWS Certified Solutions Architect - Professional Road Map</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h2 id="Official-AWS-Certification-Page"><a href="#Official-AWS-Certification-Page" class="headerlink" title="Official AWS Certification Page"></a>Official AWS Certification Page</h2><p>访问官网<a href="https://amazonaws-china.com/certification/certification-prep/" target="_blank" rel="external">AWS Certification</a></p>
-<ul>
-<li>参加 AWS 培训课程</li>
-<li>查看考试指南和样题<ul>
-<li>了解考试涉及的概念并整体了解需要学习哪些内容, <a href="http://d0.awsstatic-china.com/Train%20&amp;%20Cert/docs/AWS_certified_solutions_architect_professional_blueprint.pdf" target="_blank" rel="external">AWS Certified Solutions Architect – Professional 考试指南</a> 相当于考试大纲, 必看,而且需要反复的看。因为学习过一阵后再来看Guide，会有更深的体会。</li>
-<li><a href="https://d0.awsstatic-china.com/training-and-certification/docs/AWS_certified_solutions_architect_professional_examsample.pdf" target="_blank" rel="external">考试样题</a>用于熟悉题目题型。几个样题都是大段大段的文字，实际考试题目中也有字数少的题目。但题目的阅读量绝对是比Asoocaiated的大得多。</li>
-</ul>
-</li>
-<li>练习试验<ul>
-<li>注册一个AWS全球账号，使用一年的免费额度结合Blueprint中的各个内容进行试验。</li>
-</ul>
-</li>
-<li>学习 AWS 白皮书<ul>
-<li>白皮书是纯英文的，每个白皮书篇幅都很长。</li>
-<li>在BluePrint的描述中，和AWS Certified Solutions Architect - Associate的白皮书列表相比，多了<strong>Defining Fault Tolerant Applications in the AWS Cloud</strong>这一份白皮书，官网找了一下，只有一个名字类似的名为<a href="https://d1.awsstatic.com/whitepapers/aws-building-fault-tolerant-applications.pdf" target="_blank" rel="external">Building Fault-Tolerant Applications on AWS</a>的白皮书，时间还是October 2011的。不管怎样，但愿好理念永不过时，还是整个念一遍吧。</li>
-</ul>
-</li>
-<li>查看 AWS 常见问题<ul>
-<li>官网推荐的FAQ都建议看完。</li>
-</ul>
-</li>
-<li>参加模拟考试<ul>
-<li>40美刀一次。是否值得因人而异。参加Professional的考试，肯定都已经经历过AWS Certified Solutions Architect – Associate的洗礼了, 因此熟悉考试界面肯定不是决定要参加模拟考试的目的。一个合理的理由是，可以提前熟悉一下Professional考题阅读难度, 为正式考试的时候做好心理准备。网上都说AWS Certified Solutions Architect – Professional这个考试最大的难度就是要在170分钟内阅读，理解77~80道字数不算少的题，然后选出最优的答案。网上一些母语是英语的老外都感慨阅读量比较大，何况是我们这种非英语系的国家的考生了。</li>
-</ul>
-</li>
-<li>报名考试并获得认证<ul>
-<li>登陆<a href="https://www.aws.training/certification" target="_blank" rel="external">https://www.aws.training/certification</a>注册进行考试</li>
-</ul>
-</li>
-</ul>
-	
-	</div>
-  <a type="button" href="/2018/02/07/AWS-Certified-Solutions-Architect-Professional/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -490,11 +461,13 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/#Code">Code<span>5</span></a></li>
 		
+			<li><a href="/categories/#Kubernetes">Kubernetes<span>1</span></a></li>
+		
 			<li><a href="/categories/#Linux">Linux<span>10</span></a></li>
 		
 			<li><a href="/categories/#Shell">Shell<span>8</span></a></li>
 		
-			<li><a href="/categories/#Tools">Tools<span>25</span></a></li>
+			<li><a href="/categories/#Tools">Tools<span>26</span></a></li>
 		
 		</ul>
 	</div>
@@ -506,48 +479,48 @@ var _hmt = _hmt || [];
 		<h4>标签云</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/#Firewall">Firewall<span>1</span></a></li>
+			<li><a href="/tags/#Yarn">Yarn<span>1</span></a></li>
 		
-			<li><a href="/tags/#SSH">SSH<span>5</span></a></li>
+			<li><a href="/tags/#Docker">Docker<span>2</span></a></li>
 		
-			<li><a href="/tags/#Git">Git<span>2</span></a></li>
+			<li><a href="/tags/#AutoScaling">AutoScaling<span>3</span></a></li>
 		
-			<li><a href="/tags/#Wkhtmltopdf">Wkhtmltopdf<span>1</span></a></li>
+			<li><a href="/tags/#VMware">VMware<span>2</span></a></li>
 		
-			<li><a href="/tags/#AWS Free Tier">AWS Free Tier<span>1</span></a></li>
+			<li><a href="/tags/#CodeCommit">CodeCommit<span>1</span></a></li>
 		
-			<li><a href="/tags/#Elastic Load Balancing">Elastic Load Balancing<span>6</span></a></li>
+			<li><a href="/tags/#Video">Video<span>1</span></a></li>
 		
-			<li><a href="/tags/#Nginx">Nginx<span>7</span></a></li>
+			<li><a href="/tags/#CloudWatch">CloudWatch<span>1</span></a></li>
 		
-			<li><a href="/tags/#AWS Deep Dive">AWS Deep Dive<span>2</span></a></li>
-		
-			<li><a href="/tags/#Rails">Rails<span>4</span></a></li>
-		
-			<li><a href="/tags/#FFMPEG">FFMPEG<span>2</span></a></li>
-		
-			<li><a href="/tags/#HTTP">HTTP<span>5</span></a></li>
-		
-			<li><a href="/tags/#HTTPS">HTTPS<span>1</span></a></li>
-		
-			<li><a href="/tags/#RVM">RVM<span>3</span></a></li>
+			<li><a href="/tags/#Network">Network<span>4</span></a></li>
 		
 			<li><a href="/tags/#AWS Tools">AWS Tools<span>2</span></a></li>
 		
+			<li><a href="/tags/#Passenger">Passenger<span>2</span></a></li>
+		
+			<li><a href="/tags/#Solutions Architect">Solutions Architect<span>1</span></a></li>
+		
+			<li><a href="/tags/#Office">Office<span>2</span></a></li>
+		
+			<li><a href="/tags/#Application Load Balancing">Application Load Balancing<span>1</span></a></li>
+		
+			<li><a href="/tags/#HTTP">HTTP<span>5</span></a></li>
+		
+			<li><a href="/tags/#RDS">RDS<span>3</span></a></li>
+		
 			<li><a href="/tags/#Hexo">Hexo<span>8</span></a></li>
 		
-			<li><a href="/tags/#Udemy">Udemy<span>1</span></a></li>
+			<li><a href="/tags/#Kubernetes">Kubernetes<span>1</span></a></li>
 		
-			<li><a href="/tags/#Docker">Docker<span>1</span></a></li>
+			<li><a href="/tags/#Failover">Failover<span>1</span></a></li>
 		
-			<li><a href="/tags/#Douban">Douban<span>2</span></a></li>
+			<li><a href="/tags/#Linux">Linux<span>15</span></a></li>
 		
-			<li><a href="/tags/#Sysops">Sysops<span>1</span></a></li>
-		
-			<li><a href="/tags/#Yum">Yum<span>1</span></a></li>
+			<li><a href="/tags/#Elastic Beanstalk">Elastic Beanstalk<span>7</span></a></li>
 		
 		
-		   <li><a href="/tags">...<span>57</span></a></li>
+		   <li><a href="/tags">...<span>59</span></a></li>
 		 
 		</ul>
 	</div>
@@ -560,6 +533,14 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2020/05/31/how-to-speed-minecraft-launcher-on-macos/" ><i class="fa fa-file-o"></i>在MacOS上加速Minecraft Launcher</a>
+      </li>
+    
+      <li>
+        <a href="/2020/05/27/Add-registry-mirror-to-docker/" ><i class="fa fa-file-o"></i>Docker添加国内镜像源</a>
+      </li>
+    
+      <li>
         <a href="/2020/05/04/imageMagick-fonts-issue-on-Aliyun-Linux-2/" ><i class="fa fa-file-o"></i>Aliyun Linux 2上imageMagick的...</a>
       </li>
     
@@ -569,14 +550,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2020/04/09/replace-douban-book-plugin/" ><i class="fa fa-file-o"></i>豆瓣插件替换</a>
-      </li>
-    
-      <li>
-        <a href="/2020/02/29/how-to-use-rvm-to-instal-ruby-in-slow-network-connection/" ><i class="fa fa-file-o"></i>弱网络环境下如何使用rvm安装ruby</a>
-      </li>
-    
-      <li>
-        <a href="/2020/02/24/how-to-speed-yarn-install-interiorly/" ><i class="fa fa-file-o"></i>如何在国内加速yarn install</a>
       </li>
     
   </ul>

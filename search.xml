@@ -3,6 +3,211 @@
   
     
     <entry>
+      <title><![CDATA[屏幕知识概观]]></title>
+      <url>/2020/06/06/screen-overview-of-ak-tech/</url>
+      <content type="html"><![CDATA[<p>前几天看到了一个讲解显示器显示技术的科普视频，感觉蛮不错的。摘录了一些内容如下。</p>
+<p>视频playlist链接: </p>
+<ul>
+<li>Youtube - <a href="https://www.youtube.com/playlist?list=PLqybz7NWybwWcl_s-VLB_tXqbbBww6nbK" target="_blank" rel="external">AK‘s Tech Studio - 硬核显示技术系列视频 有关显示器 显示技术和屏幕 一切你需要知道的事</a></li>
+<li>B站<ul>
+<li><a href="https://www.bilibili.com/video/BV1eV411o76N" target="_blank" rel="external">「硬核显示技术第一期」LCD和OLED的显示原理和优缺点</a></li>
+<li><a href="https://www.bilibili.com/video/BV1nf4y1S7EC" target="_blank" rel="external">「硬核显示技术第二期」各种显示器和屏幕的参数 一切你需要知道的</a></li>
+<li><a href="https://www.bilibili.com/video/BV1aK4y1k7K5" target="_blank" rel="external">「硬核显示技术第三期」显示器刷新率和FPS详解</a></li>
+<li><a href="https://www.bilibili.com/video/BV1N54y1R7wh" target="_blank" rel="external">为什么玩游戏要用高刷新率屏幕「硬核显示技术第四期」</a></li>
+<li><a href="https://www.bilibili.com/video/BV1of4y117M8" target="_blank" rel="external">「硬核显示技术第五期」详解一加8Pro的MEMC插帧补偿技术</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<h3 id="知识点记录"><a href="#知识点记录" class="headerlink" title="知识点记录"></a>知识点记录</h3><ul>
+<li>商用显示器技术原理分类<ul>
+<li>液晶显示器 LCD(Liquid Crystal Display)</li>
+<li>有机发光半导体 OLED(Organic Light-emitting Diode)</li>
+</ul>
+</li>
+<li>显示原理<ul>
+<li>基于通过三基色组合成像素点的光学原理<br><img src="/images/Other/trichromatic_.png" alt="trichromatic_.png"></li>
+</ul>
+</li>
+<li><p>LCD发光原理 </p>
+<ul>
+<li><a href="https://pid.samsungdisplay.cn/learning-center/blog/lcd-structure" target="_blank" rel="external">三星LCD屏幕工作原理</a></li>
+<li>LCD液晶面板是多层结构<br><img src="/images/Other/LCD_Function.gif" alt="LCD_Function.gif"></li>
+<li>发光原理<ul>
+<li>当屏幕通电时，背光LED会发出白光, 照亮整个显示面板来实现发光</li>
+<li>每个物理像素的Pixel由RGB三个颜色的子像素Sub Pixel组成</li>
+<li>每个子像素，都是一个可以被单独控制的透光单元</li>
+<li>像素投过背光板发出的白光，通过最外层RGB三种颜色的涂层被白光照亮而显示颜色</li>
+<li>空过控制三元素子像素的透光量来显示颜色<ul>
+<li>红，绿，蓝同时达到最高亮度，就会识别成白色</li>
+<li>红，绿不透光，只有蓝色透光，就会显示成蓝色</li>
+<li>红色和绿色透光，蓝色不透光，就会显示成黄色</li>
+<li>三个子像素全部屏蔽掉背光，就是黑色</li>
+</ul>
+</li>
+<li>两层偏振膜来屏蔽掉背光, 偏振膜还可以过滤掉射进来的杂光</li>
+<li>两层偏振膜之间有一层液晶层，通过电压能够控制液晶的螺旋结构，改变通过液晶层的光波的光学特性，使光的偏振角度发生变化。旋转的部分是在液晶层，而不是在偏振膜。</li>
+<li>每一个子像素都有独立的控制电压的电路</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>LCD的优缺点</p>
+<ul>
+<li>优点<ul>
+<li>技术和产业非常成熟</li>
+<li>能够以低廉价格</li>
+</ul>
+</li>
+<li>缺点<ul>
+<li>没办法显示出纯黑色<ul>
+<li>虽然经过两层偏振膜，绝大多数光纤已经被过滤掉了，但还是会有少量的光线穿过偏振膜</li>
+<li>全黑色的画面，看起来会发灰。</li>
+</ul>
+</li>
+<li>对比度不够大<ul>
+<li>对比度: 可以理解为最亮的白色和最暗的黑色的比值。</li>
+</ul>
+</li>
+<li>功耗较大<ul>
+<li>背光板发出来的光线至少有80%的光线被过滤掉了</li>
+<li>即使是显示黑色，整块背光板的功率也是恒定的</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>LED电视</p>
+<ul>
+<li>LED电视就是LCD的面板，只不过背光板用的是LED发光板</li>
+</ul>
+</li>
+<li><p>OLED</p>
+<ul>
+<li>依然是通过三基色组成像素的原理</li>
+<li>不同于LCD的几点<ul>
+<li>OLED没有背光板，通过每一个像素点自发光</li>
+<li>OLED不需要两层偏振膜，OLED的偏振膜不是用来过滤颜色的，而是过滤自然光照射到显示面板之后，再反射回人眼的杂光。</li>
+<li>OLED显示黑色的时候，子像素是完全关闭的，是真的黑, 纯的黑。</li>
+<li></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>OLED优缺点</p>
+<ul>
+<li>优点<ul>
+<li>可以做的很薄, 因为不需要背光板和底层的偏振膜</li>
+<li>省电，OLED每个像素自发光，不依靠最下面整层的背光板，电能转换为光能效率高，没有太多的热损耗。OLED的手机在黑夜模式下很省电，因为很多像素点不需要点亮。</li>
+<li>对比度远远高于LCD、，黑色是纯色的黑</li>
+<li>可以做成柔性屏</li>
+</ul>
+</li>
+<li>缺点<ul>
+<li>成本高<ul>
+<li>显示面板生产时候对氧气和空气湿度敏感</li>
+<li>有机材料对封装和隔绝又特别高</li>
+</ul>
+</li>
+<li>烧屏现象(Screen Burn-in)<ul>
+<li>物理层面上避免不了自然损耗，也就是寿命问题</li>
+<li>影响因素<ul>
+<li>持续的通电时间</li>
+<li>温度</li>
+</ul>
+</li>
+<li>烧屏是无法修复的</li>
+<li>LCD也有烧屏现象，但是临时性的，关机冷却几个小时会自动复原</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>屏幕参数</p>
+<ul>
+<li>分辨率<ul>
+<li>定义: 指的是屏幕上水平方向和垂直方向的像素的数量的乘积</li>
+<li>衡量的是显示器显示的精细程度</li>
+<li>720P,1080P,4K,8K等分辨率<br><img src="/images/Other/8K-TV-resolution-picture.jpg" alt="8K-TV-resolution-picture.jpg"></li>
+</ul>
+</li>
+<li>PPI<ul>
+<li>Pixel Per Inch，指的是在一英寸的对角线长度内像素的数量</li>
+<li>PPI越高越好，但是超过一定的值，就超过了人眼观察的极限了</li>
+</ul>
+</li>
+<li>尼特<ul>
+<li>衡量一块屏幕的亮度</li>
+<li>一尼特指的是在一个平方米的范围内一个烛光(candela)的亮度</li>
+<li>屏幕的亮度指的是最高亮度</li>
+</ul>
+</li>
+<li>HDR<ul>
+<li>High Dynamic Range, 高动态范围</li>
+<li>画面中最亮的元素，用最高亮度来显示，低亮度的元素依然能够维持比较低的亮度</li>
+<li>支持的尼特越高，一般来说HDR就越高</li>
+<li>LCD号称支持的HDR，都是比较差的</li>
+<li>支持HDR的面板，一般都是自发光的OLED显示面板和量子点QLED面板(QLED就是背光技术不同的LCD面板)</li>
+</ul>
+</li>
+<li>色域<ul>
+<li>色域指的是一块屏幕能够显示的色彩范围</li>
+<li>主流标准: sRGB和Adobe公司的AdobeRGB，苹果三星力推的DCI-P3</li>
+</ul>
+</li>
+<li><p>可视角度</p>
+<ul>
+<li>IPS面板碾压其他各类面板<ul>
+<li>把电极层和液晶层做在了一个平面，可视角度接近180度，但漏光现象比较严重</li>
+<li>泛用性比较强，但是相对有点贵</li>
+</ul>
+</li>
+<li>TN面板的可视角度是最差的, 但是优点是在于相对便宜，TN面板适合游戏玩家</li>
+<li>OLED面板有天然的可视角度的优势，是显示原理导致的。<ul>
+<li>OLED的屏幕色彩更加鲜艳，亮度和可对比度非常高，但是相对来说很贵。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>FPS</p>
+<ul>
+<li>Frame per second, 一秒钟计算机的显卡产生出的画面的数量</li>
+<li>FPS不是一个常量，而是根据画面的生成的难度和显卡的性能随时动态改变的</li>
+<li>静态下的计算机画面的FPS非常低</li>
+</ul>
+</li>
+<li>刷新率<ul>
+<li>屏幕刷新率是个硬件指标</li>
+<li>刷新率是60hz，屏幕会以每秒60次的固定频率来显示画面</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> 杂 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Screen </tag>
+            
+            <tag> LCD </tag>
+            
+            <tag> OLED </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[在MacOS上加速Minecraft Launcher]]></title>
       <url>/2020/05/31/how-to-speed-minecraft-launcher-on-macos/</url>
       <content type="html"><![CDATA[<h3 id="状况"><a href="#状况" class="headerlink" title="状况"></a>状况</h3><p>周末小朋友在家玩Minecraft，可能是近期网络环境有什么变动。官方启动器下载更新文件特别的慢。十分钟进度条才动了一小格子。</p>
@@ -2607,7 +2812,11 @@
 <hr>
 <h3 id="du统计隐藏目录的大小"><a href="#du统计隐藏目录的大小" class="headerlink" title="du统计隐藏目录的大小"></a>du统计隐藏目录的大小</h3><p>du 统计目录大小的一些用法。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"># 统计非隐藏文件/目录的大小</div><div class="line">du -sh *</div><div class="line"></div><div class="line"># 统计隐藏文件/目录的大小</div><div class="line">du -sh .[!.]*</div><div class="line"></div><div class="line"># 统计全部文件/目录的大小</div><div class="line">du -sh .[!.]* *</div><div class="line"></div><div class="line"># 统计全部文件/目录的大小, 并按照大小排序</div><div class="line">du -sch .[!.]* * |sort -h</div></pre></td></tr></table></figure></p>
 <hr>
-<h3 id="Linux下网络使用工具"><a href="#Linux下网络使用工具" class="headerlink" title="Linux下网络使用工具"></a>Linux下网络使用工具</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install iftop</div></pre></td></tr></table></figure>
+<h3 id="CentOS下网络使用工具"><a href="#CentOS下网络使用工具" class="headerlink" title="CentOS下网络使用工具"></a>CentOS下网络使用工具</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install iftop</div></pre></td></tr></table></figure>
+<p>如果yum源中没有, 就先安装epel源<code>yum -y install epel-release</code></p>
+<hr>
+<h3 id="mysql-dump数据库"><a href="#mysql-dump数据库" class="headerlink" title="mysql dump数据库"></a>mysql dump数据库</h3><p>mysql dump数据库命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysqldump -uusername --databases databasename -p &gt; databasename_`date +%Y%m%d_%H%M%S`.sql</div></pre></td></tr></table></figure></p>
+<p>mysql 恢复命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysql -uusername databasename -p &lt; databasename.sql</div></pre></td></tr></table></figure></p>
 ]]></content>
       
         <categories>
@@ -10690,9 +10899,9 @@ You can wait for the scheduled retirement date - when the instance is stopped - 
             
             <tag> RDS </tag>
             
-            <tag> AWS SDK </tag>
-            
             <tag> Ruby </tag>
+            
+            <tag> AWS SDK </tag>
             
             <tag> PostgreSQL </tag>
             

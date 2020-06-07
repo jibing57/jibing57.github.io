@@ -1,0 +1,504 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>屏幕知识概观 | Recording</title>
+  <meta name="author" content="jibing57">
+  
+  <meta name="description" content="AWS, 阅读, Architecture, PostgreSQL">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="屏幕知识概观"/>
+  <meta property="og:site_name" content="Recording"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/css/themes/bootstrap.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/comment.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+  
+  <!-- analytics -->
+  
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-111771042-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?59d3e14cdc96877383afed646f44d216";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+</head>
+
+ <body>  
+  <nav id="main-nav" class="navbar  navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+	<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+       <a class="navbar-brand" href="/">Recording</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class="fa fa-archive"></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class="fa fa-folder"></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class="fa fa-tags"></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/books" title="Douban">
+			  <i class="fa fa-book"></i>Douban
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header ">		
+			<h1 class="title "> 屏幕知识概观</h1>
+		</div>		
+	
+
+
+
+
+   <style type="text/css">
+           img, video {
+                -webkit-box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+                -moz-box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+                box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+           }
+   </style>
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
+
+	<!-- content -->
+	<div class="mypage">		
+	  		
+
+	  <p>前几天看到了一个讲解显示器显示技术的科普视频，感觉蛮不错的。摘录了一些内容如下。</p>
+<p>视频playlist链接: </p>
+<ul>
+<li>Youtube - <a href="https://www.youtube.com/playlist?list=PLqybz7NWybwWcl_s-VLB_tXqbbBww6nbK" target="_blank" rel="external">AK‘s Tech Studio - 硬核显示技术系列视频 有关显示器 显示技术和屏幕 一切你需要知道的事</a></li>
+<li>B站<ul>
+<li><a href="https://www.bilibili.com/video/BV1eV411o76N" target="_blank" rel="external">「硬核显示技术第一期」LCD和OLED的显示原理和优缺点</a></li>
+<li><a href="https://www.bilibili.com/video/BV1nf4y1S7EC" target="_blank" rel="external">「硬核显示技术第二期」各种显示器和屏幕的参数 一切你需要知道的</a></li>
+<li><a href="https://www.bilibili.com/video/BV1aK4y1k7K5" target="_blank" rel="external">「硬核显示技术第三期」显示器刷新率和FPS详解</a></li>
+<li><a href="https://www.bilibili.com/video/BV1N54y1R7wh" target="_blank" rel="external">为什么玩游戏要用高刷新率屏幕「硬核显示技术第四期」</a></li>
+<li><a href="https://www.bilibili.com/video/BV1of4y117M8" target="_blank" rel="external">「硬核显示技术第五期」详解一加8Pro的MEMC插帧补偿技术</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<h3 id="知识点记录"><a href="#知识点记录" class="headerlink" title="知识点记录"></a>知识点记录</h3><ul>
+<li>商用显示器技术原理分类<ul>
+<li>液晶显示器 LCD(Liquid Crystal Display)</li>
+<li>有机发光半导体 OLED(Organic Light-emitting Diode)</li>
+</ul>
+</li>
+<li>显示原理<ul>
+<li>基于通过三基色组合成像素点的光学原理<br><img src="/images/Other/trichromatic_.png" alt="trichromatic_.png"></li>
+</ul>
+</li>
+<li><p>LCD发光原理 </p>
+<ul>
+<li><a href="https://pid.samsungdisplay.cn/learning-center/blog/lcd-structure" target="_blank" rel="external">三星LCD屏幕工作原理</a></li>
+<li>LCD液晶面板是多层结构<br><img src="/images/Other/LCD_Function.gif" alt="LCD_Function.gif"></li>
+<li>发光原理<ul>
+<li>当屏幕通电时，背光LED会发出白光, 照亮整个显示面板来实现发光</li>
+<li>每个物理像素的Pixel由RGB三个颜色的子像素Sub Pixel组成</li>
+<li>每个子像素，都是一个可以被单独控制的透光单元</li>
+<li>像素投过背光板发出的白光，通过最外层RGB三种颜色的涂层被白光照亮而显示颜色</li>
+<li>空过控制三元素子像素的透光量来显示颜色<ul>
+<li>红，绿，蓝同时达到最高亮度，就会识别成白色</li>
+<li>红，绿不透光，只有蓝色透光，就会显示成蓝色</li>
+<li>红色和绿色透光，蓝色不透光，就会显示成黄色</li>
+<li>三个子像素全部屏蔽掉背光，就是黑色</li>
+</ul>
+</li>
+<li>两层偏振膜来屏蔽掉背光, 偏振膜还可以过滤掉射进来的杂光</li>
+<li>两层偏振膜之间有一层液晶层，通过电压能够控制液晶的螺旋结构，改变通过液晶层的光波的光学特性，使光的偏振角度发生变化。旋转的部分是在液晶层，而不是在偏振膜。</li>
+<li>每一个子像素都有独立的控制电压的电路</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>LCD的优缺点</p>
+<ul>
+<li>优点<ul>
+<li>技术和产业非常成熟</li>
+<li>能够以低廉价格</li>
+</ul>
+</li>
+<li>缺点<ul>
+<li>没办法显示出纯黑色<ul>
+<li>虽然经过两层偏振膜，绝大多数光纤已经被过滤掉了，但还是会有少量的光线穿过偏振膜</li>
+<li>全黑色的画面，看起来会发灰。</li>
+</ul>
+</li>
+<li>对比度不够大<ul>
+<li>对比度: 可以理解为最亮的白色和最暗的黑色的比值。</li>
+</ul>
+</li>
+<li>功耗较大<ul>
+<li>背光板发出来的光线至少有80%的光线被过滤掉了</li>
+<li>即使是显示黑色，整块背光板的功率也是恒定的</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>LED电视</p>
+<ul>
+<li>LED电视就是LCD的面板，只不过背光板用的是LED发光板</li>
+</ul>
+</li>
+<li><p>OLED</p>
+<ul>
+<li>依然是通过三基色组成像素的原理</li>
+<li>不同于LCD的几点<ul>
+<li>OLED没有背光板，通过每一个像素点自发光</li>
+<li>OLED不需要两层偏振膜，OLED的偏振膜不是用来过滤颜色的，而是过滤自然光照射到显示面板之后，再反射回人眼的杂光。</li>
+<li>OLED显示黑色的时候，子像素是完全关闭的，是真的黑, 纯的黑。</li>
+<li></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>OLED优缺点</p>
+<ul>
+<li>优点<ul>
+<li>可以做的很薄, 因为不需要背光板和底层的偏振膜</li>
+<li>省电，OLED每个像素自发光，不依靠最下面整层的背光板，电能转换为光能效率高，没有太多的热损耗。OLED的手机在黑夜模式下很省电，因为很多像素点不需要点亮。</li>
+<li>对比度远远高于LCD、，黑色是纯色的黑</li>
+<li>可以做成柔性屏</li>
+</ul>
+</li>
+<li>缺点<ul>
+<li>成本高<ul>
+<li>显示面板生产时候对氧气和空气湿度敏感</li>
+<li>有机材料对封装和隔绝又特别高</li>
+</ul>
+</li>
+<li>烧屏现象(Screen Burn-in)<ul>
+<li>物理层面上避免不了自然损耗，也就是寿命问题</li>
+<li>影响因素<ul>
+<li>持续的通电时间</li>
+<li>温度</li>
+</ul>
+</li>
+<li>烧屏是无法修复的</li>
+<li>LCD也有烧屏现象，但是临时性的，关机冷却几个小时会自动复原</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>屏幕参数</p>
+<ul>
+<li>分辨率<ul>
+<li>定义: 指的是屏幕上水平方向和垂直方向的像素的数量的乘积</li>
+<li>衡量的是显示器显示的精细程度</li>
+<li>720P,1080P,4K,8K等分辨率<br><img src="/images/Other/8K-TV-resolution-picture.jpg" alt="8K-TV-resolution-picture.jpg"></li>
+</ul>
+</li>
+<li>PPI<ul>
+<li>Pixel Per Inch，指的是在一英寸的对角线长度内像素的数量</li>
+<li>PPI越高越好，但是超过一定的值，就超过了人眼观察的极限了</li>
+</ul>
+</li>
+<li>尼特<ul>
+<li>衡量一块屏幕的亮度</li>
+<li>一尼特指的是在一个平方米的范围内一个烛光(candela)的亮度</li>
+<li>屏幕的亮度指的是最高亮度</li>
+</ul>
+</li>
+<li>HDR<ul>
+<li>High Dynamic Range, 高动态范围</li>
+<li>画面中最亮的元素，用最高亮度来显示，低亮度的元素依然能够维持比较低的亮度</li>
+<li>支持的尼特越高，一般来说HDR就越高</li>
+<li>LCD号称支持的HDR，都是比较差的</li>
+<li>支持HDR的面板，一般都是自发光的OLED显示面板和量子点QLED面板(QLED就是背光技术不同的LCD面板)</li>
+</ul>
+</li>
+<li>色域<ul>
+<li>色域指的是一块屏幕能够显示的色彩范围</li>
+<li>主流标准: sRGB和Adobe公司的AdobeRGB，苹果三星力推的DCI-P3</li>
+</ul>
+</li>
+<li><p>可视角度</p>
+<ul>
+<li>IPS面板碾压其他各类面板<ul>
+<li>把电极层和液晶层做在了一个平面，可视角度接近180度，但漏光现象比较严重</li>
+<li>泛用性比较强，但是相对有点贵</li>
+</ul>
+</li>
+<li>TN面板的可视角度是最差的, 但是优点是在于相对便宜，TN面板适合游戏玩家</li>
+<li>OLED面板有天然的可视角度的优势，是显示原理导致的。<ul>
+<li>OLED的屏幕色彩更加鲜艳，亮度和可对比度非常高，但是相对来说很贵。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>FPS</p>
+<ul>
+<li>Frame per second, 一秒钟计算机的显卡产生出的画面的数量</li>
+<li>FPS不是一个常量，而是根据画面的生成的难度和显卡的性能随时动态改变的</li>
+<li>静态下的计算机画面的FPS非常低</li>
+</ul>
+</li>
+<li>刷新率<ul>
+<li>屏幕刷新率是个硬件指标</li>
+<li>刷新率是60hz，屏幕会以每秒60次的固定频率来显示画面</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+	  
+	</div>
+
+	<div>
+  	<center>
+	<div class="pagination">
+<ul class="pagination">
+	 
+		
+          <li class="prev disabled"><a><i class="fa fa-arrow-circle-o-left"></i>上一页</a></li>
+        
+
+        <li><a href="/archives"><i class="fa fa-archive"></i>Archive</a></li>
+
+		
+		   <li class="next"><a href="/2020/05/31/how-to-speed-minecraft-launcher-on-macos/" class="alignright next">下一页<i class="fa fa-arrow-circle-o-right"></i></a></li>         
+        
+	
+</ul>
+</div>
+
+    </center>
+	</div>
+
+    <!-- share -->
+    
+        
+    <div class="bdsharebuttonbox">
+        <a href="#" class="bds_more" data-cmd="more"></a>
+        <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+        <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+        <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+        <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+        <a href="#" class="bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+        <a href="#" class="bds_evernotecn" data-cmd="evernotecn" title="分享到印象笔记"></a>
+        <a href="#" class="bds_youdao" data-cmd="youdao" title="分享到有道云笔记"></a>
+        <a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+    </div>
+    <script>
+        window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"24"},"share":{}};
+        with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+    </script>
+
+
+        
+
+    
+	
+	<!-- comment -->
+	
+<section id="comment">
+  <h2 class="title">留言</h2>
+  
+  	 <div id="disqus_thread">
+     <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  	 </div>
+  
+</section>
+
+
+	</div> <!-- col-md-9/col-md-12 -->
+		
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta">
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2020-06-06
+	</div>
+	
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
+	   <div id="toc" class="toc collapse in">
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#知识点记录"><span class="toc-article-text">知识点记录</span></a></li></ol>
+		</div>
+	
+	</div>
+
+	<!-- categories -->
+    
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>
+    <ul id="categorys" class="tag_box list-unstyled collapse in">
+          
+  <li>
+    <li><a href="/categories/杂/">杂<span>1</span></a></li>
+  </li>
+
+    </ul>
+	</div>
+	
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>
+    <ul id="tags" class="tag_box list-unstyled collapse in">
+	    
+  <li><a href="/tags/Screen/">Screen<span>1</span></a></li> <li><a href="/tags/LCD/">LCD<span>1</span></a></li> <li><a href="/tags/OLED/">OLED<span>1</span></a></li>
+    </ul>
+	</div>
+	
+
+    <hr>
+
+</div><!-- col-md-3 -->
+
+	</div>
+		
+
+</div><!-- row -->
+
+<script type="text/javascript">
+var disqus_shortname = 'jibing57-blog';
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  &copy; 2020 jibing57
+  
+      with help from <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>.    
+</p> </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>

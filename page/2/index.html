@@ -139,6 +139,32 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
+			<div class="date"> 2019-12-31 </div>
+			<div class="article-title"><a href="/2019/12/31/macos-youcompleteme-ERROR-root-code-for-hash-md5-was-not-found/" >Macos下vim中YouCompleteMe报错 ERROR:root:code for hash md5 was not found</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>Macos中brew安装某个软件的时候，brew自动把openssl版本也升级了。<br>升级过后，打开vim就发现有错误提示<code>ERROR:root:code for hash md5 was not found.</code></p>
+<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>报错的是vim中的一个自动补全的插件<a href="https://github.com/ycm-core/YouCompleteMe" target="_blank" rel="external">YouCompleteMe</a>, 该插件是python写的。</p>
+<p>网上搜了下，是因为openssl版本升级了，python找不到编译时的openssl的lib了。所以报错了。</p>
+<h3 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h3><p>解决办法就是使用brew重新装下python<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew reinstall python@2</div></pre></td></tr></table></figure></p>
+	
+	</div>
+  <a type="button" href="/2019/12/31/macos-youcompleteme-ERROR-root-code-for-hash-md5-was-not-found/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
 			<div class="date"> 2019-12-15 </div>
 			<div class="article-title"><a href="/2019/12/15/way-to-download-udemy-course/" >访问Udemy慢的一个解决办法</a></div>						
 		</h3>
@@ -394,39 +420,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2019-09-24 </div>
-			<div class="article-title"><a href="/2019/09/24/backup-tools-borgbackup/" >BorgBackup -- 基于命令行的增量备份工具</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p><a href="https://www.borgbackup.org/" target="_blank" rel="external">BorgBackup</a>(简称 Borg)是一款基于命令行的增量备份工具。Github地址:<a href="https://github.com/borgbackup/borg" target="_blank" rel="external">https://github.com/borgbackup/borg</a><br>官网上所述的优势如下:</p>
-<ul>
-<li>Space efficient storage of backups. - 高效存储</li>
-<li>Secure, authenticated encryption. - 可加密</li>
-<li>Compression: LZ4, zlib, LZMA, zstd (since borg 1.1.4). - 支持多种压缩算法</li>
-<li>Mountable backups with FUSE. - 可使用FUSE异地本非</li>
-<li>Easy installation on multiple platforms: Linux, macOS, BSD, … - 支持多个平台</li>
-<li>Free software (BSD license). - 开源</li>
-<li>Backed by a large and active open source community.</li>
-</ul>
-<h3 id="CentOS下安装"><a href="#CentOS下安装" class="headerlink" title="CentOS下安装"></a>CentOS下安装</h3><p>borgbackup在EPEL中已有提供，CentOS 7下使用如下命令安装:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm</div><div class="line">yum install -y borgbackup</div></pre></td></tr></table></figure></p>
-	
-	</div>
-  <a type="button" href="/2019/09/24/backup-tools-borgbackup/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -506,6 +499,8 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/#Tools">Tools<span>26</span></a></li>
 		
+			<li><a href="/categories/#杂">杂<span>1</span></a></li>
+		
 		</ul>
 	</div>
 
@@ -516,48 +511,48 @@ var _hmt = _hmt || [];
 		<h4>标签云</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/#Image">Image<span>3</span></a></li>
+			<li><a href="/tags/#RVM">RVM<span>3</span></a></li>
 		
-			<li><a href="/tags/#Rails">Rails<span>4</span></a></li>
+			<li><a href="/tags/#AWS CLI">AWS CLI<span>6</span></a></li>
 		
-			<li><a href="/tags/#Linux">Linux<span>15</span></a></li>
+			<li><a href="/tags/#Firewall">Firewall<span>1</span></a></li>
 		
-			<li><a href="/tags/#AWS SDK">AWS SDK<span>2</span></a></li>
-		
-			<li><a href="/tags/#Elastic Load Balancing">Elastic Load Balancing<span>6</span></a></li>
-		
-			<li><a href="/tags/#Aliyun">Aliyun<span>2</span></a></li>
-		
-			<li><a href="/tags/#SSH">SSH<span>5</span></a></li>
-		
-			<li><a href="/tags/#HTTP">HTTP<span>5</span></a></li>
-		
-			<li><a href="/tags/#Douban">Douban<span>2</span></a></li>
-		
-			<li><a href="/tags/#Udemy">Udemy<span>1</span></a></li>
-		
-			<li><a href="/tags/#HTTPS">HTTPS<span>1</span></a></li>
-		
-			<li><a href="/tags/#Lightsail">Lightsail<span>2</span></a></li>
-		
-			<li><a href="/tags/#Yarn">Yarn<span>1</span></a></li>
-		
-			<li><a href="/tags/#VMware">VMware<span>2</span></a></li>
-		
-			<li><a href="/tags/#EC2">EC2<span>8</span></a></li>
-		
-			<li><a href="/tags/#Passenger">Passenger<span>2</span></a></li>
-		
-			<li><a href="/tags/#Chrome">Chrome<span>1</span></a></li>
+			<li><a href="/tags/#FFMPEG">FFMPEG<span>2</span></a></li>
 		
 			<li><a href="/tags/#EC2 User Data">EC2 User Data<span>1</span></a></li>
 		
+			<li><a href="/tags/#Udemy">Udemy<span>1</span></a></li>
+		
+			<li><a href="/tags/#Elastic Load Balancing">Elastic Load Balancing<span>6</span></a></li>
+		
+			<li><a href="/tags/#SSH">SSH<span>5</span></a></li>
+		
+			<li><a href="/tags/#感悟">感悟<span>1</span></a></li>
+		
+			<li><a href="/tags/#Elastic Beanstalk">Elastic Beanstalk<span>7</span></a></li>
+		
+			<li><a href="/tags/#Office">Office<span>2</span></a></li>
+		
 			<li><a href="/tags/#PostgreSQL">PostgreSQL<span>4</span></a></li>
 		
-			<li><a href="/tags/#Kubernetes">Kubernetes<span>1</span></a></li>
+			<li><a href="/tags/#OLED">OLED<span>1</span></a></li>
+		
+			<li><a href="/tags/#Wkhtmltopdf">Wkhtmltopdf<span>1</span></a></li>
+		
+			<li><a href="/tags/#Docker Hub">Docker Hub<span>1</span></a></li>
+		
+			<li><a href="/tags/#AutoScaling">AutoScaling<span>3</span></a></li>
+		
+			<li><a href="/tags/#Ruby">Ruby<span>10</span></a></li>
+		
+			<li><a href="/tags/#Nodejs">Nodejs<span>4</span></a></li>
+		
+			<li><a href="/tags/#CodeCommit">CodeCommit<span>1</span></a></li>
+		
+			<li><a href="/tags/#DynamoDB">DynamoDB<span>1</span></a></li>
 		
 		
-		   <li><a href="/tags">...<span>59</span></a></li>
+		   <li><a href="/tags">...<span>62</span></a></li>
 		 
 		</ul>
 	</div>
@@ -568,6 +563,10 @@ var _hmt = _hmt || [];
 <div class="widget">
   <h4>最新文章</h4>
   <ul class="entry list-unstyled">
+    
+      <li>
+        <a href="/2020/06/06/screen-overview-of-ak-tech/" ><i class="fa fa-file-o"></i>屏幕知识概观</a>
+      </li>
     
       <li>
         <a href="/2020/05/31/how-to-speed-minecraft-launcher-on-macos/" ><i class="fa fa-file-o"></i>在MacOS上加速Minecraft Launcher</a>
@@ -583,10 +582,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2020/04/29/Install-Postgresql-and-Nodejs-on-Aliyun-Linux-2/" ><i class="fa fa-file-o"></i>在Aliyun Linux 2上安装Postgresq...</a>
-      </li>
-    
-      <li>
-        <a href="/2020/04/09/replace-douban-book-plugin/" ><i class="fa fa-file-o"></i>豆瓣插件替换</a>
       </li>
     
   </ul>

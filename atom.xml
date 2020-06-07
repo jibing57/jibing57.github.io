@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.jibing57.com/"/>
-  <updated>2020-06-01T05:22:43.802Z</updated>
+  <updated>2020-06-06T15:46:09.619Z</updated>
   <id>https://www.jibing57.com/</id>
   
   <author>
@@ -15,6 +15,42 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>屏幕知识概观</title>
+    <link href="https://www.jibing57.com/2020/06/06/screen-overview-of-ak-tech/"/>
+    <id>https://www.jibing57.com/2020/06/06/screen-overview-of-ak-tech/</id>
+    <published>2020-06-06T01:11:06.000Z</published>
+    <updated>2020-06-06T15:46:09.619Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;前几天看到了一个讲解显示器显示技术的科普视频，感觉蛮不错的。摘录了一些内容如下。&lt;/p&gt;
+&lt;p&gt;视频playlist链接: &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Youtube - &lt;a href=&quot;https://www.youtube.com/playlist?list=PLqybz7NWybwWcl_s-VLB_tXqbbBww6nbK&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;AK‘s Tech Studio - 硬核显示技术系列视频 有关显示器 显示技术和屏幕 一切你需要知道的事&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;B站&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.bilibili.com/video/BV1eV411o76N&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;「硬核显示技术第一期」LCD和OLED的显示原理和优缺点&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.bilibili.com/video/BV1nf4y1S7EC&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;「硬核显示技术第二期」各种显示器和屏幕的参数 一切你需要知道的&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.bilibili.com/video/BV1aK4y1k7K5&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;「硬核显示技术第三期」显示器刷新率和FPS详解&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.bilibili.com/video/BV1N54y1R7wh&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;为什么玩游戏要用高刷新率屏幕「硬核显示技术第四期」&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.bilibili.com/video/BV1of4y117M8&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;「硬核显示技术第五期」详解一加8Pro的MEMC插帧补偿技术&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+    
+    </summary>
+    
+      <category term="杂" scheme="https://www.jibing57.com/categories/%E6%9D%82/"/>
+    
+    
+      <category term="Screen" scheme="https://www.jibing57.com/tags/Screen/"/>
+    
+      <category term="LCD" scheme="https://www.jibing57.com/tags/LCD/"/>
+    
+      <category term="OLED" scheme="https://www.jibing57.com/tags/OLED/"/>
+    
+  </entry>
   
   <entry>
     <title>在MacOS上加速Minecraft Launcher</title>
@@ -548,38 +584,6 @@
       <category term="CentOS" scheme="https://www.jibing57.com/tags/CentOS/"/>
     
       <category term="SSH" scheme="https://www.jibing57.com/tags/SSH/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>BorgBackup -- 基于命令行的增量备份工具</title>
-    <link href="https://www.jibing57.com/2019/09/24/backup-tools-borgbackup/"/>
-    <id>https://www.jibing57.com/2019/09/24/backup-tools-borgbackup/</id>
-    <published>2019-09-24T13:43:38.000Z</published>
-    <updated>2019-09-24T08:52:11.527Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;&lt;a href=&quot;https://www.borgbackup.org/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;BorgBackup&lt;/a&gt;(简称 Borg)是一款基于命令行的增量备份工具。Github地址:&lt;a href=&quot;https://github.com/borgbackup/borg&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/borgbackup/borg&lt;/a&gt;&lt;br&gt;官网上所述的优势如下:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Space efficient storage of backups. - 高效存储&lt;/li&gt;
-&lt;li&gt;Secure, authenticated encryption. - 可加密&lt;/li&gt;
-&lt;li&gt;Compression: LZ4, zlib, LZMA, zstd (since borg 1.1.4). - 支持多种压缩算法&lt;/li&gt;
-&lt;li&gt;Mountable backups with FUSE. - 可使用FUSE异地本非&lt;/li&gt;
-&lt;li&gt;Easy installation on multiple platforms: Linux, macOS, BSD, … - 支持多个平台&lt;/li&gt;
-&lt;li&gt;Free software (BSD license). - 开源&lt;/li&gt;
-&lt;li&gt;Backed by a large and active open source community.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&quot;CentOS下安装&quot;&gt;&lt;a href=&quot;#CentOS下安装&quot; class=&quot;headerlink&quot; title=&quot;CentOS下安装&quot;&gt;&lt;/a&gt;CentOS下安装&lt;/h3&gt;&lt;p&gt;borgbackup在EPEL中已有提供，CentOS 7下使用如下命令安装:&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;yum install -y borgbackup&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
-    
-    
-      <category term="CentOS" scheme="https://www.jibing57.com/tags/CentOS/"/>
-    
-      <category term="Linux" scheme="https://www.jibing57.com/tags/Linux/"/>
     
   </entry>
   

@@ -139,6 +139,47 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
+			<div class="date"> 2019-05-21 </div>
+			<div class="article-title"><a href="/2019/05/21/how-to-direct-http-to-https-in-elasticbeanstalk-ruby-passenger-platform/" >Elastic Beanstalk Ruby Passenger平台下设置HTTP重定向到HTTPS</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>Elastic Beanstalk配置HTTPS后，接下来就需要配置HTTP请求redirect到HTTPS。<br>以前都是直接在application层面做redirect的。这次调查了一下在passenger层面来进行redirect的做法,记录在此。</p>
+<h3 id="Ruby平台基本信息"><a href="#Ruby平台基本信息" class="headerlink" title="Ruby平台基本信息:"></a>Ruby平台基本信息:</h3><ul>
+<li>EB平台: <code>Passenger with Ruby 2.3 running on 64bit Amazon Linux/2.9.3</code><ul>
+<li>Ruby 2.3</li>
+<li>Passenger模式</li>
+</ul>
+</li>
+<li>前端使用ALB进行负载均衡，和后端EC2之间端口对应关系:<ul>
+<li>ALB:443 -&gt; EC2:80 (在ALB侧进行HTTPS terminate)</li>
+<li>ALB:80 -&gt; EC2:80</li>
+</ul>
+</li>
+</ul>
+<h3 id="修改方法"><a href="#修改方法" class="headerlink" title="修改方法"></a>修改方法</h3><p>使用<code>.ebextension</code>直接修改passenger的配置文件<code>/opt/elasticbeanstalk/support/conf/nginx_config.erb</code>.<br>修改要点:</p>
+<ol>
+<li>动态请求http_x_forwarded_proto 不是https的，redirect为https</li>
+<li>静态文件请求的http_x_forwarded_proto不是https的，redirect为https</li>
+<li>来自ELB health check的请求还是直接返回请求，而不用redirect为https</li>
+</ol>
+	
+	</div>
+  <a type="button" href="/2019/05/21/how-to-direct-http-to-https-in-elasticbeanstalk-ruby-passenger-platform/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
 			<div class="date"> 2019-05-16 </div>
 			<div class="article-title"><a href="/2019/05/16/how-to-add-SSL-Certification-to-Elastic-Load-Balancer/" >如何在Elastic Load Balancer中添加SSL证书</a></div>						
 		</h3>
@@ -413,41 +454,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2019-04-09 </div>
-			<div class="article-title"><a href="/2019/04/09/online-visual-paradigm/" >在线架构图工具Online Visual Paradigm</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>一个免费的在线画AWS架构图的网址<a href="https://online.visual-paradigm.com" target="_blank" rel="external">https://online.visual-paradigm.com</a>, 30天试用期内可以随时保存和下载源文件。过了试用期后，还可以使用，但无法保存和导出源文件。<br>visual-paradigm也有<a href="https://www.visual-paradigm.com/download/" target="_blank" rel="external">客户端</a>，30天免费试用。</p>
-<ul>
-<li>优势<ul>
-<li>集成了AWS各个服务的图标，</li>
-<li>有一些经典的架构模板，制作AWS架构图的时候会比较方便。</li>
-</ul>
-</li>
-<li>劣势<ul>
-<li>试用过后, 费用比较贵</li>
-</ul>
-</li>
-</ul>
-<h3 id="几个例子"><a href="#几个例子" class="headerlink" title="几个例子"></a>几个例子</h3><p>使用在线工具画的项目的架构图<br><img src="/images/AWS/Tools/architecture_diagram.png" alt="architecture_diagram.png"><br>
-	
-	</div>
-  <a type="button" href="/2019/04/09/online-visual-paradigm/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -525,7 +531,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/#Shell">Shell<span>8</span></a></li>
 		
-			<li><a href="/categories/#Tools">Tools<span>26</span></a></li>
+			<li><a href="/categories/#Tools">Tools<span>27</span></a></li>
 		
 			<li><a href="/categories/#杂">杂<span>1</span></a></li>
 		
@@ -539,48 +545,48 @@ var _hmt = _hmt || [];
 		<h4>标签云</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/#Nginx">Nginx<span>7</span></a></li>
-		
-			<li><a href="/tags/#Office">Office<span>2</span></a></li>
-		
-			<li><a href="/tags/#LCD">LCD<span>1</span></a></li>
-		
-			<li><a href="/tags/#Aliyun">Aliyun<span>2</span></a></li>
-		
-			<li><a href="/tags/#VMware">VMware<span>2</span></a></li>
-		
-			<li><a href="/tags/#SSH">SSH<span>5</span></a></li>
-		
-			<li><a href="/tags/#Solutions Architect">Solutions Architect<span>1</span></a></li>
-		
-			<li><a href="/tags/#Screen">Screen<span>1</span></a></li>
-		
-			<li><a href="/tags/#HTTP">HTTP<span>5</span></a></li>
-		
-			<li><a href="/tags/#AWS Deep Dive">AWS Deep Dive<span>2</span></a></li>
-		
-			<li><a href="/tags/#Wkhtmltopdf">Wkhtmltopdf<span>1</span></a></li>
-		
-			<li><a href="/tags/#Sysops">Sysops<span>1</span></a></li>
-		
-			<li><a href="/tags/#RDS">RDS<span>3</span></a></li>
-		
-			<li><a href="/tags/#Elastic Load Balancing">Elastic Load Balancing<span>6</span></a></li>
-		
-			<li><a href="/tags/#Ruby">Ruby<span>10</span></a></li>
-		
-			<li><a href="/tags/#Minecraft">Minecraft<span>1</span></a></li>
-		
 			<li><a href="/tags/#CentOS">CentOS<span>9</span></a></li>
 		
-			<li><a href="/tags/#Github">Github<span>4</span></a></li>
+			<li><a href="/tags/#Git">Git<span>2</span></a></li>
 		
-			<li><a href="/tags/#EC2">EC2<span>8</span></a></li>
+			<li><a href="/tags/#PostgreSQL">PostgreSQL<span>4</span></a></li>
 		
 			<li><a href="/tags/#Douban">Douban<span>2</span></a></li>
 		
+			<li><a href="/tags/#Wireshark">Wireshark<span>1</span></a></li>
 		
-		   <li><a href="/tags">...<span>62</span></a></li>
+			<li><a href="/tags/#DynamoDB">DynamoDB<span>1</span></a></li>
+		
+			<li><a href="/tags/#Lightsail">Lightsail<span>2</span></a></li>
+		
+			<li><a href="/tags/#Yarn">Yarn<span>1</span></a></li>
+		
+			<li><a href="/tags/#Github">Github<span>4</span></a></li>
+		
+			<li><a href="/tags/#Office">Office<span>2</span></a></li>
+		
+			<li><a href="/tags/#AWS CLI">AWS CLI<span>6</span></a></li>
+		
+			<li><a href="/tags/#OLED">OLED<span>1</span></a></li>
+		
+			<li><a href="/tags/#AutoScaling">AutoScaling<span>3</span></a></li>
+		
+			<li><a href="/tags/#Elastic Beanstalk">Elastic Beanstalk<span>7</span></a></li>
+		
+			<li><a href="/tags/#CloudWatch">CloudWatch<span>1</span></a></li>
+		
+			<li><a href="/tags/#Application Load Balancing">Application Load Balancing<span>1</span></a></li>
+		
+			<li><a href="/tags/#EC2">EC2<span>8</span></a></li>
+		
+			<li><a href="/tags/#Wkhtmltopdf">Wkhtmltopdf<span>1</span></a></li>
+		
+			<li><a href="/tags/#SSH">SSH<span>5</span></a></li>
+		
+			<li><a href="/tags/#HTTP">HTTP<span>5</span></a></li>
+		
+		
+		   <li><a href="/tags">...<span>63</span></a></li>
 		 
 		</ul>
 	</div>
@@ -591,6 +597,10 @@ var _hmt = _hmt || [];
 <div class="widget">
   <h4>最新文章</h4>
   <ul class="entry list-unstyled">
+    
+      <li>
+        <a href="/2020/06/09/some-new-nginx-config/" ><i class="fa fa-file-o"></i>一些常用的Nginx+Passenger配置</a>
+      </li>
     
       <li>
         <a href="/2020/06/06/screen-overview-of-ak-tech/" ><i class="fa fa-file-o"></i>屏幕知识概观</a>
@@ -606,10 +616,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2020/05/04/imageMagick-fonts-issue-on-Aliyun-Linux-2/" ><i class="fa fa-file-o"></i>Aliyun Linux 2上imageMagick的...</a>
-      </li>
-    
-      <li>
-        <a href="/2020/04/29/Install-Postgresql-and-Nodejs-on-Aliyun-Linux-2/" ><i class="fa fa-file-o"></i>在Aliyun Linux 2上安装Postgresq...</a>
       </li>
     
   </ul>

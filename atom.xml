@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.jibing57.com/"/>
-  <updated>2020-06-06T15:46:09.619Z</updated>
+  <updated>2020-06-17T06:47:30.561Z</updated>
   <id>https://www.jibing57.com/</id>
   
   <author>
@@ -15,6 +15,44 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>一些常用的Nginx+Passenger配置</title>
+    <link href="https://www.jibing57.com/2020/06/09/some-new-nginx-config/"/>
+    <id>https://www.jibing57.com/2020/06/09/some-new-nginx-config/</id>
+    <published>2020-06-09T13:42:17.000Z</published>
+    <updated>2020-06-17T06:47:30.561Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;摘记一些常用的nginx和passenger(Passenger + Nginx)配置&lt;/p&gt;
+&lt;h2 id=&quot;Basic验证&quot;&gt;&lt;a href=&quot;#Basic验证&quot; class=&quot;headerlink&quot; title=&quot;Basic验证&quot;&gt;&lt;/a&gt;Basic验证&lt;/h2&gt;&lt;p&gt;测试环境的服务要放到互联网上时，如果为了避免测试服务的内容被搜索引擎收录，或者只提供给部分用户试用时，可以设置Basic Auth来限制访问。Basic Auth可以在应用层做，也可以在Nginx侧简单的设置。&lt;/p&gt;
+&lt;p&gt;如下是Nginx侧的设置方法, 摘录自Nginx官网文章&lt;a href=&quot;https://docs.nginx.com/nginx/admin-guide/security-controls/configuring-http-basic-authentication/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Restricting Access with HTTP Basic Authentication&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&quot;设置htpasswd&quot;&gt;&lt;a href=&quot;#设置htpasswd&quot; class=&quot;headerlink&quot; title=&quot;设置htpasswd&quot;&gt;&lt;/a&gt;设置htpasswd&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;确保apache2-utils (Debian, Ubuntu) 或者 httpd-tools (RHEL/CentOS/Oracle Linux)已经安装。&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;创建htpasswd文件, 使用&lt;code&gt;-c&lt;/code&gt;来创建新文件。如下是给用户名carl生成.htpasswd文件，在提示信息中输入访问密码。&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ sudo htpasswd -c /etc/nginx/.htpasswd carl&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;New password:&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;Re-type new password:&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;Adding password for user carl&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;$&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;如果要创建新的用户，那么去掉&lt;code&gt;-c&lt;/code&gt;参数，往htpasswd文件中添加用户&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ sudo htpasswd /etc/nginx/.htpasswd shen&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;New password:&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;Re-type new password:&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;Adding password for user shen&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;$&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;确认.htpasswd文件中是否包含了刚设置的用户carl和shen&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ cat /etc/nginx/.htpasswd&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;carl:$apr1$ofR4vRu4$RwMK.HQawTD8/v.YOA2/d.&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;shen:$apr1$c1vlrfgt$TqDy9JDsNcGyfTzcSOPLG0&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;$&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+    
+    </summary>
+    
+      <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
+    
+    
+      <category term="Passenger" scheme="https://www.jibing57.com/tags/Passenger/"/>
+    
+      <category term="Nginx" scheme="https://www.jibing57.com/tags/Nginx/"/>
+    
+      <category term="Wireshark" scheme="https://www.jibing57.com/tags/Wireshark/"/>
+    
+  </entry>
   
   <entry>
     <title>屏幕知识概观</title>
@@ -464,7 +502,7 @@
     <link href="https://www.jibing57.com/2019/10/27/postgresql-tips/"/>
     <id>https://www.jibing57.com/2019/10/27/postgresql-tips/</id>
     <published>2019-10-27T05:31:35.000Z</published>
-    <updated>2020-01-09T08:01:41.106Z</updated>
+    <updated>2020-06-18T08:55:58.082Z</updated>
     
     <summary type="html">
     
@@ -557,33 +595,6 @@
       <category term="Network" scheme="https://www.jibing57.com/tags/Network/"/>
     
       <category term="MacOS" scheme="https://www.jibing57.com/tags/MacOS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>ssh设置私钥登录后还是提示需要输入密码</title>
-    <link href="https://www.jibing57.com/2019/09/29/still-password-when-setting-public-key-ssh-authorization/"/>
-    <id>https://www.jibing57.com/2019/09/29/still-password-when-setting-public-key-ssh-authorization/</id>
-    <published>2019-09-29T12:43:26.000Z</published>
-    <updated>2019-09-29T07:37:28.807Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;问题描述&quot;&gt;&lt;a href=&quot;#问题描述&quot; class=&quot;headerlink&quot; title=&quot;问题描述&quot;&gt;&lt;/a&gt;问题描述&lt;/h3&gt;&lt;p&gt;在客户机器上配置好使用key免密登录后，尝试使用私钥登录，却被提示还是需要密码。&lt;br&gt;检查了一圈服务器上&lt;code&gt;~/.ssh/&lt;/code&gt;, &lt;code&gt;~/.ssh/authorized_keys&lt;/code&gt;的权限, 权限设置都没有问题。&lt;br&gt;可登录时还是提示需要输入密码。只能一步一步来检查调试&lt;/p&gt;
-&lt;h3 id=&quot;解决步骤&quot;&gt;&lt;a href=&quot;#解决步骤&quot; class=&quot;headerlink&quot; title=&quot;解决步骤&quot;&gt;&lt;/a&gt;解决步骤&lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;首先尝试在客户端ssh时加上-vv参数来输出debug信息, 看是否有明显的错误信息。&lt;br&gt;debug输出如下&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;debug1: SSH2_MSG_EXT_INFO received&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;debug1: kex_input_ext_info: server-sig-algs=&amp;lt;ssh-ed25519,ssh-rsa,rsa-sha2-256,rsa-sha2-512,ssh-dss,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521&amp;gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;debug2: service_accept: ssh-userauth&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;debug1: SSH2_MSG_SERVICE_ACCEPT received&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;debug1: Authentications that can continue: publickey,password,keyboard-interactive&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;debug1: Next authentication method: publickey&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;debug1: Trying private key: /home/deployer/.ssh/id_rsa_sync&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;debug2: we sent a publickey packet, wait for reply&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;debug1: Authentications that can continue: publickey,password,keyboard-interactive&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;在正常情况下，&lt;code&gt;Trying private key: /home/deployer/.ssh/id_rsa_sync&lt;/code&gt;之后，应该是提示密钥验证成功&lt;code&gt;Authentication succeeded (publickey).&lt;/code&gt;并登录到服务器上。&lt;br&gt;这边是直接提示&lt;code&gt;Authentications that can continue: publickey,password,keyboard-interactive&lt;/code&gt;，表示没有成功。&lt;br&gt;
-    
-    </summary>
-    
-      <category term="Linux" scheme="https://www.jibing57.com/categories/Linux/"/>
-    
-    
-      <category term="CentOS" scheme="https://www.jibing57.com/tags/CentOS/"/>
-    
-      <category term="SSH" scheme="https://www.jibing57.com/tags/SSH/"/>
     
   </entry>
   

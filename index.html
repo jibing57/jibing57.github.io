@@ -325,9 +325,48 @@ var _hmt = _hmt || [];
 		
             
 		
+            
+		
         
         <!-- render other articles -->
         
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2020-06-09 </div>
+			<div class="article-title"><a href="/2020/06/09/some-new-nginx-config/" >一些常用的Nginx+Passenger配置</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>摘记一些常用的nginx和passenger(Passenger + Nginx)配置</p>
+<h2 id="Basic验证"><a href="#Basic验证" class="headerlink" title="Basic验证"></a>Basic验证</h2><p>测试环境的服务要放到互联网上时，如果为了避免测试服务的内容被搜索引擎收录，或者只提供给部分用户试用时，可以设置Basic Auth来限制访问。Basic Auth可以在应用层做，也可以在Nginx侧简单的设置。</p>
+<p>如下是Nginx侧的设置方法, 摘录自Nginx官网文章<a href="https://docs.nginx.com/nginx/admin-guide/security-controls/configuring-http-basic-authentication/" target="_blank" rel="external">Restricting Access with HTTP Basic Authentication</a></p>
+<h3 id="设置htpasswd"><a href="#设置htpasswd" class="headerlink" title="设置htpasswd"></a>设置htpasswd</h3><ol>
+<li>确保apache2-utils (Debian, Ubuntu) 或者 httpd-tools (RHEL/CentOS/Oracle Linux)已经安装。</li>
+<li><p>创建htpasswd文件, 使用<code>-c</code>来创建新文件。如下是给用户名carl生成.htpasswd文件，在提示信息中输入访问密码。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ sudo htpasswd -c /etc/nginx/.htpasswd carl</div><div class="line">New password:</div><div class="line">Re-type new password:</div><div class="line">Adding password for user carl</div><div class="line">$</div></pre></td></tr></table></figure>
+</li>
+<li><p>如果要创建新的用户，那么去掉<code>-c</code>参数，往htpasswd文件中添加用户</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ sudo htpasswd /etc/nginx/.htpasswd shen</div><div class="line">New password:</div><div class="line">Re-type new password:</div><div class="line">Adding password for user shen</div><div class="line">$</div></pre></td></tr></table></figure>
+</li>
+<li><p>确认.htpasswd文件中是否包含了刚设置的用户carl和shen</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ cat /etc/nginx/.htpasswd</div><div class="line">carl:$apr1$ofR4vRu4$RwMK.HQawTD8/v.YOA2/d.</div><div class="line">shen:$apr1$c1vlrfgt$TqDy9JDsNcGyfTzcSOPLG0</div><div class="line">$</div></pre></td></tr></table></figure>
+</li>
+</ol>
+	
+	</div>
+  <a type="button" href="/2020/06/09/some-new-nginx-config/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
            
 			  
 	
@@ -611,31 +650,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2019-12-31 </div>
-			<div class="article-title"><a href="/2019/12/31/after-upgrade-the-openssl-in-macos/" >MacOS下Brew升级openssl的后续处理</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>Brew安装软件的时候，不小心把openssl版本升了。然后电脑就炸了。vim打不开，ruby不能运行，一些命令出错。<br>一个一个的填坑，填坑记录如下:</p>
-<h3 id="vim"><a href="#vim" class="headerlink" title="vim"></a>vim</h3><p>vim问题参见 <a href="/2019/12/31/macos-youcompleteme-ERROR-root-code-for-hash-md5-was-not-found/" title="Macos下vim中YouCompleteMe报错 ERROR:root:code for hash md5 was not found">Macos下vim中YouCompleteMe报错 ERROR:root:code for hash md5 was not found</a></p>
-<h3 id="Ruby"><a href="#Ruby" class="headerlink" title="Ruby"></a>Ruby</h3><p>我的ruby是通过rvm安装的。本地存有多个版本，每个版本又因为项目隔离需要，使用了不同的gemset。<br>openssl升级到1.1过后，全部都炸了。只能重新安装编译。</p>
-	
-	</div>
-  <a type="button" href="/2019/12/31/after-upgrade-the-openssl-in-macos/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -713,7 +727,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/#Shell">Shell<span>8</span></a></li>
 		
-			<li><a href="/categories/#Tools">Tools<span>26</span></a></li>
+			<li><a href="/categories/#Tools">Tools<span>27</span></a></li>
 		
 			<li><a href="/categories/#杂">杂<span>1</span></a></li>
 		
@@ -727,48 +741,48 @@ var _hmt = _hmt || [];
 		<h4>标签云</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/#AutoScaling">AutoScaling<span>3</span></a></li>
+			<li><a href="/tags/#EC2">EC2<span>8</span></a></li>
 		
-			<li><a href="/tags/#Image">Image<span>3</span></a></li>
-		
-			<li><a href="/tags/#FFMPEG">FFMPEG<span>2</span></a></li>
-		
-			<li><a href="/tags/#Wkhtmltopdf">Wkhtmltopdf<span>1</span></a></li>
-		
-			<li><a href="/tags/#IAM">IAM<span>3</span></a></li>
-		
-			<li><a href="/tags/#Screen">Screen<span>1</span></a></li>
-		
-			<li><a href="/tags/#Firewall">Firewall<span>1</span></a></li>
-		
-			<li><a href="/tags/#Hexo">Hexo<span>8</span></a></li>
-		
-			<li><a href="/tags/#Ruby">Ruby<span>10</span></a></li>
-		
-			<li><a href="/tags/#AWS CLI">AWS CLI<span>6</span></a></li>
-		
-			<li><a href="/tags/#VMware">VMware<span>2</span></a></li>
-		
-			<li><a href="/tags/#CloudWatch">CloudWatch<span>1</span></a></li>
-		
-			<li><a href="/tags/#S3">S3<span>10</span></a></li>
-		
-			<li><a href="/tags/#Elastic Beanstalk">Elastic Beanstalk<span>7</span></a></li>
-		
-			<li><a href="/tags/#MacOS">MacOS<span>20</span></a></li>
-		
-			<li><a href="/tags/#Failover">Failover<span>1</span></a></li>
-		
-			<li><a href="/tags/#PostgreSQL">PostgreSQL<span>4</span></a></li>
+			<li><a href="/tags/#Rails">Rails<span>4</span></a></li>
 		
 			<li><a href="/tags/#Ubuntu">Ubuntu<span>1</span></a></li>
 		
-			<li><a href="/tags/#LCD">LCD<span>1</span></a></li>
+			<li><a href="/tags/#Failover">Failover<span>1</span></a></li>
 		
-			<li><a href="/tags/#Yum">Yum<span>1</span></a></li>
+			<li><a href="/tags/#RDS">RDS<span>3</span></a></li>
+		
+			<li><a href="/tags/#Douban">Douban<span>2</span></a></li>
+		
+			<li><a href="/tags/#Elastic Beanstalk">Elastic Beanstalk<span>7</span></a></li>
+		
+			<li><a href="/tags/#DynamoDB">DynamoDB<span>1</span></a></li>
+		
+			<li><a href="/tags/#Application Load Balancing">Application Load Balancing<span>1</span></a></li>
+		
+			<li><a href="/tags/#Ruby">Ruby<span>10</span></a></li>
+		
+			<li><a href="/tags/#Video">Video<span>1</span></a></li>
+		
+			<li><a href="/tags/#Wireshark">Wireshark<span>1</span></a></li>
+		
+			<li><a href="/tags/#SSH">SSH<span>5</span></a></li>
+		
+			<li><a href="/tags/#感悟">感悟<span>1</span></a></li>
+		
+			<li><a href="/tags/#AWS Free Tier">AWS Free Tier<span>1</span></a></li>
+		
+			<li><a href="/tags/#Kubernetes">Kubernetes<span>1</span></a></li>
+		
+			<li><a href="/tags/#RVM">RVM<span>3</span></a></li>
+		
+			<li><a href="/tags/#Aliyun">Aliyun<span>2</span></a></li>
+		
+			<li><a href="/tags/#Elastic Load Balancing">Elastic Load Balancing<span>6</span></a></li>
+		
+			<li><a href="/tags/#Network">Network<span>4</span></a></li>
 		
 		
-		   <li><a href="/tags">...<span>62</span></a></li>
+		   <li><a href="/tags">...<span>63</span></a></li>
 		 
 		</ul>
 	</div>
@@ -779,6 +793,10 @@ var _hmt = _hmt || [];
 <div class="widget">
   <h4>最新文章</h4>
   <ul class="entry list-unstyled">
+    
+      <li>
+        <a href="/2020/06/09/some-new-nginx-config/" ><i class="fa fa-file-o"></i>一些常用的Nginx+Passenger配置</a>
+      </li>
     
       <li>
         <a href="/2020/06/06/screen-overview-of-ak-tech/" ><i class="fa fa-file-o"></i>屏幕知识概观</a>
@@ -794,10 +812,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2020/05/04/imageMagick-fonts-issue-on-Aliyun-Linux-2/" ><i class="fa fa-file-o"></i>Aliyun Linux 2上imageMagick的...</a>
-      </li>
-    
-      <li>
-        <a href="/2020/04/29/Install-Postgresql-and-Nodejs-on-Aliyun-Linux-2/" ><i class="fa fa-file-o"></i>在Aliyun Linux 2上安装Postgresq...</a>
       </li>
     
   </ul>

@@ -327,9 +327,66 @@ var _hmt = _hmt || [];
 		
             
 		
+            
+		
+            
+		
         
         <!-- render other articles -->
         
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2020-06-23 </div>
+			<div class="article-title"><a href="/2020/06/23/resolve-sudo-error-in-crontab-job/" >Crontab中解决sorry, you must have a tty to run sudo的方法</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>crontab中使用sudo切换用户执行命令<code>sudo -u user command</code>时，会报<code>sudo: sorry, you must have a tty to run sudo</code>的错误。</p>
+<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>在一些Linux发行版中，会默认设置运行<code>sudo</code>需要在tty中运行。以CentOS 7.0为例，在<code>/etc/sudoers</code>中, 有一个默认设置<code>Defaults    requiretty</code>。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">#</div><div class="line"># Disable &quot;ssh hostname sudo &lt;cmd&gt;&quot;, because it will show the password in clear.</div><div class="line">#         You have to run &quot;ssh -t hostname sudo &lt;cmd&gt;&quot;.</div><div class="line">#</div><div class="line">Defaults    requiretty</div></pre></td></tr></table></figure></p>
+	
+	</div>
+  <a type="button" href="/2020/06/23/resolve-sudo-error-in-crontab-job/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2020-06-21 </div>
+			<div class="article-title"><a href="/2020/06/21/tools-to-control-brightness-of-external-monitor-on-macos/" >Mac下调节外置显示器亮度的工具</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h3><p>家里缺台显示器，趁着狗东6.18活动，入手了一台AOC U2790PQU(穷人表示买不起Dell U2720)。</p>
+<p>到货后拆箱试用，检测了下屏幕，没有坏点, 而且在mac下即插即用，屏幕自动适应缩放，不用特殊设置缩放。一切都挺好。</p>
+<p>唯一的问题是，AOC这台显示器亮度太亮了，我已经在显示器设置中将亮度设为0了，屏幕亮度还是太亮。</p>
+<p>有问题就得尝试解决，于是上网搜索解决方案。</p>
+<h3 id="需要解决的问题"><a href="#需要解决的问题" class="headerlink" title="需要解决的问题"></a>需要解决的问题</h3><p><strong>问题: 显示器亮度太亮，物理调节亮度为0后，黑暗中还是太亮。</strong></p>
+<p>网上搜了一圈，找到了4个在MacBook Pro上实现亮度调节的方法，记录如下: </p>
+<h4 id="相关说明"><a href="#相关说明" class="headerlink" title="相关说明"></a>相关说明</h4><p>网上有说有些方法在某些系统上不起作用。因此贴一下我这边的系统配置, 下面的记录基于如下系统配置。<br><strong>电脑型号: MacBook Pro (13-inch, 2018, Four Thunderbolt 3 Ports)</strong><br><strong>操作系统版本: macOS Mojave 10.14.4 (18E226)</strong></p>
+	
+	</div>
+  <a type="button" href="/2020/06/21/tools-to-control-brightness-of-external-monitor-on-macos/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
            
 			  
 	
@@ -590,66 +647,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2020-02-24 </div>
-			<div class="article-title"><a href="/2020/02/24/how-to-speed-yarn-install-interiorly/" >如何在国内加速yarn install</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p><code>yarn install</code>安装包时，在国内的网络环境下，不挂梯子，访问不稳定，会比较慢。</p>
-<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p><code>yarn install</code>默认是去<code>npm</code>,<code>yarn</code>官方源去获取软件信息的。</p>
-<p>使用<code>yarn config list</code>可以查看到<code>registry</code>的默认值是<code>https://registry.yarnpkg.com</code>。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">$ yarn config list</div><div class="line">yarn config v1.7.0</div><div class="line">info yarn config</div><div class="line">&#123; &apos;version-tag-prefix&apos;: &apos;v&apos;,</div><div class="line">  &apos;version-git-tag&apos;: true,</div><div class="line">  &apos;version-commit-hooks&apos;: true,</div><div class="line">  &apos;version-git-sign&apos;: false,</div><div class="line">  &apos;version-git-message&apos;: &apos;v%s&apos;,</div><div class="line">  &apos;init-version&apos;: &apos;1.0.0&apos;,</div><div class="line">  &apos;init-license&apos;: &apos;MIT&apos;,</div><div class="line">  &apos;save-prefix&apos;: &apos;^&apos;,</div><div class="line">  &apos;bin-links&apos;: true,</div><div class="line">  &apos;ignore-scripts&apos;: false,</div><div class="line">  &apos;ignore-optional&apos;: false,</div><div class="line">  registry: &apos;https://registry.yarnpkg.com&apos;,</div><div class="line">  &apos;strict-ssl&apos;: true,</div><div class="line">  &apos;user-agent&apos;: &apos;yarn/1.7.0 npm/? node/v8.11.2 linux x64&apos; &#125;</div><div class="line">info npm config</div><div class="line">&#123;&#125;</div><div class="line">Done in 0.03s.</div><div class="line">$</div></pre></td></tr></table></figure></p>
-	
-	</div>
-  <a type="button" href="/2020/02/24/how-to-speed-yarn-install-interiorly/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2020-01-31 </div>
-			<div class="article-title"><a href="/2020/01/31/How-to-install-rails-on-Ubuntu-18-04/" >在Ubuntu 18.04中安装Rails开发环境</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>本文介绍在Ubuntu 18.04上不用Docker，使用本地安装组件的方式搭建Rails+PostgreSQL开发环境的步骤。</p>
-<h3 id="搭建步骤"><a href="#搭建步骤" class="headerlink" title="搭建步骤"></a>搭建步骤</h3><ol>
-<li>下载Ubuntu 18.04.3 TLS安装镜像，下载地址: <a href="https://ubuntu.com/download/desktop" target="_blank" rel="external">https://ubuntu.com/download/desktop</a>。安装完成后，登录系统，打开Terminal。</li>
-<li><p>安装vim编辑器</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt install vim</div></pre></td></tr></table></figure>
-</li>
-<li><p>按照<a href="https://github.com/rvm/ubuntu_rvm" target="_blank" rel="external">https://github.com/rvm/ubuntu_rvm</a>的安装方法，安装rvm, 命令如下:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">sudo apt install gnupg2</div><div class="line">gpg2 --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB</div><div class="line">sudo apt-get install software-properties-common</div><div class="line"></div><div class="line">sudo apt-add-repository -y ppa:rael-gc/rvm</div><div class="line">sudo apt-get update</div><div class="line">sudo apt-get install rvm</div></pre></td></tr></table></figure>
-</li>
-<li><p>rvm安装完毕后，为了每次登陆时自动load rvm，执行如下命令。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">echo &apos;source &quot;/etc/profile.d/rvm.sh&quot;&apos; &gt;&gt; ~/.bashrc</div></pre></td></tr></table></figure>
-</li>
-<li><p>退出当前Terminal重新登陆，重新加载rvm环境变量</p>
-	
-	</div>
-  <a type="button" href="/2020/01/31/How-to-install-rails-on-Ubuntu-18-04/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -723,11 +720,11 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/#Kubernetes">Kubernetes<span>1</span></a></li>
 		
-			<li><a href="/categories/#Linux">Linux<span>10</span></a></li>
+			<li><a href="/categories/#Linux">Linux<span>11</span></a></li>
 		
 			<li><a href="/categories/#Shell">Shell<span>8</span></a></li>
 		
-			<li><a href="/categories/#Tools">Tools<span>27</span></a></li>
+			<li><a href="/categories/#Tools">Tools<span>28</span></a></li>
 		
 			<li><a href="/categories/#杂">杂<span>1</span></a></li>
 		
@@ -741,48 +738,48 @@ var _hmt = _hmt || [];
 		<h4>标签云</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/#EC2">EC2<span>8</span></a></li>
+			<li><a href="/tags/#AWS Tools">AWS Tools<span>2</span></a></li>
 		
-			<li><a href="/tags/#Rails">Rails<span>4</span></a></li>
+			<li><a href="/tags/#Github">Github<span>4</span></a></li>
 		
-			<li><a href="/tags/#Ubuntu">Ubuntu<span>1</span></a></li>
+			<li><a href="/tags/#Office">Office<span>2</span></a></li>
 		
-			<li><a href="/tags/#Failover">Failover<span>1</span></a></li>
-		
-			<li><a href="/tags/#RDS">RDS<span>3</span></a></li>
-		
-			<li><a href="/tags/#Douban">Douban<span>2</span></a></li>
-		
-			<li><a href="/tags/#Elastic Beanstalk">Elastic Beanstalk<span>7</span></a></li>
-		
-			<li><a href="/tags/#DynamoDB">DynamoDB<span>1</span></a></li>
-		
-			<li><a href="/tags/#Application Load Balancing">Application Load Balancing<span>1</span></a></li>
-		
-			<li><a href="/tags/#Ruby">Ruby<span>10</span></a></li>
-		
-			<li><a href="/tags/#Video">Video<span>1</span></a></li>
-		
-			<li><a href="/tags/#Wireshark">Wireshark<span>1</span></a></li>
-		
-			<li><a href="/tags/#SSH">SSH<span>5</span></a></li>
+			<li><a href="/tags/#Minecraft">Minecraft<span>1</span></a></li>
 		
 			<li><a href="/tags/#感悟">感悟<span>1</span></a></li>
 		
-			<li><a href="/tags/#AWS Free Tier">AWS Free Tier<span>1</span></a></li>
-		
-			<li><a href="/tags/#Kubernetes">Kubernetes<span>1</span></a></li>
+			<li><a href="/tags/#Douban">Douban<span>2</span></a></li>
 		
 			<li><a href="/tags/#RVM">RVM<span>3</span></a></li>
 		
-			<li><a href="/tags/#Aliyun">Aliyun<span>2</span></a></li>
+			<li><a href="/tags/#IAM">IAM<span>3</span></a></li>
 		
-			<li><a href="/tags/#Elastic Load Balancing">Elastic Load Balancing<span>6</span></a></li>
+			<li><a href="/tags/#EC2">EC2<span>8</span></a></li>
+		
+			<li><a href="/tags/#Nginx">Nginx<span>8</span></a></li>
+		
+			<li><a href="/tags/#AWS CLI">AWS CLI<span>6</span></a></li>
+		
+			<li><a href="/tags/#SSH">SSH<span>6</span></a></li>
+		
+			<li><a href="/tags/#Crontab">Crontab<span>1</span></a></li>
+		
+			<li><a href="/tags/#Docker Hub">Docker Hub<span>1</span></a></li>
+		
+			<li><a href="/tags/#AWS Deep Dive">AWS Deep Dive<span>2</span></a></li>
+		
+			<li><a href="/tags/#Passenger">Passenger<span>3</span></a></li>
 		
 			<li><a href="/tags/#Network">Network<span>4</span></a></li>
 		
+			<li><a href="/tags/#CentOS">CentOS<span>9</span></a></li>
 		
-		   <li><a href="/tags">...<span>63</span></a></li>
+			<li><a href="/tags/#iOS">iOS<span>1</span></a></li>
+		
+			<li><a href="/tags/#AWS SDK">AWS SDK<span>2</span></a></li>
+		
+		
+		   <li><a href="/tags">...<span>64</span></a></li>
 		 
 		</ul>
 	</div>
@@ -795,6 +792,14 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2020/06/23/resolve-sudo-error-in-crontab-job/" ><i class="fa fa-file-o"></i>Crontab中解决sorry, you must h...</a>
+      </li>
+    
+      <li>
+        <a href="/2020/06/21/tools-to-control-brightness-of-external-monitor-on-macos/" ><i class="fa fa-file-o"></i>Mac下调节外置显示器亮度的工具</a>
+      </li>
+    
+      <li>
         <a href="/2020/06/09/some-new-nginx-config/" ><i class="fa fa-file-o"></i>一些常用的Nginx+Passenger配置</a>
       </li>
     
@@ -804,14 +809,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2020/05/31/how-to-speed-minecraft-launcher-on-macos/" ><i class="fa fa-file-o"></i>在MacOS上加速Minecraft Launcher</a>
-      </li>
-    
-      <li>
-        <a href="/2020/05/27/Add-registry-mirror-to-docker/" ><i class="fa fa-file-o"></i>Docker添加国内镜像源</a>
-      </li>
-    
-      <li>
-        <a href="/2020/05/04/imageMagick-fonts-issue-on-Aliyun-Linux-2/" ><i class="fa fa-file-o"></i>Aliyun Linux 2上imageMagick的...</a>
       </li>
     
   </ul>

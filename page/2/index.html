@@ -139,6 +139,66 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
+			<div class="date"> 2020-02-24 </div>
+			<div class="article-title"><a href="/2020/02/24/how-to-speed-yarn-install-interiorly/" >如何在国内加速yarn install</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p><code>yarn install</code>安装包时，在国内的网络环境下，不挂梯子，访问不稳定，会比较慢。</p>
+<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p><code>yarn install</code>默认是去<code>npm</code>,<code>yarn</code>官方源去获取软件信息的。</p>
+<p>使用<code>yarn config list</code>可以查看到<code>registry</code>的默认值是<code>https://registry.yarnpkg.com</code>。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">$ yarn config list</div><div class="line">yarn config v1.7.0</div><div class="line">info yarn config</div><div class="line">&#123; &apos;version-tag-prefix&apos;: &apos;v&apos;,</div><div class="line">  &apos;version-git-tag&apos;: true,</div><div class="line">  &apos;version-commit-hooks&apos;: true,</div><div class="line">  &apos;version-git-sign&apos;: false,</div><div class="line">  &apos;version-git-message&apos;: &apos;v%s&apos;,</div><div class="line">  &apos;init-version&apos;: &apos;1.0.0&apos;,</div><div class="line">  &apos;init-license&apos;: &apos;MIT&apos;,</div><div class="line">  &apos;save-prefix&apos;: &apos;^&apos;,</div><div class="line">  &apos;bin-links&apos;: true,</div><div class="line">  &apos;ignore-scripts&apos;: false,</div><div class="line">  &apos;ignore-optional&apos;: false,</div><div class="line">  registry: &apos;https://registry.yarnpkg.com&apos;,</div><div class="line">  &apos;strict-ssl&apos;: true,</div><div class="line">  &apos;user-agent&apos;: &apos;yarn/1.7.0 npm/? node/v8.11.2 linux x64&apos; &#125;</div><div class="line">info npm config</div><div class="line">&#123;&#125;</div><div class="line">Done in 0.03s.</div><div class="line">$</div></pre></td></tr></table></figure></p>
+	
+	</div>
+  <a type="button" href="/2020/02/24/how-to-speed-yarn-install-interiorly/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2020-01-31 </div>
+			<div class="article-title"><a href="/2020/01/31/How-to-install-rails-on-Ubuntu-18-04/" >在Ubuntu 18.04中安装Rails开发环境</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>本文介绍在Ubuntu 18.04上不用Docker，使用本地安装组件的方式搭建Rails+PostgreSQL开发环境的步骤。</p>
+<h3 id="搭建步骤"><a href="#搭建步骤" class="headerlink" title="搭建步骤"></a>搭建步骤</h3><ol>
+<li>下载Ubuntu 18.04.3 TLS安装镜像，下载地址: <a href="https://ubuntu.com/download/desktop" target="_blank" rel="external">https://ubuntu.com/download/desktop</a>。安装完成后，登录系统，打开Terminal。</li>
+<li><p>安装vim编辑器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt install vim</div></pre></td></tr></table></figure>
+</li>
+<li><p>按照<a href="https://github.com/rvm/ubuntu_rvm" target="_blank" rel="external">https://github.com/rvm/ubuntu_rvm</a>的安装方法，安装rvm, 命令如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">sudo apt install gnupg2</div><div class="line">gpg2 --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB</div><div class="line">sudo apt-get install software-properties-common</div><div class="line"></div><div class="line">sudo apt-add-repository -y ppa:rael-gc/rvm</div><div class="line">sudo apt-get update</div><div class="line">sudo apt-get install rvm</div></pre></td></tr></table></figure>
+</li>
+<li><p>rvm安装完毕后，为了每次登陆时自动load rvm，执行如下命令。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">echo &apos;source &quot;/etc/profile.d/rvm.sh&quot;&apos; &gt;&gt; ~/.bashrc</div></pre></td></tr></table></figure>
+</li>
+<li><p>退出当前Terminal重新登陆，重新加载rvm环境变量</p>
+	
+	</div>
+  <a type="button" href="/2020/01/31/How-to-install-rails-on-Ubuntu-18-04/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
 			<div class="date"> 2019-12-31 </div>
 			<div class="article-title"><a href="/2019/12/31/after-upgrade-the-openssl-in-macos/" >MacOS下Brew升级openssl的后续处理</a></div>						
 		</h3>
@@ -335,88 +395,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2019-10-18 </div>
-			<div class="article-title"><a href="/2019/10/18/AWS-Advanced-Networking-Specialty/" >AWS Advanced Networking Specialty 考试心得</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>过了AWS的网络专项AWS Certified Advanced Networking -Specialty的考试，将学习过程中用到的资料罗列如下。<br><strong>注: 本文不是完整的学习考试指导，只是记录了我在准备考试的过程中所用到的一些资料和心得。</strong></p>
-<h3 id="考试说明"><a href="#考试说明" class="headerlink" title="考试说明"></a>考试说明</h3><ul>
-<li><a href="https://amazonaws-china.com/certification/certified-advanced-networking-specialty/" target="_blank" rel="external">考试说明主页</a></li>
-<li><a href="https://amazonaws-china.com/certification/certification-prep/" target="_blank" rel="external">AWS官方考试步骤的说明网页-包含sample question，Guide的下载地址等</a></li>
-<li><a href="https://d1.awsstatic-china.com/training-and-certification/docs-advnetworking-spec/AWS%20Certified%20Advanced%20Networking%20-%20Speciality_Exam_Guide_v1.2_FINAL.pdf" target="_blank" rel="external">AWS Certified Advanced Networking - Specialty Exam Guide</a></li>
-<li><a href="https://d1.awsstatic-china.com/training-and-certification/docs-advnetworking-spec/AWS_Certified_Advanced_Networking_Specialty_SampleExam.pdf" target="_blank" rel="external">官方例题下载</a></li>
-<li><a href="https://www.amazon.com/Certified-Advanced-Networking-Official-Study/dp/1119439833/ref=sr_1_1?s=books&amp;ie=UTF8&amp;qid=1519925473&amp;sr=1-1&amp;keywords=advanced+networking" target="_blank" rel="external">官方教材购买地址</a><ul>
-<li>网上也能找得到pdf版本</li>
-</ul>
-</li>
-</ul>
-<h3 id="一些参考资料"><a href="#一些参考资料" class="headerlink" title="一些参考资料"></a>一些参考资料</h3><ul>
-<li>Acloudguru上网络专项的视频教材,前7天免费，可随时取消。 - <a href="https://acloud.guru/learn/aws-certified-advanced-networking-specialty" target="_blank" rel="external">https://acloud.guru/learn/aws-certified-advanced-networking-specialty</a></li>
-<li>练习题: whizlabs上网络专项的练习题 - <a href="https://www.whizlabs.com/aws-advanced-networking-speciality/" target="_blank" rel="external">https://www.whizlabs.com/aws-advanced-networking-speciality/</a><ul>
-<li><strong>注意: whizlab上的题目仅仅是练习题，不是题库，是用来做考前练习，对知识点进行查漏补缺用的。我在实际考试中没有遇到一道和whizlab上一样的题目。</strong></li>
-</ul>
-</li>
-<li>几篇中文的考试心得<ul>
-<li>IT茶馆的博客 <a href="https://www.xiaopeiqing.com/posts/2896.html" target="_blank" rel="external">顺利通过AWS Certified Advanced Networking – Specialty考试</a></li>
-<li><a href="https://blog.51cto.com/8493144/2160058" target="_blank" rel="external">经验分享: 成功通过AWS Advanced Networking Specialty认证考试</a></li>
-</ul>
-</li>
-<li>几个老外的考试心得<ul>
-<li>学习AWS绕不开的一个博客–Jayendra的博客。他的这篇<a href="http://jayendrapatil.com/aws-certified-advanced-networking-speciality-ans-c00-exam-learning-path/" target="_blank" rel="external">AWS Certified Advanced Networking – Speciality (ANS-C00) Exam Learning Path</a>介绍了网络专项考试中会涉及到的大部分基础知识点，可以帮助理解考试知识点。</li>
-<li>一个老外的考试心得, 和我一样也是用了AcloudGuru和Whizlabs的材料进行的复习, 文章中对whizlab习题中的知识点做了系统的总结。<a href="https://daviseford.com/blog/2018/12/21/aws-advanced-networking-specialty-exam-tips.html" target="_blank" rel="external">AWS Advanced Networking Specialty Exam Tips and Tricks</a></li>
-<li>老外的考试心得2 <a href="https://blog.ashiny.cloud/2018/07/29/aws-certified-advanced-networking-specialty/" target="_blank" rel="external">AWS Certified Advanced Networking Specialty: Exam Notes and Observations</a></li>
-</ul>
-</li>
-</ul>
-	
-	</div>
-  <a type="button" href="/2019/10/18/AWS-Advanced-Networking-Specialty/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2019-09-30 </div>
-			<div class="article-title"><a href="/2019/09/30/apple-airport-express-access-unexpected-error-occurred/" >设置AirPort Express时获取不到设备信息的解决方案</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>设置新airport express，使用AirPort Utility获取设备信息时，提示”An unexpected error occurred try again”。</p>
-<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><p>解决办法如下:</p>
-<ol>
-<li>打开系统设置”System Preferences”，选择网络”Network”</li>
-<li>左侧选择连接设备的网络，”Wi-Fi”或者有线网络, 点击右下角的”Advanced..”</li>
-<li>选择”TCP/IP”的tab</li>
-<li>在”Configure IPv6”页面，选择”Link-local only”</li>
-<li>点击”OK”和”Apply”</li>
-</ol>
-	
-	</div>
-  <a type="button" href="/2019/09/30/apple-airport-express-access-unexpected-error-occurred/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -490,11 +468,11 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/#Kubernetes">Kubernetes<span>1</span></a></li>
 		
-			<li><a href="/categories/#Linux">Linux<span>10</span></a></li>
+			<li><a href="/categories/#Linux">Linux<span>11</span></a></li>
 		
 			<li><a href="/categories/#Shell">Shell<span>8</span></a></li>
 		
-			<li><a href="/categories/#Tools">Tools<span>27</span></a></li>
+			<li><a href="/categories/#Tools">Tools<span>28</span></a></li>
 		
 			<li><a href="/categories/#杂">杂<span>1</span></a></li>
 		
@@ -508,48 +486,48 @@ var _hmt = _hmt || [];
 		<h4>标签云</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/#FFMPEG">FFMPEG<span>2</span></a></li>
-		
-			<li><a href="/tags/#Yum">Yum<span>1</span></a></li>
-		
-			<li><a href="/tags/#Network">Network<span>4</span></a></li>
-		
-			<li><a href="/tags/#Docker Hub">Docker Hub<span>1</span></a></li>
-		
-			<li><a href="/tags/#RDS">RDS<span>3</span></a></li>
+			<li><a href="/tags/#AWS SDK">AWS SDK<span>2</span></a></li>
 		
 			<li><a href="/tags/#Wireshark">Wireshark<span>1</span></a></li>
 		
 			<li><a href="/tags/#CentOS">CentOS<span>9</span></a></li>
 		
-			<li><a href="/tags/#Ubuntu">Ubuntu<span>1</span></a></li>
+			<li><a href="/tags/#CodeCommit">CodeCommit<span>1</span></a></li>
 		
-			<li><a href="/tags/#Elastic Load Balancing">Elastic Load Balancing<span>6</span></a></li>
+			<li><a href="/tags/#RDS">RDS<span>3</span></a></li>
 		
-			<li><a href="/tags/#VMware">VMware<span>2</span></a></li>
+			<li><a href="/tags/#Chrome">Chrome<span>1</span></a></li>
 		
-			<li><a href="/tags/#PostgreSQL">PostgreSQL<span>4</span></a></li>
+			<li><a href="/tags/#OLED">OLED<span>1</span></a></li>
 		
-			<li><a href="/tags/#Hexo">Hexo<span>8</span></a></li>
-		
-			<li><a href="/tags/#Kubernetes">Kubernetes<span>1</span></a></li>
+			<li><a href="/tags/#Udemy">Udemy<span>1</span></a></li>
 		
 			<li><a href="/tags/#AutoScaling">AutoScaling<span>3</span></a></li>
 		
+			<li><a href="/tags/#S3">S3<span>10</span></a></li>
+		
+			<li><a href="/tags/#Docker">Docker<span>2</span></a></li>
+		
+			<li><a href="/tags/#Docker Hub">Docker Hub<span>1</span></a></li>
+		
+			<li><a href="/tags/#Elastic Beanstalk">Elastic Beanstalk<span>7</span></a></li>
+		
 			<li><a href="/tags/#Solutions Architect">Solutions Architect<span>1</span></a></li>
 		
-			<li><a href="/tags/#CodeCommit">CodeCommit<span>1</span></a></li>
+			<li><a href="/tags/#iOS">iOS<span>1</span></a></li>
 		
-			<li><a href="/tags/#Nginx">Nginx<span>8</span></a></li>
+			<li><a href="/tags/#Nodejs">Nodejs<span>4</span></a></li>
+		
+			<li><a href="/tags/#Video">Video<span>1</span></a></li>
+		
+			<li><a href="/tags/#Minecraft">Minecraft<span>1</span></a></li>
 		
 			<li><a href="/tags/#Screen">Screen<span>1</span></a></li>
 		
-			<li><a href="/tags/#Wkhtmltopdf">Wkhtmltopdf<span>1</span></a></li>
-		
-			<li><a href="/tags/#Rails">Rails<span>4</span></a></li>
+			<li><a href="/tags/#Kubernetes">Kubernetes<span>1</span></a></li>
 		
 		
-		   <li><a href="/tags">...<span>63</span></a></li>
+		   <li><a href="/tags">...<span>64</span></a></li>
 		 
 		</ul>
 	</div>
@@ -562,6 +540,14 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2020/06/23/resolve-sudo-error-in-crontab-job/" ><i class="fa fa-file-o"></i>Crontab中解决sorry, you must h...</a>
+      </li>
+    
+      <li>
+        <a href="/2020/06/21/tools-to-control-brightness-of-external-monitor-on-macos/" ><i class="fa fa-file-o"></i>Mac下调节外置显示器亮度的工具</a>
+      </li>
+    
+      <li>
         <a href="/2020/06/09/some-new-nginx-config/" ><i class="fa fa-file-o"></i>一些常用的Nginx+Passenger配置</a>
       </li>
     
@@ -571,14 +557,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2020/05/31/how-to-speed-minecraft-launcher-on-macos/" ><i class="fa fa-file-o"></i>在MacOS上加速Minecraft Launcher</a>
-      </li>
-    
-      <li>
-        <a href="/2020/05/27/Add-registry-mirror-to-docker/" ><i class="fa fa-file-o"></i>Docker添加国内镜像源</a>
-      </li>
-    
-      <li>
-        <a href="/2020/05/04/imageMagick-fonts-issue-on-Aliyun-Linux-2/" ><i class="fa fa-file-o"></i>Aliyun Linux 2上imageMagick的...</a>
       </li>
     
   </ul>

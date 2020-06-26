@@ -139,6 +139,59 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
+			<div class="date"> 2018-08-11 </div>
+			<div class="article-title"><a href="/2018/08/11/EB-warning-due-to-no-space-left-on-device-issue-on-EC2/" >由于EC2中no space left引起的EB警报</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="问题现象"><a href="#问题现象" class="headerlink" title="问题现象"></a>问题现象</h3><p>周末早上突然收到大量Elastic Beanstalk的警报邮件，提示一个跑Rails的EB环境中有大量的请求是HTTP 5xx。</p>
+<p>登陆AWS Console查看相关Event，已经有持续的WARN提示有大量的HTTP 5xx请求。<br><img src="/images/AWS/EBNoSpaceLeft/amounts_of_5XX_on_EB_event.png" alt="amounts_of_5XX_on_EB_event"></p>
+<h3 id="解决过程"><a href="#解决过程" class="headerlink" title="解决过程"></a>解决过程</h3><p>使用EB console下载了各个Instanc的日志，仔细进行排查。</p>
+<p>最后在一个Instance的Rails log中发现有请求提示<code>No space left on device</code>。原来是Instance的磁盘满了，导致了部分需要写临时文件的请求失败了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">F, [2018-08-11T02:10:43.084147 #11559] FATAL -- :</div><div class="line">Errno::ENOSPC (No space left on device @ rb_sysopen - /var/app/current/tmp/cache/rack%3A%3Aattack%3A306790688%3Alocations%2Fip%3A46.229.168.8120180811-11559-4156fj):</div><div class="line">  app/middleware/catch_json_parse_errors.rb:8:in `call&apos;</div></pre></td></tr></table></figure>
+	
+	</div>
+  <a type="button" href="/2018/08/11/EB-warning-due-to-no-space-left-on-device-issue-on-EC2/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2018-05-21 </div>
+			<div class="article-title"><a href="/2018/05/21/ssh-key-Invalid-key-length-Error-on-Macos/" >macOS 10.13.2下SSH命令Invalid key length错误的原因</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>升级到Macos 10.13.2后，使用ssh以key方式登陆一个12年配置的服务器的时候，ssh命令报告了<code>Invalid key length</code>的错误。</p>
+<p>很是纳闷，服务器和本地的key都是配置好后就没动过的，key pair本身肯定没问题啊，怎么会报错了呢?</p>
+<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>Google了一下，发现是MacOS使用的OpenSSH版本升级到了7.6，小于1024bits的RSA keys已经不被支持了。</p>
+<p>使用<code>ssh-keygen</code>查看了一下public key，发现是1023bit的。所以ssh时候报了<code>Invalid key length</code>的错误。</p>
+	
+	</div>
+  <a type="button" href="/2018/05/21/ssh-key-Invalid-key-length-Error-on-Macos/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
 			<div class="date"> 2018-05-10 </div>
 			<div class="article-title"><a href="/2018/05/10/how-to-write-NTFS-Deives-on-a-Mac-10.13/" >macOS 10.13 High Sierra读写NTFS移动硬盘</a></div>						
 		</h3>
@@ -334,57 +387,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2018-03-14 </div>
-			<div class="article-title"><a href="/2018/03/14/AWS-RDS-recovery-due-to-issue-with-underlying-hardware/" >AWS RDS recovery due to issue with underlying hardware</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>早上刚上班就收到一封主题为”RDS Notification Message”的订阅邮件，message内容为”Recovery of the DB instance has started. Recovery time will vary with the amount of data to be recovered”。</p>
-<p>上Web Console查看发生了什么事，发现RDS已经自我恢复完毕了。最新的Event消息提示为”Recovery of the DB instance is complete.”</p>
-<p><img src="/images/AWS/RDS/rds_recovery_event.png" alt="rds_recovery_event"></p>
-<p>提了Case询问了下，也在网上搜了一下，基本搞清楚了是怎么个回事，记录如下。</p>
-	
-	</div>
-  <a type="button" href="/2018/03/14/AWS-RDS-recovery-due-to-issue-with-underlying-hardware/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2018-03-12 </div>
-			<div class="article-title"><a href="/2018/03/12/how-to-handle-Retirement-Notification-Amazon-EC2-Instance-scheduled-for-retirement/" >EC2底层硬件Retirement的处理方法</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>AWS的EC2的实例是在物理机上虚拟化出来的，当承载EC2的物理机出现问题或者要退役时，AWS会发送一封主题为<strong>[Retirement Notification] Amazon EC2 Instance scheduled for retirement</strong>的email到AWS Account的注册邮箱中。</p>
-<p>以前多次收到过这类邮件，但提示的目标instance-ID都是AutoScaling中运行的EC2，而AutoScaling中的Instance自动伸缩不会影响业务，因此也从没有主动去处理过。</p>
-<p>这次突然收到通知邮件，说一台运行后台任务的Instance的underlying hardware hosting出问题了。在此记录一下相关的现象和解决方法。</p>
-	
-	</div>
-  <a type="button" href="/2018/03/12/how-to-handle-Retirement-Notification-Amazon-EC2-Instance-scheduled-for-retirement/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -458,11 +460,11 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/#Kubernetes">Kubernetes<span>1</span></a></li>
 		
-			<li><a href="/categories/#Linux">Linux<span>10</span></a></li>
+			<li><a href="/categories/#Linux">Linux<span>11</span></a></li>
 		
 			<li><a href="/categories/#Shell">Shell<span>8</span></a></li>
 		
-			<li><a href="/categories/#Tools">Tools<span>27</span></a></li>
+			<li><a href="/categories/#Tools">Tools<span>28</span></a></li>
 		
 			<li><a href="/categories/#杂">杂<span>1</span></a></li>
 		
@@ -476,48 +478,48 @@ var _hmt = _hmt || [];
 		<h4>标签云</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/#Nginx">Nginx<span>8</span></a></li>
+			<li><a href="/tags/#Image">Image<span>3</span></a></li>
 		
-			<li><a href="/tags/#Hexo">Hexo<span>8</span></a></li>
+			<li><a href="/tags/#EC2">EC2<span>8</span></a></li>
 		
-			<li><a href="/tags/#SSH">SSH<span>5</span></a></li>
+			<li><a href="/tags/#VMware">VMware<span>2</span></a></li>
 		
-			<li><a href="/tags/#CloudWatch">CloudWatch<span>1</span></a></li>
+			<li><a href="/tags/#FFMPEG">FFMPEG<span>2</span></a></li>
 		
-			<li><a href="/tags/#Aliyun">Aliyun<span>2</span></a></li>
+			<li><a href="/tags/#Linux">Linux<span>15</span></a></li>
 		
-			<li><a href="/tags/#Network">Network<span>4</span></a></li>
+			<li><a href="/tags/#Crontab">Crontab<span>1</span></a></li>
 		
 			<li><a href="/tags/#Ubuntu">Ubuntu<span>1</span></a></li>
 		
-			<li><a href="/tags/#Github">Github<span>4</span></a></li>
+			<li><a href="/tags/#Lightsail">Lightsail<span>2</span></a></li>
 		
-			<li><a href="/tags/#Elastic Load Balancing">Elastic Load Balancing<span>6</span></a></li>
+			<li><a href="/tags/#Aliyun">Aliyun<span>2</span></a></li>
 		
-			<li><a href="/tags/#Udemy">Udemy<span>1</span></a></li>
+			<li><a href="/tags/#Chrome">Chrome<span>1</span></a></li>
 		
-			<li><a href="/tags/#OLED">OLED<span>1</span></a></li>
+			<li><a href="/tags/#Git">Git<span>2</span></a></li>
 		
-			<li><a href="/tags/#Image">Image<span>3</span></a></li>
+			<li><a href="/tags/#iOS">iOS<span>1</span></a></li>
 		
-			<li><a href="/tags/#Solutions Architect">Solutions Architect<span>1</span></a></li>
+			<li><a href="/tags/#Docker">Docker<span>2</span></a></li>
 		
-			<li><a href="/tags/#Rails">Rails<span>4</span></a></li>
+			<li><a href="/tags/#Nodejs">Nodejs<span>4</span></a></li>
 		
-			<li><a href="/tags/#AutoScaling">AutoScaling<span>3</span></a></li>
+			<li><a href="/tags/#Passenger">Passenger<span>3</span></a></li>
 		
-			<li><a href="/tags/#RDS">RDS<span>3</span></a></li>
-		
-			<li><a href="/tags/#HTTP">HTTP<span>5</span></a></li>
-		
-			<li><a href="/tags/#Ruby">Ruby<span>10</span></a></li>
+			<li><a href="/tags/#AWS CLI">AWS CLI<span>6</span></a></li>
 		
 			<li><a href="/tags/#Yarn">Yarn<span>1</span></a></li>
+		
+			<li><a href="/tags/#PostgreSQL">PostgreSQL<span>4</span></a></li>
+		
+			<li><a href="/tags/#LCD">LCD<span>1</span></a></li>
 		
 			<li><a href="/tags/#Douban">Douban<span>2</span></a></li>
 		
 		
-		   <li><a href="/tags">...<span>63</span></a></li>
+		   <li><a href="/tags">...<span>64</span></a></li>
 		 
 		</ul>
 	</div>
@@ -530,6 +532,14 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2020/06/23/resolve-sudo-error-in-crontab-job/" ><i class="fa fa-file-o"></i>Crontab中解决sorry, you must h...</a>
+      </li>
+    
+      <li>
+        <a href="/2020/06/21/tools-to-control-brightness-of-external-monitor-on-macos/" ><i class="fa fa-file-o"></i>Mac下调节外置显示器亮度的工具</a>
+      </li>
+    
+      <li>
         <a href="/2020/06/09/some-new-nginx-config/" ><i class="fa fa-file-o"></i>一些常用的Nginx+Passenger配置</a>
       </li>
     
@@ -539,14 +549,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2020/05/31/how-to-speed-minecraft-launcher-on-macos/" ><i class="fa fa-file-o"></i>在MacOS上加速Minecraft Launcher</a>
-      </li>
-    
-      <li>
-        <a href="/2020/05/27/Add-registry-mirror-to-docker/" ><i class="fa fa-file-o"></i>Docker添加国内镜像源</a>
-      </li>
-    
-      <li>
-        <a href="/2020/05/04/imageMagick-fonts-issue-on-Aliyun-Linux-2/" ><i class="fa fa-file-o"></i>Aliyun Linux 2上imageMagick的...</a>
       </li>
     
   </ul>

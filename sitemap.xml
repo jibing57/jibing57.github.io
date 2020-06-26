@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://www.jibing57.com/2020/06/23/resolve-sudo-error-in-crontab-job/</loc>
+    
+    <lastmod>2020-06-25T10:49:01.421Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.jibing57.com/2020/06/21/tools-to-control-brightness-of-external-monitor-on-macos/</loc>
+    
+    <lastmod>2020-06-23T09:04:33.159Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.jibing57.com/2019/10/27/postgresql-tips/</loc>
     
     <lastmod>2020-06-18T08:55:58.082Z</lastmod>
@@ -604,28 +618,7 @@
   </url>
   
   <url>
-    <loc>https://www.jibing57.com/2017/10/24/how-to-use-aws-cli-with-multi-user/</loc>
-    
-    <lastmod>2017-12-25T07:09:02.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://www.jibing57.com/2017/07/25/how-to-read-text-on-macos/</loc>
-    
-    <lastmod>2017-12-25T07:09:02.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.jibing57.com/2017/12/12/how-to-write-multiline-to-file-by-shell/</loc>
-    
-    <lastmod>2017-12-25T07:09:02.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.jibing57.com/2017/11/29/how-to-enable-slow-query-on-aws-rds-postgresql/</loc>
     
     <lastmod>2017-12-25T07:09:02.000Z</lastmod>
     
@@ -639,14 +632,35 @@
   </url>
   
   <url>
-    <loc>https://www.jibing57.com/2017/12/19/deep-dig-on-s3-bucket-permission-exam/</loc>
+    <loc>https://www.jibing57.com/2017/12/12/how-to-write-multiline-to-file-by-shell/</loc>
+    
+    <lastmod>2017-12-25T07:09:02.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.jibing57.com/2017/10/24/how-to-use-aws-cli-with-multi-user/</loc>
+    
+    <lastmod>2017-12-25T07:09:02.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.jibing57.com/2017/11/29/how-to-enable-slow-query-on-aws-rds-postgresql/</loc>
+    
+    <lastmod>2017-12-25T07:09:02.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.jibing57.com/2017/10/31/hexo-bind-domain-to-github-pages/</loc>
     
     <lastmod>2017-12-25T07:08:09.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://www.jibing57.com/2017/10/31/hexo-bind-domain-to-github-pages/</loc>
+    <loc>https://www.jibing57.com/2017/12/19/deep-dig-on-s3-bucket-permission-exam/</loc>
     
     <lastmod>2017-12-25T07:08:09.000Z</lastmod>
     

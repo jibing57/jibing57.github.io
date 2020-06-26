@@ -1,0 +1,429 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Mac下调节外置显示器亮度的工具 | Recording</title>
+  <meta name="author" content="jibing57">
+  
+  <meta name="description" content="AWS, 阅读, Architecture, PostgreSQL">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Mac下调节外置显示器亮度的工具"/>
+  <meta property="og:site_name" content="Recording"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/css/themes/bootstrap.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/comment.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+  
+  <!-- analytics -->
+  
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-111771042-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?59d3e14cdc96877383afed646f44d216";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+</head>
+
+ <body>  
+  <nav id="main-nav" class="navbar  navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+	<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+       <a class="navbar-brand" href="/">Recording</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class="fa fa-archive"></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class="fa fa-folder"></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class="fa fa-tags"></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/books" title="Douban">
+			  <i class="fa fa-book"></i>Douban
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header ">		
+			<h1 class="title "> Mac下调节外置显示器亮度的工具</h1>
+		</div>		
+	
+
+
+
+
+   <style type="text/css">
+           img, video {
+                -webkit-box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+                -moz-box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+                box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+           }
+   </style>
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
+
+	<!-- content -->
+	<div class="mypage">		
+	  		
+
+	  <h3 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h3><p>家里缺台显示器，趁着狗东6.18活动，入手了一台AOC U2790PQU(穷人表示买不起Dell U2720)。</p>
+<p>到货后拆箱试用，检测了下屏幕，没有坏点, 而且在mac下即插即用，屏幕自动适应缩放，不用特殊设置缩放。一切都挺好。</p>
+<p>唯一的问题是，AOC这台显示器亮度太亮了，我已经在显示器设置中将亮度设为0了，屏幕亮度还是太亮。</p>
+<p>有问题就得尝试解决，于是上网搜索解决方案。</p>
+<h3 id="需要解决的问题"><a href="#需要解决的问题" class="headerlink" title="需要解决的问题"></a>需要解决的问题</h3><p><strong>问题: 显示器亮度太亮，物理调节亮度为0后，黑暗中还是太亮。</strong></p>
+<p>网上搜了一圈，找到了4个在MacBook Pro上实现亮度调节的方法，记录如下: </p>
+<h4 id="相关说明"><a href="#相关说明" class="headerlink" title="相关说明"></a>相关说明</h4><p>网上有说有些方法在某些系统上不起作用。因此贴一下我这边的系统配置, 下面的记录基于如下系统配置。<br><strong>电脑型号: MacBook Pro (13-inch, 2018, Four Thunderbolt 3 Ports)</strong><br><strong>操作系统版本: macOS Mojave 10.14.4 (18E226)</strong></p>
+<a id="more"></a>
+<h3 id="MonitorControl"><a href="#MonitorControl" class="headerlink" title="MonitorControl"></a>MonitorControl</h3><p><a href="https://github.com/MonitorControl/MonitorControl" target="_blank" rel="external">MonitorControl</a>是Github上开源的一款工具，可以控制Mac上外接显示器的亮度和声音。</p>
+<h4 id="安装方法"><a href="#安装方法" class="headerlink" title="安装方法:"></a>安装方法:</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ brew cask install monitorcontrol</div></pre></td></tr></table></figure>
+<h4 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h4><p>安装完后，在Launchpad中就可以找到MonotorControl的图标了。<br><img src="/images/Apple/monitor_control_launchpad.png" alt="monitor_control_launchpad.png"></p>
+<p>点击打开后，菜单栏会有对应的图标，点开图标就可以控制外部显示器的亮度了。 试验了Samsung S24E360和AOC U2790PQU两款显示器，都可以调节。</p>
+<ul>
+<li><p>Samsung S24E360<br><img src="/images/Apple/preview_monotor_control.png" alt="preview_monotor_control.png"></p>
+</li>
+<li><p>AOC U2790PQU<br><img src="/images/Apple/preview_monotor_control_U2790B.png" alt="preview_monotor_control_U2790B.png"></p>
+</li>
+</ul>
+<h4 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h4><p>试验下来发现，MonitorControl这边控制的显示亮度，和显示器原生的物理亮度控制是一致的。这边MonitorControl只是提供了一个GUI的方式来控制亮度。而不是额外再多了一层亮度控制。没法解决显示器亮度调到0后还是嫌亮的问题。</p>
+<h4 id="Reference"><a href="#Reference" class="headerlink" title="Reference:"></a>Reference:</h4><ul>
+<li><a href="https://sleele.com/2018/11/27/mac%E5%A4%96%E6%8E%A5%E6%98%BE%E7%A4%BA%E5%99%A8%E8%B0%83%E8%8A%82%E4%BA%AE%E5%BA%A6%E3%80%81%E5%A3%B0%E9%9F%B3/" target="_blank" rel="external">Mac外接显示器调节亮度、声音</a></li>
+<li><a href="https://sspai.com/post/56176" target="_blank" rel="external">让外接屏实现一键调亮度调音量，一个 MonitorControl 就够了</a></li>
+</ul>
+<h3 id="Lunar"><a href="#Lunar" class="headerlink" title="Lunar"></a>Lunar</h3><p>Lunar的github地址<a href="https://github.com/alin23/Lunar" target="_blank" rel="external">alin23/Lunar</a>。在Readme描述中就说明了Lunar使用的就是物理调节，而不是软件调节。</p>
+<blockquote>
+<p><em>Note: Lunar changes the actual (physical) brightness and contrast of the monitor.</em></p>
+<p><em>It doesn’t use a software overlay.</em></p>
+</blockquote>
+<p>所以说Lunar并不能满足我的要求。不过既然看到了，也可以尝试着装了玩玩。</p>
+<h4 id="安装方法-1"><a href="#安装方法-1" class="headerlink" title="安装方法"></a>安装方法</h4><p>有两个安装方法:</p>
+<ul>
+<li>可以在官网<a href="https://lunar.fyi/" target="_blank" rel="external">lunar.fyi</a>上下载最新的dmg安装包<a href="https://lunar.fyi/download/latest" target="_blank" rel="external">Lunar.dmg</a>。</li>
+<li>使用brew来进行安装<code>brew cask install lunar</code>。</li>
+</ul>
+<h4 id="软件界面"><a href="#软件界面" class="headerlink" title="软件界面"></a>软件界面</h4><p>不得不说，Lunar的功能做的还比较丰富，可以根据个人需要设置亮度和对比度的调节范围，还可以设置根据MacBook的主屏亮度来同步调节外接显示器的亮度。但可惜的是使用的是物理调节，不是我想要的功能。<br><img src="/images/Apple/lunar.png" alt="lunar.png"></p>
+<h3 id="Brightness-Slider"><a href="#Brightness-Slider" class="headerlink" title="Brightness Slider"></a>Brightness Slider</h3><h4 id="安装方法-2"><a href="#安装方法-2" class="headerlink" title="安装方法"></a>安装方法</h4><p>App Store上搜索Brightness Slider进行安装。<br><img src="/images/Apple/app_store_brightness_slider.png" alt="app_store_brightness_slider.png"></p>
+<h4 id="功能介绍"><a href="#功能介绍" class="headerlink" title="功能介绍"></a>功能介绍</h4><p>App Store中的功能介绍的文字无法拷贝出来，但在<a href="https://actproductions.net/free-apps/brightness-slider/" target="_blank" rel="external">actproductions.net</a>上找到了Brightness Slider的功能描述。</p>
+<blockquote>
+<p>How Brightness Slider works:<br>Brightness Slider darkens your display by combining two separate methods. Method A adjusts the real backlight intensity of your display and method B creates a semi-transparent black veil above everything else. Why the complexity? Well, when dimming a display, the final jump down to no backlight at all is very large, especially in a darkened room. To provide more control over the dimming process, the top-half of the slider controls the backlight intensity from 1 down to 0.1 (method A). Then, the bottom-half controls the opacity of the semi-transparent veil, whilst keeping the backlight at 0.1 (method B). When the slider is at zero, the backlight is turned off. The result is that the final jump now has several intermediate steps, which means the perceived brightness (the combined result of both methods) is that much more adjustable.</p>
+</blockquote>
+<p>可以看到Brightness Slider的实现机制</p>
+<ul>
+<li>滑动按钮的上半部(也就是描述中所述的Method A)是通过调节显示器的物理亮度来调节显示亮度</li>
+<li>滑动按钮的下半部(也就是描述中所述的Method B)是通过在所有显示之前遮盖一个半透明的黑色遮盖来调节显示亮度</li>
+</ul>
+<h4 id="使用体验"><a href="#使用体验" class="headerlink" title="使用体验"></a>使用体验</h4><p>打开Brightness Slider进行试用</p>
+<ul>
+<li>滑动按钮的上半部物理调节，只能控制MacBook自身的屏幕的物理亮度，而无法调节外接显示器的物理亮度。</li>
+<li>滑动按钮的下半部分遮盖物调节，能够同时控制MacBook自身的屏幕和外接显示器的屏幕亮度。</li>
+</ul>
+<h4 id="结论-1"><a href="#结论-1" class="headerlink" title="结论"></a>结论</h4><p>可以实现主屏和外屏的亮度调节。要想将两块屏幕调节到合适亮度的实现方案:</p>
+<ol>
+<li>先使用Brightness Slider滑动到下半部，来调节外接显示器的亮度为合适的亮度。</li>
+<li>再使用MacBook自身的亮度调节按键，调节主屏的亮度。</li>
+</ol>
+<h3 id="QuickShade"><a href="#QuickShade" class="headerlink" title="QuickShade"></a>QuickShade</h3><h4 id="安装方法-3"><a href="#安装方法-3" class="headerlink" title="安装方法"></a>安装方法</h4><p>App Store中搜索QuickShade来进行安装。<br><img src="/images/Apple/app_store_quickshade.png" alt="app_store_quickshade.png"></p>
+<h4 id="使用体验-1"><a href="#使用体验-1" class="headerlink" title="使用体验"></a>使用体验</h4><p>QuickShade没有介绍其亮度控制的机制。只能通过自己的使用来猜测。<br>安装完后启动App。拖动滑动按钮时，App会同时调节MacBook的主屏和外接屏幕的亮度。<br>调节前后查看了一下显示器的物理亮度, 发现并没有改变。因此猜测可能是和Brightness Slider的Method B的方式类似，通过一层半透明的遮盖来实现的。</p>
+<p><img src="/images/Apple/quickshade_on_menubar.png" alt="quickshade_on_menubar.png"></p>
+<h4 id="结论-2"><a href="#结论-2" class="headerlink" title="结论"></a>结论</h4><p>QuickShade可以直观地解决我调节显示器的需求。</p>
+<h3 id="最终意见"><a href="#最终意见" class="headerlink" title="最终意见"></a>最终意见</h3><h4 id="比较"><a href="#比较" class="headerlink" title="比较"></a>比较</h4><p>如下是几个App的比较</p>
+<table>
+<thead>
+<tr>
+<th>软件</th>
+<th>实现方式</th>
+<th>是否可以解决问题</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MonitorControl</td>
+<td>使用GUI实现物理调节</td>
+<td>否</td>
+</tr>
+<tr>
+<td>Lunar</td>
+<td>使用GUI实现物理调节</td>
+<td>否</td>
+</tr>
+<tr>
+<td>Brightness Slider</td>
+<td>物理调节和软件调节结合</td>
+<td>部分</td>
+</tr>
+<tr>
+<td>QuickShade</td>
+<td>软件调节</td>
+<td>能</td>
+</tr>
+</tbody>
+</table>
+<h4 id="选取意见"><a href="#选取意见" class="headerlink" title="选取意见"></a>选取意见</h4><p>在我这个特定需求的场景下，比较各个App。最终决定选择使用QuickShade。<br><strong>在其他场景，比如只是需要能够方便调节外接显示器亮度的场景下，个人感觉<a href="https://lunar.fyi/" target="_blank" rel="external">Lunar</a>的界面更精美，功能也更多一些。</strong></p>
+<h4 id="合影"><a href="#合影" class="headerlink" title="合影"></a>合影</h4><p>最后来一张合影<br><img src="/images/Apple/group_photo.jpg" alt="group_photo.jpg"></p>
+<h3 id="Tips"><a href="#Tips" class="headerlink" title="Tips"></a>Tips</h3><p>在试验过程中，总结了两个判定亮度调节软件使用的是物理方式调节还是软件方式调节的方法:</p>
+<ol>
+<li>使用软件调节亮度过后，检查一下显示器自带的亮度设置是否被更新了。<ul>
+<li>如果亮度设置被更新了，那就是物理方式的调节</li>
+<li>如果亮度设置没有被更新，那就是软件方式的调节</li>
+</ul>
+</li>
+<li>使用软件调节亮度过后, 退出该软件<ul>
+<li>如果屏幕亮度没有变化，那就是物理方式的调节</li>
+<li>如果屏幕亮度有变化，那就是软件方式的调节</li>
+</ul>
+</li>
+</ol>
+	  
+	</div>
+
+	<div>
+  	<center>
+	<div class="pagination">
+<ul class="pagination">
+	 
+				
+    	<li class="prev"><a href="/2020/06/23/resolve-sudo-error-in-crontab-job/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>上一页</a></li>
+  		
+
+        <li><a href="/archives"><i class="fa fa-archive"></i>Archive</a></li>
+
+		
+		   <li class="next"><a href="/2020/06/09/some-new-nginx-config/" class="alignright next">下一页<i class="fa fa-arrow-circle-o-right"></i></a></li>         
+        
+	
+</ul>
+</div>
+
+    </center>
+	</div>
+
+    <!-- share -->
+    
+        
+    <div class="bdsharebuttonbox">
+        <a href="#" class="bds_more" data-cmd="more"></a>
+        <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+        <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+        <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+        <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+        <a href="#" class="bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+        <a href="#" class="bds_evernotecn" data-cmd="evernotecn" title="分享到印象笔记"></a>
+        <a href="#" class="bds_youdao" data-cmd="youdao" title="分享到有道云笔记"></a>
+        <a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+    </div>
+    <script>
+        window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"24"},"share":{}};
+        with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+    </script>
+
+
+        
+
+    
+	
+	<!-- comment -->
+	
+<section id="comment">
+  <h2 class="title">留言</h2>
+  
+  	 <div id="disqus_thread">
+     <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  	 </div>
+  
+</section>
+
+
+	</div> <!-- col-md-9/col-md-12 -->
+		
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta">
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2020-06-21
+	</div>
+	
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
+	   <div id="toc" class="toc collapse in">
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#起因"><span class="toc-article-text">起因</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#需要解决的问题"><span class="toc-article-text">需要解决的问题</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#相关说明"><span class="toc-article-text">相关说明</span></a></li></ol></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#MonitorControl"><span class="toc-article-text">MonitorControl</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#安装方法"><span class="toc-article-text">安装方法:</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#使用方法"><span class="toc-article-text">使用方法</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#结论"><span class="toc-article-text">结论</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#Reference"><span class="toc-article-text">Reference:</span></a></li></ol></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#Lunar"><span class="toc-article-text">Lunar</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#安装方法-1"><span class="toc-article-text">安装方法</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#软件界面"><span class="toc-article-text">软件界面</span></a></li></ol></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#Brightness-Slider"><span class="toc-article-text">Brightness Slider</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#安装方法-2"><span class="toc-article-text">安装方法</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#功能介绍"><span class="toc-article-text">功能介绍</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#使用体验"><span class="toc-article-text">使用体验</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#结论-1"><span class="toc-article-text">结论</span></a></li></ol></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#QuickShade"><span class="toc-article-text">QuickShade</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#安装方法-3"><span class="toc-article-text">安装方法</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#使用体验-1"><span class="toc-article-text">使用体验</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#结论-2"><span class="toc-article-text">结论</span></a></li></ol></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#最终意见"><span class="toc-article-text">最终意见</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#比较"><span class="toc-article-text">比较</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#选取意见"><span class="toc-article-text">选取意见</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#合影"><span class="toc-article-text">合影</span></a></li></ol></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#Tips"><span class="toc-article-text">Tips</span></a></li></ol>
+		</div>
+	
+	</div>
+
+	<!-- categories -->
+    
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>
+    <ul id="categorys" class="tag_box list-unstyled collapse in">
+          
+  <li>
+    <li><a href="/categories/Tools/">Tools<span>28</span></a></li>
+  </li>
+
+    </ul>
+	</div>
+	
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>
+    <ul id="tags" class="tag_box list-unstyled collapse in">
+	    
+  <li><a href="/tags/MacOS/">MacOS<span>21</span></a></li>
+    </ul>
+	</div>
+	
+
+    <hr>
+
+</div><!-- col-md-3 -->
+
+	</div>
+		
+
+</div><!-- row -->
+
+<script type="text/javascript">
+var disqus_shortname = 'jibing57-blog';
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  &copy; 2020 jibing57
+  
+      with help from <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>.    
+</p> </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>

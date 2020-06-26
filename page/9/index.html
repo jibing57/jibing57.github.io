@@ -139,6 +139,58 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
+			<div class="date"> 2017-12-20 </div>
+			<div class="article-title"><a href="/2017/12/20/How-to-add-staging-log-to-EB-logs/" >如何在Elastic Beanstalk的Rails环境中配置staging.log为可下载</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>新建了一个EB环境，来跑一个staging模式的rails。EB环境变量设置好后，部署成功。一系列测试都没问题，结果却在一个不起眼的地方出了点幺蛾子。</p>
+<p>Rails代码中，没有特殊配置config.logger,因此staging模式时，默认的输出日志为logs/staging.log, 但是在EB的Web console中尝试获取Full Logs后，在BundleLogs中发现没有staging.log。</p>
+<p>赶紧调查试验了一下，并将调查结果记录如下。</p>
+	
+	</div>
+  <a type="button" href="/2017/12/20/How-to-add-staging-log-to-EB-logs/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2017-12-20 </div>
+			<div class="article-title"><a href="/2017/12/20/expired-of-S3-RRS/" >S3 RRS价格注意点</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="S3-存储类型"><a href="#S3-存储类型" class="headerlink" title="S3 存储类型"></a>S3 存储类型</h3><p>S3 总共提供三种存储类型</p>
+<ul>
+<li>标准(Standard)</li>
+<li>标准-低频率访问(Standard - Infrequent Access)</li>
+<li>低冗余存储(Reduced Redundancy Storage)
+	
+	</div>
+  <a type="button" href="/2017/12/20/expired-of-S3-RRS/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
 			<div class="date"> 2017-12-19 </div>
 			<div class="article-title"><a href="/2017/12/19/deep-dig-on-s3-bucket-permission-exam/" >深挖AWS S3的权限管理(实验篇)</a></div>						
 		</h3>
@@ -383,58 +435,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2017-10-29 </div>
-			<div class="article-title"><a href="/2017/10/29/ruby-paperclip-destroy-callback-nil/" >Paperclip destroy的callback中attachment的各个attribute为nil的问题调查</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="问题点"><a href="#问题点" class="headerlink" title="问题点"></a>问题点</h3><p>Rails的Image的models中，使用了paperclip这个Gem来处理图片。近期需要添加一个功能，删除image后，需要向某个email地址发送一封邮件，告之某个图片已经被删除了。</p>
-<p>实际操作中，发现在无论函数是定义在before_destroy或after_destroy的callback中，attachment_file_name,attachment_file_size, attachment_content_type, attachment_updated_at的属性，取出来都是nil。</p>
-<p>调查了一下，现将结果汇总如下:<br>
-	
-	</div>
-  <a type="button" href="/2017/10/29/ruby-paperclip-destroy-callback-nil/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2017-10-24 </div>
-			<div class="article-title"><a href="/2017/10/24/how-to-use-aws-cli-with-multi-user/" >如何在aws cli中使用多个配置文件</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p><code>aws cli</code>使用中，可能会有在多个IAM账户中进行切换的需求，手动切换<code>~/.aws/</code>目录下的<code>config</code>和<code>credentials</code>是十分费力的事情。还好<code>aws cli</code>本身就可以支持多个aws credentials</p>
-<h3 id="配置多个profile"><a href="#配置多个profile" class="headerlink" title="配置多个profile"></a>配置多个profile</h3><p><code>aws configure</code>时，加上<code>--profile</code>参数来命名不同的账户, 依次输入access id, access key, region和output format。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ aws configure --profile user1</div><div class="line">$ aws configure --profile user2</div></pre></td></tr></table></figure>
-<p>此时生成的<code>config</code>和<code>credentials</code>文件中，会使用账户名来分割不同的配置</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">[carlshen@carl-macpro-lan ~]$ cat ~/.aws/config</div><div class="line">[profile user1]</div><div class="line">output = json</div><div class="line">region = us-west-2</div><div class="line">[profile user2]</div><div class="line">output = json</div><div class="line">region = ap-northeast-2</div><div class="line">[carlshen@carl-macpro-lan ~]$</div><div class="line">[carlshen@carl-macpro-lan ~]$ cat ~/.aws/credentials</div><div class="line">[user1]</div><div class="line">aws_access_key_id = AKIAXXXXXXXXXXXXXXXX</div><div class="line">aws_secret_access_key = XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</div><div class="line">[user2]</div><div class="line">aws_access_key_id = AKIAXXXXXXXXXXXXXXXX</div><div class="line">aws_secret_access_key = XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</div><div class="line">[carlshen@carl-macpro-lan ~]$</div></pre></td></tr></table></figure>
-	
-	</div>
-  <a type="button" href="/2017/10/24/how-to-use-aws-cli-with-multi-user/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -508,11 +508,11 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/#Kubernetes">Kubernetes<span>1</span></a></li>
 		
-			<li><a href="/categories/#Linux">Linux<span>10</span></a></li>
+			<li><a href="/categories/#Linux">Linux<span>11</span></a></li>
 		
 			<li><a href="/categories/#Shell">Shell<span>8</span></a></li>
 		
-			<li><a href="/categories/#Tools">Tools<span>27</span></a></li>
+			<li><a href="/categories/#Tools">Tools<span>28</span></a></li>
 		
 			<li><a href="/categories/#杂">杂<span>1</span></a></li>
 		
@@ -526,48 +526,48 @@ var _hmt = _hmt || [];
 		<h4>标签云</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/#VMware">VMware<span>2</span></a></li>
-		
-			<li><a href="/tags/#Kubernetes">Kubernetes<span>1</span></a></li>
-		
-			<li><a href="/tags/#OLED">OLED<span>1</span></a></li>
-		
-			<li><a href="/tags/#CodeCommit">CodeCommit<span>1</span></a></li>
-		
-			<li><a href="/tags/#Elastic Load Balancing">Elastic Load Balancing<span>6</span></a></li>
-		
-			<li><a href="/tags/#Douban">Douban<span>2</span></a></li>
-		
-			<li><a href="/tags/#Chrome">Chrome<span>1</span></a></li>
-		
-			<li><a href="/tags/#Linux">Linux<span>15</span></a></li>
-		
-			<li><a href="/tags/#FFMPEG">FFMPEG<span>2</span></a></li>
-		
-			<li><a href="/tags/#Nginx">Nginx<span>8</span></a></li>
-		
-			<li><a href="/tags/#IAM">IAM<span>3</span></a></li>
-		
-			<li><a href="/tags/#Application Load Balancing">Application Load Balancing<span>1</span></a></li>
-		
-			<li><a href="/tags/#EC2">EC2<span>8</span></a></li>
-		
-			<li><a href="/tags/#AutoScaling">AutoScaling<span>3</span></a></li>
-		
-			<li><a href="/tags/#MacOS">MacOS<span>20</span></a></li>
-		
-			<li><a href="/tags/#Docker Hub">Docker Hub<span>1</span></a></li>
-		
-			<li><a href="/tags/#CentOS">CentOS<span>9</span></a></li>
+			<li><a href="/tags/#HTTPS">HTTPS<span>1</span></a></li>
 		
 			<li><a href="/tags/#RDS">RDS<span>3</span></a></li>
 		
-			<li><a href="/tags/#PostgreSQL">PostgreSQL<span>4</span></a></li>
+			<li><a href="/tags/#Wkhtmltopdf">Wkhtmltopdf<span>1</span></a></li>
 		
-			<li><a href="/tags/#CloudWatch">CloudWatch<span>1</span></a></li>
+			<li><a href="/tags/#Ubuntu">Ubuntu<span>1</span></a></li>
+		
+			<li><a href="/tags/#CodeCommit">CodeCommit<span>1</span></a></li>
+		
+			<li><a href="/tags/#Ruby">Ruby<span>10</span></a></li>
+		
+			<li><a href="/tags/#FFMPEG">FFMPEG<span>2</span></a></li>
+		
+			<li><a href="/tags/#Sysops">Sysops<span>1</span></a></li>
+		
+			<li><a href="/tags/#CentOS">CentOS<span>9</span></a></li>
+		
+			<li><a href="/tags/#VMware">VMware<span>2</span></a></li>
+		
+			<li><a href="/tags/#Chrome">Chrome<span>1</span></a></li>
+		
+			<li><a href="/tags/#AWS CLI">AWS CLI<span>6</span></a></li>
+		
+			<li><a href="/tags/#OLED">OLED<span>1</span></a></li>
+		
+			<li><a href="/tags/#AWS SDK">AWS SDK<span>2</span></a></li>
+		
+			<li><a href="/tags/#感悟">感悟<span>1</span></a></li>
+		
+			<li><a href="/tags/#IAM">IAM<span>3</span></a></li>
+		
+			<li><a href="/tags/#Office">Office<span>2</span></a></li>
+		
+			<li><a href="/tags/#DynamoDB">DynamoDB<span>1</span></a></li>
+		
+			<li><a href="/tags/#Linux">Linux<span>15</span></a></li>
+		
+			<li><a href="/tags/#AutoScaling">AutoScaling<span>3</span></a></li>
 		
 		
-		   <li><a href="/tags">...<span>63</span></a></li>
+		   <li><a href="/tags">...<span>64</span></a></li>
 		 
 		</ul>
 	</div>
@@ -580,6 +580,14 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2020/06/23/resolve-sudo-error-in-crontab-job/" ><i class="fa fa-file-o"></i>Crontab中解决sorry, you must h...</a>
+      </li>
+    
+      <li>
+        <a href="/2020/06/21/tools-to-control-brightness-of-external-monitor-on-macos/" ><i class="fa fa-file-o"></i>Mac下调节外置显示器亮度的工具</a>
+      </li>
+    
+      <li>
         <a href="/2020/06/09/some-new-nginx-config/" ><i class="fa fa-file-o"></i>一些常用的Nginx+Passenger配置</a>
       </li>
     
@@ -589,14 +597,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2020/05/31/how-to-speed-minecraft-launcher-on-macos/" ><i class="fa fa-file-o"></i>在MacOS上加速Minecraft Launcher</a>
-      </li>
-    
-      <li>
-        <a href="/2020/05/27/Add-registry-mirror-to-docker/" ><i class="fa fa-file-o"></i>Docker添加国内镜像源</a>
-      </li>
-    
-      <li>
-        <a href="/2020/05/04/imageMagick-fonts-issue-on-Aliyun-Linux-2/" ><i class="fa fa-file-o"></i>Aliyun Linux 2上imageMagick的...</a>
       </li>
     
   </ul>

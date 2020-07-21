@@ -1,0 +1,386 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Redis基础 | Recording</title>
+  <meta name="author" content="jibing57">
+  
+  <meta name="description" content="AWS, 阅读, Architecture, PostgreSQL">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Redis基础"/>
+  <meta property="og:site_name" content="Recording"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/css/themes/bootstrap.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/comment.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+  
+  <!-- analytics -->
+  
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-111771042-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?59d3e14cdc96877383afed646f44d216";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+</head>
+
+ <body>  
+  <nav id="main-nav" class="navbar  navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+	<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+       <a class="navbar-brand" href="/">Recording</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class="fa fa-archive"></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class="fa fa-folder"></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class="fa fa-tags"></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/books" title="Douban">
+			  <i class="fa fa-book"></i>Douban
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header ">		
+			<h1 class="title "> Redis基础</h1>
+		</div>		
+	
+
+
+
+
+   <style type="text/css">
+           img, video {
+                -webkit-box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+                -moz-box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+                box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+           }
+   </style>
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
+
+	<!-- content -->
+	<div class="mypage">		
+	  		
+
+	  <p>Redis基础知识</p>
+<h2 id="Redis-CentOS7下安装"><a href="#Redis-CentOS7下安装" class="headerlink" title="Redis CentOS7下安装"></a>Redis CentOS7下安装</h2><p>Redis的安装，有epel和remi两个yum源可选。当然也可以选择从源码安装。<br>如下介绍epel和remi的两种安装方式。</p>
+<h3 id="EPEL安装"><a href="#EPEL安装" class="headerlink" title="EPEL安装"></a>EPEL安装</h3><p>CentOS 7中EPEL中redis最新的版本是3.2.12-2</p>
+<p>安装命令如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">sudo yum install epel-release yum-utils</div><div class="line">sudo yum install redis</div><div class="line">sudo systemctl start redis</div><div class="line">sudo systemctl enable redis</div><div class="line">sudo systemctl status redis</div></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<h3 id="REMI安装"><a href="#REMI安装" class="headerlink" title="REMI安装"></a>REMI安装</h3><p>remi-release-7中redis最新的版本是6.0.5</p>
+<p>安装命令如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">sudo yum install epel-release yum-utils</div><div class="line">sudo yum install http://rpms.remirepo.net/enterprise/remi-release-7.rpm</div><div class="line">sudo yum-config-manager --enable remi</div><div class="line"></div><div class="line">sudo yum install redis</div><div class="line">sudo systemctl start redis</div><div class="line">sudo systemctl enable redis</div></pre></td></tr></table></figure></p>
+<h2 id="基本配置"><a href="#基本配置" class="headerlink" title="基本配置"></a>基本配置</h2><h3 id="配置访问密码"><a href="#配置访问密码" class="headerlink" title="配置访问密码"></a>配置访问密码</h3><h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><p>在<code>/etc/redis.conf</code>中修改<code>requirepass master_password</code>, 将<code>master_password</code>换成所要配置的密码。<br>注意: 配置文件中描述,  redis每秒可以承受150k的密码撞击，所以务必将密码设置的极为复杂。</p>
+<blockquote>
+<p>Warning: since Redis is pretty fast an outside user can try up to<br>150k passwords per second against a good box. This means that you should<br>use a very strong password otherwise it will be very easy to break.</p>
+</blockquote>
+<p>因为密码显示的存在配置文件中，因此不用担心会忘记密码，尽可能的使用复杂密码，<br>网上一个使用sha256sum来生成强密码的方法 <a href="https://www.digitalocean.com/community/tutorials/how-to-install-secure-redis-centos-7" target="_blank" rel="external">How to Install and Secure Redis on Centos7</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@localhost lib]# echo &quot;hello-world&quot; | sha256sum</div><div class="line">d79f2e37784e5cd8631963896ebc6c9c66934af94a1854504717eaec04bc3d09  -</div><div class="line">[root@localhost lib]#</div></pre></td></tr></table></figure></p>
+<h4 id="试验"><a href="#试验" class="headerlink" title="试验"></a>试验</h4><p>cli中使用AUTH来输入密码。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# redis-cli</div><div class="line">127.0.0.1:6379&gt; AUTH d79f2e37784e5cd8631963896ebc6c9c66934af94a1854504717eaec04bc3d09 </div><div class="line">OK</div><div class="line">127.0.0.1:6379&gt; get a</div><div class="line">&quot;1&quot;</div><div class="line">127.0.0.1:6379&gt;</div></pre></td></tr></table></figure></p>
+<p>没有密码时，执行命令会报错<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# redis-cli</div><div class="line">127.0.0.1:6379&gt; get b</div><div class="line">(error) NOAUTH Authentication required.</div><div class="line">127.0.0.1:6379&gt;</div></pre></td></tr></table></figure></p>
+<h3 id="访问安全"><a href="#访问安全" class="headerlink" title="访问安全"></a>访问安全</h3><p><a href="https://redis.io/topics/security" target="_blank" rel="external">Redis Security</a>中有相关描述。</p>
+<blockquote>
+<p>Redis is designed to be accessed by trusted clients inside trusted environments.<br>Redis设计的用途就是在信任环境中使用的，因此自身没有用户系统和访问控制机制。</p>
+</blockquote>
+<h4 id="redis默认的安全设定"><a href="#redis默认的安全设定" class="headerlink" title="redis默认的安全设定"></a>redis默认的安全设定</h4><ul>
+<li><code>/etc/redis.conf</code>配置中，默认<code>bind 127.0.0.1</code>，即只能从本地访问redis</li>
+<li>从3.2.0开始，Protected mode默认是启动的，默认配置<code>protected-mode yes</code>。在这个模式中，只有来自loopback interface的请求才会被响应，其他地址的请求会被返回错误。</li>
+</ul>
+<h4 id="外部控制"><a href="#外部控制" class="headerlink" title="外部控制"></a>外部控制</h4><p>如果redis需要对外提供服务，那么需要在<code>bind</code>后面加上绑定的本机IP, 例如:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">bind 127.0.0.1 192.168.187.182</div></pre></td></tr></table></figure></p>
+<p>但因为redis除了密码以外，没有其他的访问控制机制。因此需要依赖于系统防火墙进行访问控制，比如设置访问白名单。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">sudo firewall-cmd --new-zone=redis --permanent</div><div class="line">sudo firewall-cmd --zone=redis --add-port=6379/tcp --permanent</div><div class="line">sudo firewall-cmd --zone=redis --add-source=192.168.187.0/24 --permanent</div><div class="line">sudo firewall-cmd --reload</div></pre></td></tr></table></figure></p>
+<h3 id="配置持久化"><a href="#配置持久化" class="headerlink" title="配置持久化"></a>配置持久化</h3><h4 id="配置说明"><a href="#配置说明" class="headerlink" title="配置说明"></a>配置说明</h4><p>持久化目录, 由<code>/etc/redis.conf</code>中<code>dir</code>配置, 配置的解释<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"># The working directory.</div><div class="line">#</div><div class="line"># The DB will be written inside this directory, with the filename specified</div><div class="line"># above using the &apos;dbfilename&apos; configuration directive.</div><div class="line">#</div><div class="line"># The Append Only File will also be created inside this directory.</div><div class="line">#</div><div class="line"># Note that you must specify a directory here, not a file name.</div><div class="line">dir /var/lib/redis</div></pre></td></tr></table></figure></p>
+<p>其中epel中安装的redis，默认目录是<code>/var/lib/redis</code>.</p>
+<h4 id="修改方法"><a href="#修改方法" class="headerlink" title="修改方法"></a>修改方法</h4><p>修改redis目录为<code>/opt/app/redis</code>的方法如下。<br>创建目录<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo mkdir -p /opt/app/redis</div><div class="line">sudo chown -R redis:redis /opt/app/redis</div><div class="line">sudo chmod 750 /opt/app/redis</div></pre></td></tr></table></figure></p>
+<p>修改<code>/etc/redis.conf</code>中<code>dir</code>参数为<code>/opt/app/redis</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dir /opt/app/redis</div></pre></td></tr></table></figure></p>
+<p>重启redis<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">systemctl restart redis</div></pre></td></tr></table></figure></p>
+<h4 id="异常"><a href="#异常" class="headerlink" title="异常"></a>异常</h4><p>如果切换了<code>dir</code>的目录，但执行<code>save</code>命令时失败，log中有<code>Permission denied</code>的错误时。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Failed opening the RDB file dump.rdb (in server root dir /opt/app/redis) for saving: Permission denied</div></pre></td></tr></table></figure></p>
+<p>有可能的原因:</p>
+<ul>
+<li>目录没有设置为redis账户可读写</li>
+<li>开启了selinux所致。</li>
+</ul>
+<h3 id="配置日志地址"><a href="#配置日志地址" class="headerlink" title="配置日志地址"></a>配置日志地址</h3><p>修改配置中<code>logfile</code>的值。epel安装的redis，默认值为<code>/var/log/redis/redis.log</code>.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">logfile /var/log/redis/redis.log</div></pre></td></tr></table></figure></p>
+<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><h3 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h3><ul>
+<li>DEL key: 该命令用于在 key 存在时删除 key。</li>
+<li>DUMP key: 序列化给定 key ，并返回被序列化的值。</li>
+<li>EXISTS key: 检查给定 key 是否存在。</li>
+<li>EXPIRE key seconds: 为给定 key 设置过期时间。</li>
+<li>EXPIREAT key timestamp: EXPIREAT 的作用和 EXPIRE 类似，都用于为 key 设置过期时间。 不同在于 EXPIREAT 命令接受的时间参数是 UNIX 时间戳(unix timestamp)。</li>
+<li>PEXPIRE key milliseconds: 设置 key 的过期时间以毫秒计。</li>
+<li>PEXPIREAT key milliseconds-timestamp: 设置 key 过期时间的时间戳(unix timestamp) 以毫秒计</li>
+<li>KEYS pattern: 查找所有符合给定模式( pattern)的 key 。</li>
+<li>MOVE key db: 将当前数据库的 key 移动到给定的数据库 db 当中。</li>
+<li>PERSIST key: 移除 key 的过期时间，key 将持久保持。</li>
+<li>PTTL key: 以毫秒为单位返回 key 的剩余的过期时间。</li>
+<li>TTL key: 以秒为单位，返回给定 key 的剩余生存时间(TTL, time to live)。</li>
+<li>RANDOMKEY: 从当前数据库中随机返回一个 key 。</li>
+<li>RENAME key newkey: 修改 key 的名称</li>
+<li>RENAMENX key newkey: 仅当 newkey 不存在时，将 key 改名为 newkey 。</li>
+<li>TYPE key: 返回 key 所储存的值的类型。</li>
+</ul>
+<h3 id="基本命令小实验"><a href="#基本命令小实验" class="headerlink" title="基本命令小实验"></a>基本命令小实验</h3><p>设置和获取key，设置key的过期时间，获取key的过期时间。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">127.0.0.1:6379&gt; set testkey &quot;testvalue&quot;</div><div class="line">OK</div><div class="line">127.0.0.1:6379&gt; get testkey</div><div class="line">&quot;testvalue&quot;</div><div class="line">127.0.0.1:6379&gt; TTL testkey</div><div class="line">(integer) -1</div><div class="line">127.0.0.1:6379&gt; EXPIRE testkey 60</div><div class="line">(integer) 1</div><div class="line">127.0.0.1:6379&gt; TTL testkey</div><div class="line">(integer) 58</div><div class="line">127.0.0.1:6379&gt;</div></pre></td></tr></table></figure></p>
+<h3 id="TTL命令"><a href="#TTL命令" class="headerlink" title="TTL命令"></a>TTL命令</h3><p>当 key 不存在时，返回 -2 。 当 key 存在但没有设置剩余生存时间时，返回 -1 。 否则，以秒为单位，返回 key 的剩余生存时间。</p>
+<p>实验过程:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">127.0.0.1:6379&gt; get testkey   # 获取testkey，还没设置，返回nil</div><div class="line">(nil)</div><div class="line">127.0.0.1:6379&gt; ttl testkey   # 获取testkey的过期时间，key不存在，返回-2</div><div class="line">(integer) -2</div><div class="line">127.0.0.1:6379&gt; set testkey &quot;testvalue&quot;   # 设置testkey，但不添加过期时间</div><div class="line">OK</div><div class="line">127.0.0.1:6379&gt; ttl testkey   # 此时获取testkey的过期时间，key存在但没有设置过期时间，返回-1</div><div class="line">(integer) -1</div><div class="line">127.0.0.1:6379&gt; expire testkey 3600   # 设置testkey的过期时间</div><div class="line">(integer) 1</div><div class="line">127.0.0.1:6379&gt; pttl testkey  # 查看testkey的过期毫秒数</div><div class="line">(integer) 3591798</div><div class="line">127.0.0.1:6379&gt; ttl testkey    # 查看testkey的过期时间，返回将要过期的秒数</div><div class="line">(integer) 3580</div><div class="line">127.0.0.1:6379&gt; del testkey    # 删除testkey</div><div class="line">(integer) 1</div><div class="line">127.0.0.1:6379&gt; ttl testkey    # 获取testkey的过期时间，因为key不存在，返回-2</div><div class="line">(integer) -2</div><div class="line">127.0.0.1:6379&gt;</div></pre></td></tr></table></figure></p>
+<h3 id="key-的变动"><a href="#key-的变动" class="headerlink" title="key 的变动"></a>key 的变动</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">127.0.0.1:6379&gt; keys *      # 获取所有的key，为空。</div><div class="line">(empty list or set)</div><div class="line">127.0.0.1:6379&gt; set testkey &quot;testvalue&quot;  # 设置testkey</div><div class="line">OK</div><div class="line">127.0.0.1:6379&gt; set testkey1 &quot;testvalue1&quot;  # 设置testkey1</div><div class="line">OK</div><div class="line">127.0.0.1:6379&gt; set testkey2 &quot;testvalue2&quot;  # 设置testkey2</div><div class="line">OK</div><div class="line">127.0.0.1:6379&gt; keys *       # 获取所有的key，可以看到testkey,testkey1, testkey2</div><div class="line">1) &quot;testkey2&quot;</div><div class="line">2) &quot;testkey1&quot;</div><div class="line">3) &quot;testkey&quot;</div><div class="line">127.0.0.1:6379&gt; RANDOMKEY    # 随机获取一个key</div><div class="line">&quot;testkey2&quot;</div><div class="line">127.0.0.1:6379&gt; RANDOMKEY    # 随机获取一个key</div><div class="line">&quot;testkey2&quot;</div><div class="line">127.0.0.1:6379&gt; RANDOMKEY    # 随机获取一个key</div><div class="line">&quot;testkey&quot;</div><div class="line">127.0.0.1:6379&gt; RENAME testkey2 testkey_2  # 重命名testkey2为testkey_2</div><div class="line">OK</div><div class="line">127.0.0.1:6379&gt; keys *       # 获取所有的key，可以看到testkey,testkey1, testkey_2</div><div class="line">1) &quot;testkey1&quot;</div><div class="line">2) &quot;testkey&quot;</div><div class="line">3) &quot;testkey_2&quot;</div><div class="line">127.0.0.1:6379&gt; type testkey_2  # 查看testkey_2的类型，为string</div><div class="line">string</div><div class="line">127.0.0.1:6379&gt;</div></pre></td></tr></table></figure>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><a href="https://linuxize.com/post/how-to-install-and-configure-redis-on-centos-7/" target="_blank" rel="external">How to Install and Configure Redis on CentOS 7</a></li>
+<li><a href="https://www.linode.com/docs/databases/redis/install-and-configure-redis-on-centos-7/" target="_blank" rel="external">Install and Configure Redis on CentOS 7</a> </li>
+<li><a href="http://redisdoc.com/index.html" target="_blank" rel="external">Redis 命令参考</a></li>
+</ul>
+	  
+	</div>
+
+	<div>
+  	<center>
+	<div class="pagination">
+<ul class="pagination">
+	 
+		
+          <li class="prev disabled"><a><i class="fa fa-arrow-circle-o-left"></i>上一页</a></li>
+        
+
+        <li><a href="/archives"><i class="fa fa-archive"></i>Archive</a></li>
+
+		
+		   <li class="next"><a href="/2020/06/29/transaction-isolation-level-in-postgresql-and-mysql/" class="alignright next">下一页<i class="fa fa-arrow-circle-o-right"></i></a></li>         
+        
+	
+</ul>
+</div>
+
+    </center>
+	</div>
+
+    <!-- share -->
+    
+        
+    <div class="bdsharebuttonbox">
+        <a href="#" class="bds_more" data-cmd="more"></a>
+        <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+        <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+        <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+        <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+        <a href="#" class="bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+        <a href="#" class="bds_evernotecn" data-cmd="evernotecn" title="分享到印象笔记"></a>
+        <a href="#" class="bds_youdao" data-cmd="youdao" title="分享到有道云笔记"></a>
+        <a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+    </div>
+    <script>
+        window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"24"},"share":{}};
+        with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+    </script>
+
+
+        
+
+    
+	
+	<!-- comment -->
+	
+<section id="comment">
+  <h2 class="title">留言</h2>
+  
+  	 <div id="disqus_thread">
+     <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  	 </div>
+  
+</section>
+
+
+	</div> <!-- col-md-9/col-md-12 -->
+		
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta">
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2020-07-03
+	</div>
+	
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
+	   <div id="toc" class="toc collapse in">
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#Redis-CentOS7下安装"><span class="toc-article-text">Redis CentOS7下安装</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#EPEL安装"><span class="toc-article-text">EPEL安装</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#REMI安装"><span class="toc-article-text">REMI安装</span></a></li></ol></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#基本配置"><span class="toc-article-text">基本配置</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#配置访问密码"><span class="toc-article-text">配置访问密码</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#配置"><span class="toc-article-text">配置</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#试验"><span class="toc-article-text">试验</span></a></li></ol></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#访问安全"><span class="toc-article-text">访问安全</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#redis默认的安全设定"><span class="toc-article-text">redis默认的安全设定</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#外部控制"><span class="toc-article-text">外部控制</span></a></li></ol></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#配置持久化"><span class="toc-article-text">配置持久化</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#配置说明"><span class="toc-article-text">配置说明</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#修改方法"><span class="toc-article-text">修改方法</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#异常"><span class="toc-article-text">异常</span></a></li></ol></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#配置日志地址"><span class="toc-article-text">配置日志地址</span></a></li></ol></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#常用命令"><span class="toc-article-text">常用命令</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#基本操作"><span class="toc-article-text">基本操作</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#基本命令小实验"><span class="toc-article-text">基本命令小实验</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#TTL命令"><span class="toc-article-text">TTL命令</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#key-的变动"><span class="toc-article-text">key 的变动</span></a></li></ol></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#Reference"><span class="toc-article-text">Reference</span></a></li></ol>
+		</div>
+	
+	</div>
+
+	<!-- categories -->
+    
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>
+    <ul id="categorys" class="tag_box list-unstyled collapse in">
+          
+  <li>
+    <li><a href="/categories/Tools/">Tools<span>30</span></a></li>
+  </li>
+
+    </ul>
+	</div>
+	
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>
+    <ul id="tags" class="tag_box list-unstyled collapse in">
+	    
+  <li><a href="/tags/CentOS/">CentOS<span>10</span></a></li> <li><a href="/tags/Redis/">Redis<span>1</span></a></li>
+    </ul>
+	</div>
+	
+
+    <hr>
+
+</div><!-- col-md-3 -->
+
+	</div>
+		
+
+</div><!-- row -->
+
+<script type="text/javascript">
+var disqus_shortname = 'jibing57-blog';
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  &copy; 2020 jibing57
+  
+      with help from <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>.    
+</p> </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>

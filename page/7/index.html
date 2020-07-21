@@ -139,6 +139,57 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
+			<div class="date"> 2018-11-15 </div>
+			<div class="article-title"><a href="/2018/11/15/a-way-to-install-ffmpeg-to-Amazon-Linux-and-ElasticBeanstalk/" >在Amazon Linux和Elastic Beanstalk中安装ffmpeg的方法</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>因为项目需要，需要在EC2和EB中安装FFMPEG来处理视频。 </p>
+<p>但Amazon Linux默认的yum源中没有FFMPEG，因此需要手动进行安装。</p>
+<p>网上有各种的安装方法，有使用Nux Dextop YUM的安装，也有直接使用Static Builds的方式。经过比较试验，最终决定使用Static Builds的方式进行安装，安装方法记录如下。 </p>
+	
+	</div>
+  <a type="button" href="/2018/11/15/a-way-to-install-ffmpeg-to-Amazon-Linux-and-ElasticBeanstalk/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2018-09-15 </div>
+			<div class="article-title"><a href="/2018/09/15/how-to-access-internal-by-ssh-tunnel/" >使用ssh隧道访问内网资源</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>日常开发过程中，会遇到一些情况需要和对端机构或公司进行联调。此时有可能会需要访问对端机构内部的一些网页或API。</p>
+<p>正规流程中，要访问内网，如果对端机构有VPN服务，应该是申请一个VPN来进行操作，这种方式比较安全可靠。但实际操作过程中，可能对端机构没有VPN服务，或者走VPN流程繁琐。此时如果你有对端机构中某个内网Linux机器的ssh登陆权限,而且该Linux机器可以可以访问相关网页或者API，则可以通过ssh tunnel的方式，临时来访问对端机构的内部资源。</p>
+<p>接下来，通过使用两台EC2来模拟内网环境,来介绍如何在Mac机器上使用ssh tunnel访问内网资源。</p>
+<h3 id="搭建说明"><a href="#搭建说明" class="headerlink" title="搭建说明"></a>搭建说明</h3><h4 id="搭建模拟用的EC2"><a href="#搭建模拟用的EC2" class="headerlink" title="搭建模拟用的EC2"></a>搭建模拟用的EC2</h4><p>首先，开启两台EC2，一台用来模拟ssh的跳板机(Jumpbox)，一台用来模拟内部网页服务器(HttpServer)。</p>
+	
+	</div>
+  <a type="button" href="/2018/09/15/how-to-access-internal-by-ssh-tunnel/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
 			<div class="date"> 2018-08-11 </div>
 			<div class="article-title"><a href="/2018/08/11/EB-warning-due-to-no-space-left-on-device-issue-on-EC2/" >由于EC2中no space left引起的EB警报</a></div>						
 		</h3>
@@ -331,62 +382,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2018-03-16 </div>
-			<div class="article-title"><a href="/2018/03/16/how-to-subscribe-RDS-event/" >订阅RDS事件</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>关于RDS状态的监控，除了常规的CloudWatch Metric以外。RDS还有一个事件机制，能够将RDS的事件通知到SNS。</p>
-<h3 id="RDS-Event简介"><a href="#RDS-Event简介" class="headerlink" title="RDS Event简介"></a>RDS Event简介</h3><h4 id="RDS-Event-Source-type"><a href="#RDS-Event-Source-type" class="headerlink" title="RDS Event - Source type"></a>RDS Event - Source type</h4><p>RDS的事件类型分为如下六大类:</p>
-<ul>
-<li>数据库实例(DB instance)</li>
-<li>数据库集群(DB cluster)</li>
-<li>数据库快照(DB snapshot)</li>
-<li>数据库集群快照(DB cluster snapshot)</li>
-<li>数据库安全组(DB security group)</li>
-<li>数据库参数组(DB parameter group)</li>
-</ul>
-	
-	</div>
-  <a type="button" href="/2018/03/16/how-to-subscribe-RDS-event/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2018-03-15 </div>
-			<div class="article-title"><a href="/2018/03/15/how-to-set-chrome-to-use-google-with-NoCountryRedirect/" >在Chrome中设置Google搜索为NoCountryRedirect</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>添加代理来科学上网时，使用Google进行搜索，Chrome浏览器默认会重定向到代理国所在的Google域名。比如<code>https://www.google.co.kr/</code>,<code>https://www.google.co.jp/</code>等, 已经在<code>www.google.com</code>登录的Google账号就还得重登, 极度烦躁。</p>
-<p>下面是几个固定使用<code>www.google.com</code>来进行搜索的方法</p>
-	
-	</div>
-  <a type="button" href="/2018/03/15/how-to-set-chrome-to-use-google-with-NoCountryRedirect/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -464,7 +459,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/#Shell">Shell<span>8</span></a></li>
 		
-			<li><a href="/categories/#Tools">Tools<span>28</span></a></li>
+			<li><a href="/categories/#Tools">Tools<span>30</span></a></li>
 		
 			<li><a href="/categories/#杂">杂<span>1</span></a></li>
 		
@@ -478,48 +473,48 @@ var _hmt = _hmt || [];
 		<h4>标签云</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/#Image">Image<span>3</span></a></li>
+			<li><a href="/tags/#AutoScaling">AutoScaling<span>3</span></a></li>
 		
-			<li><a href="/tags/#EC2">EC2<span>8</span></a></li>
+			<li><a href="/tags/#感悟">感悟<span>1</span></a></li>
 		
-			<li><a href="/tags/#VMware">VMware<span>2</span></a></li>
+			<li><a href="/tags/#Docker Hub">Docker Hub<span>1</span></a></li>
 		
-			<li><a href="/tags/#FFMPEG">FFMPEG<span>2</span></a></li>
-		
-			<li><a href="/tags/#Linux">Linux<span>15</span></a></li>
-		
-			<li><a href="/tags/#Crontab">Crontab<span>1</span></a></li>
-		
-			<li><a href="/tags/#Ubuntu">Ubuntu<span>1</span></a></li>
-		
-			<li><a href="/tags/#Lightsail">Lightsail<span>2</span></a></li>
+			<li><a href="/tags/#S3">S3<span>10</span></a></li>
 		
 			<li><a href="/tags/#Aliyun">Aliyun<span>2</span></a></li>
 		
-			<li><a href="/tags/#Chrome">Chrome<span>1</span></a></li>
+			<li><a href="/tags/#Linux">Linux<span>15</span></a></li>
 		
-			<li><a href="/tags/#Git">Git<span>2</span></a></li>
+			<li><a href="/tags/#Video">Video<span>1</span></a></li>
 		
-			<li><a href="/tags/#iOS">iOS<span>1</span></a></li>
+			<li><a href="/tags/#Ubuntu">Ubuntu<span>1</span></a></li>
 		
-			<li><a href="/tags/#Docker">Docker<span>2</span></a></li>
-		
-			<li><a href="/tags/#Nodejs">Nodejs<span>4</span></a></li>
-		
-			<li><a href="/tags/#Passenger">Passenger<span>3</span></a></li>
+			<li><a href="/tags/#Network">Network<span>4</span></a></li>
 		
 			<li><a href="/tags/#AWS CLI">AWS CLI<span>6</span></a></li>
 		
-			<li><a href="/tags/#Yarn">Yarn<span>1</span></a></li>
+			<li><a href="/tags/#Crontab">Crontab<span>1</span></a></li>
 		
-			<li><a href="/tags/#PostgreSQL">PostgreSQL<span>4</span></a></li>
+			<li><a href="/tags/#Ruby">Ruby<span>10</span></a></li>
 		
-			<li><a href="/tags/#LCD">LCD<span>1</span></a></li>
+			<li><a href="/tags/#DynamoDB">DynamoDB<span>1</span></a></li>
 		
-			<li><a href="/tags/#Douban">Douban<span>2</span></a></li>
+			<li><a href="/tags/#Redis">Redis<span>1</span></a></li>
+		
+			<li><a href="/tags/#Hexo">Hexo<span>8</span></a></li>
+		
+			<li><a href="/tags/#Yum">Yum<span>1</span></a></li>
+		
+			<li><a href="/tags/#Wireshark">Wireshark<span>1</span></a></li>
+		
+			<li><a href="/tags/#Nginx">Nginx<span>8</span></a></li>
+		
+			<li><a href="/tags/#Office">Office<span>2</span></a></li>
+		
+			<li><a href="/tags/#Passenger">Passenger<span>3</span></a></li>
 		
 		
-		   <li><a href="/tags">...<span>64</span></a></li>
+		   <li><a href="/tags">...<span>66</span></a></li>
 		 
 		</ul>
 	</div>
@@ -532,6 +527,14 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2020/07/03/redis-basic/" ><i class="fa fa-file-o"></i>Redis基础</a>
+      </li>
+    
+      <li>
+        <a href="/2020/06/29/transaction-isolation-level-in-postgresql-and-mysql/" ><i class="fa fa-file-o"></i>Postgresql和Mysql中的事务隔离</a>
+      </li>
+    
+      <li>
         <a href="/2020/06/23/resolve-sudo-error-in-crontab-job/" ><i class="fa fa-file-o"></i>Crontab中解决sorry, you must h...</a>
       </li>
     
@@ -541,14 +544,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2020/06/09/some-new-nginx-config/" ><i class="fa fa-file-o"></i>一些常用的Nginx+Passenger配置</a>
-      </li>
-    
-      <li>
-        <a href="/2020/06/06/screen-overview-of-ak-tech/" ><i class="fa fa-file-o"></i>屏幕知识概观</a>
-      </li>
-    
-      <li>
-        <a href="/2020/05/31/how-to-speed-minecraft-launcher-on-macos/" ><i class="fa fa-file-o"></i>在MacOS上加速Minecraft Launcher</a>
       </li>
     
   </ul>

@@ -331,9 +331,80 @@ var _hmt = _hmt || [];
 		
             
 		
+            
+		
+            
+		
         
         <!-- render other articles -->
         
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2020-07-03 </div>
+			<div class="article-title"><a href="/2020/07/03/redis-basic/" >Redis基础</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>Redis基础知识</p>
+<h2 id="Redis-CentOS7下安装"><a href="#Redis-CentOS7下安装" class="headerlink" title="Redis CentOS7下安装"></a>Redis CentOS7下安装</h2><p>Redis的安装，有epel和remi两个yum源可选。当然也可以选择从源码安装。<br>如下介绍epel和remi的两种安装方式。</p>
+<h3 id="EPEL安装"><a href="#EPEL安装" class="headerlink" title="EPEL安装"></a>EPEL安装</h3><p>CentOS 7中EPEL中redis最新的版本是3.2.12-2</p>
+<p>安装命令如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">sudo yum install epel-release yum-utils</div><div class="line">sudo yum install redis</div><div class="line">sudo systemctl start redis</div><div class="line">sudo systemctl enable redis</div><div class="line">sudo systemctl status redis</div></pre></td></tr></table></figure></p>
+	
+	</div>
+  <a type="button" href="/2020/07/03/redis-basic/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2020-06-29 </div>
+			<div class="article-title"><a href="/2020/06/29/transaction-isolation-level-in-postgresql-and-mysql/" >Postgresql和Mysql中的事务隔离</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h2 id="事务的定义"><a href="#事务的定义" class="headerlink" title="事务的定义"></a>事务的定义</h2><p>事务拥有四个重要的特性：</p>
+<ul>
+<li>原子性（Atomicity）<ul>
+<li>事务开始后所有操作，要么全部做完，要么全部不做，不可能停滞在中间环节。事务执行过程中出错，会回滚到事务开始前的状态，所有的操作就像没有发生一样。</li>
+</ul>
+</li>
+<li>一致性（Consistency）<ul>
+<li>指事务将数据库从一种状态转变为另一种一致的的状态。事务开始前和结束后，数据库的完整性约束没有被破坏。</li>
+</ul>
+</li>
+<li>隔离性（Isolation）<ul>
+<li>要求每个读写事务的对象对其他事务的操作对象能互相分离，即该事务提交前对其他事务不可见。 也可以理解为多个事务并发访问时，事务之间是隔离的，一个事务不应该影响其它事务运行效果。这指的是在并发环境中，当不同的事务同时操纵相同的数据时，每个事务都有各自的完整数据空间。由并发事务所做的修改必须与任何其他并发事务所做的修改隔离。</li>
+</ul>
+</li>
+<li>持久性（Durability）<ul>
+<li>事务一旦提交，则其结果就是永久性的。即使发生宕机的故障，数据库也能将数据恢复，也就是说事务完成后，事务对数据库的所有更新将被保存到数据库，不能回滚。<br>这四个特性就是常说的数据库的ACID 特性</li>
+</ul>
+</li>
+</ul>
+	
+	</div>
+  <a type="button" href="/2020/06/29/transaction-isolation-level-in-postgresql-and-mysql/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
            
 			  
 	
@@ -596,57 +667,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2020-04-09 </div>
-			<div class="article-title"><a href="/2020/04/09/replace-douban-book-plugin/" >豆瓣插件替换</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>原先使用的<a href="https://github.com/Yikun/hexo-generator-douban" target="_blank" rel="external">Yikun/hexo-generator-douban</a>在豆瓣封了API之后，就彻底没法用了。另外一个插件<a href="https://github.com/mythsman/hexo-douban" target="_blank" rel="external">mythsman/hexo-douban</a>是靠解析网页来生成读书列表，还能工作。就决定换用<a href="https://github.com/mythsman/hexo-douban" target="_blank" rel="external">mythsman/hexo-douban</a>来生成读书列表。<br>以下记录插件替换的过程。</p>
-<h3 id="配置变更"><a href="#配置变更" class="headerlink" title="配置变更"></a>配置变更</h3><h4 id="hexo的配置-config-yml"><a href="#hexo的配置-config-yml" class="headerlink" title="hexo的配置_config.yml"></a>hexo的配置<code>_config.yml</code></h4><p>原先为:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">douban:</div><div class="line">  user: jibing57</div></pre></td></tr></table></figure></p>
-<p>修改为<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">douban:</div><div class="line">  user: jibing57 </div><div class="line">  builtin: false</div><div class="line">  book:</div><div class="line">    title: &apos;豆瓣读书记录&apos;</div><div class="line">    quote: &apos;不完全的读书记录，因为好久才会想起要去豆瓣去点亮一下。&apos;</div><div class="line">  timeout: 10000</div></pre></td></tr></table></figure></p>
-	
-	</div>
-  <a type="button" href="/2020/04/09/replace-douban-book-plugin/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2020-02-29 </div>
-			<div class="article-title"><a href="/2020/02/29/how-to-use-rvm-to-instal-ruby-in-slow-network-connection/" >弱网络环境下如何使用rvm安装ruby</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>下面介绍下如何在屏蔽比较严重的网络情况下使用rvm来半手工的安装ruby, 如下操作基于CentOS 7，其他操作系统可能有所不同。</p>
-<h3 id="安装rvm"><a href="#安装rvm" class="headerlink" title="安装rvm"></a>安装rvm</h3><h4 id="官网安装步骤"><a href="#官网安装步骤" class="headerlink" title="官网安装步骤"></a>官网安装步骤</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">gpg --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB</div><div class="line">curl -L get.rvm.io | bash -s stable</div></pre></td></tr></table></figure>
-<h4 id="问题点"><a href="#问题点" class="headerlink" title="问题点:"></a>问题点:</h4><p><code>get.rvm.io</code>是重定向到<code>https://raw.githubusercontent.com/rvm/rvm/master/binscripts/rvm-installer</code>这个地址的。可是有些国内机构的网络中，<code>raw.githubusercontent.com</code>这个域名是被屏蔽的。</p>
-<h4 id="措施"><a href="#措施" class="headerlink" title="措施:"></a>措施:</h4><p>可先在本地下载rvm-installer脚本，再拷贝脚本到服务器后，再执行安装命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"># 1. 本机上下载</div><div class="line">curl -L get.rvm.io &gt; rvm-installer.sh</div><div class="line"></div><div class="line"># 2. 拷贝rvm-installer.sh到服务器</div><div class="line"></div><div class="line"># 3. 服务器本地执行安装命令</div><div class="line">cat rvm-installer.sh | bash -s stable</div></pre></td></tr></table></figure></p>
-	
-	</div>
-  <a type="button" href="/2020/02/29/how-to-use-rvm-to-instal-ruby-in-slow-network-connection/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -724,7 +744,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/#Shell">Shell<span>8</span></a></li>
 		
-			<li><a href="/categories/#Tools">Tools<span>28</span></a></li>
+			<li><a href="/categories/#Tools">Tools<span>30</span></a></li>
 		
 			<li><a href="/categories/#杂">杂<span>1</span></a></li>
 		
@@ -738,48 +758,48 @@ var _hmt = _hmt || [];
 		<h4>标签云</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/#AWS Tools">AWS Tools<span>2</span></a></li>
+			<li><a href="/tags/#CodeCommit">CodeCommit<span>1</span></a></li>
 		
-			<li><a href="/tags/#Github">Github<span>4</span></a></li>
+			<li><a href="/tags/#Image">Image<span>3</span></a></li>
 		
-			<li><a href="/tags/#Office">Office<span>2</span></a></li>
+			<li><a href="/tags/#Kubernetes">Kubernetes<span>1</span></a></li>
 		
-			<li><a href="/tags/#Minecraft">Minecraft<span>1</span></a></li>
-		
-			<li><a href="/tags/#感悟">感悟<span>1</span></a></li>
-		
-			<li><a href="/tags/#Douban">Douban<span>2</span></a></li>
-		
-			<li><a href="/tags/#RVM">RVM<span>3</span></a></li>
-		
-			<li><a href="/tags/#IAM">IAM<span>3</span></a></li>
-		
-			<li><a href="/tags/#EC2">EC2<span>8</span></a></li>
-		
-			<li><a href="/tags/#Nginx">Nginx<span>8</span></a></li>
-		
-			<li><a href="/tags/#AWS CLI">AWS CLI<span>6</span></a></li>
-		
-			<li><a href="/tags/#SSH">SSH<span>6</span></a></li>
-		
-			<li><a href="/tags/#Crontab">Crontab<span>1</span></a></li>
-		
-			<li><a href="/tags/#Docker Hub">Docker Hub<span>1</span></a></li>
-		
-			<li><a href="/tags/#AWS Deep Dive">AWS Deep Dive<span>2</span></a></li>
-		
-			<li><a href="/tags/#Passenger">Passenger<span>3</span></a></li>
-		
-			<li><a href="/tags/#Network">Network<span>4</span></a></li>
-		
-			<li><a href="/tags/#CentOS">CentOS<span>9</span></a></li>
-		
-			<li><a href="/tags/#iOS">iOS<span>1</span></a></li>
+			<li><a href="/tags/#Video">Video<span>1</span></a></li>
 		
 			<li><a href="/tags/#AWS SDK">AWS SDK<span>2</span></a></li>
 		
+			<li><a href="/tags/#Solutions Architect">Solutions Architect<span>1</span></a></li>
 		
-		   <li><a href="/tags">...<span>64</span></a></li>
+			<li><a href="/tags/#Github">Github<span>4</span></a></li>
+		
+			<li><a href="/tags/#RVM">RVM<span>3</span></a></li>
+		
+			<li><a href="/tags/#VMware">VMware<span>2</span></a></li>
+		
+			<li><a href="/tags/#Chrome">Chrome<span>1</span></a></li>
+		
+			<li><a href="/tags/#Ruby">Ruby<span>10</span></a></li>
+		
+			<li><a href="/tags/#Ubuntu">Ubuntu<span>1</span></a></li>
+		
+			<li><a href="/tags/#Elastic Beanstalk">Elastic Beanstalk<span>7</span></a></li>
+		
+			<li><a href="/tags/#Udemy">Udemy<span>1</span></a></li>
+		
+			<li><a href="/tags/#EC2">EC2<span>8</span></a></li>
+		
+			<li><a href="/tags/#AWS CLI">AWS CLI<span>6</span></a></li>
+		
+			<li><a href="/tags/#Hexo">Hexo<span>8</span></a></li>
+		
+			<li><a href="/tags/#AWS Deep Dive">AWS Deep Dive<span>2</span></a></li>
+		
+			<li><a href="/tags/#DynamoDB">DynamoDB<span>1</span></a></li>
+		
+			<li><a href="/tags/#FFMPEG">FFMPEG<span>2</span></a></li>
+		
+		
+		   <li><a href="/tags">...<span>66</span></a></li>
 		 
 		</ul>
 	</div>
@@ -792,6 +812,14 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2020/07/03/redis-basic/" ><i class="fa fa-file-o"></i>Redis基础</a>
+      </li>
+    
+      <li>
+        <a href="/2020/06/29/transaction-isolation-level-in-postgresql-and-mysql/" ><i class="fa fa-file-o"></i>Postgresql和Mysql中的事务隔离</a>
+      </li>
+    
+      <li>
         <a href="/2020/06/23/resolve-sudo-error-in-crontab-job/" ><i class="fa fa-file-o"></i>Crontab中解决sorry, you must h...</a>
       </li>
     
@@ -801,14 +829,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2020/06/09/some-new-nginx-config/" ><i class="fa fa-file-o"></i>一些常用的Nginx+Passenger配置</a>
-      </li>
-    
-      <li>
-        <a href="/2020/06/06/screen-overview-of-ak-tech/" ><i class="fa fa-file-o"></i>屏幕知识概观</a>
-      </li>
-    
-      <li>
-        <a href="/2020/05/31/how-to-speed-minecraft-launcher-on-macos/" ><i class="fa fa-file-o"></i>在MacOS上加速Minecraft Launcher</a>
       </li>
     
   </ul>

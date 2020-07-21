@@ -1,0 +1,407 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>第 11 页 | Recording</title>
+  <meta name="author" content="jibing57">
+  
+  <meta name="description" content="AWS, 阅读, Architecture, PostgreSQL">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="Recording"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/css/themes/bootstrap.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/comment.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+  
+  <!-- analytics -->
+  
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-111771042-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?59d3e14cdc96877383afed646f44d216";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+</head>
+
+ <body>  
+  <nav id="main-nav" class="navbar  navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+	<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+       <a class="navbar-brand" href="/">Recording</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class="fa fa-archive"></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class="fa fa-folder"></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class="fa fa-tags"></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/books" title="Douban">
+			  <i class="fa fa-book"></i>Douban
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 <div class="page-header ">
+  <h1 class="title ">Recording, Sharing, TimeSaving -- 一切成本皆时间</h1>
+</div>
+
+<div class="row page">
+
+	
+	<div class="col-md-9">
+	
+
+		<div class="slogan">
+      <i class="fa fa-heart"></i>
+      Study hard and make progress every day!
+</div>    
+		<div id="top_search"></div>
+		<div class="mypage">
+		
+		<!-- title and entry -->
+        <!-- render top articles firstly -->
+        
+        <!-- render other articles -->
+        
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2017-07-17 </div>
+			<div class="article-title"><a href="/2017/07/17/How-to-get-subtitle-of-local-video/" >如何给本地视频生成字幕</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>适合如下场景:</p>
+<ul>
+<li>视频本身不带字幕</li>
+<li>直接看英文视频比较吃力</li>
+</ul>
+<p>此时可以使用<code>autosub</code>这个工具来根据视频中的声音来生成对应的字幕，虽然生成的字幕并不总是那么正确，但当做参考还是不错的。</p>
+<h2 id="autosub简介"><a href="#autosub简介" class="headerlink" title="autosub简介"></a>autosub简介</h2><p><a href="https://github.com/agermanidis/autosub" target="_blank" rel="external">autosub</a>是一款由python 2编写的通过Google Web Speech API和FFmpeg来获取视频subtitle的软件</p>
+<p>Github地址: <a href="https://github.com/agermanidis/autosub" target="_blank" rel="external">https://github.com/agermanidis/autosub</a></p>
+<p>Github上的Usage:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">$ autosub -h</div><div class="line">usage: autosub [-h] [-C CONCURRENCY] [-o OUTPUT] [-F FORMAT] [-S SRC_LANGUAGE]</div><div class="line">               [-D DST_LANGUAGE] [-K API_KEY] [--list-formats]</div><div class="line">               [--list-languages]</div><div class="line">               [source_path]</div><div class="line"></div><div class="line">positional arguments:</div><div class="line">  source_path           Path to the video or audio file to subtitle</div><div class="line"></div><div class="line">optional arguments:</div><div class="line">  -h, --help            show this help message and exit</div><div class="line">  -C CONCURRENCY, --concurrency CONCURRENCY</div><div class="line">                        Number of concurrent API requests to make</div><div class="line">  -o OUTPUT, --output OUTPUT</div><div class="line">                        Output path for subtitles (by default, subtitles are</div><div class="line">                        saved in the same directory and name as the source</div><div class="line">                        path)</div><div class="line">  -F FORMAT, --format FORMAT</div><div class="line">                        Destination subtitle format</div><div class="line">  -S SRC_LANGUAGE, --src-language SRC_LANGUAGE</div><div class="line">                        Language spoken in source file</div><div class="line">  -D DST_LANGUAGE, --dst-language DST_LANGUAGE</div><div class="line">                        Desired language for the subtitles</div><div class="line">  -K API_KEY, --api-key API_KEY</div><div class="line">                        The Google Translate API key to be used. (Required for</div><div class="line">                        subtitle translation)</div><div class="line">  --list-formats        List all available subtitle formats</div><div class="line">  --list-languages      List all available source/destination languages</div></pre></td></tr></table></figure>
+	
+	</div>
+  <a type="button" href="/2017/07/17/How-to-get-subtitle-of-local-video/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+
+		</div>
+
+		<!-- pagination -->
+		<div>
+  		<center>
+		<div class="pagination">
+<ul class="pagination">
+	 
+		
+    	<li class="prev"><a href="/page/10/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i> 上一页</a></li>
+  		
+
+        <li><a href="/"><i class="fa fa-home"></i>Home</a></li>
+
+		
+          <li class="next disabled"><a>下一页<i class="fa fa-arrow-circle-o-right"></i></a></li>
+        
+	
+</ul>
+</div>
+
+  		</center>
+		</div>
+
+		
+		
+	</div> <!-- col-md-9 -->
+
+	
+		<div class="col-md-3">
+	<div id="sidebar">
+	
+			
+  <div id="site_search">
+   <div class="form-group">
+    <input type="text" id="local-search-input" name="q" results="0" placeholder="搜索" class="st-search-input st-default-search-input form-control"/>
+   </div>  
+  <div id="local-search-result"></div>
+  </div>
+
+
+		
+			
+<div class="widget">
+	<h4>AWS Certification</h4>
+    <ul class="blogroll list-unstyled">
+    <div class="thumbnail"><a href="/images/AWS/CertificationLogo/AWS_Certified_Logo_Color.png"><img src="/images/AWS/CertificationLogo/AWS_Certified_Logo_Color.png" alt="images"  class="nofancybox"></a>
+    </ul>
+</div>
+
+
+		
+			<div class="widget">
+    
+</div>
+
+		
+			
+	<div class="widget">
+		<h4>分类</h4>
+		<ul class="tag_box inline list-unstyled">
+		
+			<li><a href="/categories/#AWS">AWS<span>35</span></a></li>
+		
+			<li><a href="/categories/#AWS Certified">AWS Certified<span>4</span></a></li>
+		
+			<li><a href="/categories/#Blog">Blog<span>6</span></a></li>
+		
+			<li><a href="/categories/#Code">Code<span>5</span></a></li>
+		
+			<li><a href="/categories/#Kubernetes">Kubernetes<span>1</span></a></li>
+		
+			<li><a href="/categories/#Linux">Linux<span>11</span></a></li>
+		
+			<li><a href="/categories/#Shell">Shell<span>8</span></a></li>
+		
+			<li><a href="/categories/#Tools">Tools<span>30</span></a></li>
+		
+			<li><a href="/categories/#杂">杂<span>1</span></a></li>
+		
+		</ul>
+	</div>
+
+
+		
+			
+	<div class="widget">
+		<h4>标签云</h4>
+		<ul class="tag_box inline list-unstyled">		
+		
+			<li><a href="/tags/#FFMPEG">FFMPEG<span>2</span></a></li>
+		
+			<li><a href="/tags/#CodeCommit">CodeCommit<span>1</span></a></li>
+		
+			<li><a href="/tags/#Screen">Screen<span>1</span></a></li>
+		
+			<li><a href="/tags/#AWS SDK">AWS SDK<span>2</span></a></li>
+		
+			<li><a href="/tags/#Elastic Load Balancing">Elastic Load Balancing<span>6</span></a></li>
+		
+			<li><a href="/tags/#EC2 User Data">EC2 User Data<span>1</span></a></li>
+		
+			<li><a href="/tags/#Nodejs">Nodejs<span>4</span></a></li>
+		
+			<li><a href="/tags/#iOS">iOS<span>1</span></a></li>
+		
+			<li><a href="/tags/#LCD">LCD<span>1</span></a></li>
+		
+			<li><a href="/tags/#AWS Free Tier">AWS Free Tier<span>1</span></a></li>
+		
+			<li><a href="/tags/#SSH">SSH<span>6</span></a></li>
+		
+			<li><a href="/tags/#VMware">VMware<span>2</span></a></li>
+		
+			<li><a href="/tags/#Udemy">Udemy<span>1</span></a></li>
+		
+			<li><a href="/tags/#Github">Github<span>4</span></a></li>
+		
+			<li><a href="/tags/#Chrome">Chrome<span>1</span></a></li>
+		
+			<li><a href="/tags/#Elastic Beanstalk">Elastic Beanstalk<span>7</span></a></li>
+		
+			<li><a href="/tags/#Hexo">Hexo<span>8</span></a></li>
+		
+			<li><a href="/tags/#RVM">RVM<span>3</span></a></li>
+		
+			<li><a href="/tags/#Passenger">Passenger<span>3</span></a></li>
+		
+			<li><a href="/tags/#Ruby">Ruby<span>10</span></a></li>
+		
+		
+		   <li><a href="/tags">...<span>66</span></a></li>
+		 
+		</ul>
+	</div>
+
+
+		
+			
+<div class="widget">
+  <h4>最新文章</h4>
+  <ul class="entry list-unstyled">
+    
+      <li>
+        <a href="/2020/07/03/redis-basic/" ><i class="fa fa-file-o"></i>Redis基础</a>
+      </li>
+    
+      <li>
+        <a href="/2020/06/29/transaction-isolation-level-in-postgresql-and-mysql/" ><i class="fa fa-file-o"></i>Postgresql和Mysql中的事务隔离</a>
+      </li>
+    
+      <li>
+        <a href="/2020/06/23/resolve-sudo-error-in-crontab-job/" ><i class="fa fa-file-o"></i>Crontab中解决sorry, you must h...</a>
+      </li>
+    
+      <li>
+        <a href="/2020/06/21/tools-to-control-brightness-of-external-monitor-on-macos/" ><i class="fa fa-file-o"></i>Mac下调节外置显示器亮度的工具</a>
+      </li>
+    
+      <li>
+        <a href="/2020/06/09/some-new-nginx-config/" ><i class="fa fa-file-o"></i>一些常用的Nginx+Passenger配置</a>
+      </li>
+    
+  </ul>
+</div>
+
+		
+			
+<div class="widget">
+	<h4>链接</h4>
+	<ul class="blogroll list-unstyled">
+	
+		<li><i class="fa fa-github"></i><a href="https://github.com/jibing57/" title="My Github repository." target="_blank"]);">My Github</a></li>
+	
+		<li><i class="fa fa-linkedin"></i><a href="https://www.linkedin.com/in/honggang-shen-37669214a/" title="My Linkin account." target="_blank"]);">My LinkedIn</a></li>
+	
+		<li><i class="fa fa-rss"></i><a href="/atom.xml" title="rss." target="_blank"]);">RSS</a></li>
+	
+		<li><i class="fa fa-sitemap"></i><a href="/sitemap.xml" title="Site Map" target="_blank"]);">Site Map</a></li>
+	
+	</ul>
+</div>
+
+
+		
+	</div> <!-- sidebar -->
+</div> <!-- col-md-3 -->
+
+	
+	
+</div> <!-- row-fluid -->
+
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  &copy; 2020 jibing57
+  
+      with help from <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>.    
+</p> </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>

@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.jibing57.com/"/>
-  <updated>2020-06-25T10:49:01.421Z</updated>
+  <updated>2020-07-03T16:50:37.902Z</updated>
   <id>https://www.jibing57.com/</id>
   
   <author>
@@ -15,6 +15,71 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Redis基础</title>
+    <link href="https://www.jibing57.com/2020/07/03/redis-basic/"/>
+    <id>https://www.jibing57.com/2020/07/03/redis-basic/</id>
+    <published>2020-07-03T13:44:52.000Z</published>
+    <updated>2020-07-03T16:50:37.902Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Redis基础知识&lt;/p&gt;
+&lt;h2 id=&quot;Redis-CentOS7下安装&quot;&gt;&lt;a href=&quot;#Redis-CentOS7下安装&quot; class=&quot;headerlink&quot; title=&quot;Redis CentOS7下安装&quot;&gt;&lt;/a&gt;Redis CentOS7下安装&lt;/h2&gt;&lt;p&gt;Redis的安装，有epel和remi两个yum源可选。当然也可以选择从源码安装。&lt;br&gt;如下介绍epel和remi的两种安装方式。&lt;/p&gt;
+&lt;h3 id=&quot;EPEL安装&quot;&gt;&lt;a href=&quot;#EPEL安装&quot; class=&quot;headerlink&quot; title=&quot;EPEL安装&quot;&gt;&lt;/a&gt;EPEL安装&lt;/h3&gt;&lt;p&gt;CentOS 7中EPEL中redis最新的版本是3.2.12-2&lt;/p&gt;
+&lt;p&gt;安装命令如下:&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;sudo yum install epel-release yum-utils&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;sudo yum install redis&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;sudo systemctl start redis&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;sudo systemctl enable redis&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;sudo systemctl status redis&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
+    
+    
+      <category term="CentOS" scheme="https://www.jibing57.com/tags/CentOS/"/>
+    
+      <category term="Redis" scheme="https://www.jibing57.com/tags/Redis/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Postgresql和Mysql中的事务隔离</title>
+    <link href="https://www.jibing57.com/2020/06/29/transaction-isolation-level-in-postgresql-and-mysql/"/>
+    <id>https://www.jibing57.com/2020/06/29/transaction-isolation-level-in-postgresql-and-mysql/</id>
+    <published>2020-06-29T12:41:19.000Z</published>
+    <updated>2020-07-13T09:21:22.867Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;事务的定义&quot;&gt;&lt;a href=&quot;#事务的定义&quot; class=&quot;headerlink&quot; title=&quot;事务的定义&quot;&gt;&lt;/a&gt;事务的定义&lt;/h2&gt;&lt;p&gt;事务拥有四个重要的特性：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;原子性（Atomicity）&lt;ul&gt;
+&lt;li&gt;事务开始后所有操作，要么全部做完，要么全部不做，不可能停滞在中间环节。事务执行过程中出错，会回滚到事务开始前的状态，所有的操作就像没有发生一样。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;一致性（Consistency）&lt;ul&gt;
+&lt;li&gt;指事务将数据库从一种状态转变为另一种一致的的状态。事务开始前和结束后，数据库的完整性约束没有被破坏。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;隔离性（Isolation）&lt;ul&gt;
+&lt;li&gt;要求每个读写事务的对象对其他事务的操作对象能互相分离，即该事务提交前对其他事务不可见。 也可以理解为多个事务并发访问时，事务之间是隔离的，一个事务不应该影响其它事务运行效果。这指的是在并发环境中，当不同的事务同时操纵相同的数据时，每个事务都有各自的完整数据空间。由并发事务所做的修改必须与任何其他并发事务所做的修改隔离。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;持久性（Durability）&lt;ul&gt;
+&lt;li&gt;事务一旦提交，则其结果就是永久性的。即使发生宕机的故障，数据库也能将数据恢复，也就是说事务完成后，事务对数据库的所有更新将被保存到数据库，不能回滚。&lt;br&gt;这四个特性就是常说的数据库的ACID 特性&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+    
+    </summary>
+    
+      <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
+    
+    
+      <category term="PostgreSQL" scheme="https://www.jibing57.com/tags/PostgreSQL/"/>
+    
+      <category term="Mysql" scheme="https://www.jibing57.com/tags/Mysql/"/>
+    
+  </entry>
   
   <entry>
     <title>Crontab中解决sorry, you must have a tty to run sudo的方法</title>
@@ -383,7 +448,7 @@
     <link href="https://www.jibing57.com/2019/12/31/after-upgrade-the-openssl-in-macos/"/>
     <id>https://www.jibing57.com/2019/12/31/after-upgrade-the-openssl-in-macos/</id>
     <published>2019-12-31T13:56:11.000Z</published>
-    <updated>2020-02-03T06:08:43.759Z</updated>
+    <updated>2020-07-15T07:55:15.208Z</updated>
     
     <summary type="html">
     
@@ -517,55 +582,6 @@
       <category term="Docker" scheme="https://www.jibing57.com/tags/Docker/"/>
     
       <category term="Kubernetes" scheme="https://www.jibing57.com/tags/Kubernetes/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Mac下Word不能双击格式刷重复刷的问题</title>
-    <link href="https://www.jibing57.com/2019/10/31/why-format-painter-not-working-on-mac-office-365/"/>
-    <id>https://www.jibing57.com/2019/10/31/why-format-painter-not-working-on-mac-office-365/</id>
-    <published>2019-10-31T11:45:07.000Z</published>
-    <updated>2019-10-31T08:54:18.250Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;问题&quot;&gt;&lt;a href=&quot;#问题&quot; class=&quot;headerlink&quot; title=&quot;问题&quot;&gt;&lt;/a&gt;问题&lt;/h3&gt;&lt;p&gt;Mac下的Word中没法通过双击格式刷来保持格式刷的状态来重复刷格式&lt;/p&gt;
-&lt;h3 id=&quot;原因&quot;&gt;&lt;a href=&quot;#原因&quot; class=&quot;headerlink&quot; title=&quot;原因&quot;&gt;&lt;/a&gt;原因&lt;/h3&gt;&lt;p&gt;Word的双击格式刷功能，可能和某些字典软件的功能有冲突，会导致双击格式刷功能失效。&lt;/p&gt;
-&lt;h3 id=&quot;解决办法&quot;&gt;&lt;a href=&quot;#解决办法&quot; class=&quot;headerlink&quot; title=&quot;解决办法&quot;&gt;&lt;/a&gt;解决办法&lt;/h3&gt;&lt;p&gt;关掉字典软件即可。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
-    
-    
-      <category term="MacOS" scheme="https://www.jibing57.com/tags/MacOS/"/>
-    
-      <category term="Office" scheme="https://www.jibing57.com/tags/Office/"/>
-    
-      <category term="感悟" scheme="https://www.jibing57.com/tags/%E6%84%9F%E6%82%9F/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>PostgreSQL Tips</title>
-    <link href="https://www.jibing57.com/2019/10/27/postgresql-tips/"/>
-    <id>https://www.jibing57.com/2019/10/27/postgresql-tips/</id>
-    <published>2019-10-27T05:31:35.000Z</published>
-    <updated>2020-06-18T08:55:58.082Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;收录一些PostgreSQL日常使用的小命令和小配置，备查。&lt;/p&gt;
-&lt;hr&gt;
-&lt;h3 id=&quot;将sql结果导入csv文件&quot;&gt;&lt;a href=&quot;#将sql结果导入csv文件&quot; class=&quot;headerlink&quot; title=&quot;将sql结果导入csv文件&quot;&gt;&lt;/a&gt;将sql结果导入csv文件&lt;/h3&gt;&lt;p&gt;使用\copy命令将sql结果导入csv文件, postgresql命令行中输入以下命令:&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;\copy (Select * From foo) To &amp;apos;/tmp/test.csv&amp;apos; With CSV HEADER&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;Reference :&lt;a href=&quot;http://stackoverflow.com/questions/1517635/save-pl-pgsql-output-from-postgresql-to-a-csv-file&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://stackoverflow.com/questions/1517635/save-pl-pgsql-output-from-postgresql-to-a-csv-file&lt;/a&gt;&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
-    
-    
-      <category term="PostgreSQL" scheme="https://www.jibing57.com/tags/PostgreSQL/"/>
     
   </entry>
   

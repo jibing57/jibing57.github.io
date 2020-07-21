@@ -1,0 +1,663 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Postgresql和Mysql中的事务隔离 | Recording</title>
+  <meta name="author" content="jibing57">
+  
+  <meta name="description" content="AWS, 阅读, Architecture, PostgreSQL">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Postgresql和Mysql中的事务隔离"/>
+  <meta property="og:site_name" content="Recording"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/css/themes/bootstrap.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/comment.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+  
+  <!-- analytics -->
+  
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-111771042-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?59d3e14cdc96877383afed646f44d216";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+</head>
+
+ <body>  
+  <nav id="main-nav" class="navbar  navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+	<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+       <a class="navbar-brand" href="/">Recording</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class="fa fa-archive"></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class="fa fa-folder"></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class="fa fa-tags"></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/books" title="Douban">
+			  <i class="fa fa-book"></i>Douban
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header ">		
+			<h1 class="title "> Postgresql和Mysql中的事务隔离</h1>
+		</div>		
+	
+
+
+
+
+   <style type="text/css">
+           img, video {
+                -webkit-box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+                -moz-box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+                box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+           }
+   </style>
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
+
+	<!-- content -->
+	<div class="mypage">		
+	  		
+
+	  <h2 id="事务的定义"><a href="#事务的定义" class="headerlink" title="事务的定义"></a>事务的定义</h2><p>事务拥有四个重要的特性：</p>
+<ul>
+<li>原子性（Atomicity）<ul>
+<li>事务开始后所有操作，要么全部做完，要么全部不做，不可能停滞在中间环节。事务执行过程中出错，会回滚到事务开始前的状态，所有的操作就像没有发生一样。</li>
+</ul>
+</li>
+<li>一致性（Consistency）<ul>
+<li>指事务将数据库从一种状态转变为另一种一致的的状态。事务开始前和结束后，数据库的完整性约束没有被破坏。</li>
+</ul>
+</li>
+<li>隔离性（Isolation）<ul>
+<li>要求每个读写事务的对象对其他事务的操作对象能互相分离，即该事务提交前对其他事务不可见。 也可以理解为多个事务并发访问时，事务之间是隔离的，一个事务不应该影响其它事务运行效果。这指的是在并发环境中，当不同的事务同时操纵相同的数据时，每个事务都有各自的完整数据空间。由并发事务所做的修改必须与任何其他并发事务所做的修改隔离。</li>
+</ul>
+</li>
+<li>持久性（Durability）<ul>
+<li>事务一旦提交，则其结果就是永久性的。即使发生宕机的故障，数据库也能将数据恢复，也就是说事务完成后，事务对数据库的所有更新将被保存到数据库，不能回滚。<br>这四个特性就是常说的数据库的ACID 特性</li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<h2 id="事务隔离的定义"><a href="#事务隔离的定义" class="headerlink" title="事务隔离的定义"></a>事务隔离的定义</h2><p>SQL标准定义了4类隔离级别。用来限定事务内外的哪些改变是可见的，哪些是不可见的。低级别的隔离级一般支持更高的并发处理，并拥有更低的系统开销。</p>
+<h3 id="SQL事务隔离级别说明"><a href="#SQL事务隔离级别说明" class="headerlink" title="SQL事务隔离级别说明"></a>SQL事务隔离级别说明</h3><p>SQL事务隔离参照等级从低到高依次为:</p>
+<ul>
+<li>Read Uncommitted（读取未提交内容）<ul>
+<li>在该隔离级别，所有事务都可以看到其他未提交事务的执行结果。本隔离级别很少用于实际应用，因为它的性能也不比其他级别好多少。读取未提交的数据，也被称之为脏读（Dirty Read）。</li>
+</ul>
+</li>
+<li>Read Committed（读取提交内容）<ul>
+<li>这是大多数数据库系统的默认隔离级别（但不是 MySQL 默认的）。它满足了隔离的简单定义：一个事务只能看见已经提交事务所做的改变。这种隔离级别 也支持所谓的不可重复读（Nonrepeatable Read），因为同一事务的其他实例在该实例处理其间可能会有新的 commit，所以同一 select 可能返回不同结果。</li>
+</ul>
+</li>
+<li>Repeatable Read（可重读）<ul>
+<li>这是 MySQL 的默认事务隔离级别，它确保同一事务的多个实例在并发读取数据时，会看到同样的数据行。不过理论上，这会导致另一个棘手的问题：幻读 （Phantom Read）。简单的说，幻读指当用户读取某一范围的数据行时，另一个事务又在该范围内插入了新行，当用户再读取该范围的数据行时，会发现有新的 “幻影” 行。</li>
+</ul>
+</li>
+<li>Serializable（可串行化）<ul>
+<li>这是最高的隔离级别，它通过强制事务排序，使之不可能相互冲突，从而解决幻读问题。简言之，它是在每个读的数据行上加上共享锁。在这个级别，可能导致大量的超时现象和锁竞争。</li>
+</ul>
+</li>
+</ul>
+<h3 id="事务隔离的问题"><a href="#事务隔离的问题" class="headerlink" title="事务隔离的问题"></a>事务隔离的问题</h3><ul>
+<li>脏读（Drity Read）<ul>
+<li>一个事务读取到另一事务未提交的更新数据。当一个事务正在访问数据，并且对数据进行了修改，而这种修改还没有提交到数据库中（这个数据在有可能会回滚）</li>
+</ul>
+</li>
+<li>不可重复读 (Non-repeatable read）<ul>
+<li>在一个事务内，前后两次读到的数据是不一样。在 T1 事务两次读取同一数据之间，T2 事务对该数据进行了修改，就会发生 T1 事务中的两次数据读取不一样的结果。相反， 可重复读：在同一事务中多次读取数据时，能够保证所读数据一样，也就是后续读取不能读到另一事务已提交的更新数据。</li>
+</ul>
+</li>
+<li>幻读 (Phantom Read）<ul>
+<li>指当事务不是独立执行时发生的一种现象，例如：T1 事务对表中的 “全部数据行” 进行了修改，同时 T2 事务向表中插入了一行 “新数据”，操作 T1 事务的用户发现表中还存在没有修改的数据行，就好象发生了幻觉一样。</li>
+</ul>
+</li>
+<li>不可重复读和幻读的异同<ul>
+<li>两者都表现为两次读取的结果不一致</li>
+<li>不可重复读是由于另一个事务对数据的更改所造成的，第二次读到了不一样的记录</li>
+<li>幻读是由于另一个事务插入或删除引起的，第二次查询的结果发生了变化</li>
+<li>对于不可重复读，只需要锁住满足条件的记录</li>
+<li>对于幻读，要锁住满足条件及其相近的记录</li>
+</ul>
+</li>
+</ul>
+<h2 id="mysql"><a href="#mysql" class="headerlink" title="mysql"></a>mysql</h2><h3 id="mysql-隔离级别"><a href="#mysql-隔离级别" class="headerlink" title="mysql 隔离级别"></a>mysql 隔离级别</h3><table>
+<thead>
+<tr>
+<th>隔离级别</th>
+<th>脏读（Dirty Read）</th>
+<th>不可重复读（NonRepeatable Read）</th>
+<th>幻读（Phantom Read）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>未提交读（Read uncommitted）</td>
+<td>可能</td>
+<td>可能</td>
+<td>可能</td>
+</tr>
+<tr>
+<td>已提交读（Read committed）</td>
+<td>不可能</td>
+<td>可能</td>
+<td>可能</td>
+</tr>
+<tr>
+<td>可重复读（Repeatable read）</td>
+<td>不可能</td>
+<td>不可能</td>
+<td>可能</td>
+</tr>
+<tr>
+<td>可串行化（SERIALIZABLE）</td>
+<td>不可能</td>
+<td>不可能</td>
+<td>不可能</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Mysql默认个隔离级别是可重复读（Repeatable read）</strong></p>
+<h3 id="mysql命令"><a href="#mysql命令" class="headerlink" title="mysql命令"></a>mysql命令</h3><p>mysql 8.x中事务隔离相关的命令如下:</p>
+<p>check session transaction level (mysql8+)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">mysql&gt; SELECT @@transaction_ISOLATION;</div><div class="line">+-------------------------+</div><div class="line">| @@transaction_ISOLATION |</div><div class="line">+-------------------------+</div><div class="line">| REPEATABLE-READ         |</div><div class="line">+-------------------------+</div><div class="line">1 row in set (0.00 sec)</div><div class="line"></div><div class="line">mysql&gt;</div></pre></td></tr></table></figure></p>
+<p>check global transaction level (mysql8+)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">mysql&gt; SELECT @@global.transaction_ISOLATION;</div><div class="line">+--------------------------------+</div><div class="line">| @@global.transaction_ISOLATION |</div><div class="line">+--------------------------------+</div><div class="line">| REPEATABLE-READ                |</div><div class="line">+--------------------------------+</div><div class="line">1 row in set (0.00 sec)</div><div class="line"></div><div class="line">mysql&gt;</div></pre></td></tr></table></figure></p>
+<p>改变单个会话或者新连接的隔离级别<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">SET [SESSION | GLOBAL] TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;</div><div class="line">SET [SESSION | GLOBAL] TRANSACTION ISOLATION LEVEL READ COMMITTED;</div><div class="line">SET [SESSION | GLOBAL] TRANSACTION ISOLATION LEVEL REPEATABLE READ;</div><div class="line">SET [SESSION | GLOBAL] TRANSACTION ISOLATION LEVEL SERIALIZABLE;</div></pre></td></tr></table></figure></p>
+<h3 id="试验"><a href="#试验" class="headerlink" title="试验"></a>试验</h3><p>如下实验基于mysql 8.x, 5.x的事务命令和8.x的有差异，整个试验过程和文字描述都摘录自文章<a href="https://www.ibm.com/developerworks/cn/opensource/os-mysql-transaction-isolation-levels-and-locks/index.html" target="_blank" rel="external">MySQL 事务隔离级别和锁</a></p>
+<h4 id="READ-UNCOMMITTED（读未提交）"><a href="#READ-UNCOMMITTED（读未提交）" class="headerlink" title="READ UNCOMMITTED（读未提交）"></a>READ UNCOMMITTED（读未提交）</h4><p>在该隔离级别，所有事务都可以看到其他未提交事务的执行结果。</p>
+<ol>
+<li><p>创建数据库并设置隔离级别</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;</div><div class="line">create database test;</div><div class="line">use test;</div><div class="line">create table test(id int primary key);</div><div class="line">insert into test(id) values(1);</div></pre></td></tr></table></figure>
+</li>
+<li><p>mysql 1中，开始事务，更新记录为2</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">begin;</div><div class="line">update test set id = 2 where id = 1;</div><div class="line">select * from test; -- 此时看到一条ID为2的记录</div></pre></td></tr></table></figure>
+</li>
+<li><p>mysql 终端2中，开启事务后查看表中的数据。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;</div><div class="line">use test;</div><div class="line">begin;</div><div class="line">select * from test; -- 此时看到一条 ID 为 2 的记录</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>最后一步读取到了 mysql 终端 1 中未提交的事务（没有 commit 提交动作），即产生了脏读(Dirty Read)</p>
+<h4 id="READ-COMMITTED（读提交）"><a href="#READ-COMMITTED（读提交）" class="headerlink" title="READ COMMITTED（读提交）"></a>READ COMMITTED（读提交）</h4><p>一个事务可以读取另一个已提交的事务，多次读取会造成不一样的结果，此现象称为不可重复读问题(NonRepeatable Read)</p>
+<ol>
+<li><p>准备两个终端，在此命名为 mysql 终端 1 和 mysql 终端 2，再准备一张测试表 test，写入一条测试数据并调整隔离级别为 READ COMMITTED</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;</div><div class="line">create database test;</div><div class="line">use test;</div><div class="line">create table test(id int primary key);</div><div class="line">insert into test(id) values(1);</div></pre></td></tr></table></figure>
+</li>
+<li><p>登录 mysql 终端 1，开启一个事务，将 ID 为 1 的记录更新为 2，并确认记录数变更过来。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">begin;</div><div class="line">update test set id = 2 where id = 1;</div><div class="line">select * from test; -- 此时看到一条记录为 2</div></pre></td></tr></table></figure>
+</li>
+<li><p>登录 mysql 终端 2，开启一个事务后，查看表中的数据。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;</div><div class="line">use test;</div><div class="line">begin;</div><div class="line">select * from test; -- 此时看一条 ID 为 1 的记录</div></pre></td></tr></table></figure>
+</li>
+<li><p>登录 mysql 终端 1，提交事务。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">commit;</div></pre></td></tr></table></figure>
+</li>
+<li><p>切换到 mysql 终端 2。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">select * from test; -- 此时看到一条 ID 为 2 的记录</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>mysql 终端 2 在开启了一个事务之后，在第一次读取 test 表（此时 mysql 终端 1 的事务还未提交）时 ID 为 1，在第二次读取 test 表（此时 mysql 终端 1 的事务已经提交）时 ID 已经变为 2，说明在此隔离级别下已经读取到已提交的事务。</p>
+<h4 id="REPEATABLE-READ（可重复读）"><a href="#REPEATABLE-READ（可重复读）" class="headerlink" title="REPEATABLE READ（可重复读）"></a>REPEATABLE READ（可重复读）</h4><p>该隔离级别是 MySQL 默认的隔离级别，在同一个事务里，select 的结果是事务开始时时间点的状态，因此，同样的 select 操作读到的结果会是一致的，但是，会有幻读现象(Phantom Read)。<br>MySQL 的 InnoDB 引擎可以通过 next-key locks 机制（参考<a href="https://www.ibm.com/developerworks/cn/opensource/os-mysql-transaction-isolation-levels-and-locks/index.html#1%E8%A1%8C%E9%94%81%E7%9A%84%E7%AE%97%E6%B3%95outline" target="_blank" rel="external">行锁的算法</a>）来避免幻读。</p>
+<ol>
+<li><p>准备两个终端，在此命名为 mysql 终端 1 和 mysql 终端 2。mysql 1中准备一张测试表 test 并调整隔离级别为 REPEATABLE READ.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;</div><div class="line">create database test;</div><div class="line">use test;</div><div class="line">create table test(id int primary key,name varchar(20));</div></pre></td></tr></table></figure>
+</li>
+<li><p>登录 mysql 终端 1，开启一个事务。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">begin;</div><div class="line">select * from test; -- 无记录</div></pre></td></tr></table></figure>
+</li>
+<li><p>登录 mysql 终端 2，开启一个事务。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;</div><div class="line">use test;</div><div class="line">begin;</div><div class="line">select * from test; -- 无记录</div></pre></td></tr></table></figure>
+</li>
+<li><p>切换到 mysql 终端 1，增加一条记录并提交。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">insert into test(id,name) values(1,&apos;a&apos;);</div><div class="line">commit;</div></pre></td></tr></table></figure>
+</li>
+<li><p>切换到 mysql 终端 2。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">select * from test; -- 此时查询还是无记录</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>通过这一步可以证明，在该隔离级别下已经读取不到别的已提交的事务，如果想看到 mysql 终端 1 提交的事务，在 mysql 终端 2 将当前事务提交后再次查询就可以读取到 mysql 终端 1 提交的事务。我们接着实验，看看在该隔离级别下是否会存在别的问题。</p>
+<ol>
+<li>此时接着在 mysql 终端 2 插入一条数据。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">insert into test(id,name) values(1,&apos;b&apos;); -- 此时报主键冲突的错误</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>也许到这里您心里可能会有疑问，明明在第 5 步没有数据，为什么在这里会报错呢？其实这就是该隔离级别下可能产生的问题，MySQL 称之为幻读。</p>
+<h4 id="SERIALIZABLE（序列化）"><a href="#SERIALIZABLE（序列化）" class="headerlink" title="SERIALIZABLE（序列化）"></a>SERIALIZABLE（序列化）</h4><p>在该隔离级别下事务都是串行顺序执行的，MySQL 数据库的 InnoDB 引擎会给读操作隐式加一把读共享锁，从而避免了脏读、不可重读复读和幻读问题。</p>
+<ol>
+<li><p>准备两个终端，在此命名为 mysql 终端 1 和 mysql 终端 2. 登入 mysql 1，准备一张测试表 test 并调整隔离级别为 SERIALIZABLE</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">SET SESSION TRANSACTION ISOLATION LEVEL SERIALIZABLE;</div><div class="line">create database test;</div><div class="line">use test;</div><div class="line">create table test(id int primary key);</div></pre></td></tr></table></figure>
+</li>
+<li><p>登录 mysql 终端 1，开启一个事务，并写入一条数据。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">begin;</div><div class="line">insert into test(id) values(1);</div></pre></td></tr></table></figure>
+</li>
+<li><p>登录 mysql 终端 2，开启一个事务。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">SET SESSION TRANSACTION ISOLATION LEVEL SERIALIZABLE;</div><div class="line">use test;</div><div class="line">begin;</div><div class="line">select * from test; -- 此时会一直卡住</div></pre></td></tr></table></figure>
+</li>
+<li><p>立马切换到 mysql 终端 1,提交事务。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">commit;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>一旦事务提交，mysql 终端 2 会立马返回 ID 为 1 的记录，否则会一直卡住，直到超时，其中超时参数是由 innodb_lock_wait_timeout 控制。由于每条 select 语句都会加锁，所以该隔离级别的数据库并发能力最弱。</p>
+<h2 id="postgresql"><a href="#postgresql" class="headerlink" title="postgresql"></a>postgresql</h2><h3 id="Postgresql-隔离级别"><a href="#Postgresql-隔离级别" class="headerlink" title="Postgresql 隔离级别"></a>Postgresql 隔离级别</h3><p>如下表格内容引自官网<a href="https://www.postgresql.org/docs/9.6/transaction-iso.html" target="_blank" rel="external">Transaction Isolation</a></p>
+<table>
+<thead>
+<tr>
+<th>Isolation Level</th>
+<th>Dirty Read</th>
+<th>Nonrepeatable Read</th>
+<th>Phantom Read</th>
+<th>Serialization Anomaly</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Read uncommitted</td>
+<td>Allowed, but not in PG</td>
+<td>Possible</td>
+<td>Possible</td>
+<td>Possible</td>
+</tr>
+<tr>
+<td>Read committed</td>
+<td>Not possible</td>
+<td>Possible</td>
+<td>Possible</td>
+<td>Possible</td>
+</tr>
+<tr>
+<td>Repeatable read</td>
+<td>Not possible</td>
+<td>Not possible</td>
+<td>Allowed, but not in PG</td>
+<td>Possible</td>
+</tr>
+<tr>
+<td>Serializable</td>
+<td>Not possible</td>
+<td>Not possible</td>
+<td>Not possible</td>
+<td>Not possible</td>
+</tr>
+</tbody>
+</table>
+<p>注意点:</p>
+<ul>
+<li>Read uncommitted在标准sql中被定义，但是在PG中没有实现，会被当做Read committed来对待</li>
+<li>PG中默认的隔离级别是Read committed</li>
+<li>PG中Repeatable read下，幻读(Phantom Read)也不是被允许的。</li>
+</ul>
+<h3 id="postgresql命令"><a href="#postgresql命令" class="headerlink" title="postgresql命令"></a>postgresql命令</h3><p>Postgresql下事务隔离的命令如下:</p>
+<h4 id="查看数据库事务隔离级别"><a href="#查看数据库事务隔离级别" class="headerlink" title="查看数据库事务隔离级别"></a>查看数据库事务隔离级别</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">SELECT name, setting FROM pg_settings WHERE name =&apos;default_transaction_isolation&apos;;</div><div class="line">或</div><div class="line">SELECT current_setting(&apos;default_transaction_isolation&apos;);</div></pre></td></tr></table></figure>
+<h4 id="修改全局事务级别"><a href="#修改全局事务级别" class="headerlink" title="修改全局事务级别"></a>修改全局事务级别</h4><p>方法一: 修改postgresql.conf文件中的default_transaction_isolation<br>方法二: 使用<code>alter system set default_transaction_isolation</code>命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">alter system set default_transaction_isolation to &apos;SERIALIZABLE | REPEATABLE READ | READ COMMITTED | READ UNCOMMITTED&apos;;</div><div class="line">SELECT pg_reload_conf();</div></pre></td></tr></table></figure></p>
+<p><code>alter system set</code>命令设置后，会在配置文件目录下产生<code>postgresql.auto.conf</code>文件，用来覆盖默认的<code>postgresql.conf</code>配置。<br><code>alter system set default_transaction_isolation</code>并不对当前数据库生效，需要使用<code>SELECT pg_reload_conf()</code>来重新load配置或重启数据库后才能生效。</p>
+<h4 id="查看当前会话事务隔离级别的方法"><a href="#查看当前会话事务隔离级别的方法" class="headerlink" title="查看当前会话事务隔离级别的方法"></a>查看当前会话事务隔离级别的方法</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">show transaction_isolation</div><div class="line">或</div><div class="line">SELECT current_setting(&apos;transaction_isolation&apos;);</div></pre></td></tr></table></figure>
+<h4 id="设置当前会话事务隔离级别"><a href="#设置当前会话事务隔离级别" class="headerlink" title="设置当前会话事务隔离级别"></a>设置当前会话事务隔离级别</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SET SESSION CHARACTERISTICS AS TRANSACTION ISOLATION LEVEL &#123; SERIALIZABLE | REPEATABLE READ | READ COMMITTED | READ UNCOMMITTED &#125;;</div></pre></td></tr></table></figure>
+<h4 id="设置事务隔离级别"><a href="#设置事务隔离级别" class="headerlink" title="设置事务隔离级别"></a>设置事务隔离级别</h4><p>事务中设置隔离等级方式一:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">BEGIN;</div><div class="line">SET TRANSACTION ISOLATION LEVEL &#123; SERIALIZABLE | REPEATABLE READ | READ COMMITTED | READ UNCOMMITTED &#125;;</div><div class="line">show transaction_isolation;</div></pre></td></tr></table></figure></p>
+<p>事务中设置隔离等级方式二:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">begin transaction isolation level serializable;</div><div class="line">show transaction_isolation;</div></pre></td></tr></table></figure></p>
+<h3 id="试验-1"><a href="#试验-1" class="headerlink" title="试验"></a>试验</h3><h4 id="READ-UNCOMMITTED（读未提交）-1"><a href="#READ-UNCOMMITTED（读未提交）-1" class="headerlink" title="READ UNCOMMITTED（读未提交）"></a>READ UNCOMMITTED（读未提交）</h4><p><strong>Postgresql中可以设置隔离级别是READ UNCOMMITTED，但是具体的实现方式是和READ COMMITTED的行为一致的。</strong></p>
+<ol>
+<li><p>准备两个终端，在此命名为 pg 终端 1 和 pg 终端 2，再准备一张测试表 test，写入一条测试数据并调整隔离级别为READ UNCOMMITTED。登录pg终端1，执行如下操作。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">create database test;</div><div class="line">\c test;</div><div class="line">SET SESSION CHARACTERISTICS AS TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;</div><div class="line">create table test(id serial primary key);</div><div class="line">insert into test(id) values(1);</div></pre></td></tr></table></figure>
+</li>
+<li><p>登录 pg终端 1，开启一个事务，将 ID 为 1 的记录更新为 2，并确认记录数变更过来。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">begin;</div><div class="line">update test set id = 2 where id = 1;</div><div class="line">select * from test; -- 此时看到一条记录为 2</div></pre></td></tr></table></figure>
+</li>
+<li><p>登录 pg终端 2，开启一个事务后，查看表中的数据。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">\c test;</div><div class="line">SET SESSION CHARACTERISTICS AS TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;</div><div class="line">begin;</div><div class="line">select * from test; -- 此时看一条 ID 为 1 的记录</div></pre></td></tr></table></figure>
+</li>
+<li><p>登录 pg终端 1，提交事务。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">commit;</div></pre></td></tr></table></figure>
+</li>
+<li><p>切换到 pg 终端 2。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">select * from test; -- 此时看到一条 ID 为 2 的记录</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>可以看到，即使是设置了隔离级别为READ UNCOMMITTED，在pg 终端2中也无法读取pg终端 1中未提交的事务，只有在pg终端 1中提交了事务后，pg终端 2中才能读取对应的值。 即PG中READ UNCOMMITTED的隔离级别，同READ COMMITTED的隔离级别效果是一致的。</p>
+<h4 id="READ-COMMITTED（读提交）-1"><a href="#READ-COMMITTED（读提交）-1" class="headerlink" title="READ COMMITTED（读提交）"></a>READ COMMITTED（读提交）</h4><p>READ COMMITTED（读提交）是PG的默认隔离等级。<br>一个事务可以读取另一个已提交的事务，多次读取会造成不一样的结果，此现象称为不可重复读问题(NonRepeatable Read)</p>
+<ol>
+<li><p>准备两个终端，在此命名为 pg 终端 1 和 pg 终端 2，再准备一张测试表 test，写入一条测试数据并调整隔离级别为READ COMMITTED。登录pg终端1，执行如下操作。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">create database test;</div><div class="line">\c test;</div><div class="line">SET SESSION CHARACTERISTICS AS TRANSACTION ISOLATION LEVEL READ COMMITTED;</div><div class="line">create table test(id serial primary key);</div><div class="line">insert into test(id) values(1);</div></pre></td></tr></table></figure>
+</li>
+<li><p>登录 pg终端 1，开启一个事务，将 ID 为 1 的记录更新为 2，并确认记录数变更过来。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">begin;</div><div class="line">update test set id = 2 where id = 1;</div><div class="line">select * from test; -- 此时看到一条记录为 2</div></pre></td></tr></table></figure>
+</li>
+<li><p>登录 pg终端 2，开启一个事务后，查看表中的数据。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">\c test;</div><div class="line">SET SESSION CHARACTERISTICS AS TRANSACTION ISOLATION LEVEL READ COMMITTED;</div><div class="line">begin;</div><div class="line">select * from test; -- 此时看一条 ID 为 1 的记录</div></pre></td></tr></table></figure>
+</li>
+<li><p>登录 pg终端 1，提交事务。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">commit;</div></pre></td></tr></table></figure>
+</li>
+<li><p>切换到 pg 终端 2。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">select * from test; -- 此时看到一条 ID 为 2 的记录</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="REPEATABLE-READ（可重复读）-1"><a href="#REPEATABLE-READ（可重复读）-1" class="headerlink" title="REPEATABLE READ（可重复读）"></a>REPEATABLE READ（可重复读）</h4><p>在REPEATABLE READ模式下，PG的select 的结果始终保持事务开始时那个时间点的状态，因此，同样的 select 操作不会读到其他事务提交的结果,读到的结果会是一致的。</p>
+<ol>
+<li><p>准备两个终端，在此命名为 pg 终端 1 和 pg 终端 2。pg 1中准备一张测试表 test 并调整隔离级别为 REPEATABLE READ.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">create database test;</div><div class="line">\c test;</div><div class="line">SET SESSION CHARACTERISTICS AS TRANSACTION ISOLATION LEVEL REPEATABLE READ;</div><div class="line">create table test(id serial primary key,name varchar(20));</div></pre></td></tr></table></figure>
+</li>
+<li><p>登录 pg 终端 1，开启一个事务。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">begin;</div><div class="line">select * from test; -- 无记录</div></pre></td></tr></table></figure>
+</li>
+<li><p>登录 pg 终端 2，开启一个事务。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">\c test;</div><div class="line">SET SESSION CHARACTERISTICS AS TRANSACTION ISOLATION LEVEL REPEATABLE READ;</div><div class="line">begin;</div><div class="line">select * from test; -- 无记录</div></pre></td></tr></table></figure>
+</li>
+<li><p>切换到 pg 终端 1，增加一条记录并提交。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">insert into test(id,name) values(1,&apos;a&apos;);</div><div class="line">commit;</div></pre></td></tr></table></figure>
+</li>
+<li><p>切换到 pg 终端 2。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">select * from test; -- 此时查询还是无记录</div><div class="line">commit;</div><div class="line">select * from test; -- 此时能查到id=1的记录。</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>此时，可以看到，在pg终端2中的事务中，看不到pg终端1中提交的内容。只有在pg终端2中commit后，才能看到pg终端1中提交的内容。</p>
+<p>我们来看pg是怎么避免幻读现象的。</p>
+<ol>
+<li><p>在终端1，中更新id=1的记录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">begin;</div><div class="line">update test set name=&apos;t1&apos; where id=1; -- 此时update语句可以执行完成</div></pre></td></tr></table></figure>
+</li>
+<li><p>在终端2中，也更新id=1的记录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">begin;</div><div class="line">update test set name=&apos;t2&apos; where id=1;  -- 此时update语句会被block住。</div></pre></td></tr></table></figure>
+</li>
+<li><p>在pg终端1中，commit</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">commit;</div></pre></td></tr></table></figure>
+</li>
+<li><p>此时，在pg终端2中，会报<code>ERROR:  could not serialize access due to concurrent update</code>的错误。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">test=# update test set name=&apos;t2&apos; where id=1; </div><div class="line">ERROR:  could not serialize access due to concurrent update</div><div class="line">test=#</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>在事务中，如果更新的数据被其他事务在更新，那么PG会等待其他事务完成。如果其他事务rollback了，那么继续更新数据，如果其他事务更新了同一条数据，那么本事务中会报告ERROR:  could not serialize access due to concurrent update的错误。</p>
+<p>如下是PG官方文档的相关描述:</p>
+<blockquote>
+<p>UPDATE, DELETE, SELECT FOR UPDATE, and SELECT FOR SHARE commands behave the same as SELECT in terms of searching for target rows: they will only find target rows that were committed as of the transaction start time. However, such a target row might have already been updated (or deleted or locked) by another concurrent transaction by the time it is found. In this case, the repeatable read transaction will wait for the first updating transaction to commit or roll back (if it is still in progress). If the first updater rolls back, then its effects are negated and the repeatable read transaction can proceed with updating the originally found row. But if the first updater commits (and actually updated or deleted the row, not just locked it) then the repeatable read transaction will be rolled back with the message</p>
+<blockquote>
+<p>ERROR:  could not serialize access due to concurrent update</p>
+</blockquote>
+</blockquote>
+<p>注意，在REPEATABLE READ模式中，因为事务在update同样的记录时，会有block的情况。因此可能会导致死锁的情况。<br>当出现死锁时，PG能够发现该情况，然后主动让一个事务操作失败。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">test=# update test set name=&apos;t2&apos; where id=2;</div><div class="line">ERROR:  deadlock detected</div><div class="line">DETAIL:  Process 63825 waits for ShareLock on transaction 2955343; blocked by process 72840.</div><div class="line">Process 72840 waits for ShareLock on transaction 2955344; blocked by process 63825.</div><div class="line">HINT:  See server log for query details.</div><div class="line">CONTEXT:  while updating tuple (0,5) in relation &quot;test&quot;</div><div class="line">test=#</div></pre></td></tr></table></figure></p>
+<h4 id="SERIALIZABLE（序列化）-1"><a href="#SERIALIZABLE（序列化）-1" class="headerlink" title="SERIALIZABLE（序列化）"></a>SERIALIZABLE（序列化）</h4><p>在该隔离级别下事务都是串行顺序执行的，可以避免脏读、不可重读复读和幻读问题。</p>
+<ol>
+<li><p>准备两个终端，在此命名为 pg 终端 1 和 pg 终端 2. 登入 pg 1，准备一张测试表 test 并调整隔离级别为 SERIALIZABLE</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">create database test;</div><div class="line">\c test;</div><div class="line">SET SESSION CHARACTERISTICS AS TRANSACTION ISOLATION LEVEL SERIALIZABLE;</div><div class="line">create table test(id serial primary key);</div></pre></td></tr></table></figure>
+</li>
+<li><p>登录 pg 终端 1，开启一个事务，并写入一条数据。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">begin;</div><div class="line">insert into test(id) values(1);</div></pre></td></tr></table></figure>
+</li>
+<li><p>登录 pg 终端 2，开启一个事务。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">\c test;</div><div class="line">SET SESSION CHARACTERISTICS AS TRANSACTION ISOLATION LEVEL SERIALIZABLE;</div><div class="line">begin;</div><div class="line">insert into test(id) values(2);</div></pre></td></tr></table></figure>
+</li>
+<li><p>切换到 pg 终端 1,提交事务。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">commit; -- 可以成功提交</div></pre></td></tr></table></figure>
+</li>
+<li><p>切换到 pg 终端 2,提交事务。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">commit; -- 会报ERROR:  could not serialize access due to read/write dependencies among transactions的错误</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>在REPEATABLE READ模式下，pg终端2的commit是可以成功提交的。<br>但是在SERIALIZABLE模式下，为了保证序列化，当两个事务都提交了数据时，PG会让第一个commit的事务成功提交，而让第二个事务提交失败。<br>详细描述参见: <a href="https://www.postgresql.org/docs/9.6/transaction-iso.html" target="_blank" rel="external">Transaction Isolation</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><a href="https://ehlxr.me/2018/05/31/sql-transaction-isolation/" target="_blank" rel="external">SQL 事务隔离</a></li>
+<li><a href="https://dev.mysql.com/doc/refman/8.0/en/set-transaction.html" target="_blank" rel="external">SET TRANSACTION Statement</a></li>
+<li><a href="https://zh.wikipedia.org/wiki/%E4%BA%8B%E5%8B%99%E9%9A%94%E9%9B%A2" target="_blank" rel="external">事务隔离</a></li>
+<li><a href="https://www.ibm.com/developerworks/cn/opensource/os-mysql-transaction-isolation-levels-and-locks/index.html" target="_blank" rel="external">MySQL 事务隔离级别和锁</a></li>
+<li><a href="https://blog.csdn.net/qq_31156277/article/details/84310746" target="_blank" rel="external">postgresl系列之事务与并发控制</a></li>
+<li><a href="https://www.zhihu.com/question/47007926" target="_blank" rel="external">关于幻读，可重复读的真实用例是什么？</a></li>
+<li><a href="https://pgdash.io/blog/postgres-transactions.html" target="_blank" rel="external">Transaction Isolation in PostgreSQL</a></li>
+</ul>
+	  
+	</div>
+
+	<div>
+  	<center>
+	<div class="pagination">
+<ul class="pagination">
+	 
+				
+    	<li class="prev"><a href="/2020/07/03/redis-basic/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>上一页</a></li>
+  		
+
+        <li><a href="/archives"><i class="fa fa-archive"></i>Archive</a></li>
+
+		
+		   <li class="next"><a href="/2020/06/23/resolve-sudo-error-in-crontab-job/" class="alignright next">下一页<i class="fa fa-arrow-circle-o-right"></i></a></li>         
+        
+	
+</ul>
+</div>
+
+    </center>
+	</div>
+
+    <!-- share -->
+    
+        
+    <div class="bdsharebuttonbox">
+        <a href="#" class="bds_more" data-cmd="more"></a>
+        <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+        <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+        <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+        <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+        <a href="#" class="bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+        <a href="#" class="bds_evernotecn" data-cmd="evernotecn" title="分享到印象笔记"></a>
+        <a href="#" class="bds_youdao" data-cmd="youdao" title="分享到有道云笔记"></a>
+        <a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+    </div>
+    <script>
+        window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"24"},"share":{}};
+        with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+    </script>
+
+
+        
+
+    
+	
+	<!-- comment -->
+	
+<section id="comment">
+  <h2 class="title">留言</h2>
+  
+  	 <div id="disqus_thread">
+     <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  	 </div>
+  
+</section>
+
+
+	</div> <!-- col-md-9/col-md-12 -->
+		
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta">
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2020-06-29
+	</div>
+	
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
+	   <div id="toc" class="toc collapse in">
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#事务的定义"><span class="toc-article-text">事务的定义</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#事务隔离的定义"><span class="toc-article-text">事务隔离的定义</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#SQL事务隔离级别说明"><span class="toc-article-text">SQL事务隔离级别说明</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#事务隔离的问题"><span class="toc-article-text">事务隔离的问题</span></a></li></ol></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#mysql"><span class="toc-article-text">mysql</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#mysql-隔离级别"><span class="toc-article-text">mysql 隔离级别</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#mysql命令"><span class="toc-article-text">mysql命令</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#试验"><span class="toc-article-text">试验</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#READ-UNCOMMITTED（读未提交）"><span class="toc-article-text">READ UNCOMMITTED（读未提交）</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#READ-COMMITTED（读提交）"><span class="toc-article-text">READ COMMITTED（读提交）</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#REPEATABLE-READ（可重复读）"><span class="toc-article-text">REPEATABLE READ（可重复读）</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#SERIALIZABLE（序列化）"><span class="toc-article-text">SERIALIZABLE（序列化）</span></a></li></ol></li></ol></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#postgresql"><span class="toc-article-text">postgresql</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#Postgresql-隔离级别"><span class="toc-article-text">Postgresql 隔离级别</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#postgresql命令"><span class="toc-article-text">postgresql命令</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#查看数据库事务隔离级别"><span class="toc-article-text">查看数据库事务隔离级别</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#修改全局事务级别"><span class="toc-article-text">修改全局事务级别</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#查看当前会话事务隔离级别的方法"><span class="toc-article-text">查看当前会话事务隔离级别的方法</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#设置当前会话事务隔离级别"><span class="toc-article-text">设置当前会话事务隔离级别</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#设置事务隔离级别"><span class="toc-article-text">设置事务隔离级别</span></a></li></ol></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#试验-1"><span class="toc-article-text">试验</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#READ-UNCOMMITTED（读未提交）-1"><span class="toc-article-text">READ UNCOMMITTED（读未提交）</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#READ-COMMITTED（读提交）-1"><span class="toc-article-text">READ COMMITTED（读提交）</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#REPEATABLE-READ（可重复读）-1"><span class="toc-article-text">REPEATABLE READ（可重复读）</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#SERIALIZABLE（序列化）-1"><span class="toc-article-text">SERIALIZABLE（序列化）</span></a></li></ol></li></ol></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#Reference"><span class="toc-article-text">Reference</span></a></li></ol>
+		</div>
+	
+	</div>
+
+	<!-- categories -->
+    
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>
+    <ul id="categorys" class="tag_box list-unstyled collapse in">
+          
+  <li>
+    <li><a href="/categories/Tools/">Tools<span>30</span></a></li>
+  </li>
+
+    </ul>
+	</div>
+	
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>
+    <ul id="tags" class="tag_box list-unstyled collapse in">
+	    
+  <li><a href="/tags/PostgreSQL/">PostgreSQL<span>5</span></a></li> <li><a href="/tags/Mysql/">Mysql<span>1</span></a></li>
+    </ul>
+	</div>
+	
+
+    <hr>
+
+</div><!-- col-md-3 -->
+
+	</div>
+		
+
+</div><!-- row -->
+
+<script type="text/javascript">
+var disqus_shortname = 'jibing57-blog';
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  &copy; 2020 jibing57
+  
+      with help from <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>.    
+</p> </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>

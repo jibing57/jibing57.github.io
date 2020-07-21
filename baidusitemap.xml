@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://www.jibing57.com/2019/04/26/command-tips/</loc>
+    <lastmod>2020-07-15</lastmod>
+  </url>  <url>
+    <loc>https://www.jibing57.com/2019/12/31/after-upgrade-the-openssl-in-macos/</loc>
+    <lastmod>2020-07-15</lastmod>
+  </url>  <url>
+    <loc>https://www.jibing57.com/2020/06/29/transaction-isolation-level-in-postgresql-and-mysql/</loc>
+    <lastmod>2020-07-13</lastmod>
+  </url>  <url>
+    <loc>https://www.jibing57.com/2020/07/03/redis-basic/</loc>
+    <lastmod>2020-07-03</lastmod>
+  </url>  <url>
     <loc>https://www.jibing57.com/2020/06/23/resolve-sudo-error-in-crontab-job/</loc>
     <lastmod>2020-06-25</lastmod>
   </url>  <url>
@@ -11,9 +23,6 @@
     <lastmod>2020-06-18</lastmod>
   </url>  <url>
     <loc>https://www.jibing57.com/2020/06/09/some-new-nginx-config/</loc>
-    <lastmod>2020-06-17</lastmod>
-  </url>  <url>
-    <loc>https://www.jibing57.com/2019/04/26/command-tips/</loc>
     <lastmod>2020-06-17</lastmod>
   </url>  <url>
     <loc>https://www.jibing57.com/2020/06/06/screen-overview-of-ak-tech/</loc>
@@ -47,9 +56,6 @@
     <lastmod>2020-02-25</lastmod>
   </url>  <url>
     <loc>https://www.jibing57.com/2020/01/31/How-to-install-rails-on-Ubuntu-18-04/</loc>
-    <lastmod>2020-02-03</lastmod>
-  </url>  <url>
-    <loc>https://www.jibing57.com/2019/12/31/after-upgrade-the-openssl-in-macos/</loc>
     <lastmod>2020-02-03</lastmod>
   </url>  <url>
     <loc>https://www.jibing57.com/2019/12/31/macos-youcompleteme-ERROR-root-code-for-hash-md5-was-not-found/</loc>
@@ -262,37 +268,37 @@
     <loc>https://www.jibing57.com/2017/10/29/ruby-paperclip-destroy-callback-nil/</loc>
     <lastmod>2017-12-25</lastmod>
   </url>  <url>
-    <loc>https://www.jibing57.com/2017/07/25/how-to-read-text-on-macos/</loc>
-    <lastmod>2017-12-25</lastmod>
-  </url>  <url>
     <loc>https://www.jibing57.com/2017/10/30/how-to-use-post-link-on-hexo/</loc>
-    <lastmod>2017-12-25</lastmod>
-  </url>  <url>
-    <loc>https://www.jibing57.com/2017/12/12/how-to-write-multiline-to-file-by-shell/</loc>
-    <lastmod>2017-12-25</lastmod>
-  </url>  <url>
-    <loc>https://www.jibing57.com/2017/10/24/how-to-use-aws-cli-with-multi-user/</loc>
     <lastmod>2017-12-25</lastmod>
   </url>  <url>
     <loc>https://www.jibing57.com/2017/11/29/how-to-enable-slow-query-on-aws-rds-postgresql/</loc>
     <lastmod>2017-12-25</lastmod>
   </url>  <url>
+    <loc>https://www.jibing57.com/2017/10/24/how-to-use-aws-cli-with-multi-user/</loc>
+    <lastmod>2017-12-25</lastmod>
+  </url>  <url>
+    <loc>https://www.jibing57.com/2017/07/25/how-to-read-text-on-macos/</loc>
+    <lastmod>2017-12-25</lastmod>
+  </url>  <url>
+    <loc>https://www.jibing57.com/2017/12/12/how-to-write-multiline-to-file-by-shell/</loc>
+    <lastmod>2017-12-25</lastmod>
+  </url>  <url>
     <loc>https://www.jibing57.com/2017/10/31/hexo-bind-domain-to-github-pages/</loc>
     <lastmod>2017-12-25</lastmod>
   </url>  <url>
-    <loc>https://www.jibing57.com/2017/12/19/deep-dig-on-s3-bucket-permission-exam/</loc>
+    <loc>https://www.jibing57.com/2017/12/20/expired-of-S3-RRS/</loc>
     <lastmod>2017-12-25</lastmod>
   </url>  <url>
-    <loc>https://www.jibing57.com/2017/12/20/expired-of-S3-RRS/</loc>
+    <loc>https://www.jibing57.com/2017/12/14/deep-dig-on-s3-bucket-permission/</loc>
+    <lastmod>2017-12-25</lastmod>
+  </url>  <url>
+    <loc>https://www.jibing57.com/2017/12/19/deep-dig-on-s3-bucket-permission-exam/</loc>
     <lastmod>2017-12-25</lastmod>
   </url>  <url>
     <loc>https://www.jibing57.com/2017/10/31/account-setting-by-aws/</loc>
     <lastmod>2017-12-25</lastmod>
   </url>  <url>
     <loc>https://www.jibing57.com/2017/12/20/How-to-add-staging-log-to-EB-logs/</loc>
-    <lastmod>2017-12-25</lastmod>
-  </url>  <url>
-    <loc>https://www.jibing57.com/2017/12/14/deep-dig-on-s3-bucket-permission/</loc>
     <lastmod>2017-12-25</lastmod>
   </url>  <url>
     <loc>https://www.jibing57.com/2017/12/25/how-to-add-shadow-of-images-in-freemind/</loc>

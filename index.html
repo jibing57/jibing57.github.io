@@ -335,9 +335,69 @@ var _hmt = _hmt || [];
 		
             
 		
+            
+		
+            
+		
         
         <!-- render other articles -->
         
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2020-08-01 </div>
+			<div class="article-title"><a href="/2020/08/01/advanced-configure-of-nginx-rtmp/" >Nginx RTMP服务器配置</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>本篇是<a href="/2020/07/29/how-to-setup-nginx-rtmp-on-centos-7/" title="CentOS 7中搭建基础的Nginx RMPT服务器">CentOS 7中搭建基础的Nginx RMPT服务器</a>的续篇，记录了Nignx RTMP使用过程中的一些有用的配置和一些坑。<br>下面的内容，是以文章<a href="/2020/07/29/how-to-setup-nginx-rtmp-on-centos-7/" title="CentOS 7中搭建基础的Nginx RMPT服务器">CentOS 7中搭建基础的Nginx RMPT服务器</a>中的配置为基准进行的修改。</p>
+<h3 id="配置stat"><a href="#配置stat" class="headerlink" title="配置stat"></a>配置stat</h3><p><a href="https://github.com/arut/nginx-rtmp-module" target="_blank" rel="external">nginx-rtmp-module</a>自身提供了统计的功能。按照Github上官方例子进行配置就行。<a href="https://github.com/arut/nginx-rtmp-module" target="_blank" rel="external">https://github.com/arut/nginx-rtmp-module</a><br>首先，拷贝<a href="https://github.com/arut/nginx-rtmp-module" target="_blank" rel="external">nginx-rtmp-module</a>源码中的stat.xls到nginx默认主目录<code>/usr/local/nginx/html/</code>中。<br>再配置rtmp的stat, 在默认server中添加如下配置。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"># This URL provides RTMP statistics in XML</div><div class="line">location /stat &#123;</div><div class="line">    rtmp_stat all;</div><div class="line"></div><div class="line">    # Use this stylesheet to view XML as web page</div><div class="line">    # in browser</div><div class="line">    rtmp_stat_stylesheet stat.xsl;</div><div class="line">&#125;</div><div class="line"></div><div class="line">location /stat.xsl &#123;</div><div class="line">    # XML stylesheet to view RTMP stats.</div><div class="line">    # Copy stat.xsl wherever you want</div><div class="line">    # and put the full directory path here</div><div class="line">    root html;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+	
+	</div>
+  <a type="button" href="/2020/08/01/advanced-configure-of-nginx-rtmp/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2020-07-29 </div>
+			<div class="article-title"><a href="/2020/07/29/how-to-setup-nginx-rtmp-on-centos-7/" >CentOS 7中搭建基础的Nginx RMPT服务器</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>介绍下如何在本地CentOS 7中使用<a href="https://github.com/arut/nginx-rtmp-module" target="_blank" rel="external">nginx-rtmp-module</a>来搭建基本的RTMP和HLS直播服务器。<br>基于如下情况进行搭建:</p>
+<ul>
+<li>系统版本: CentOS 7.6 Minimal</li>
+<li>虚拟机IP地址: 192.168.168.199</li>
+<li>Nginx版本:1.14.2</li>
+<li>Nginx Rtmp模块: <a href="https://github.com/arut/nginx-rtmp-module" target="_blank" rel="external">nginx-rtmp-module</a></li>
+<li>如下安装步骤，如果没有特别说明，都是基于root用户进行安装。</li>
+</ul>
+<h3 id="安装nginx"><a href="#安装nginx" class="headerlink" title="安装nginx"></a>安装nginx</h3><p>首先更新CentOS系统<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum update</div></pre></td></tr></table></figure></p>
+<p>安装编译nginx所需的开发包<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">yum install gcc</div><div class="line">yum install pcre pcre-devel pcre-static pcre-tools</div><div class="line">yum install openssl openssl-static openssl-devel</div><div class="line">yum install wget unzip</div></pre></td></tr></table></figure></p>
+	
+	</div>
+  <a type="button" href="/2020/07/29/how-to-setup-nginx-rtmp-on-centos-7/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
            
 			  
 	
@@ -609,64 +669,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2020-05-04 </div>
-			<div class="article-title"><a href="/2020/05/04/imageMagick-fonts-issue-on-Aliyun-Linux-2/" >Aliyun Linux 2上imageMagick的fonts配置问题</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h3><p>公司阿里云服务器部署Rails程序时，发现Gem <a href="https://github.com/pludoni/simple-captcha" target="_blank" rel="external">simple_captcha2</a>生成的验证码图片，和以前的不太一样。图片中的数字会比正常情况下靠上很多, 影响用户体验。</p>
-<p>正常情况下的图片:<br><img src="/images/ImageMagick/fonts_normal.jpeg" alt="fonts_normal.jpeg"></p>
-<p>有问题的图片:<br><img src="/images/ImageMagick/fonts_crooked_image.jpeg" alt="crooked_image.jpeg"></p>
-<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>Aliyun Linux 2(也包含最新的CentOS 7)中升级了ImageMagick的版本到<code>ImageMagick 6.9.10-68</code>, 字体配置文件<code>/etc/ImageMagick-6/type.xml</code>中默认改用了<code>urw-base35-fonts</code>，而不是之前的<code>ghostscript-fonts</code>。</p>
-<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><p>安装并修改ImageMagick使用旧字体。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"># 安装urw-base35-fonts-legacy, fonts在/usr/share/X11/fonts/urw-fonts目录下</div><div class="line">yum install urw-base35-fonts-legacy</div><div class="line"></div><div class="line"># 修改/etc/ImageMagick-6/type.xml配置文件为使用type-ghostscript.xml</div><div class="line">sed -i.bak &apos;s,type-urw-base35.xml,type-ghostscript.xml,g&apos; /etc/ImageMagick-6/type.xml</div><div class="line"></div><div class="line"># 修改 /etc/ImageMagick-6/type-ghostscript.xml为/usr/share/X11/fonts/urw-fonts/</div><div class="line">sed -i.bak &apos;s,metrics=&quot;,metrics=&quot;/usr/share/X11/fonts/urw-fonts/,g&apos; /etc/ImageMagick-6/type-ghostscript.xml</div><div class="line">sed -i &apos;s,glyphs=&quot;,glyphs=&quot;/usr/share/X11/fonts/urw-fonts/,g&apos; /etc/ImageMagick-6/type-ghostscript.xml</div></pre></td></tr></table></figure>
-	
-	</div>
-  <a type="button" href="/2020/05/04/imageMagick-fonts-issue-on-Aliyun-Linux-2/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2020-04-29 </div>
-			<div class="article-title"><a href="/2020/04/29/Install-Postgresql-and-Nodejs-on-Aliyun-Linux-2/" >在Aliyun Linux 2上安装Postgresql和Node.js</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>Aliyun Linux 2上部署环境，遇到了几个问题。记录如下。</p>
-<h3 id="安装Postgresql-11-client"><a href="#安装Postgresql-11-client" class="headerlink" title="安装Postgresql 11 client"></a>安装Postgresql 11 client</h3><h4 id="官方Guide"><a href="#官方Guide" class="headerlink" title="官方Guide"></a>官方Guide</h4><ul>
-<li>Postgresql官方在红帽系Linux的安装Guide地址: <a href="https://www.postgresql.org/download/linux/redhat/" target="_blank" rel="external">https://www.postgresql.org/download/linux/redhat/</a></li>
-<li>Guide中选取对应操作系统后，可以得到Postgresql在RHEL 7系列上的yum源地址是: <a href="https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm" target="_blank" rel="external">https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm</a></li>
-</ul>
-<p>在RHEL 7系列上安装方法为:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">yum install https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm</div><div class="line">yum install postgresql11</div></pre></td></tr></table></figure>
-<h4 id="Aliyun-Linux-2安装问题"><a href="#Aliyun-Linux-2安装问题" class="headerlink" title="Aliyun Linux 2安装问题"></a>Aliyun Linux 2安装问题</h4><p>但该方法在Alinux Linux 2上没法成功安装，因为官方源依赖于yum的变量$releasever,$basearch。在Aliyun Linux 2中，这些变量和RHEL和CentOS上不相同。导致没法直接用官方rpm yum包来安装postgresql11。</p>
-	
-	</div>
-  <a type="button" href="/2020/04/29/Install-Postgresql-and-Nodejs-on-Aliyun-Linux-2/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -744,7 +746,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/#Shell">Shell<span>8</span></a></li>
 		
-			<li><a href="/categories/#Tools">Tools<span>30</span></a></li>
+			<li><a href="/categories/#Tools">Tools<span>32</span></a></li>
 		
 			<li><a href="/categories/#杂">杂<span>1</span></a></li>
 		
@@ -758,48 +760,48 @@ var _hmt = _hmt || [];
 		<h4>标签云</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/#CodeCommit">CodeCommit<span>1</span></a></li>
-		
-			<li><a href="/tags/#Image">Image<span>3</span></a></li>
-		
-			<li><a href="/tags/#Kubernetes">Kubernetes<span>1</span></a></li>
-		
-			<li><a href="/tags/#Video">Video<span>1</span></a></li>
-		
-			<li><a href="/tags/#AWS SDK">AWS SDK<span>2</span></a></li>
-		
-			<li><a href="/tags/#Solutions Architect">Solutions Architect<span>1</span></a></li>
-		
-			<li><a href="/tags/#Github">Github<span>4</span></a></li>
-		
-			<li><a href="/tags/#RVM">RVM<span>3</span></a></li>
-		
-			<li><a href="/tags/#VMware">VMware<span>2</span></a></li>
+			<li><a href="/tags/#FFMPEG">FFMPEG<span>4</span></a></li>
 		
 			<li><a href="/tags/#Chrome">Chrome<span>1</span></a></li>
 		
-			<li><a href="/tags/#Ruby">Ruby<span>10</span></a></li>
+			<li><a href="/tags/#Failover">Failover<span>1</span></a></li>
+		
+			<li><a href="/tags/#Aliyun">Aliyun<span>2</span></a></li>
+		
+			<li><a href="/tags/#Solutions Architect">Solutions Architect<span>1</span></a></li>
+		
+			<li><a href="/tags/#SSH">SSH<span>6</span></a></li>
+		
+			<li><a href="/tags/#Elastic Load Balancing">Elastic Load Balancing<span>6</span></a></li>
+		
+			<li><a href="/tags/#AWS Tools">AWS Tools<span>2</span></a></li>
+		
+			<li><a href="/tags/#iOS">iOS<span>1</span></a></li>
+		
+			<li><a href="/tags/#OLED">OLED<span>1</span></a></li>
+		
+			<li><a href="/tags/#AWS SDK">AWS SDK<span>2</span></a></li>
+		
+			<li><a href="/tags/#Wkhtmltopdf">Wkhtmltopdf<span>1</span></a></li>
 		
 			<li><a href="/tags/#Ubuntu">Ubuntu<span>1</span></a></li>
 		
-			<li><a href="/tags/#Elastic Beanstalk">Elastic Beanstalk<span>7</span></a></li>
-		
-			<li><a href="/tags/#Udemy">Udemy<span>1</span></a></li>
-		
-			<li><a href="/tags/#EC2">EC2<span>8</span></a></li>
-		
-			<li><a href="/tags/#AWS CLI">AWS CLI<span>6</span></a></li>
-		
-			<li><a href="/tags/#Hexo">Hexo<span>8</span></a></li>
+			<li><a href="/tags/#AWS Free Tier">AWS Free Tier<span>1</span></a></li>
 		
 			<li><a href="/tags/#AWS Deep Dive">AWS Deep Dive<span>2</span></a></li>
 		
-			<li><a href="/tags/#DynamoDB">DynamoDB<span>1</span></a></li>
+			<li><a href="/tags/#Elastic Beanstalk">Elastic Beanstalk<span>7</span></a></li>
 		
-			<li><a href="/tags/#FFMPEG">FFMPEG<span>2</span></a></li>
+			<li><a href="/tags/#AutoScaling">AutoScaling<span>3</span></a></li>
+		
+			<li><a href="/tags/#S3">S3<span>10</span></a></li>
+		
+			<li><a href="/tags/#Minecraft">Minecraft<span>1</span></a></li>
+		
+			<li><a href="/tags/#Screen">Screen<span>1</span></a></li>
 		
 		
-		   <li><a href="/tags">...<span>66</span></a></li>
+		   <li><a href="/tags">...<span>68</span></a></li>
 		 
 		</ul>
 	</div>
@@ -812,6 +814,14 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2020/08/01/advanced-configure-of-nginx-rtmp/" ><i class="fa fa-file-o"></i>Nginx RTMP服务器配置</a>
+      </li>
+    
+      <li>
+        <a href="/2020/07/29/how-to-setup-nginx-rtmp-on-centos-7/" ><i class="fa fa-file-o"></i>CentOS 7中搭建基础的Nginx RMPT服务器</a>
+      </li>
+    
+      <li>
         <a href="/2020/07/03/redis-basic/" ><i class="fa fa-file-o"></i>Redis基础</a>
       </li>
     
@@ -821,14 +831,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2020/06/23/resolve-sudo-error-in-crontab-job/" ><i class="fa fa-file-o"></i>Crontab中解决sorry, you must h...</a>
-      </li>
-    
-      <li>
-        <a href="/2020/06/21/tools-to-control-brightness-of-external-monitor-on-macos/" ><i class="fa fa-file-o"></i>Mac下调节外置显示器亮度的工具</a>
-      </li>
-    
-      <li>
-        <a href="/2020/06/09/some-new-nginx-config/" ><i class="fa fa-file-o"></i>一些常用的Nginx+Passenger配置</a>
       </li>
     
   </ul>

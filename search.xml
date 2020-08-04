@@ -3,6 +3,209 @@
   
     
     <entry>
+      <title><![CDATA[Nginx RTMP服务器配置]]></title>
+      <url>/2020/08/01/advanced-configure-of-nginx-rtmp/</url>
+      <content type="html"><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>本篇是<a href="/2020/07/29/how-to-setup-nginx-rtmp-on-centos-7/" title="CentOS 7中搭建基础的Nginx RMPT服务器">CentOS 7中搭建基础的Nginx RMPT服务器</a>的续篇，记录了Nignx RTMP使用过程中的一些有用的配置和一些坑。<br>下面的内容，是以文章<a href="/2020/07/29/how-to-setup-nginx-rtmp-on-centos-7/" title="CentOS 7中搭建基础的Nginx RMPT服务器">CentOS 7中搭建基础的Nginx RMPT服务器</a>中的配置为基准进行的修改。</p>
+<h3 id="配置stat"><a href="#配置stat" class="headerlink" title="配置stat"></a>配置stat</h3><p><a href="https://github.com/arut/nginx-rtmp-module" target="_blank" rel="external">nginx-rtmp-module</a>自身提供了统计的功能。按照Github上官方例子进行配置就行。<a href="https://github.com/arut/nginx-rtmp-module" target="_blank" rel="external">https://github.com/arut/nginx-rtmp-module</a><br>首先，拷贝<a href="https://github.com/arut/nginx-rtmp-module" target="_blank" rel="external">nginx-rtmp-module</a>源码中的stat.xls到nginx默认主目录<code>/usr/local/nginx/html/</code>中。<br>再配置rtmp的stat, 在默认server中添加如下配置。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"># This URL provides RTMP statistics in XML</div><div class="line">location /stat &#123;</div><div class="line">    rtmp_stat all;</div><div class="line"></div><div class="line">    # Use this stylesheet to view XML as web page</div><div class="line">    # in browser</div><div class="line">    rtmp_stat_stylesheet stat.xsl;</div><div class="line">&#125;</div><div class="line"></div><div class="line">location /stat.xsl &#123;</div><div class="line">    # XML stylesheet to view RTMP stats.</div><div class="line">    # Copy stat.xsl wherever you want</div><div class="line">    # and put the full directory path here</div><div class="line">    root html;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>访问<a href="http://192.168.168.199/stat" target="_blank" rel="external">http://192.168.168.199/stat</a>，就可以看到如下统计页面。<br><img src="/images/Nginx/nginx_rtmp_stat_empty.jpg" alt="nginx_rtmp_stat_empty.jpg"></p>
+<p>有流时的页面如下：<br><img src="/images/Nginx/nginx_rtmp_stat_with_streaming.jpg" alt="nginx_rtmp_stat_with_streaming.jpg"></p>
+<p>添加后的配置参见: <a href="https://github.com/jibing57/my-snippet/tree/master/Nginx/01_nginx_rtmp/nginx_with_basic_rtmp.conf" target="_blank" rel="external">nginx_with_basic_rtmp_hls_stat.conf</a></p>
+<h3 id="配置转码"><a href="#配置转码" class="headerlink" title="配置转码"></a>配置转码</h3><p>直播时，很多情况下需要提供给用户多个分辨率的视频流，以便用户根据实际情况进行选取或客户端自动根据网络情况选择合适分辨率的视频流。<br>下面介绍如何在<a href="https://github.com/arut/nginx-rtmp-module" target="_blank" rel="external">nginx-rtmp-module</a>中使用ffmpeg对流进行转码。</p>
+<p>分为如下几个步骤:</p>
+<ol>
+<li>新建专门用于播放流的application vod</li>
+<li>将原先的live设置为只接收推流, 再设置使用ffmpeg将源流进行转化，再推到对应的专门播放application vod中。</li>
+</ol>
+<h4 id="新建application-vod"><a href="#新建application-vod" class="headerlink" title="新建application vod"></a>新建application vod</h4><p>在rtmp server节点中，新建如下的vod application<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">application vod &#123;</div><div class="line">    live on; # Allows live input from above</div><div class="line">    hls on; # Enable HTTP Live Streaming</div><div class="line"></div><div class="line">    # Pointing this to an SSD is better as this involves lots of IO</div><div class="line">    hls_path /usr/local/nginx/hls/;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="修改application-live"><a href="#修改application-live" class="headerlink" title="修改application live"></a>修改application live</h4><p>application live的修改如下:</p>
+<ul>
+<li>注释掉原先的配置中的<code>allow play all;</code>,<code>hls on;</code>和<code>hls_path xxx</code>,</li>
+<li>添加<code>allow play 127.0.0.1; deny play all;</code>，只允许本地播放。</li>
+<li>添加<code>ffmpeg</code>转码和resize<br>application live的配置变为:<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">application live &#123;</div><div class="line">    # 开启直播模式</div><div class="line">    live on;</div><div class="line"></div><div class="line">    # 允许从任何源push流</div><div class="line">    allow publish all;</div><div class="line">    # 允许从任何地方来播放流</div><div class="line">    #allow play all;</div><div class="line">    # 20秒内没有push，就断开链接。</div><div class="line">    drop_idle_publisher 20s;</div><div class="line">    # 只允许本地播放流</div><div class="line">    allow play 127.0.0.1;</div><div class="line">    deny play all;</div><div class="line"></div><div class="line">    # 开启HLS</div><div class="line">    #hls on; # Enable HTTP Live Streaming</div><div class="line">    # Pointing this to an SSD is better as this involves lots of IO</div><div class="line">    # 设置hls存放目录</div><div class="line">    #hls_path /usr/local/nginx/hls/;</div><div class="line"></div><div class="line">    exec /usr/bin/ffmpeg -i rtmp://localhost/$app/$name -async 1 -vsync -1</div><div class="line">    -c:v libx264 -c:a aac -b:v 256k -b:a 128k -ac 2 -vf &quot;scale=480:trunc(ow/a/2)*2&quot; -tune zerolatency -preset veryfast -crf 23 -f flv rtmp://localhost/vod/$name_low</div><div class="line">    -c:v libx264 -c:a aac -b:v 768k -b:a 128k -ac 2 -vf &quot;scale=720:trunc\(ow/a/2\)*2&quot; -tune zerolatency -preset veryfast -crf 23 -f flv rtmp://localhost/vod/$name_mid</div><div class="line">    -c:v libx264 -c:a aac -b:v 1024k -b:a 128k -ac 2 -vf &quot;scale=960:trunc(ow/a/2)*2&quot; -tune zerolatency -preset veryfast -crf 23 -f flv rtmp://localhost/vod/$name_high</div><div class="line">    -c:v libx264 -c:a aac -b:v 1920k -b:a 128k -ac 2 -vf &quot;scale=1280:trunc(ow/a/2)*2&quot; -tune zerolatency -preset veryfast -crf 23 -f flv rtmp://localhost/vod/$name_hd720</div><div class="line">    -c copy -f flv rtmp://localhost/vod/$name_src;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>其中ffmpeg命令参考自文章<a href="https://licson.net/post/setting-up-adaptive-streaming-with-nginx/" target="_blank" rel="external">Setting Up Adaptive Streaming with Nginx</a>的配置，分为了<code>low</code>,<code>mid</code>,<code>high</code>,<code>hd720</code>和<code>src</code>五种格式。此处可以根据实际要求进行修改。</p>
+<h4 id="试验"><a href="#试验" class="headerlink" title="试验"></a>试验</h4><p>经过上述配置后，现在有了5种size的视频，和rtmp和hls两种播放方式，共计10种流。</p>
+<ul>
+<li><a href="http://192.168.168.199/hls/xiaozhupeiqi_low.m3u8" target="_blank" rel="external">http://192.168.168.199/hls/xiaozhupeiqi_low.m3u8</a></li>
+<li><a href="http://192.168.168.199/hls/xiaozhupeiqi_mid.m3u8" target="_blank" rel="external">http://192.168.168.199/hls/xiaozhupeiqi_mid.m3u8</a></li>
+<li><a href="http://192.168.168.199/hls/xiaozhupeiqi_high.m3u8" target="_blank" rel="external">http://192.168.168.199/hls/xiaozhupeiqi_high.m3u8</a></li>
+<li><a href="http://192.168.168.199/hls/xiaozhupeiqi_hd720.m3u8" target="_blank" rel="external">http://192.168.168.199/hls/xiaozhupeiqi_hd720.m3u8</a></li>
+<li><a href="http://192.168.168.199/hls/xiaozhupeiqi_src.m3u8" target="_blank" rel="external">http://192.168.168.199/hls/xiaozhupeiqi_src.m3u8</a></li>
+<li>rtmp://192.168.168.199/vod/xiaozhupeiqi_low</li>
+<li>rtmp://192.168.168.199/vod/xiaozhupeiqi_mid</li>
+<li>rtmp://192.168.168.199/vod/xiaozhupeiqi_high</li>
+<li>rtmp://192.168.168.199/vod/xiaozhupeiqi_hd720</li>
+<li>rtmp://192.168.168.199/vod/xiaozhupeiqi_src</li>
+</ul>
+<p>添加转码和resize后的配置参见: <a href="https://github.com/jibing57/my-snippet/tree/master/Nginx/01_nginx_rtmp/nginx_with_resize_rtmp_hls.conf" target="_blank" rel="external">nginx_with_resize_rtmp_hls.conf</a></p>
+<h3 id="记录原始流"><a href="#记录原始流" class="headerlink" title="记录原始流"></a>记录原始流</h3><p><a href="https://github.com/arut/nginx-rtmp-module" target="_blank" rel="external">nginx-rtmp-module</a>提供了record模块，来保存接收到的流。配置参见: <a href="https://github.com/arut/nginx-rtmp-module/wiki/Directives#record" target="_blank" rel="external">https://github.com/arut/nginx-rtmp-module/wiki/Directives#record</a><br>如下是最简单的配置，将视频流保存到<code>/tmp/streaming_temp</code>中。<br>首先创建目录<code>/tmp/streaming_temp</code>.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># mkdir /tmp/streaming_temp</div><div class="line"># chown nobody:root streaming_temp</div></pre></td></tr></table></figure></p>
+<p>在<code>application live</code>中添加如下配置。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">record all;</div><div class="line">record_path /tmp/streaming_temp;</div></pre></td></tr></table></figure></p>
+<p>推流过后，接收到的视频就被保存下来了<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># ll /tmp/streaming_temp/</div><div class="line">total 4032</div><div class="line">-rw-r--r-- 1 nobody nobody 2111772 Jul 30 23:06 xiaozhupeiqi.flv</div><div class="line">#</div></pre></td></tr></table></figure></p>
+<p>添加转码和resize后的配置参见: <a href="https://github.com/jibing57/my-snippet/tree/master/Nginx/01_nginx_rtmp/nginx_with_resize_rtmp_hls_record.conf" target="_blank" rel="external">nginx_with_resize_rtmp_hls_record.conf</a></p>
+<h3 id="hls-fragment设置无效问题"><a href="#hls-fragment设置无效问题" class="headerlink" title="hls_fragment设置无效问题"></a>hls_fragment设置无效问题</h3><h4 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h4><p>根据<a href="https://github.com/arut/nginx-rtmp-module/wiki/Directives#hls_fragment" target="_blank" rel="external">官方Wiki</a>的说明，参数hls_fragment是用来设置HLS分片的长度的。默认是5秒。<br>但实际操作中，你可能会发现<code>hls_fragment</code>设置的值没有效果。</p>
+<h4 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h4><p>在<a href="https://github.com/arut/nginx-rtmp-module/issues/1026#issuecomment-302059909" target="_blank" rel="external">Issue 1026</a>中翻到了作者arut的回复。</p>
+<blockquote>
+<p>Fragments are started at keyframes. If keyframes are rare, that’s what you get. Try using the -g option of ffmpeg.</p>
+</blockquote>
+<p><code>hls_fragment</code>设置依赖于视频源中的关键帧，如果源视频中没有关键帧，那么<code>hls_fragment</code>的设置就无效了。可以在ffmpeg中使用<code>-g</code>来插入关键帧。</p>
+<h4 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h4><p>ffmpeg中<code>-g</code>参数的说明: <a href="https://trac.ffmpeg.org/wiki/EncodingForStreamingSites#a-g" target="_blank" rel="external">https://trac.ffmpeg.org/wiki/EncodingForStreamingSites#a-g</a></p>
+<blockquote>
+<p>-g: Use a 2 second GOP (Group of Pictures), so simply multiply your output frame rate * 2. For example, if your input is -framerate 30, then use -g 60.</p>
+</blockquote>
+<p><code>-g</code>的使用依赖于原始的帧率，如果想要每2秒就插一个关键帧，输入源的帧率是30，那么此处<code>-g</code>就需要设置为60.</p>
+<p>举例，处理帧率是30的流时，在ffmpeg转码时，添加上-g 30。每30帧插入一个关键帧,就可以让<code>hls_fragment</code>设置起效了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">exec /usr/bin/ffmpeg -i rtmp://localhost/$app/$name -async 1 -vsync -1</div><div class="line">-c:v libx264 -c:a aac -b:v 256k -b:a 128k -ac 2 -g 30 -vf &quot;scale=480:trunc(ow/a/2)*2&quot; -tune zerolatency -preset veryfast -crf 23 -f flv rtmp://localhost/vod/$name_low</div><div class="line">-c:v libx264 -c:a aac -b:v 768k -b:a 128k -ac 2 -g 30 -vf &quot;scale=720:trunc\(ow/a/2\)*2&quot; -tune zerolatency -preset veryfast -crf 23 -f flv rtmp://localhost/vod/$name_mid</div><div class="line">-c:v libx264 -c:a aac -b:v 1024k -b:a 128k -ac 2 -g 30 -vf &quot;scale=960:trunc(ow/a/2)*2&quot; -tune zerolatency -preset veryfast -crf 23 -f flv rtmp://localhost/vod/$name_high</div><div class="line">-c:v libx264 -c:a aac -b:v 1920k -b:a 128k -ac 2 -g 30 -vf &quot;scale=1280:trunc(ow/a/2)*2&quot; -tune zerolatency -preset veryfast -crf 23 -f flv rtmp://localhost/vod/$name_hd720</div><div class="line">-c copy -f flv rtmp://localhost/vod/$name_src;</div></pre></td></tr></table></figure></p>
+<p>添加转码和resize后的配置参见: <a href="https://github.com/jibing57/my-snippet/tree/master/Nginx/01_nginx_rtmp/nginx_with_resize_rtmp_hls_record_gop.conf" target="_blank" rel="external">nginx_with_resize_rtmp_hls_record_gop.conf</a></p>
+<h3 id="HLS低延迟设置"><a href="#HLS低延迟设置" class="headerlink" title="HLS低延迟设置"></a>HLS低延迟设置</h3><p><a href="https://github.com/arut/nginx-rtmp-module" target="_blank" rel="external">nginx-rtmp-module</a>中<code>hls_fragment</code>设置默认是5秒，<code>hls_playlist_length</code>设置默认是30s。<br>理论上默认配置下，HLS的延迟最大为30s。<br>设置成如下配置，通过降低ts片段时间，在网络通顺的情况下，实测延迟可以保持在4~5s左右。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">hls_fragment 1s;</div><div class="line">hls_playlist_length 10s;</div></pre></td></tr></table></figure></p>
+<p>添加转码和resize后的配置参见: <a href="https://github.com/jibing57/my-snippet/tree/master/Nginx/01_nginx_rtmp/nginx_with_resize_rtmp_hls_record_gop_hls_fragment.conf" target="_blank" rel="external">nginx_with_resize_rtmp_hls_record_gop_hls_fragment.conf</a></p>
+<h3 id="ffmpeg调节横竖屏resize"><a href="#ffmpeg调节横竖屏resize" class="headerlink" title="ffmpeg调节横竖屏resize"></a>ffmpeg调节横竖屏resize</h3><p>之前<code>ffmpeg</code>的命令中，scale是按照宽为固定值来进行resize的。这种配置适用于横屏的情况，如果源视频是竖屏拍摄的，按照宽来进行缩放，会扩大高的长度，造成尺寸的不准确。<br>拿源视频尺寸是<code>720x1280</code>的竖屏为例。hd720的尺寸就会被扩展成<code>1280x2274</code>。</p>
+<p>我们可以在<code>ffmpeg</code>的<code>-vf</code>参数中添加横竖屏的判断，来生成准确的resize尺寸。<br>判断依据是检查输入视频的宽和高，如果宽(iw)大于高(ih), 那么设置宽为固定值，高按照比例缩放。反之，就设置高为固定值，宽按照比例缩放。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">exec /usr/bin/ffmpeg -i rtmp://localhost/$app/$name -async 1 -vsync -1</div><div class="line">-c:v libx264 -c:a aac -b:v 256k -b:a 128k -ac 2 -g 30 -vf &quot;scale=&apos;if(gt(iw,ih),480,trunc(oh*a/2)*2)&apos;:&apos;if(gt(iw,ih),trunc(ow/a/2)*2,480)&apos;&quot; -tune zerolatency -preset veryfast -crf 23 -f flv rtmp://localhost/vod/$name_low</div><div class="line">-c:v libx264 -c:a aac -b:v 768k -b:a 128k -ac 2 -g 30 -vf &quot;scale=&apos;if(gt(iw,ih),720,trunc(oh*a/2)*2)&apos;:&apos;if(gt(iw,ih),trunc(ow/a/2)*2,720)&apos;&quot; -tune zerolatency -preset veryfast -crf 23 -f flv rtmp://localhost/vod/$name_mid</div><div class="line">-c:v libx264 -c:a aac -b:v 1024k -b:a 128k -ac 2 -g 30 -vf &quot;scale=&apos;if(gt(iw,ih),960,trunc(oh*a/2)*2)&apos;:&apos;if(gt(iw,ih),trunc(ow/a/2)*2,960)&apos;&quot; -tune zerolatency -preset veryfast -crf 23 -f flv rtmp://localhost/vod/$name_high</div><div class="line">-c:v libx264 -c:a aac -b:v 1920k -b:a 128k -ac 2 -g 30 -vf &quot;scale=&apos;if(gt(iw,ih),1280,trunc(oh*a/2)*2)&apos;:&apos;if(gt(iw,ih),trunc(ow/a/2)*2,1280)&apos;&quot; -tune zerolatency -preset veryfast -crf 23 -f flv rtmp://localhost/vod/$name_hd720</div><div class="line">-c copy -f flv rtmp://localhost/vod/$name_src;</div></pre></td></tr></table></figure></p>
+<p>此时，如果源视频尺寸是720x1280<code>的竖屏，hd720的尺寸还是</code>720x1280`。</p>
+<p>添加转码和resize后的配置参见: <a href="https://github.com/jibing57/my-snippet/tree/master/Nginx/01_nginx_rtmp/nginx_with_resize_rtmp_hls_record_gop_hls_fragment_vf.conf" target="_blank" rel="external">nginx_with_resize_rtmp_hls_record_gop_hls_fragment_vf.conf</a></p>
+<h3 id="HLS中生成的m3u8中ts数量"><a href="#HLS中生成的m3u8中ts数量" class="headerlink" title="HLS中生成的m3u8中ts数量"></a>HLS中生成的m3u8中ts数量</h3><p>hls_fragment参数，在文档上说设置的是hls片段的大小，可设置了hls_fragment后，m3u8上显示还是8秒一个片段。<br>HLS生成的m3u8中ts的个数=<code>hls_playlist_length / hls_fragment</code><br>比如:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">hls_fragment 1s;</div><div class="line">hls_playlist_length 15s;</div></pre></td></tr></table></figure></p>
+<p>那么此时，m3u8中ts的个数就是15个。<br><strong>注意:</strong> 即使因为没有关键帧，导致<code>hls_fragment</code>没起作用，实际hls的片段时间是5s或者是8s。ts的数量也还是<code>hls_playlist_length / hls_fragment</code></p>
+<h3 id="访问allow和deny"><a href="#访问allow和deny" class="headerlink" title="访问allow和deny"></a>访问allow和deny</h3><p><a href="https://github.com/arut/nginx-rtmp-module" target="_blank" rel="external">nginx-rtmp-module</a>提供了基础的基于ip地址的访问控制，参见文档<a href="https://github.com/arut/nginx-rtmp-module/wiki/Directives#access" target="_blank" rel="external">https://github.com/arut/nginx-rtmp-module/wiki/Directives#access</a><br>有两个关键字<code>allow</code>和<code>deny</code>。</p>
+<ul>
+<li><code>allow</code>的语法为: <code>allow [play|publish] address|subnet|all</code></li>
+<li><code>deny</code>的语法为: <code>deny [play|publish] address|subnet|all</code></li>
+</ul>
+<p>其中的<code>play</code>是播放，<code>publish</code>是接收推流的意思。可以有多条<code>allow/deny</code>的规则，匹配规则是逐个check，直到匹配到符合的规则为止。</p>
+<p>几个访问控制的例子:</p>
+<ol>
+<li><p>允许所有地址publish</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">allow publish all;</div></pre></td></tr></table></figure>
+</li>
+<li><p>只允许本地publish</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">allow publish 127.0.0.1;</div><div class="line">deny publish all;</div></pre></td></tr></table></figure>
+</li>
+<li><p>不允许play</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">deny play all;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="rtmp流为什么播放时也会有延迟"><a href="#rtmp流为什么播放时也会有延迟" class="headerlink" title="rtmp流为什么播放时也会有延迟"></a>rtmp流为什么播放时也会有延迟</h3><p>RTMP流理论上只有网络传输延迟，但是客户端播放的时候经常会感觉到有几秒的延迟。<br>抛去网络因素，RTMP流观看的延迟，主要是客户端缓存导致的。为了避免网络抖动导致的播放卡顿，很多RTMP播放器都会在收到一段时间的RTMP流后才开始播放。这样就导致了播放的延迟。<br><code>ffmpeg</code>自带的<code>ffplay</code>，可以通过设置<code>nobuffer</code>来禁用缓存，降低播放的延迟。</p>
+<p>本地环境中的Mac使用<code>ffplay</code>连虚拟机中的流媒体服务器，添加nobuffer参数后，播放就和rtmp流基本同步了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ffplay -fflags nobuffer  &apos;rtmp://192.168.168.199/live/room888&apos;</div></pre></td></tr></table></figure></p>
+<p>几个参考资料:</p>
+<ul>
+<li>ffplay设置不缓存 <a href="https://stackoverflow.com/questions/21213895/how-to-stream-live-videos-with-no-latency-ffplay-mplayer-and-what-kind-of-wra" target="_blank" rel="external">https://stackoverflow.com/questions/21213895/how-to-stream-live-videos-with-no-latency-ffplay-mplayer-and-what-kind-of-wra</a></li>
+<li>nginx-rtmp-module上几个关于延迟的issue讨论 <ul>
+<li><a href="https://github.com/arut/nginx-rtmp-module/issues/962#issuecomment-294185141" target="_blank" rel="external">Too big delay between rtmp and hls #962</a></li>
+<li><a href="https://github.com/arut/nginx-rtmp-module/issues/1268" target="_blank" rel="external">Stream without latency? #1268</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="m3u8文件会时不时的消失"><a href="#m3u8文件会时不时的消失" class="headerlink" title="m3u8文件会时不时的消失"></a>m3u8文件会时不时的消失</h3><p>当<code>hls_fragment</code>和<code>hls_playlist_length</code>的值太接近，导致只有一到两个片段时候，m3u8可能会时不时的消失。<br>比如,如下配置时，就可能会导致m3u8文件丢失。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">hls_fragment 1s;</div><div class="line">hls_playlist_length 1s;</div></pre></td></tr></table></figure></p>
+<p>此时需要将hls_playlist_length设置大一点，比如<code>hls_playlist_length 3s;</code>。这时m3u8文件就不会消失了。</p>
+<h3 id="相关阅读"><a href="#相关阅读" class="headerlink" title="相关阅读"></a>相关阅读</h3><ul>
+<li><a href="/2020/07/29/how-to-setup-nginx-rtmp-on-centos-7/" title="CentOS 7中搭建基础的Nginx RMPT服务器">CentOS 7中搭建基础的Nginx RMPT服务器</a>
+</li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> Tools </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> CentOS </tag>
+            
+            <tag> Nginx </tag>
+            
+            <tag> FFMPEG </tag>
+            
+            <tag> RTMP </tag>
+            
+            <tag> HLS </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[CentOS 7中搭建基础的Nginx RMPT服务器]]></title>
+      <url>/2020/07/29/how-to-setup-nginx-rtmp-on-centos-7/</url>
+      <content type="html"><![CDATA[<p>介绍下如何在本地CentOS 7中使用<a href="https://github.com/arut/nginx-rtmp-module" target="_blank" rel="external">nginx-rtmp-module</a>来搭建基本的RTMP和HLS直播服务器。<br>基于如下情况进行搭建:</p>
+<ul>
+<li>系统版本: CentOS 7.6 Minimal</li>
+<li>虚拟机IP地址: 192.168.168.199</li>
+<li>Nginx版本:1.14.2</li>
+<li>Nginx Rtmp模块: <a href="https://github.com/arut/nginx-rtmp-module" target="_blank" rel="external">nginx-rtmp-module</a></li>
+<li>如下安装步骤，如果没有特别说明，都是基于root用户进行安装。</li>
+</ul>
+<h3 id="安装nginx"><a href="#安装nginx" class="headerlink" title="安装nginx"></a>安装nginx</h3><p>首先更新CentOS系统<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum update</div></pre></td></tr></table></figure></p>
+<p>安装编译nginx所需的开发包<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">yum install gcc</div><div class="line">yum install pcre pcre-devel pcre-static pcre-tools</div><div class="line">yum install openssl openssl-static openssl-devel</div><div class="line">yum install wget unzip</div></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>下载nginx和nginx-rtmp-module<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">wget http://nginx.org/download/nginx-1.14.2.tar.gz</div><div class="line">wget https://github.com/arut/nginx-rtmp-module/archive/master.zip</div><div class="line">tar -zxvf nginx-1.14.2.tar.gz</div><div class="line">unzip master.zip</div></pre></td></tr></table></figure></p>
+<p>编译和安装nginx<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">cd nginx-1.14.2</div><div class="line">./configure --with-http_ssl_module --with-http_secure_link_module --add-module=../nginx-rtmp-module-master</div><div class="line">make</div><div class="line">sudo make install</div></pre></td></tr></table></figure></p>
+<p><code>make install</code>后，nginx默认会安装在<code>/usr/local/nginx/</code>目录下。</p>
+<h3 id="安装ffmpeg"><a href="#安装ffmpeg" class="headerlink" title="安装ffmpeg"></a>安装ffmpeg</h3><p>安装ffmpeg可以选择静态包,自编译或者rpmfusion.org的yum源。具体参照<a href="http://ffmpeg.org/download.html#build-linux" target="_blank" rel="external">http://ffmpeg.org/download.html#build-linux</a><br>此处选择rpmfusion.org的yum源方式安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">yum localinstall --nogpgcheck https://download1.rpmfusion.org/free/el/rpmfusion-free-release-7.noarch.rpm </div><div class="line">yum install ffmpeg</div></pre></td></tr></table></figure></p>
+<p>安装后，可以查看ffmpeg的版本，此处版本是3.4.8<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# ffmpeg</div><div class="line">ffmpeg version 3.4.8 Copyright (c) 2000-2020 the FFmpeg developers</div><div class="line">  built with gcc 4.8.5 (GCC) 20150623 (Red Hat 4.8.5-39)</div><div class="line">  configuration: --prefix=/usr --bindir=/usr/bin --datadir=/usr/share/ffmpeg --docdir=/usr/share/doc/ffmpeg --incdir=/usr/include/ffmpeg --libdir=/usr/lib64 --mandir=/usr/share/man --arch=x86_64 --optflags=&apos;-O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector-strong --param=ssp-buffer-size=4 -grecord-gcc-switches -m64 -mtune=generic&apos; --extra-ldflags=&apos;-Wl,-z,relro &apos; --extra-cflags=&apos; &apos; --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libvo-amrwbenc --enable-version3 --enable-bzlib --disable-crystalhd --enable-fontconfig --enable-gcrypt --enable-gnutls --enable-ladspa --enable-libass --enable-libbluray --enable-libcdio --enable-libdrm --enable-indev=jack --enable-libfreetype --enable-libfribidi --enable-libgsm --enable-libmp3lame --enable-nvenc --enable-openal --enable-opencl --enable-opengl --enable-libopenjpeg --enable-libopus --disable-encoder=libopus --enable-libpulse --enable-librsvg --enable-libsoxr --enable-libspeex --enable-libtheora --enable-libvorbis --enable-libv4l2 --enable-libvidstab --enable-libvpx --enable-libx264 --enable-libx265 --enable-libxvid --enable-libzvbi --enable-avfilter --enable-avresample --enable-libmodplug --enable-postproc --enable-pthreads --disable-static --enable-shared --enable-gpl --disable-debug --disable-stripping --shlibdir=/usr/lib64 --enable-libmfx --enable-runtime-cpudetect</div><div class="line">  libavutil      55. 78.100 / 55. 78.100</div><div class="line">  libavcodec     57.107.100 / 57.107.100</div><div class="line">  libavformat    57. 83.100 / 57. 83.100</div><div class="line">  libavdevice    57. 10.100 / 57. 10.100</div><div class="line">  libavfilter     6.107.100 /  6.107.100</div><div class="line">  libavresample   3.  7.  0 /  3.  7.  0</div><div class="line">  libswscale      4.  8.100 /  4.  8.100</div><div class="line">  libswresample   2.  9.100 /  2.  9.100</div><div class="line">  libpostproc    54.  7.100 / 54.  7.100</div><div class="line">Hyper fast Audio and Video encoder</div><div class="line">usage: ffmpeg [options] [[infile options] -i infile]... &#123;[outfile options] outfile&#125;...</div><div class="line"></div><div class="line">Use -h to get full help or, even better, run &apos;man ffmpeg&apos;</div><div class="line">[root@localhost ~]#</div></pre></td></tr></table></figure></p>
+<h3 id="配置Nginx"><a href="#配置Nginx" class="headerlink" title="配置Nginx"></a>配置Nginx</h3><p>修改<code>/usr/local/nginx/conf/nginx.conf</code>配置文件中<code>pid</code>的配置为<code>/var/run/nginx.pid</code>。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pid        /var/run/nginx.pid;</div></pre></td></tr></table></figure></p>
+<p>创建nginx日志目录<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mkdir -p /var/log/nginx/</div></pre></td></tr></table></figure></p>
+<p>创建SystemD自启动文件<code>/lib/systemd/system/nginx.service</code>为如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">[Unit]</div><div class="line">Description=The nginx HTTP and reverse proxy server</div><div class="line">After=syslog.target network.target remote-fs.target nss-lookup.target</div><div class="line"></div><div class="line">[Service]</div><div class="line">Type=forking</div><div class="line">PIDFile=/var/run/nginx.pid</div><div class="line">ExecStartPre=/usr/local/nginx/sbin/nginx -t</div><div class="line">ExecStart=/usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf</div><div class="line">ExecReload=/bin/kill -s HUP $MAINPID</div><div class="line">ExecStop=/bin/kill -s QUIT $MAINPID</div><div class="line">PrivateTmp=false</div><div class="line"></div><div class="line">[Install]</div><div class="line">WantedBy=multi-user.target</div></pre></td></tr></table></figure></p>
+<p>nginx启动相关命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">systemctl enable nginx.service  # 设置开机自启动</div><div class="line">systemctl start nginx.service   # 设置启动nginx</div><div class="line">systemctl stop nginx.service    # 停止nginx</div></pre></td></tr></table></figure></p>
+<h3 id="添加rtmp配置"><a href="#添加rtmp配置" class="headerlink" title="添加rtmp配置"></a>添加rtmp配置</h3><h4 id="添加配置"><a href="#添加配置" class="headerlink" title="添加配置"></a>添加配置</h4><p><code>/usr/local/nginx/conf/nginx.conf</code>中添加rtmp相关的配置。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">rtmp_auto_push on;</div><div class="line"></div><div class="line">rtmp &#123;</div><div class="line">    server &#123;</div><div class="line">        listen 1935;</div><div class="line">        notify_method get;</div><div class="line">        access_log  /var/log/nginx/access.log;</div><div class="line">        chunk_size 4096;</div><div class="line"></div><div class="line">        application live &#123;</div><div class="line">            # 开启直播模式</div><div class="line">            live on;</div><div class="line"></div><div class="line">            # 允许从任何源push流</div><div class="line">            allow publish all;</div><div class="line">            # 允许从任何地方来播放流</div><div class="line">            allow play all;</div><div class="line">            # 20秒内没有push，就断开链接。</div><div class="line">            drop_idle_publisher 20s;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>检查nginx配置后reload nginx,使之生效。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">/usr/local/nginx/sbin/nginx -t</div><div class="line">systemctl reload nginx</div></pre></td></tr></table></figure></p>
+<p>添加后的配置参见: <a href="https://github.com/jibing57/my-snippet/tree/master/Nginx/01_nginx_rtmp/nginx_with_basic_rtmp.conf" target="_blank" rel="external">nginx_with_basic_rtmp.conf</a></p>
+<h4 id="试验"><a href="#试验" class="headerlink" title="试验"></a>试验</h4><p>配置完后，可以使用ffmpeg和ffplay进行试验。<br>首先，在本机上使用ffmpeg读取mp4文件，推流到虚拟机上部署的直播服务。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ffmpeg -re -i xiaozhupeiqi.mp4 -c copy -f flv &apos;rtmp://192.168.168.199/live/xiaozhupeiqi&apos;</div></pre></td></tr></table></figure></p>
+<p>再在本机上使用ffplay播放刚推送的地址，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ffplay &apos;rtmp://192.168.168.199/live/xiaozhupeiqi&apos;</div></pre></td></tr></table></figure></p>
+<p>就可以看到rtmp流了。Hello, Peppa.<br><img src="/images/Nginx/nginx_rtmp_ffplay_peppa.jpg" alt="nginx_rtmp_ffplay_peppa.jpg"></p>
+<h3 id="添加hls配置"><a href="#添加hls配置" class="headerlink" title="添加hls配置"></a>添加hls配置</h3><p>配置hls需要有两个步骤</p>
+<ol>
+<li>配置rtmp流产生hls文件</li>
+<li>设置nginx来访问hls文件</li>
+</ol>
+<h4 id="配置rtmp流产生hls文件"><a href="#配置rtmp流产生hls文件" class="headerlink" title="配置rtmp流产生hls文件"></a>配置rtmp流产生hls文件</h4><p>创建存放hls文件的目录, 确保nobody用户可以读写该目录。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mkdir -p /usr/local/nginx/hls/</div><div class="line">chown nobody:root /usr/local/nginx/hls/</div></pre></td></tr></table></figure></p>
+<p>修改配置，增加hls相关配置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">rtmp_auto_push on;</div><div class="line"></div><div class="line">rtmp &#123;</div><div class="line">    server &#123;</div><div class="line">        listen 1935;</div><div class="line">        notify_method get;</div><div class="line">        access_log  /var/log/nginx/access.log;</div><div class="line">        chunk_size 4096;</div><div class="line"></div><div class="line">        application live &#123;</div><div class="line">            # 开启直播模式</div><div class="line">            live on;</div><div class="line"></div><div class="line">            # 允许从任何源push流</div><div class="line">            allow publish all;</div><div class="line">            # 允许从任何地方来播放流</div><div class="line">            allow play all;</div><div class="line">            # 20秒内没有push，就断开链接。</div><div class="line">            drop_idle_publisher 20s;</div><div class="line"></div><div class="line">            # 开启HLS</div><div class="line">            hls on; # Enable HTTP Live Streaming</div><div class="line">            # Pointing this to an SSD is better as this involves lots of IO</div><div class="line">            # 设置hls存放目录</div><div class="line">            hls_path /usr/local/nginx/hls/;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>添加了如下两个配置:</p>
+<ul>
+<li>hls on : 开启HLS</li>
+<li>hls_path /usr/local/nginx/hls/ : 设置hls目录</li>
+</ul>
+<p>此时使用ffmpeg进行推流后，在/usr/local/nginx/hls/目录下，就会有HLS要用到的m3u8和ts文件。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"># ll</div><div class="line">total 3364</div><div class="line">-rw-r--r-- 1 nobody nobody  834532 Jul 29 04:19 xiaozhupeiqi-0.ts</div><div class="line">-rw-r--r-- 1 nobody nobody  571144 Jul 29 04:19 xiaozhupeiqi-1.ts</div><div class="line">-rw-r--r-- 1 nobody nobody 1055244 Jul 29 04:19 xiaozhupeiqi-2.ts</div><div class="line">-rw-r--r-- 1 nobody nobody     162 Jul 29 04:19 xiaozhupeiqi.m3u8</div><div class="line">#</div></pre></td></tr></table></figure></p>
+<h4 id="设置nginx来访问hls文件"><a href="#设置nginx来访问hls文件" class="headerlink" title="设置nginx来访问hls文件"></a>设置nginx来访问hls文件</h4><p>配置nginx通过http访问hls文件, 在server中添加如下location。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">location /hls &#123;</div><div class="line">    types &#123;</div><div class="line">        application/vnd.apple.mpegurl m3u8;</div><div class="line">        video/mp2t ts;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    root /usr/local/nginx/;</div><div class="line">    add_header Cache-Control no-cache; # Prevent caching of HLS fragments</div><div class="line">    add_header Access-Control-Allow-Origin *; # Allow web player to access our playlist</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>检查nginx配置后reload nginx,使之生效。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">/usr/local/nginx/sbin/nginx -t</div><div class="line">systemctl reload nginx</div></pre></td></tr></table></figure></p>
+<h4 id="访问试验"><a href="#访问试验" class="headerlink" title="访问试验"></a>访问试验</h4><p>然后使用支持HLS的浏览器访问<code>http://192.168.168.199/hls/xiaozhupeiqi.m3u8</code>，即可以HLS方式观看。<br><img src="/images/Nginx/nginx_rtmp_hls_peppa.jpg" alt="nginx_rtmp_hls_peppa.jpg"></p>
+<p>添加后的配置参见: <a href="https://github.com/jibing57/my-snippet/tree/master/Nginx/01_nginx_rtmp/nginx_with_basic_rtmp_and_hls.conf" target="_blank" rel="external">nginx_with_basic_rtmp_and_hls.conf</a></p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://github.com/arut/nginx-rtmp-module" target="_blank" rel="external">nginx-rtmp-module</a></li>
+<li><a href="https://github.com/arut/nginx-rtmp-module/wiki/Directives" target="_blank" rel="external">nginx-rtmp-module的参数设置</a></li>
+<li><a href="https://www.vultr.com/docs/setup-nginx-rtmp-on-centos-7" target="_blank" rel="external">Setup Nginx-RTMP on CentOS 7</a></li>
+</ul>
+<h3 id="相关阅读"><a href="#相关阅读" class="headerlink" title="相关阅读"></a>相关阅读</h3><ul>
+<li><a href="/2020/08/01/advanced-configure-of-nginx-rtmp/" title="Nginx RTMP服务器配置">Nginx RTMP服务器配置</a>
+</li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> Tools </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> CentOS </tag>
+            
+            <tag> Nginx </tag>
+            
+            <tag> FFMPEG </tag>
+            
+            <tag> RTMP </tag>
+            
+            <tag> HLS </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[Redis基础]]></title>
       <url>/2020/07/03/redis-basic/</url>
       <content type="html"><![CDATA[<p>Redis基础知识</p>
@@ -1199,9 +1402,9 @@
         
         <tags>
             
-            <tag> Image </tag>
-            
             <tag> Aliyun </tag>
+            
+            <tag> Image </tag>
             
             <tag> CentOS </tag>
             
@@ -2509,9 +2712,9 @@
         
         <tags>
             
-            <tag> Network </tag>
-            
             <tag> MacOS </tag>
+            
+            <tag> Network </tag>
             
         </tags>
         
@@ -3928,9 +4131,9 @@
         
         <tags>
             
-            <tag> Network </tag>
-            
             <tag> EC2 </tag>
+            
+            <tag> Network </tag>
             
         </tags>
         
@@ -4856,9 +5059,9 @@
         
         <tags>
             
-            <tag> MacOS </tag>
-            
             <tag> EC2 </tag>
+            
+            <tag> MacOS </tag>
             
             <tag> SSH </tag>
             
@@ -11726,9 +11929,9 @@ You can wait for the scheduled retirement date - when the instance is stopped - 
             
             <tag> RDS </tag>
             
-            <tag> Ruby </tag>
-            
             <tag> AWS SDK </tag>
+            
+            <tag> Ruby </tag>
             
             <tag> PostgreSQL </tag>
             

@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://www.jibing57.com/2020/08/01/advanced-configure-of-nginx-rtmp/</loc>
+    
+    <lastmod>2020-08-04T03:39:33.421Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.jibing57.com/2020/07/29/how-to-setup-nginx-rtmp-on-centos-7/</loc>
+    
+    <lastmod>2020-08-04T03:38:31.289Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.jibing57.com/2019/04/26/command-tips/</loc>
     
     <lastmod>2020-07-15T09:09:34.354Z</lastmod>
@@ -632,6 +646,13 @@
   </url>
   
   <url>
+    <loc>https://www.jibing57.com/2017/07/25/how-to-read-text-on-macos/</loc>
+    
+    <lastmod>2017-12-25T07:09:02.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.jibing57.com/2017/10/30/how-to-use-post-link-on-hexo/</loc>
     
     <lastmod>2017-12-25T07:09:02.000Z</lastmod>
@@ -646,20 +667,6 @@
   </url>
   
   <url>
-    <loc>https://www.jibing57.com/2017/10/24/how-to-use-aws-cli-with-multi-user/</loc>
-    
-    <lastmod>2017-12-25T07:09:02.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.jibing57.com/2017/07/25/how-to-read-text-on-macos/</loc>
-    
-    <lastmod>2017-12-25T07:09:02.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://www.jibing57.com/2017/12/12/how-to-write-multiline-to-file-by-shell/</loc>
     
     <lastmod>2017-12-25T07:09:02.000Z</lastmod>
@@ -667,21 +674,14 @@
   </url>
   
   <url>
-    <loc>https://www.jibing57.com/2017/10/31/hexo-bind-domain-to-github-pages/</loc>
+    <loc>https://www.jibing57.com/2017/10/24/how-to-use-aws-cli-with-multi-user/</loc>
     
-    <lastmod>2017-12-25T07:08:09.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.jibing57.com/2017/12/20/expired-of-S3-RRS/</loc>
-    
-    <lastmod>2017-12-25T07:08:09.000Z</lastmod>
+    <lastmod>2017-12-25T07:09:02.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://www.jibing57.com/2017/12/14/deep-dig-on-s3-bucket-permission/</loc>
+    <loc>https://www.jibing57.com/2017/10/31/account-setting-by-aws/</loc>
     
     <lastmod>2017-12-25T07:08:09.000Z</lastmod>
     
@@ -695,7 +695,21 @@
   </url>
   
   <url>
-    <loc>https://www.jibing57.com/2017/10/31/account-setting-by-aws/</loc>
+    <loc>https://www.jibing57.com/2017/12/14/deep-dig-on-s3-bucket-permission/</loc>
+    
+    <lastmod>2017-12-25T07:08:09.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.jibing57.com/2017/12/20/expired-of-S3-RRS/</loc>
+    
+    <lastmod>2017-12-25T07:08:09.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.jibing57.com/2017/10/31/hexo-bind-domain-to-github-pages/</loc>
     
     <lastmod>2017-12-25T07:08:09.000Z</lastmod>
     

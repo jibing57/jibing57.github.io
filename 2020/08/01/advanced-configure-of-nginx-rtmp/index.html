@@ -1,0 +1,418 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Nginx RTMP服务器配置 | Recording</title>
+  <meta name="author" content="jibing57">
+  
+  <meta name="description" content="AWS, 阅读, Architecture, PostgreSQL">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Nginx RTMP服务器配置"/>
+  <meta property="og:site_name" content="Recording"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/css/themes/bootstrap.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/comment.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+  
+  <!-- analytics -->
+  
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-111771042-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?59d3e14cdc96877383afed646f44d216";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+</head>
+
+ <body>  
+  <nav id="main-nav" class="navbar  navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+	<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+       <a class="navbar-brand" href="/">Recording</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class="fa fa-archive"></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class="fa fa-folder"></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class="fa fa-tags"></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/books" title="Douban">
+			  <i class="fa fa-book"></i>Douban
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header ">		
+			<h1 class="title "> Nginx RTMP服务器配置</h1>
+		</div>		
+	
+
+
+
+
+   <style type="text/css">
+           img, video {
+                -webkit-box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+                -moz-box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+                box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+           }
+   </style>
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
+
+	<!-- content -->
+	<div class="mypage">		
+	  		
+
+	  <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>本篇是<a href="/2020/07/29/how-to-setup-nginx-rtmp-on-centos-7/" title="CentOS 7中搭建基础的Nginx RMPT服务器">CentOS 7中搭建基础的Nginx RMPT服务器</a>的续篇，记录了Nignx RTMP使用过程中的一些有用的配置和一些坑。<br>下面的内容，是以文章<a href="/2020/07/29/how-to-setup-nginx-rtmp-on-centos-7/" title="CentOS 7中搭建基础的Nginx RMPT服务器">CentOS 7中搭建基础的Nginx RMPT服务器</a>中的配置为基准进行的修改。</p>
+<h3 id="配置stat"><a href="#配置stat" class="headerlink" title="配置stat"></a>配置stat</h3><p><a href="https://github.com/arut/nginx-rtmp-module" target="_blank" rel="external">nginx-rtmp-module</a>自身提供了统计的功能。按照Github上官方例子进行配置就行。<a href="https://github.com/arut/nginx-rtmp-module" target="_blank" rel="external">https://github.com/arut/nginx-rtmp-module</a><br>首先，拷贝<a href="https://github.com/arut/nginx-rtmp-module" target="_blank" rel="external">nginx-rtmp-module</a>源码中的stat.xls到nginx默认主目录<code>/usr/local/nginx/html/</code>中。<br>再配置rtmp的stat, 在默认server中添加如下配置。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"># This URL provides RTMP statistics in XML</div><div class="line">location /stat &#123;</div><div class="line">    rtmp_stat all;</div><div class="line"></div><div class="line">    # Use this stylesheet to view XML as web page</div><div class="line">    # in browser</div><div class="line">    rtmp_stat_stylesheet stat.xsl;</div><div class="line">&#125;</div><div class="line"></div><div class="line">location /stat.xsl &#123;</div><div class="line">    # XML stylesheet to view RTMP stats.</div><div class="line">    # Copy stat.xsl wherever you want</div><div class="line">    # and put the full directory path here</div><div class="line">    root html;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>访问<a href="http://192.168.168.199/stat" target="_blank" rel="external">http://192.168.168.199/stat</a>，就可以看到如下统计页面。<br><img src="/images/Nginx/nginx_rtmp_stat_empty.jpg" alt="nginx_rtmp_stat_empty.jpg"></p>
+<p>有流时的页面如下：<br><img src="/images/Nginx/nginx_rtmp_stat_with_streaming.jpg" alt="nginx_rtmp_stat_with_streaming.jpg"></p>
+<p>添加后的配置参见: <a href="https://github.com/jibing57/my-snippet/tree/master/Nginx/01_nginx_rtmp/nginx_with_basic_rtmp.conf" target="_blank" rel="external">nginx_with_basic_rtmp_hls_stat.conf</a></p>
+<h3 id="配置转码"><a href="#配置转码" class="headerlink" title="配置转码"></a>配置转码</h3><p>直播时，很多情况下需要提供给用户多个分辨率的视频流，以便用户根据实际情况进行选取或客户端自动根据网络情况选择合适分辨率的视频流。<br>下面介绍如何在<a href="https://github.com/arut/nginx-rtmp-module" target="_blank" rel="external">nginx-rtmp-module</a>中使用ffmpeg对流进行转码。</p>
+<p>分为如下几个步骤:</p>
+<ol>
+<li>新建专门用于播放流的application vod</li>
+<li>将原先的live设置为只接收推流, 再设置使用ffmpeg将源流进行转化，再推到对应的专门播放application vod中。</li>
+</ol>
+<h4 id="新建application-vod"><a href="#新建application-vod" class="headerlink" title="新建application vod"></a>新建application vod</h4><p>在rtmp server节点中，新建如下的vod application<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">application vod &#123;</div><div class="line">    live on; # Allows live input from above</div><div class="line">    hls on; # Enable HTTP Live Streaming</div><div class="line"></div><div class="line">    # Pointing this to an SSD is better as this involves lots of IO</div><div class="line">    hls_path /usr/local/nginx/hls/;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="修改application-live"><a href="#修改application-live" class="headerlink" title="修改application live"></a>修改application live</h4><p>application live的修改如下:</p>
+<ul>
+<li>注释掉原先的配置中的<code>allow play all;</code>,<code>hls on;</code>和<code>hls_path xxx</code>,</li>
+<li>添加<code>allow play 127.0.0.1; deny play all;</code>，只允许本地播放。</li>
+<li>添加<code>ffmpeg</code>转码和resize<br>application live的配置变为:<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">application live &#123;</div><div class="line">    # 开启直播模式</div><div class="line">    live on;</div><div class="line"></div><div class="line">    # 允许从任何源push流</div><div class="line">    allow publish all;</div><div class="line">    # 允许从任何地方来播放流</div><div class="line">    #allow play all;</div><div class="line">    # 20秒内没有push，就断开链接。</div><div class="line">    drop_idle_publisher 20s;</div><div class="line">    # 只允许本地播放流</div><div class="line">    allow play 127.0.0.1;</div><div class="line">    deny play all;</div><div class="line"></div><div class="line">    # 开启HLS</div><div class="line">    #hls on; # Enable HTTP Live Streaming</div><div class="line">    # Pointing this to an SSD is better as this involves lots of IO</div><div class="line">    # 设置hls存放目录</div><div class="line">    #hls_path /usr/local/nginx/hls/;</div><div class="line"></div><div class="line">    exec /usr/bin/ffmpeg -i rtmp://localhost/$app/$name -async 1 -vsync -1</div><div class="line">    -c:v libx264 -c:a aac -b:v 256k -b:a 128k -ac 2 -vf &quot;scale=480:trunc(ow/a/2)*2&quot; -tune zerolatency -preset veryfast -crf 23 -f flv rtmp://localhost/vod/$name_low</div><div class="line">    -c:v libx264 -c:a aac -b:v 768k -b:a 128k -ac 2 -vf &quot;scale=720:trunc\(ow/a/2\)*2&quot; -tune zerolatency -preset veryfast -crf 23 -f flv rtmp://localhost/vod/$name_mid</div><div class="line">    -c:v libx264 -c:a aac -b:v 1024k -b:a 128k -ac 2 -vf &quot;scale=960:trunc(ow/a/2)*2&quot; -tune zerolatency -preset veryfast -crf 23 -f flv rtmp://localhost/vod/$name_high</div><div class="line">    -c:v libx264 -c:a aac -b:v 1920k -b:a 128k -ac 2 -vf &quot;scale=1280:trunc(ow/a/2)*2&quot; -tune zerolatency -preset veryfast -crf 23 -f flv rtmp://localhost/vod/$name_hd720</div><div class="line">    -c copy -f flv rtmp://localhost/vod/$name_src;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>其中ffmpeg命令参考自文章<a href="https://licson.net/post/setting-up-adaptive-streaming-with-nginx/" target="_blank" rel="external">Setting Up Adaptive Streaming with Nginx</a>的配置，分为了<code>low</code>,<code>mid</code>,<code>high</code>,<code>hd720</code>和<code>src</code>五种格式。此处可以根据实际要求进行修改。</p>
+<h4 id="试验"><a href="#试验" class="headerlink" title="试验"></a>试验</h4><p>经过上述配置后，现在有了5种size的视频，和rtmp和hls两种播放方式，共计10种流。</p>
+<ul>
+<li><a href="http://192.168.168.199/hls/xiaozhupeiqi_low.m3u8" target="_blank" rel="external">http://192.168.168.199/hls/xiaozhupeiqi_low.m3u8</a></li>
+<li><a href="http://192.168.168.199/hls/xiaozhupeiqi_mid.m3u8" target="_blank" rel="external">http://192.168.168.199/hls/xiaozhupeiqi_mid.m3u8</a></li>
+<li><a href="http://192.168.168.199/hls/xiaozhupeiqi_high.m3u8" target="_blank" rel="external">http://192.168.168.199/hls/xiaozhupeiqi_high.m3u8</a></li>
+<li><a href="http://192.168.168.199/hls/xiaozhupeiqi_hd720.m3u8" target="_blank" rel="external">http://192.168.168.199/hls/xiaozhupeiqi_hd720.m3u8</a></li>
+<li><a href="http://192.168.168.199/hls/xiaozhupeiqi_src.m3u8" target="_blank" rel="external">http://192.168.168.199/hls/xiaozhupeiqi_src.m3u8</a></li>
+<li>rtmp://192.168.168.199/vod/xiaozhupeiqi_low</li>
+<li>rtmp://192.168.168.199/vod/xiaozhupeiqi_mid</li>
+<li>rtmp://192.168.168.199/vod/xiaozhupeiqi_high</li>
+<li>rtmp://192.168.168.199/vod/xiaozhupeiqi_hd720</li>
+<li>rtmp://192.168.168.199/vod/xiaozhupeiqi_src</li>
+</ul>
+<p>添加转码和resize后的配置参见: <a href="https://github.com/jibing57/my-snippet/tree/master/Nginx/01_nginx_rtmp/nginx_with_resize_rtmp_hls.conf" target="_blank" rel="external">nginx_with_resize_rtmp_hls.conf</a></p>
+<h3 id="记录原始流"><a href="#记录原始流" class="headerlink" title="记录原始流"></a>记录原始流</h3><p><a href="https://github.com/arut/nginx-rtmp-module" target="_blank" rel="external">nginx-rtmp-module</a>提供了record模块，来保存接收到的流。配置参见: <a href="https://github.com/arut/nginx-rtmp-module/wiki/Directives#record" target="_blank" rel="external">https://github.com/arut/nginx-rtmp-module/wiki/Directives#record</a><br>如下是最简单的配置，将视频流保存到<code>/tmp/streaming_temp</code>中。<br>首先创建目录<code>/tmp/streaming_temp</code>.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># mkdir /tmp/streaming_temp</div><div class="line"># chown nobody:root streaming_temp</div></pre></td></tr></table></figure></p>
+<p>在<code>application live</code>中添加如下配置。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">record all;</div><div class="line">record_path /tmp/streaming_temp;</div></pre></td></tr></table></figure></p>
+<p>推流过后，接收到的视频就被保存下来了<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># ll /tmp/streaming_temp/</div><div class="line">total 4032</div><div class="line">-rw-r--r-- 1 nobody nobody 2111772 Jul 30 23:06 xiaozhupeiqi.flv</div><div class="line">#</div></pre></td></tr></table></figure></p>
+<p>添加转码和resize后的配置参见: <a href="https://github.com/jibing57/my-snippet/tree/master/Nginx/01_nginx_rtmp/nginx_with_resize_rtmp_hls_record.conf" target="_blank" rel="external">nginx_with_resize_rtmp_hls_record.conf</a></p>
+<h3 id="hls-fragment设置无效问题"><a href="#hls-fragment设置无效问题" class="headerlink" title="hls_fragment设置无效问题"></a>hls_fragment设置无效问题</h3><h4 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h4><p>根据<a href="https://github.com/arut/nginx-rtmp-module/wiki/Directives#hls_fragment" target="_blank" rel="external">官方Wiki</a>的说明，参数hls_fragment是用来设置HLS分片的长度的。默认是5秒。<br>但实际操作中，你可能会发现<code>hls_fragment</code>设置的值没有效果。</p>
+<h4 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h4><p>在<a href="https://github.com/arut/nginx-rtmp-module/issues/1026#issuecomment-302059909" target="_blank" rel="external">Issue 1026</a>中翻到了作者arut的回复。</p>
+<blockquote>
+<p>Fragments are started at keyframes. If keyframes are rare, that’s what you get. Try using the -g option of ffmpeg.</p>
+</blockquote>
+<p><code>hls_fragment</code>设置依赖于视频源中的关键帧，如果源视频中没有关键帧，那么<code>hls_fragment</code>的设置就无效了。可以在ffmpeg中使用<code>-g</code>来插入关键帧。</p>
+<h4 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h4><p>ffmpeg中<code>-g</code>参数的说明: <a href="https://trac.ffmpeg.org/wiki/EncodingForStreamingSites#a-g" target="_blank" rel="external">https://trac.ffmpeg.org/wiki/EncodingForStreamingSites#a-g</a></p>
+<blockquote>
+<p>-g: Use a 2 second GOP (Group of Pictures), so simply multiply your output frame rate * 2. For example, if your input is -framerate 30, then use -g 60.</p>
+</blockquote>
+<p><code>-g</code>的使用依赖于原始的帧率，如果想要每2秒就插一个关键帧，输入源的帧率是30，那么此处<code>-g</code>就需要设置为60.</p>
+<p>举例，处理帧率是30的流时，在ffmpeg转码时，添加上-g 30。每30帧插入一个关键帧,就可以让<code>hls_fragment</code>设置起效了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">exec /usr/bin/ffmpeg -i rtmp://localhost/$app/$name -async 1 -vsync -1</div><div class="line">-c:v libx264 -c:a aac -b:v 256k -b:a 128k -ac 2 -g 30 -vf &quot;scale=480:trunc(ow/a/2)*2&quot; -tune zerolatency -preset veryfast -crf 23 -f flv rtmp://localhost/vod/$name_low</div><div class="line">-c:v libx264 -c:a aac -b:v 768k -b:a 128k -ac 2 -g 30 -vf &quot;scale=720:trunc\(ow/a/2\)*2&quot; -tune zerolatency -preset veryfast -crf 23 -f flv rtmp://localhost/vod/$name_mid</div><div class="line">-c:v libx264 -c:a aac -b:v 1024k -b:a 128k -ac 2 -g 30 -vf &quot;scale=960:trunc(ow/a/2)*2&quot; -tune zerolatency -preset veryfast -crf 23 -f flv rtmp://localhost/vod/$name_high</div><div class="line">-c:v libx264 -c:a aac -b:v 1920k -b:a 128k -ac 2 -g 30 -vf &quot;scale=1280:trunc(ow/a/2)*2&quot; -tune zerolatency -preset veryfast -crf 23 -f flv rtmp://localhost/vod/$name_hd720</div><div class="line">-c copy -f flv rtmp://localhost/vod/$name_src;</div></pre></td></tr></table></figure></p>
+<p>添加转码和resize后的配置参见: <a href="https://github.com/jibing57/my-snippet/tree/master/Nginx/01_nginx_rtmp/nginx_with_resize_rtmp_hls_record_gop.conf" target="_blank" rel="external">nginx_with_resize_rtmp_hls_record_gop.conf</a></p>
+<h3 id="HLS低延迟设置"><a href="#HLS低延迟设置" class="headerlink" title="HLS低延迟设置"></a>HLS低延迟设置</h3><p><a href="https://github.com/arut/nginx-rtmp-module" target="_blank" rel="external">nginx-rtmp-module</a>中<code>hls_fragment</code>设置默认是5秒，<code>hls_playlist_length</code>设置默认是30s。<br>理论上默认配置下，HLS的延迟最大为30s。<br>设置成如下配置，通过降低ts片段时间，在网络通顺的情况下，实测延迟可以保持在4~5s左右。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">hls_fragment 1s;</div><div class="line">hls_playlist_length 10s;</div></pre></td></tr></table></figure></p>
+<p>添加转码和resize后的配置参见: <a href="https://github.com/jibing57/my-snippet/tree/master/Nginx/01_nginx_rtmp/nginx_with_resize_rtmp_hls_record_gop_hls_fragment.conf" target="_blank" rel="external">nginx_with_resize_rtmp_hls_record_gop_hls_fragment.conf</a></p>
+<h3 id="ffmpeg调节横竖屏resize"><a href="#ffmpeg调节横竖屏resize" class="headerlink" title="ffmpeg调节横竖屏resize"></a>ffmpeg调节横竖屏resize</h3><p>之前<code>ffmpeg</code>的命令中，scale是按照宽为固定值来进行resize的。这种配置适用于横屏的情况，如果源视频是竖屏拍摄的，按照宽来进行缩放，会扩大高的长度，造成尺寸的不准确。<br>拿源视频尺寸是<code>720x1280</code>的竖屏为例。hd720的尺寸就会被扩展成<code>1280x2274</code>。</p>
+<p>我们可以在<code>ffmpeg</code>的<code>-vf</code>参数中添加横竖屏的判断，来生成准确的resize尺寸。<br>判断依据是检查输入视频的宽和高，如果宽(iw)大于高(ih), 那么设置宽为固定值，高按照比例缩放。反之，就设置高为固定值，宽按照比例缩放。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">exec /usr/bin/ffmpeg -i rtmp://localhost/$app/$name -async 1 -vsync -1</div><div class="line">-c:v libx264 -c:a aac -b:v 256k -b:a 128k -ac 2 -g 30 -vf &quot;scale=&apos;if(gt(iw,ih),480,trunc(oh*a/2)*2)&apos;:&apos;if(gt(iw,ih),trunc(ow/a/2)*2,480)&apos;&quot; -tune zerolatency -preset veryfast -crf 23 -f flv rtmp://localhost/vod/$name_low</div><div class="line">-c:v libx264 -c:a aac -b:v 768k -b:a 128k -ac 2 -g 30 -vf &quot;scale=&apos;if(gt(iw,ih),720,trunc(oh*a/2)*2)&apos;:&apos;if(gt(iw,ih),trunc(ow/a/2)*2,720)&apos;&quot; -tune zerolatency -preset veryfast -crf 23 -f flv rtmp://localhost/vod/$name_mid</div><div class="line">-c:v libx264 -c:a aac -b:v 1024k -b:a 128k -ac 2 -g 30 -vf &quot;scale=&apos;if(gt(iw,ih),960,trunc(oh*a/2)*2)&apos;:&apos;if(gt(iw,ih),trunc(ow/a/2)*2,960)&apos;&quot; -tune zerolatency -preset veryfast -crf 23 -f flv rtmp://localhost/vod/$name_high</div><div class="line">-c:v libx264 -c:a aac -b:v 1920k -b:a 128k -ac 2 -g 30 -vf &quot;scale=&apos;if(gt(iw,ih),1280,trunc(oh*a/2)*2)&apos;:&apos;if(gt(iw,ih),trunc(ow/a/2)*2,1280)&apos;&quot; -tune zerolatency -preset veryfast -crf 23 -f flv rtmp://localhost/vod/$name_hd720</div><div class="line">-c copy -f flv rtmp://localhost/vod/$name_src;</div></pre></td></tr></table></figure></p>
+<p>此时，如果源视频尺寸是720x1280<code>的竖屏，hd720的尺寸还是</code>720x1280`。</p>
+<p>添加转码和resize后的配置参见: <a href="https://github.com/jibing57/my-snippet/tree/master/Nginx/01_nginx_rtmp/nginx_with_resize_rtmp_hls_record_gop_hls_fragment_vf.conf" target="_blank" rel="external">nginx_with_resize_rtmp_hls_record_gop_hls_fragment_vf.conf</a></p>
+<h3 id="HLS中生成的m3u8中ts数量"><a href="#HLS中生成的m3u8中ts数量" class="headerlink" title="HLS中生成的m3u8中ts数量"></a>HLS中生成的m3u8中ts数量</h3><p>hls_fragment参数，在文档上说设置的是hls片段的大小，可设置了hls_fragment后，m3u8上显示还是8秒一个片段。<br>HLS生成的m3u8中ts的个数=<code>hls_playlist_length / hls_fragment</code><br>比如:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">hls_fragment 1s;</div><div class="line">hls_playlist_length 15s;</div></pre></td></tr></table></figure></p>
+<p>那么此时，m3u8中ts的个数就是15个。<br><strong>注意:</strong> 即使因为没有关键帧，导致<code>hls_fragment</code>没起作用，实际hls的片段时间是5s或者是8s。ts的数量也还是<code>hls_playlist_length / hls_fragment</code></p>
+<h3 id="访问allow和deny"><a href="#访问allow和deny" class="headerlink" title="访问allow和deny"></a>访问allow和deny</h3><p><a href="https://github.com/arut/nginx-rtmp-module" target="_blank" rel="external">nginx-rtmp-module</a>提供了基础的基于ip地址的访问控制，参见文档<a href="https://github.com/arut/nginx-rtmp-module/wiki/Directives#access" target="_blank" rel="external">https://github.com/arut/nginx-rtmp-module/wiki/Directives#access</a><br>有两个关键字<code>allow</code>和<code>deny</code>。</p>
+<ul>
+<li><code>allow</code>的语法为: <code>allow [play|publish] address|subnet|all</code></li>
+<li><code>deny</code>的语法为: <code>deny [play|publish] address|subnet|all</code></li>
+</ul>
+<p>其中的<code>play</code>是播放，<code>publish</code>是接收推流的意思。可以有多条<code>allow/deny</code>的规则，匹配规则是逐个check，直到匹配到符合的规则为止。</p>
+<p>几个访问控制的例子:</p>
+<ol>
+<li><p>允许所有地址publish</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">allow publish all;</div></pre></td></tr></table></figure>
+</li>
+<li><p>只允许本地publish</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">allow publish 127.0.0.1;</div><div class="line">deny publish all;</div></pre></td></tr></table></figure>
+</li>
+<li><p>不允许play</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">deny play all;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="rtmp流为什么播放时也会有延迟"><a href="#rtmp流为什么播放时也会有延迟" class="headerlink" title="rtmp流为什么播放时也会有延迟"></a>rtmp流为什么播放时也会有延迟</h3><p>RTMP流理论上只有网络传输延迟，但是客户端播放的时候经常会感觉到有几秒的延迟。<br>抛去网络因素，RTMP流观看的延迟，主要是客户端缓存导致的。为了避免网络抖动导致的播放卡顿，很多RTMP播放器都会在收到一段时间的RTMP流后才开始播放。这样就导致了播放的延迟。<br><code>ffmpeg</code>自带的<code>ffplay</code>，可以通过设置<code>nobuffer</code>来禁用缓存，降低播放的延迟。</p>
+<p>本地环境中的Mac使用<code>ffplay</code>连虚拟机中的流媒体服务器，添加nobuffer参数后，播放就和rtmp流基本同步了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ffplay -fflags nobuffer  &apos;rtmp://192.168.168.199/live/room888&apos;</div></pre></td></tr></table></figure></p>
+<p>几个参考资料:</p>
+<ul>
+<li>ffplay设置不缓存 <a href="https://stackoverflow.com/questions/21213895/how-to-stream-live-videos-with-no-latency-ffplay-mplayer-and-what-kind-of-wra" target="_blank" rel="external">https://stackoverflow.com/questions/21213895/how-to-stream-live-videos-with-no-latency-ffplay-mplayer-and-what-kind-of-wra</a></li>
+<li>nginx-rtmp-module上几个关于延迟的issue讨论 <ul>
+<li><a href="https://github.com/arut/nginx-rtmp-module/issues/962#issuecomment-294185141" target="_blank" rel="external">Too big delay between rtmp and hls #962</a></li>
+<li><a href="https://github.com/arut/nginx-rtmp-module/issues/1268" target="_blank" rel="external">Stream without latency? #1268</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="m3u8文件会时不时的消失"><a href="#m3u8文件会时不时的消失" class="headerlink" title="m3u8文件会时不时的消失"></a>m3u8文件会时不时的消失</h3><p>当<code>hls_fragment</code>和<code>hls_playlist_length</code>的值太接近，导致只有一到两个片段时候，m3u8可能会时不时的消失。<br>比如,如下配置时，就可能会导致m3u8文件丢失。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">hls_fragment 1s;</div><div class="line">hls_playlist_length 1s;</div></pre></td></tr></table></figure></p>
+<p>此时需要将hls_playlist_length设置大一点，比如<code>hls_playlist_length 3s;</code>。这时m3u8文件就不会消失了。</p>
+<h3 id="相关阅读"><a href="#相关阅读" class="headerlink" title="相关阅读"></a>相关阅读</h3><ul>
+<li><a href="/2020/07/29/how-to-setup-nginx-rtmp-on-centos-7/" title="CentOS 7中搭建基础的Nginx RMPT服务器">CentOS 7中搭建基础的Nginx RMPT服务器</a>
+</li>
+</ul>
+	  
+	</div>
+
+	<div>
+  	<center>
+	<div class="pagination">
+<ul class="pagination">
+	 
+		
+          <li class="prev disabled"><a><i class="fa fa-arrow-circle-o-left"></i>上一页</a></li>
+        
+
+        <li><a href="/archives"><i class="fa fa-archive"></i>Archive</a></li>
+
+		
+		   <li class="next"><a href="/2020/07/29/how-to-setup-nginx-rtmp-on-centos-7/" class="alignright next">下一页<i class="fa fa-arrow-circle-o-right"></i></a></li>         
+        
+	
+</ul>
+</div>
+
+    </center>
+	</div>
+
+    <!-- share -->
+    
+        
+    <div class="bdsharebuttonbox">
+        <a href="#" class="bds_more" data-cmd="more"></a>
+        <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+        <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+        <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+        <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+        <a href="#" class="bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+        <a href="#" class="bds_evernotecn" data-cmd="evernotecn" title="分享到印象笔记"></a>
+        <a href="#" class="bds_youdao" data-cmd="youdao" title="分享到有道云笔记"></a>
+        <a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+    </div>
+    <script>
+        window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"24"},"share":{}};
+        with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+    </script>
+
+
+        
+
+    
+	
+	<!-- comment -->
+	
+<section id="comment">
+  <h2 class="title">留言</h2>
+  
+  	 <div id="disqus_thread">
+     <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  	 </div>
+  
+</section>
+
+
+	</div> <!-- col-md-9/col-md-12 -->
+		
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta">
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2020-08-01
+	</div>
+	
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
+	   <div id="toc" class="toc collapse in">
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#前言"><span class="toc-article-text">前言</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#配置stat"><span class="toc-article-text">配置stat</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#配置转码"><span class="toc-article-text">配置转码</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#新建application-vod"><span class="toc-article-text">新建application vod</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#修改application-live"><span class="toc-article-text">修改application live</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#试验"><span class="toc-article-text">试验</span></a></li></ol></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#记录原始流"><span class="toc-article-text">记录原始流</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#hls-fragment设置无效问题"><span class="toc-article-text">hls_fragment设置无效问题</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#问题"><span class="toc-article-text">问题</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#原因"><span class="toc-article-text">原因</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#解决方法"><span class="toc-article-text">解决方法</span></a></li></ol></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#HLS低延迟设置"><span class="toc-article-text">HLS低延迟设置</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#ffmpeg调节横竖屏resize"><span class="toc-article-text">ffmpeg调节横竖屏resize</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#HLS中生成的m3u8中ts数量"><span class="toc-article-text">HLS中生成的m3u8中ts数量</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#访问allow和deny"><span class="toc-article-text">访问allow和deny</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#rtmp流为什么播放时也会有延迟"><span class="toc-article-text">rtmp流为什么播放时也会有延迟</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#m3u8文件会时不时的消失"><span class="toc-article-text">m3u8文件会时不时的消失</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#相关阅读"><span class="toc-article-text">相关阅读</span></a></li></ol>
+		</div>
+	
+	</div>
+
+	<!-- categories -->
+    
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>
+    <ul id="categorys" class="tag_box list-unstyled collapse in">
+          
+  <li>
+    <li><a href="/categories/Tools/">Tools<span>32</span></a></li>
+  </li>
+
+    </ul>
+	</div>
+	
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>
+    <ul id="tags" class="tag_box list-unstyled collapse in">
+	    
+  <li><a href="/tags/CentOS/">CentOS<span>12</span></a></li> <li><a href="/tags/Nginx/">Nginx<span>10</span></a></li> <li><a href="/tags/FFMPEG/">FFMPEG<span>4</span></a></li> <li><a href="/tags/RTMP/">RTMP<span>2</span></a></li> <li><a href="/tags/HLS/">HLS<span>2</span></a></li>
+    </ul>
+	</div>
+	
+
+    <hr>
+
+</div><!-- col-md-3 -->
+
+	</div>
+		
+
+</div><!-- row -->
+
+<script type="text/javascript">
+var disqus_shortname = 'jibing57-blog';
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  &copy; 2020 jibing57
+  
+      with help from <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>.    
+</p> </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>

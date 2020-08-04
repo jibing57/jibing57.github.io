@@ -139,6 +139,71 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
+			<div class="date"> 2019-03-21 </div>
+			<div class="article-title"><a href="/2019/03/21/ctrl-c-invalid-on-Centos-7/" >CentOS 7下Ctrl-C失效问题</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>rvm 1.29.4在CentOS 7上有一个bug，在Bash下，source了rvm后，执行Crtl+C时，无法终止shell命令。</p>
+<p>具体讨论在<a href="https://github.com/rvm/rvm/issues/4422" target="_blank" rel="external">Unable to pass SIGINT signal (control-C) on 1.29.4 </a>中。</p>
+<p>解决办法:</p>
+<ol>
+<li>在用户账号下强制使用trap设置回被改写的信号量INT QUIT</li>
+<li>升级rvm到1.29.4以上版本</li>
+</ol>
+	
+	</div>
+  <a type="button" href="/2019/03/21/ctrl-c-invalid-on-Centos-7/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2019-03-11 </div>
+			<div class="article-title"><a href="/2019/03/11/ways-to-support-public-s3-file-in-nginx/" >使用nginx处理S3静态资源</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>在网页或APP中，使用S3公开的静态资源，比如图片,小视频等。通常有这么几个常用的方式</p>
+<ul>
+<li>直接在页面中使用S3的public链接</li>
+<li>使用自己的域名，再在Web服务器侧redirect到S3的链接</li>
+<li>使用自己的域名，再在服务器上经过反向代理服务，获取S3内容后再返回给客户端或浏览器。</li>
+</ul>
+<p>在APP中，因为不需要考虑SEO，可以在页面或接口中直接返回S3的链接，APP直接访问S3资源，效率最高。<br>如果是网页，有时候为了SEO的需要，可能更多的会采用第二和第三种方式, 将资源经过服务器来中转一下。<br>下面介绍一下第二和第三种方式在Nginx侧的简单实现。</p>
+<h3 id="使用Nginx来redirect-S3的链接"><a href="#使用Nginx来redirect-S3的链接" class="headerlink" title="使用Nginx来redirect S3的链接"></a>使用Nginx来redirect S3的链接</h3><p>如下是一个简单的Nginx的配置的例子。基于以下几个前提</p>
+<ul>
+<li>测试域名为test.jibing57.com</li>
+<li>所有放在S3上的静态文件，在网站上都以<code>/s3_redirect</code>路径打头</li>
+<li>S3 Region为us-west-2, Bucket 为<code>s3-for-blog</code></li>
+<li>将<code>/s3_redirect</code>开头的文件redirect到真实的S3 URL中。</li>
+</ul>
+	
+	</div>
+  <a type="button" href="/2019/03/11/ways-to-support-public-s3-file-in-nginx/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
 			<div class="date"> 2019-03-10 </div>
 			<div class="article-title"><a href="/2019/03/10/passenger-status-not-work-on-CentOS-7/" >CentOS 7下passenger-status报错</a></div>						
 		</h3>
@@ -353,54 +418,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2018-12-11 </div>
-			<div class="article-title"><a href="/2018/12/11/how-to-enable-cors-on-S3/" >在S3上开启CORS</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>在浏览器中使用AWS的SDK直接上传文件到S3时，需要在S3 Bucket上配置CORS才能成功上传，否则ajax请求会被浏览器拦截。</p>
-<h3 id="普通CORS访问配置"><a href="#普通CORS访问配置" class="headerlink" title="普通CORS访问配置"></a>普通CORS访问配置</h3><p>官方文档<a href="https://docs.aws.amazon.com/AmazonS3/latest/dev/cors.html#how-do-i-enable-cors" target="_blank" rel="external">Cross-Origin Resource Sharing (CORS)</a>中提供了开启CORS的范例，摘录如下:</p>
-	
-	</div>
-  <a type="button" href="/2018/12/11/how-to-enable-cors-on-S3/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2018-11-27 </div>
-			<div class="article-title"><a href="/2018/11/27/nginx-with-dynamic-upstreams-to-ELB/" >如何配置Nginx的Dynamic Upstream指向ELB</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h3><p>公司有一个项目，部署有多个AWS环境，但由于一系列复杂的原因，需要先在账号A下备案的域名来使用在账号B中部署的服务，后续再将域名备案转到账号B中。<br>临时的解决办法就是在账号A下起一个Instance，通过Nginx反向代理到账号B的一个Classic ELB中。</p>
-<p>起初服务跑的很顺畅，后来一天突然服务不可用，页面显示504 Gateway Timeout，查看了Nginx的日志，发现有多条<code>upstream timed out (110: Connection timed out) while connecting to upstream</code>的错误日志。</p>
-	
-	</div>
-  <a type="button" href="/2018/11/27/nginx-with-dynamic-upstreams-to-ELB/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -478,7 +495,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/#Shell">Shell<span>8</span></a></li>
 		
-			<li><a href="/categories/#Tools">Tools<span>30</span></a></li>
+			<li><a href="/categories/#Tools">Tools<span>32</span></a></li>
 		
 			<li><a href="/categories/#杂">杂<span>1</span></a></li>
 		
@@ -492,48 +509,48 @@ var _hmt = _hmt || [];
 		<h4>标签云</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/#Wireshark">Wireshark<span>1</span></a></li>
-		
-			<li><a href="/tags/#Linux">Linux<span>15</span></a></li>
-		
-			<li><a href="/tags/#Video">Video<span>1</span></a></li>
-		
-			<li><a href="/tags/#Sysops">Sysops<span>1</span></a></li>
-		
 			<li><a href="/tags/#Douban">Douban<span>2</span></a></li>
 		
-			<li><a href="/tags/#CentOS">CentOS<span>10</span></a></li>
+			<li><a href="/tags/#AWS Deep Dive">AWS Deep Dive<span>2</span></a></li>
 		
-			<li><a href="/tags/#Hexo">Hexo<span>8</span></a></li>
+			<li><a href="/tags/#Nodejs">Nodejs<span>4</span></a></li>
 		
-			<li><a href="/tags/#AWS Tools">AWS Tools<span>2</span></a></li>
+			<li><a href="/tags/#FFMPEG">FFMPEG<span>4</span></a></li>
+		
+			<li><a href="/tags/#Minecraft">Minecraft<span>1</span></a></li>
+		
+			<li><a href="/tags/#OLED">OLED<span>1</span></a></li>
+		
+			<li><a href="/tags/#Redis">Redis<span>1</span></a></li>
+		
+			<li><a href="/tags/#Ruby">Ruby<span>10</span></a></li>
+		
+			<li><a href="/tags/#Docker Hub">Docker Hub<span>1</span></a></li>
+		
+			<li><a href="/tags/#HLS">HLS<span>2</span></a></li>
+		
+			<li><a href="/tags/#Firewall">Firewall<span>1</span></a></li>
 		
 			<li><a href="/tags/#CodeCommit">CodeCommit<span>1</span></a></li>
 		
-			<li><a href="/tags/#Docker">Docker<span>2</span></a></li>
-		
-			<li><a href="/tags/#CloudWatch">CloudWatch<span>1</span></a></li>
-		
-			<li><a href="/tags/#FFMPEG">FFMPEG<span>2</span></a></li>
+			<li><a href="/tags/#PostgreSQL">PostgreSQL<span>5</span></a></li>
 		
 			<li><a href="/tags/#LCD">LCD<span>1</span></a></li>
 		
 			<li><a href="/tags/#Mysql">Mysql<span>1</span></a></li>
 		
-			<li><a href="/tags/#感悟">感悟<span>1</span></a></li>
+			<li><a href="/tags/#IAM">IAM<span>3</span></a></li>
 		
-			<li><a href="/tags/#RVM">RVM<span>3</span></a></li>
+			<li><a href="/tags/#Screen">Screen<span>1</span></a></li>
 		
-			<li><a href="/tags/#Lightsail">Lightsail<span>2</span></a></li>
-		
-			<li><a href="/tags/#Github">Github<span>4</span></a></li>
+			<li><a href="/tags/#AutoScaling">AutoScaling<span>3</span></a></li>
 		
 			<li><a href="/tags/#Chrome">Chrome<span>1</span></a></li>
 		
-			<li><a href="/tags/#Docker Hub">Docker Hub<span>1</span></a></li>
+			<li><a href="/tags/#Solutions Architect">Solutions Architect<span>1</span></a></li>
 		
 		
-		   <li><a href="/tags">...<span>66</span></a></li>
+		   <li><a href="/tags">...<span>68</span></a></li>
 		 
 		</ul>
 	</div>
@@ -546,6 +563,14 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2020/08/01/advanced-configure-of-nginx-rtmp/" ><i class="fa fa-file-o"></i>Nginx RTMP服务器配置</a>
+      </li>
+    
+      <li>
+        <a href="/2020/07/29/how-to-setup-nginx-rtmp-on-centos-7/" ><i class="fa fa-file-o"></i>CentOS 7中搭建基础的Nginx RMPT服务器</a>
+      </li>
+    
+      <li>
         <a href="/2020/07/03/redis-basic/" ><i class="fa fa-file-o"></i>Redis基础</a>
       </li>
     
@@ -555,14 +580,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2020/06/23/resolve-sudo-error-in-crontab-job/" ><i class="fa fa-file-o"></i>Crontab中解决sorry, you must h...</a>
-      </li>
-    
-      <li>
-        <a href="/2020/06/21/tools-to-control-brightness-of-external-monitor-on-macos/" ><i class="fa fa-file-o"></i>Mac下调节外置显示器亮度的工具</a>
-      </li>
-    
-      <li>
-        <a href="/2020/06/09/some-new-nginx-config/" ><i class="fa fa-file-o"></i>一些常用的Nginx+Passenger配置</a>
       </li>
     
   </ul>

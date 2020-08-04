@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.jibing57.com/"/>
-  <updated>2020-07-03T16:50:37.902Z</updated>
+  <updated>2020-08-04T03:39:33.421Z</updated>
   <id>https://www.jibing57.com/</id>
   
   <author>
@@ -15,6 +15,72 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Nginx RTMP服务器配置</title>
+    <link href="https://www.jibing57.com/2020/08/01/advanced-configure-of-nginx-rtmp/"/>
+    <id>https://www.jibing57.com/2020/08/01/advanced-configure-of-nginx-rtmp/</id>
+    <published>2020-08-01T12:24:15.000Z</published>
+    <updated>2020-08-04T03:39:33.421Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;本篇是&lt;a href=&quot;/2020/07/29/how-to-setup-nginx-rtmp-on-centos-7/&quot; title=&quot;CentOS 7中搭建基础的Nginx RMPT服务器&quot;&gt;CentOS 7中搭建基础的Nginx RMPT服务器&lt;/a&gt;的续篇，记录了Nignx RTMP使用过程中的一些有用的配置和一些坑。&lt;br&gt;下面的内容，是以文章&lt;a href=&quot;/2020/07/29/how-to-setup-nginx-rtmp-on-centos-7/&quot; title=&quot;CentOS 7中搭建基础的Nginx RMPT服务器&quot;&gt;CentOS 7中搭建基础的Nginx RMPT服务器&lt;/a&gt;中的配置为基准进行的修改。&lt;/p&gt;
+&lt;h3 id=&quot;配置stat&quot;&gt;&lt;a href=&quot;#配置stat&quot; class=&quot;headerlink&quot; title=&quot;配置stat&quot;&gt;&lt;/a&gt;配置stat&lt;/h3&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/arut/nginx-rtmp-module&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;nginx-rtmp-module&lt;/a&gt;自身提供了统计的功能。按照Github上官方例子进行配置就行。&lt;a href=&quot;https://github.com/arut/nginx-rtmp-module&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/arut/nginx-rtmp-module&lt;/a&gt;&lt;br&gt;首先，拷贝&lt;a href=&quot;https://github.com/arut/nginx-rtmp-module&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;nginx-rtmp-module&lt;/a&gt;源码中的stat.xls到nginx默认主目录&lt;code&gt;/usr/local/nginx/html/&lt;/code&gt;中。&lt;br&gt;再配置rtmp的stat, 在默认server中添加如下配置。&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;10&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;11&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;12&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;13&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;14&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;15&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;# This URL provides RTMP statistics in XML&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;location /stat &amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    rtmp_stat all;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    # Use this stylesheet to view XML as web page&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    # in browser&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    rtmp_stat_stylesheet stat.xsl;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#125;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;location /stat.xsl &amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    # XML stylesheet to view RTMP stats.&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    # Copy stat.xsl wherever you want&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    # and put the full directory path here&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    root html;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#125;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
+    
+    
+      <category term="CentOS" scheme="https://www.jibing57.com/tags/CentOS/"/>
+    
+      <category term="Nginx" scheme="https://www.jibing57.com/tags/Nginx/"/>
+    
+      <category term="FFMPEG" scheme="https://www.jibing57.com/tags/FFMPEG/"/>
+    
+      <category term="RTMP" scheme="https://www.jibing57.com/tags/RTMP/"/>
+    
+      <category term="HLS" scheme="https://www.jibing57.com/tags/HLS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>CentOS 7中搭建基础的Nginx RMPT服务器</title>
+    <link href="https://www.jibing57.com/2020/07/29/how-to-setup-nginx-rtmp-on-centos-7/"/>
+    <id>https://www.jibing57.com/2020/07/29/how-to-setup-nginx-rtmp-on-centos-7/</id>
+    <published>2020-07-29T13:36:27.000Z</published>
+    <updated>2020-08-04T03:38:31.289Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;介绍下如何在本地CentOS 7中使用&lt;a href=&quot;https://github.com/arut/nginx-rtmp-module&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;nginx-rtmp-module&lt;/a&gt;来搭建基本的RTMP和HLS直播服务器。&lt;br&gt;基于如下情况进行搭建:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;系统版本: CentOS 7.6 Minimal&lt;/li&gt;
+&lt;li&gt;虚拟机IP地址: 192.168.168.199&lt;/li&gt;
+&lt;li&gt;Nginx版本:1.14.2&lt;/li&gt;
+&lt;li&gt;Nginx Rtmp模块: &lt;a href=&quot;https://github.com/arut/nginx-rtmp-module&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;nginx-rtmp-module&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;如下安装步骤，如果没有特别说明，都是基于root用户进行安装。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;安装nginx&quot;&gt;&lt;a href=&quot;#安装nginx&quot; class=&quot;headerlink&quot; title=&quot;安装nginx&quot;&gt;&lt;/a&gt;安装nginx&lt;/h3&gt;&lt;p&gt;首先更新CentOS系统&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;yum update&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;安装编译nginx所需的开发包&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;yum install gcc&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;yum install pcre pcre-devel pcre-static pcre-tools&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;yum install openssl openssl-static openssl-devel&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;yum install wget unzip&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
+    
+    
+      <category term="CentOS" scheme="https://www.jibing57.com/tags/CentOS/"/>
+    
+      <category term="Nginx" scheme="https://www.jibing57.com/tags/Nginx/"/>
+    
+      <category term="FFMPEG" scheme="https://www.jibing57.com/tags/FFMPEG/"/>
+    
+      <category term="RTMP" scheme="https://www.jibing57.com/tags/RTMP/"/>
+    
+      <category term="HLS" scheme="https://www.jibing57.com/tags/HLS/"/>
+    
+  </entry>
   
   <entry>
     <title>Redis基础</title>
@@ -291,9 +357,9 @@
       <category term="Linux" scheme="https://www.jibing57.com/categories/Linux/"/>
     
     
-      <category term="Image" scheme="https://www.jibing57.com/tags/Image/"/>
-    
       <category term="Aliyun" scheme="https://www.jibing57.com/tags/Aliyun/"/>
+    
+      <category term="Image" scheme="https://www.jibing57.com/tags/Image/"/>
     
       <category term="CentOS" scheme="https://www.jibing57.com/tags/CentOS/"/>
     
@@ -532,56 +598,6 @@
     
     
       <category term="Image" scheme="https://www.jibing57.com/tags/Image/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>如何在CentOS 7 中安装wkhtmltopdf和wkhtmltoimage</title>
-    <link href="https://www.jibing57.com/2019/11/28/way-to-install-wkhtmltopdf-and-wkhtmltoimage-to-CentOS-7/"/>
-    <id>https://www.jibing57.com/2019/11/28/way-to-install-wkhtmltopdf-and-wkhtmltoimage-to-CentOS-7/</id>
-    <published>2019-11-28T13:45:17.000Z</published>
-    <updated>2019-11-28T07:14:47.372Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;工具说明&quot;&gt;&lt;a href=&quot;#工具说明&quot; class=&quot;headerlink&quot; title=&quot;工具说明&quot;&gt;&lt;/a&gt;工具说明&lt;/h3&gt;&lt;p&gt;wkhtmltopdf和wkhtmltoimage是一个开源的命令行工具，可以将HTML转换为pdf文档和图片。&lt;br&gt;Github 仓库: &lt;a href=&quot;https://github.com/wkhtmltopdf/wkhtmltopdf&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;wkhtmltopdf/wkhtmltopdf&lt;/a&gt;&lt;br&gt;官网: &lt;a href=&quot;https://wkhtmltopdf.org/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://wkhtmltopdf.org/&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&quot;在CentOS7上安装wkhtmltopdf&quot;&gt;&lt;a href=&quot;#在CentOS7上安装wkhtmltopdf&quot; class=&quot;headerlink&quot; title=&quot;在CentOS7上安装wkhtmltopdf&quot;&gt;&lt;/a&gt;在CentOS7上安装wkhtmltopdf&lt;/h3&gt;&lt;p&gt;CentOS7 下，下载依赖&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;yum install -y xorg-x11-fonts-75dpi&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;yum install -y xorg-x11-fonts-Type1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;下载RMP包,  RMP包可以从官网&lt;a href=&quot;https://wkhtmltopdf.org/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;wkhtmltopdf.org&lt;/a&gt;下，也可以从Github下。&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.2.1/wkhtmltox-0.12.2.1_linux-centos7-amd64.rpm&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
-    
-    
-      <category term="CentOS" scheme="https://www.jibing57.com/tags/CentOS/"/>
-    
-      <category term="Linux" scheme="https://www.jibing57.com/tags/Linux/"/>
-    
-      <category term="Wkhtmltopdf" scheme="https://www.jibing57.com/tags/Wkhtmltopdf/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>在Macos上安装Docker和Kubernetes</title>
-    <link href="https://www.jibing57.com/2019/11/19/how-to-install-docker-and-kubernetes-on-macos/"/>
-    <id>https://www.jibing57.com/2019/11/19/how-to-install-docker-and-kubernetes-on-macos/</id>
-    <published>2019-11-19T11:46:46.000Z</published>
-    <updated>2019-11-19T09:02:06.917Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;Macos下安装Docker和Kubernutes最方便的工具就是&lt;a href=&quot;https://www.docker.com/products/docker-desktop&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Docker Desktop&lt;/a&gt;了。&lt;/p&gt;
-&lt;h3 id=&quot;安装Docker&quot;&gt;&lt;a href=&quot;#安装Docker&quot; class=&quot;headerlink&quot; title=&quot;安装Docker&quot;&gt;&lt;/a&gt;安装Docker&lt;/h3&gt;&lt;p&gt;访问&lt;a href=&quot;https://www.docker.com/products/docker-desktop&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Docker Desktop&lt;/a&gt;官网，点击下载Mac版。会跳转到dockerhub进行下载。需要注册dockerhub才可以进行下载。&lt;/p&gt;
-&lt;p&gt;下载过后双击Docker.dmg文件进行安装即可。&lt;br&gt;安装完毕后，Docker就可以正常使用了&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
-    
-    
-      <category term="Docker" scheme="https://www.jibing57.com/tags/Docker/"/>
-    
-      <category term="Kubernetes" scheme="https://www.jibing57.com/tags/Kubernetes/"/>
     
   </entry>
   

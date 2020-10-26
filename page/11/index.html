@@ -139,6 +139,194 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
+			<div class="date"> 2017-10-29 </div>
+			<div class="article-title"><a href="/2017/10/29/ruby-paperclip-destroy-callback-nil/" >Paperclip destroy的callback中attachment的各个attribute为nil的问题调查</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="问题点"><a href="#问题点" class="headerlink" title="问题点"></a>问题点</h3><p>Rails的Image的models中，使用了paperclip这个Gem来处理图片。近期需要添加一个功能，删除image后，需要向某个email地址发送一封邮件，告之某个图片已经被删除了。</p>
+<p>实际操作中，发现在无论函数是定义在before_destroy或after_destroy的callback中，attachment_file_name,attachment_file_size, attachment_content_type, attachment_updated_at的属性，取出来都是nil。</p>
+<p>调查了一下，现将结果汇总如下:<br>
+	
+	</div>
+  <a type="button" href="/2017/10/29/ruby-paperclip-destroy-callback-nil/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2017-10-24 </div>
+			<div class="article-title"><a href="/2017/10/24/how-to-use-aws-cli-with-multi-user/" >如何在aws cli中使用多个配置文件</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p><code>aws cli</code>使用中，可能会有在多个IAM账户中进行切换的需求，手动切换<code>~/.aws/</code>目录下的<code>config</code>和<code>credentials</code>是十分费力的事情。还好<code>aws cli</code>本身就可以支持多个aws credentials</p>
+<h3 id="配置多个profile"><a href="#配置多个profile" class="headerlink" title="配置多个profile"></a>配置多个profile</h3><p><code>aws configure</code>时，加上<code>--profile</code>参数来命名不同的账户, 依次输入access id, access key, region和output format。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ aws configure --profile user1</div><div class="line">$ aws configure --profile user2</div></pre></td></tr></table></figure>
+<p>此时生成的<code>config</code>和<code>credentials</code>文件中，会使用账户名来分割不同的配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">[carlshen@carl-macpro-lan ~]$ cat ~/.aws/config</div><div class="line">[profile user1]</div><div class="line">output = json</div><div class="line">region = us-west-2</div><div class="line">[profile user2]</div><div class="line">output = json</div><div class="line">region = ap-northeast-2</div><div class="line">[carlshen@carl-macpro-lan ~]$</div><div class="line">[carlshen@carl-macpro-lan ~]$ cat ~/.aws/credentials</div><div class="line">[user1]</div><div class="line">aws_access_key_id = AKIAXXXXXXXXXXXXXXXX</div><div class="line">aws_secret_access_key = XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</div><div class="line">[user2]</div><div class="line">aws_access_key_id = AKIAXXXXXXXXXXXXXXXX</div><div class="line">aws_secret_access_key = XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</div><div class="line">[carlshen@carl-macpro-lan ~]$</div></pre></td></tr></table></figure>
+	
+	</div>
+  <a type="button" href="/2017/10/24/how-to-use-aws-cli-with-multi-user/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2017-10-24 </div>
+			<div class="article-title"><a href="/2017/10/24/how-to-use-aws-codecommit/" >使用aws codecommit作为私有的git远程服务器</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>博客的hexo的代码，一直是保存在本地的。上次电脑花了一次屏后，感觉到保存在本地实在是不够安全。因此考虑寻觅一个远端的私密git库，存起来。</p>
+<p>开始寻寻觅觅合适的仓库.</p>
+<ul>
+<li>Github?,私有库是收费的。但为了这些哪天就不更新的markdown，每月7刀开个Developer的Plan，感觉不划算。</li>
+<li>自建Gitlab？嫌麻烦麻烦。</li>
+<li>oschina的私有库？不想用。</li>
+<li>。。。。。。</li>
+</ul>
+<p>好吧，我承认我就是想尝试用一下aws的codecommit。</p>
+<p>关于CodeCommit的免费额度，<a href="https://aws.amazon.com/cn/codecommit/pricing/" target="_blank" rel="external">官网</a>介绍:</p>
+<ul>
+<li>最初5位活动用户<ul>
+<li>无限存储库</li>
+<li>50GB的月存储量</li>
+<li>每月10000个git请求</li>
+</ul>
+</li>
+</ul>
+<p>托管我一个小博客，妥妥的够了。毕竟除了我，没人还会来关心这点markdown文件, 5位用户免费足够了。至于50GB的月存储量么，除非把看过的电影都commit进git来，要不然应该是足够了。</p>
+	
+	</div>
+  <a type="button" href="/2017/10/24/how-to-use-aws-codecommit/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2017-08-03 </div>
+			<div class="article-title"><a href="/2017/08/03/date-command-on-Linux-and-Mac/" >Linux 和 Mac下date命令的基本用法</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>Mac下的date命令是BSD系的, Linux下date命令是GNU系的，两者的用法有一些区别，罗列如下:</p>
+<h3 id="共同点"><a href="#共同点" class="headerlink" title="共同点"></a>共同点</h3><p>基本的时间格式的缩写是相同的，规则如下:</p>
+<ul>
+<li>%Y 表示四位数形式的年份, 比如2017</li>
+<li>%m 表示带前导0的月份，比如02,12</li>
+<li>%d 表示带前导0的日子， 比如 02，28</li>
+<li>%H 表示带前导0的24小时， 比如 01, 23</li>
+<li>%M 表示带前导0的分钟数， 比如 05, 22</li>
+<li>%S 表示带前导0的秒数， 比如 06，45</li>
+<li>%s 表示距离格林威治时间(1970年1月1日0点)的秒数</li>
+</ul>
+	
+	</div>
+  <a type="button" href="/2017/08/03/date-command-on-Linux-and-Mac/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2017-07-25 </div>
+			<div class="article-title"><a href="/2017/07/25/how-to-read-text-on-macos/" >Macos中如何语音朗读文字</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>Macos上看到大段大段的英文，有时候除了看以外，还想边听边看</p>
+<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><h3 id="Macos-自带speech"><a href="#Macos-自带speech" class="headerlink" title="Macos 自带speech"></a>Macos 自带speech</h3><p>Macos 自带了文本至语音的功能, 开启方法如下:</p>
+<ol>
+<li>打开[系统偏好设置] -&gt; [听写与语音] -&gt; 切换至[文本至语音]</li>
+<li>可以选择系统嗓音和朗读速率</li>
+<li>可以设置快捷键，默认为Option + Esc, 选择文字后按快捷键开启，再次按快捷键关闭</li>
+</ol>
+<p>或选中文字，右键菜单选择[语音]-&gt;[开始讲话]</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><a href="https://support.apple.com/kb/PH14230?locale=en_US" target="_blank" rel="external">OS X Mavericks: Hear your Mac speak text</a></li>
+</ul>
+
+	
+	</div>
+  <a type="button" href="/2017/07/25/how-to-read-text-on-macos/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2017-07-25 </div>
+			<div class="article-title"><a href="/2017/07/25/useful-website-of-aws/" >AWS相关的一些有用的网址</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="cloudping-info"><a href="#cloudping-info" class="headerlink" title="cloudping.info"></a>cloudping.info</h3><p><a href="http://www.cloudping.info/" target="_blank" rel="external">clougping.info</a>是一个可以检测当前浏览器到AWS各个Region的延迟的网站, 可以用来评估访问哪个Region更快一点。在建立测试服务的时候十分有用。</p>
+<p>单次的测试结果不一定准确，建议多试几次后再选取平均延迟低的结果。</p>
+<ul>
+<li>国内测试的结果:<br><img src="/images/AWS/Tools/cloudping_on_cn.jpg" alt="cloudping_on_cn"></li>
+</ul>
+<p>在国内使用AWS全球账号时，在韩国首尔Region建测试服务延迟会小一点。</p>
+	
+	</div>
+  <a type="button" href="/2017/07/25/useful-website-of-aws/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
 			<div class="date"> 2017-07-24 </div>
 			<div class="article-title"><a href="/2017/07/24/AWS-Certified-Developer/" >AWS Certified Developer - Associate Road Map</a></div>						
 		</h3>
@@ -318,21 +506,21 @@ var _hmt = _hmt || [];
 		<h4>分类</h4>
 		<ul class="tag_box inline list-unstyled">
 		
-			<li><a href="/categories/#AWS">AWS<span>35</span></a></li>
+			<li><a href="/categories/#AWS">AWS<span>37</span></a></li>
 		
 			<li><a href="/categories/#AWS Certified">AWS Certified<span>4</span></a></li>
 		
 			<li><a href="/categories/#Blog">Blog<span>6</span></a></li>
 		
-			<li><a href="/categories/#Code">Code<span>5</span></a></li>
+			<li><a href="/categories/#Code">Code<span>6</span></a></li>
 		
-			<li><a href="/categories/#Kubernetes">Kubernetes<span>1</span></a></li>
+			<li><a href="/categories/#Kubernetes">Kubernetes<span>2</span></a></li>
 		
 			<li><a href="/categories/#Linux">Linux<span>11</span></a></li>
 		
 			<li><a href="/categories/#Shell">Shell<span>8</span></a></li>
 		
-			<li><a href="/categories/#Tools">Tools<span>32</span></a></li>
+			<li><a href="/categories/#Tools">Tools<span>34</span></a></li>
 		
 			<li><a href="/categories/#杂">杂<span>1</span></a></li>
 		
@@ -346,48 +534,48 @@ var _hmt = _hmt || [];
 		<h4>标签云</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/#Application Load Balancing">Application Load Balancing<span>1</span></a></li>
+			<li><a href="/tags/#RTMP">RTMP<span>2</span></a></li>
 		
-			<li><a href="/tags/#Douban">Douban<span>2</span></a></li>
+			<li><a href="/tags/#iPhone">iPhone<span>1</span></a></li>
 		
-			<li><a href="/tags/#Elastic Load Balancing">Elastic Load Balancing<span>6</span></a></li>
+			<li><a href="/tags/#Failover">Failover<span>1</span></a></li>
 		
 			<li><a href="/tags/#Ubuntu">Ubuntu<span>1</span></a></li>
 		
-			<li><a href="/tags/#S3">S3<span>10</span></a></li>
+			<li><a href="/tags/#Douban">Douban<span>2</span></a></li>
 		
-			<li><a href="/tags/#EC2 User Data">EC2 User Data<span>1</span></a></li>
+			<li><a href="/tags/#Minecraft">Minecraft<span>1</span></a></li>
 		
-			<li><a href="/tags/#Wkhtmltopdf">Wkhtmltopdf<span>1</span></a></li>
+			<li><a href="/tags/#Elastic Beanstalk">Elastic Beanstalk<span>7</span></a></li>
 		
-			<li><a href="/tags/#EC2">EC2<span>8</span></a></li>
+			<li><a href="/tags/#Docker">Docker<span>3</span></a></li>
 		
-			<li><a href="/tags/#Screen">Screen<span>1</span></a></li>
-		
-			<li><a href="/tags/#Chrome">Chrome<span>1</span></a></li>
-		
-			<li><a href="/tags/#HLS">HLS<span>2</span></a></li>
-		
-			<li><a href="/tags/#Solutions Architect">Solutions Architect<span>1</span></a></li>
-		
-			<li><a href="/tags/#LCD">LCD<span>1</span></a></li>
-		
-			<li><a href="/tags/#Ruby">Ruby<span>10</span></a></li>
-		
-			<li><a href="/tags/#Github">Github<span>4</span></a></li>
-		
-			<li><a href="/tags/#Linux">Linux<span>15</span></a></li>
-		
-			<li><a href="/tags/#Aliyun">Aliyun<span>2</span></a></li>
-		
-			<li><a href="/tags/#IAM">IAM<span>3</span></a></li>
-		
-			<li><a href="/tags/#iOS">iOS<span>1</span></a></li>
+			<li><a href="/tags/#Image">Image<span>3</span></a></li>
 		
 			<li><a href="/tags/#Sysops">Sysops<span>1</span></a></li>
 		
+			<li><a href="/tags/#EC2">EC2<span>8</span></a></li>
 		
-		   <li><a href="/tags">...<span>68</span></a></li>
+			<li><a href="/tags/#LCD">LCD<span>1</span></a></li>
+		
+			<li><a href="/tags/#CloudWatch">CloudWatch<span>1</span></a></li>
+		
+			<li><a href="/tags/#Wireshark">Wireshark<span>1</span></a></li>
+		
+			<li><a href="/tags/#Chrome">Chrome<span>1</span></a></li>
+		
+			<li><a href="/tags/#AWS">AWS<span>1</span></a></li>
+		
+			<li><a href="/tags/#Video">Video<span>1</span></a></li>
+		
+			<li><a href="/tags/#EC2 User Data">EC2 User Data<span>1</span></a></li>
+		
+			<li><a href="/tags/#AWS Deep Dive">AWS Deep Dive<span>2</span></a></li>
+		
+			<li><a href="/tags/#Rails">Rails<span>5</span></a></li>
+		
+		
+		   <li><a href="/tags">...<span>73</span></a></li>
 		 
 		</ul>
 	</div>
@@ -400,23 +588,23 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2020/10/24/upgrade-postgresql-version-on-aws-RDS/" ><i class="fa fa-file-o"></i>AWS RDS PostgreSQL版本升级</a>
+      </li>
+    
+      <li>
+        <a href="/2020/10/22/wkhtmltopdf-to-support-chinese-charactor/" ><i class="fa fa-file-o"></i>wkhtmltopdf支持中文字体</a>
+      </li>
+    
+      <li>
+        <a href="/2020/10/14/why-disk-space-not-restored-after-deleting-iphone-backup-on-macos/" ><i class="fa fa-file-o"></i>MacOS下使用iTunes删除iphone备份磁盘空...</a>
+      </li>
+    
+      <li>
+        <a href="/2020/08/04/some-tips-of-aws-lightsail/" ><i class="fa fa-file-o"></i>AWS LightSail Tips</a>
+      </li>
+    
+      <li>
         <a href="/2020/08/01/advanced-configure-of-nginx-rtmp/" ><i class="fa fa-file-o"></i>Nginx RTMP服务器配置</a>
-      </li>
-    
-      <li>
-        <a href="/2020/07/29/how-to-setup-nginx-rtmp-on-centos-7/" ><i class="fa fa-file-o"></i>CentOS 7中搭建基础的Nginx RMPT服务器</a>
-      </li>
-    
-      <li>
-        <a href="/2020/07/03/redis-basic/" ><i class="fa fa-file-o"></i>Redis基础</a>
-      </li>
-    
-      <li>
-        <a href="/2020/06/29/transaction-isolation-level-in-postgresql-and-mysql/" ><i class="fa fa-file-o"></i>Postgresql和Mysql中的事务隔离</a>
-      </li>
-    
-      <li>
-        <a href="/2020/06/23/resolve-sudo-error-in-crontab-job/" ><i class="fa fa-file-o"></i>Crontab中解决sorry, you must h...</a>
       </li>
     
   </ul>

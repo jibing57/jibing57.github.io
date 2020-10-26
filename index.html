@@ -339,9 +339,144 @@ var _hmt = _hmt || [];
 		
             
 		
+            
+		
+            
+		
+            
+		
+            
+		
+            
+		
+            
+		
         
         <!-- render other articles -->
         
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2020-10-24 </div>
+			<div class="article-title"><a href="/2020/10/24/upgrade-postgresql-version-on-aws-RDS/" >AWS RDS PostgreSQL版本升级</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h3><p>海外AWS中有一套系统采用的是PostgreSQL 9.5， 因为PG 9.5在2021年2月11号之后不再被PG社区所支持了, PG社区对版本的支持参见<a href="https://www.postgresql.org/support/versioning/" target="_blank" rel="external">Versioning Policy</a>。因此AWS发送了邮件，提示我们尽快升级到9.6。并且介于PG 9.6在2020年11月11号之后也会停止支持，AWS建议直接升级到PostgreSQL 12或以上版本。 </p>
+<p>基于直接从9.5升级到12，中间跨越版本太大，可能会有问题。因此决定先暂时升级到9.6。等后续完整测试12后，再升级到12。</p>
+<h3 id="升级步骤"><a href="#升级步骤" class="headerlink" title="升级步骤"></a>升级步骤</h3><p>AWS升级，可以在Web Console中点击几个按钮就可以升级。但升级时，Event提示升级失败，PreUpgrade checks Fails。报错如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">The instance could not be upgraded from 9.5.22.R1 to 9.6.19.R1 because of following reasons. Please take appropriate action on databases that have usages incompatible with requested major engine version upgrade and try again.</div><div class="line"></div><div class="line">Following usages in database &apos;xxxxx&apos; need to be corrected before upgrade:</div><div class="line">-- The instance could not be upgraded because there are one or more databases with an older version of PostGIS extension or its dependent extensions (address_standardizer, address_standardizer_data_us, postgis_tiger_geocoder, postgis_topology) installed. Please upgrade all installations of PostGIS and drop its dependent extensions and try again.</div><div class="line">Following usages in database &apos;nest_demo&apos; need to be corrected before upgrade:</div></pre></td></tr></table></figure></p>
+<p>提示升级检查失败，原因是<code>PostGIS</code>的版本存在问题。</p>
+	
+	</div>
+  <a type="button" href="/2020/10/24/upgrade-postgresql-version-on-aws-RDS/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2020-10-22 </div>
+			<div class="article-title"><a href="/2020/10/22/wkhtmltopdf-to-support-chinese-charactor/" >wkhtmltopdf支持中文字体</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>CentOS 7.8环境中，要使用wkhtmltopdf来从网页中生成PDF。<br>没有使用rpm包来安装wkhtmltopdf命令，而是使用了<code>gem &#39;wkhtmltopdf-binary&#39;</code>在Rails项目下安装了<code>wkhtmltopdf</code></p>
+<p>运行后发现，网页中的中文在PDF中没法显示。</p>
+<h3 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h3><p>调查后发现是因为系统中缺少中文字体的支持，使用如下命令安装字体后，可以解决。两者选其一。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo yum install -y wqy-microhei-fonts</div><div class="line"># 或者</div><div class="line">sudo yum install -y xorg-x11-fonts-75dpi</div></pre></td></tr></table></figure>
+	
+	</div>
+  <a type="button" href="/2020/10/22/wkhtmltopdf-to-support-chinese-charactor/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2020-10-14 </div>
+			<div class="article-title"><a href="/2020/10/14/why-disk-space-not-restored-after-deleting-iphone-backup-on-macos/" >MacOS下使用iTunes删除iphone备份磁盘空间没回收</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>记一次有趣的经历。</p>
+<h3 id="事情经过"><a href="#事情经过" class="headerlink" title="事情经过"></a>事情经过</h3><p>为了能用Watch 6，升级了手机系统到IOS 14。升级之前在电脑上用itunes备份了下(<strong>没错，是itunes，我mac系统还在用10.14,所以还是itunes,不是Finder</strong>)，占了几十个G的空间，电脑上磁盘空间一下子紧张了。手机升级完毕后，看了下没啥问题，就准备把电脑上的iphone备份给删了。</p>
+<p>以前删备份都是打开Terminal, 进入<code>~/Library/Application\ Support/MobileSync/Backup/</code>后手动<code>rm -r xxx</code>的。可这次不知道为啥，鬼使神差的用了itunes自带的删除备份的功能。就是下面这个界面。</p>
+<p><img src="/images/Apple/device_backup_on_itunes.jpg" alt="device_backup_on_itunes.jpg"></p>
+<p>一通操作，在界面上把备份删除了。</p>
+<p>然后信心满满地敲下了<code>df -h</code>来查看回收了多少磁盘空间。</p>
+<p>命令一敲，啥情况。怎么空间没有被回收？</p>
+<p>猜想，可能是itune的Bug，文件没有被删除吧。算了算了，还是手动删一下吧。打开Terminal，潇洒的敲击<code>cd ~/Library/Application\ Support/MobileSync/Backup/</code>，熟练的敲击<code>du -sh ./*</code>来查看是哪个目录没有被回收。</p>
+<p>一敲下去，发现不对劲，怎么显示Backup占用的磁盘空间是0B?</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ du -sh ./*</div><div class="line">  0B	./00008020-000464E03BD8002E</div><div class="line">$</div></pre></td></tr></table></figure>
+	
+	</div>
+  <a type="button" href="/2020/10/14/why-disk-space-not-restored-after-deleting-iphone-backup-on-macos/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2020-08-04 </div>
+			<div class="article-title"><a href="/2020/08/04/some-tips-of-aws-lightsail/" >AWS LightSail Tips</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="如何跨区域迁移LightSail"><a href="#如何跨区域迁移LightSail" class="headerlink" title="如何跨区域迁移LightSail"></a>如何跨区域迁移LightSail</h3><p>步骤:</p>
+<ol>
+<li>现在源区域中对LightSail Instance做snapshot</li>
+<li>然后对该snapshot进行”Copy to another Region”的操作，选择目标Region进行拷贝</li>
+<li>在目标Region中选择拷贝来的snapshot，选择”Create new instance”</li>
+</ol>
+<p>官网介绍操作的两篇文章, 清晰易懂。</p>
+<ul>
+<li><a href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-copying-snapshots-from-one-region-to-another" target="_blank" rel="external">Copying snapshots from one AWS Region to another in Amazon Lightsail</a></li>
+<li><a href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/lightsail-how-to-create-instance-from-snapshot" target="_blank" rel="external">Creating an instance from a manual snapshot in Amazon Lightsail</a></li>
+</ul>
+<h3 id="LightSail"><a href="#LightSail" class="headerlink" title="LightSail"></a>LightSail</h3><p>和EC2 Instance不同，LightSail在stopped状态时也是会收费的。参照<a href="https://aws.amazon.com/lightsail/faq/" target="_blank" rel="external">官方fAQ</a></p>
+<blockquote>
+<p><strong>Q: When am I getting charged for a plan?</strong></p>
+<p>Your Lightsail instances are charged only when they’re in the running or stopped state. If you delete your Lightsail instance before the end of the month, we only charge you a prorated cost, based on the total number of hours that you used your Lightsail instance. For example, if you use the least expensive Lightsail plan for 100 hours in a month, you will be charged 47 cents (100*0.0047).</p>
+</blockquote>
+<p><a href="https://blog.skeddly.com/2017/01/understanding-lightsail-pricing.html#:~:text=Your%20Lightsail%20instances%20are%20charged,you%20used%20your%20Lightsail%20instance." target="_blank" rel="external">Understanding Lightsail Pricing</a>这个文章还介绍了LightSail的计费方式。</p>
+	
+	</div>
+  <a type="button" href="/2020/08/04/some-tips-of-aws-lightsail/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
            
 			  
 	
@@ -518,157 +653,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2020-06-09 </div>
-			<div class="article-title"><a href="/2020/06/09/some-new-nginx-config/" >一些常用的Nginx+Passenger配置</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>摘记一些常用的nginx和passenger(Passenger + Nginx)配置</p>
-<h2 id="Basic验证"><a href="#Basic验证" class="headerlink" title="Basic验证"></a>Basic验证</h2><p>测试环境的服务要放到互联网上时，如果为了避免测试服务的内容被搜索引擎收录，或者只提供给部分用户试用时，可以设置Basic Auth来限制访问。Basic Auth可以在应用层做，也可以在Nginx侧简单的设置。</p>
-<p>如下是Nginx侧的设置方法, 摘录自Nginx官网文章<a href="https://docs.nginx.com/nginx/admin-guide/security-controls/configuring-http-basic-authentication/" target="_blank" rel="external">Restricting Access with HTTP Basic Authentication</a></p>
-<h3 id="设置htpasswd"><a href="#设置htpasswd" class="headerlink" title="设置htpasswd"></a>设置htpasswd</h3><ol>
-<li>确保apache2-utils (Debian, Ubuntu) 或者 httpd-tools (RHEL/CentOS/Oracle Linux)已经安装。</li>
-<li><p>创建htpasswd文件, 使用<code>-c</code>来创建新文件。如下是给用户名carl生成.htpasswd文件，在提示信息中输入访问密码。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ sudo htpasswd -c /etc/nginx/.htpasswd carl</div><div class="line">New password:</div><div class="line">Re-type new password:</div><div class="line">Adding password for user carl</div><div class="line">$</div></pre></td></tr></table></figure>
-</li>
-<li><p>如果要创建新的用户，那么去掉<code>-c</code>参数，往htpasswd文件中添加用户</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ sudo htpasswd /etc/nginx/.htpasswd shen</div><div class="line">New password:</div><div class="line">Re-type new password:</div><div class="line">Adding password for user shen</div><div class="line">$</div></pre></td></tr></table></figure>
-</li>
-<li><p>确认.htpasswd文件中是否包含了刚设置的用户carl和shen</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ cat /etc/nginx/.htpasswd</div><div class="line">carl:$apr1$ofR4vRu4$RwMK.HQawTD8/v.YOA2/d.</div><div class="line">shen:$apr1$c1vlrfgt$TqDy9JDsNcGyfTzcSOPLG0</div><div class="line">$</div></pre></td></tr></table></figure>
-</li>
-</ol>
-	
-	</div>
-  <a type="button" href="/2020/06/09/some-new-nginx-config/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2020-06-06 </div>
-			<div class="article-title"><a href="/2020/06/06/screen-overview-of-ak-tech/" >屏幕知识概观</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>前几天看到了一个讲解显示器显示技术的科普视频，感觉蛮不错的。摘录了一些内容如下。</p>
-<p>视频playlist链接: </p>
-<ul>
-<li>Youtube - <a href="https://www.youtube.com/playlist?list=PLqybz7NWybwWcl_s-VLB_tXqbbBww6nbK" target="_blank" rel="external">AK‘s Tech Studio - 硬核显示技术系列视频 有关显示器 显示技术和屏幕 一切你需要知道的事</a></li>
-<li>B站<ul>
-<li><a href="https://www.bilibili.com/video/BV1eV411o76N" target="_blank" rel="external">「硬核显示技术第一期」LCD和OLED的显示原理和优缺点</a></li>
-<li><a href="https://www.bilibili.com/video/BV1nf4y1S7EC" target="_blank" rel="external">「硬核显示技术第二期」各种显示器和屏幕的参数 一切你需要知道的</a></li>
-<li><a href="https://www.bilibili.com/video/BV1aK4y1k7K5" target="_blank" rel="external">「硬核显示技术第三期」显示器刷新率和FPS详解</a></li>
-<li><a href="https://www.bilibili.com/video/BV1N54y1R7wh" target="_blank" rel="external">为什么玩游戏要用高刷新率屏幕「硬核显示技术第四期」</a></li>
-<li><a href="https://www.bilibili.com/video/BV1of4y117M8" target="_blank" rel="external">「硬核显示技术第五期」详解一加8Pro的MEMC插帧补偿技术</a></li>
-</ul>
-</li>
-</ul>
-	
-	</div>
-  <a type="button" href="/2020/06/06/screen-overview-of-ak-tech/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2020-05-31 </div>
-			<div class="article-title"><a href="/2020/05/31/how-to-speed-minecraft-launcher-on-macos/" >在MacOS上加速Minecraft Launcher</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="状况"><a href="#状况" class="headerlink" title="状况"></a>状况</h3><p>周末小朋友在家玩Minecraft，可能是近期网络环境有什么变动。官方启动器下载更新文件特别的慢。十分钟进度条才动了一小格子。</p>
-<p>看着进度条好久也不更新，小朋友渐渐地就变得烦躁起来。</p>
-<p>我把梯子开了全局代理，重新启动了Minecraft客户端，但貌似没效果。流量压根不从梯子走。</p>
-<p>后来自己折腾了一下，找到了一个方法，记录如下:</p>
-<h3 id="方法步骤"><a href="#方法步骤" class="headerlink" title="方法步骤"></a>方法步骤</h3><ol>
-<li><p>从App中点开Minecraft，然后开启Terminal，找到启动器的进程信息</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ ps -ef | grep -i minecraft</div><div class="line">  501 11957     1   0  3:45PM ??         0:00.21 /Applications/Minecraft.app/Contents/MacOS/launcher</div><div class="line">  501 11959 11957   0  3:45PM ??         0:01.98 /Applications/Minecraft.app/Contents/Minecraft Updater.app/Contents/MacOS/nativeUpdater --nativePath /Applications/Minecraft.app --nativeStartupPath /Applications/Minecraft.app/Contents --nativeExecutable /Applicati      ons/Minecraft.app/Contents/MacOS/launcher</div><div class="line">  501 12917 12152   0  3:46PM ttys014    0:00.00 ggrep -i minecraft</div><div class="line">$</div></pre></td></tr></table></figure>
-</li>
-<li><p>在Terminal中启动HTTP proxy(我本地翻墙的proxy端口绑定的是8001端口，可根据实际情况进行修改。)</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ export http_proxy=&quot;http://127.0.0.1:8001&quot;; export HTTP_PROXY=&quot;http://127.0.0.1:8001&quot;; export https_proxy=&quot;http://127.0.0.1:8001&quot;; export HTTPS_PROXY=&quot;http://127.0.0.1:8001&quot;</div></pre></td></tr></table></figure>
-</li>
-<li><p>关闭GUI的启动器界面, 然后手动在Terminal中启动Launcher</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ /Applications/Minecraft.app/Contents/MacOS/launcher</div><div class="line">2020-05-30 15:48:55.733 launcher[14037:45644] Claimed it found a path: /Applications/Minecraft.app/Contents/MacOS/launcher (/Applications/Minecraft.app/Contents/MacOS/launcher) 4096</div><div class="line">https://launchermeta.mojang.com/v1/products/launcher/022631aeac4a9addbce8e0503dce662152dc398d/mac-os.json</div><div class="line">2020-05-30 15:48:58.496 nativeUpdater[14040:45717] Found executable path: /Applications/Minecraft.app/Contents/MacOS/launcher</div><div class="line">2020-05-30 15:48:58.506 nativeUpdater[14040:45717] Found executable path: /Applications/Minecraft.app/Contents/MacOS/launcher</div><div class="line">https://launchermeta.mojang.com/v1/products/launcher/022631aeac4a9addbce8e0503dce662152dc398d/mac-os.json</div></pre></td></tr></table></figure>
-</li>
-<li><p>此时，也会启动GUI画面的启动器，但是下载文件时，启动器就会走proxy了。</p>
-</li>
-</ol>
-
-	
-	</div>
-  <a type="button" href="/2020/05/31/how-to-speed-minecraft-launcher-on-macos/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2020-05-27 </div>
-			<div class="article-title"><a href="/2020/05/27/Add-registry-mirror-to-docker/" >Docker添加国内镜像源</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>在国内访问<a href="https://hub.docker.com/" target="_blank" rel="external">Docker Hub</a>的速度有点慢，换国内源会稳定和快一点。</p>
-<h3 id="国内的几个源"><a href="#国内的几个源" class="headerlink" title="国内的几个源:"></a>国内的几个源:</h3><ul>
-<li><a href="https://dockerhub.azk8s.cn" target="_blank" rel="external">https://dockerhub.azk8s.cn</a> - Azure镜像</li>
-<li><a href="http://hub-mirror.c.163.com" target="_blank" rel="external">http://hub-mirror.c.163.com</a>  - 网易镜像</li>
-<li><a href="https://docker.mirrors.ustc.edu.cn" target="_blank" rel="external">https://docker.mirrors.ustc.edu.cn</a> - 科大镜像站</li>
-<li><a href="https://registry.docker-cn.com" target="_blank" rel="external">https://registry.docker-cn.com</a> - Docker中国官方镜像 </li>
-<li>阿里云也有镜像，只不过需要登录<a href="https://cr.console.aliyun.com/" target="_blank" rel="external">阿里云控制台</a>后获取自己专属的镜像源。</li>
-</ul>
-<h3 id="设置方法"><a href="#设置方法" class="headerlink" title="设置方法"></a>设置方法</h3><p>参照<a href="https://cloud.google.com/container-registry/docs/using-dockerhub-mirroring" target="_blank" rel="external">Using Container Registry’s Docker Hub mirror</a>这边描述，共有这么几个设置方法</p>
-<ol>
-<li><p>在配置文件中添加<code>registry-mirrors</code>的配置。启动时自动配置，Linux下的默认配置文件是<code>/etc/docker/daemon.json</code>.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  &quot;registry-mirrors&quot;: [&quot;https://&lt;my-docker-mirror-host&gt;&quot;]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-<li><p>手动启动dockerd的时候，添加<code>--registry-mirror</code>参数</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dockerd --registry-mirror=https://&lt;my-docker-mirror-host&gt;</div></pre></td></tr></table></figure>
-</li>
-</ol>
-	
-	</div>
-  <a type="button" href="/2020/05/27/Add-registry-mirror-to-docker/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -732,21 +716,21 @@ var _hmt = _hmt || [];
 		<h4>分类</h4>
 		<ul class="tag_box inline list-unstyled">
 		
-			<li><a href="/categories/#AWS">AWS<span>35</span></a></li>
+			<li><a href="/categories/#AWS">AWS<span>37</span></a></li>
 		
 			<li><a href="/categories/#AWS Certified">AWS Certified<span>4</span></a></li>
 		
 			<li><a href="/categories/#Blog">Blog<span>6</span></a></li>
 		
-			<li><a href="/categories/#Code">Code<span>5</span></a></li>
+			<li><a href="/categories/#Code">Code<span>6</span></a></li>
 		
-			<li><a href="/categories/#Kubernetes">Kubernetes<span>1</span></a></li>
+			<li><a href="/categories/#Kubernetes">Kubernetes<span>2</span></a></li>
 		
 			<li><a href="/categories/#Linux">Linux<span>11</span></a></li>
 		
 			<li><a href="/categories/#Shell">Shell<span>8</span></a></li>
 		
-			<li><a href="/categories/#Tools">Tools<span>32</span></a></li>
+			<li><a href="/categories/#Tools">Tools<span>34</span></a></li>
 		
 			<li><a href="/categories/#杂">杂<span>1</span></a></li>
 		
@@ -760,48 +744,48 @@ var _hmt = _hmt || [];
 		<h4>标签云</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/#FFMPEG">FFMPEG<span>4</span></a></li>
+			<li><a href="/tags/#Video">Video<span>1</span></a></li>
 		
-			<li><a href="/tags/#Chrome">Chrome<span>1</span></a></li>
+			<li><a href="/tags/#Image">Image<span>3</span></a></li>
 		
-			<li><a href="/tags/#Failover">Failover<span>1</span></a></li>
+			<li><a href="/tags/#Linux">Linux<span>15</span></a></li>
 		
-			<li><a href="/tags/#Aliyun">Aliyun<span>2</span></a></li>
+			<li><a href="/tags/#Firewall">Firewall<span>1</span></a></li>
 		
-			<li><a href="/tags/#Solutions Architect">Solutions Architect<span>1</span></a></li>
-		
-			<li><a href="/tags/#SSH">SSH<span>6</span></a></li>
-		
-			<li><a href="/tags/#Elastic Load Balancing">Elastic Load Balancing<span>6</span></a></li>
+			<li><a href="/tags/#iPhone">iPhone<span>1</span></a></li>
 		
 			<li><a href="/tags/#AWS Tools">AWS Tools<span>2</span></a></li>
 		
-			<li><a href="/tags/#iOS">iOS<span>1</span></a></li>
+			<li><a href="/tags/#Crontab">Crontab<span>1</span></a></li>
 		
-			<li><a href="/tags/#OLED">OLED<span>1</span></a></li>
+			<li><a href="/tags/#Docker Hub">Docker Hub<span>1</span></a></li>
 		
-			<li><a href="/tags/#AWS SDK">AWS SDK<span>2</span></a></li>
+			<li><a href="/tags/#DockerHub">DockerHub<span>1</span></a></li>
 		
-			<li><a href="/tags/#Wkhtmltopdf">Wkhtmltopdf<span>1</span></a></li>
+			<li><a href="/tags/#Kubernetes">Kubernetes<span>1</span></a></li>
 		
-			<li><a href="/tags/#Ubuntu">Ubuntu<span>1</span></a></li>
+			<li><a href="/tags/#AWS CLI">AWS CLI<span>6</span></a></li>
 		
-			<li><a href="/tags/#AWS Free Tier">AWS Free Tier<span>1</span></a></li>
+			<li><a href="/tags/#Mysql">Mysql<span>1</span></a></li>
 		
-			<li><a href="/tags/#AWS Deep Dive">AWS Deep Dive<span>2</span></a></li>
+			<li><a href="/tags/#Solutions Architect">Solutions Architect<span>1</span></a></li>
 		
-			<li><a href="/tags/#Elastic Beanstalk">Elastic Beanstalk<span>7</span></a></li>
+			<li><a href="/tags/#EC2">EC2<span>8</span></a></li>
 		
-			<li><a href="/tags/#AutoScaling">AutoScaling<span>3</span></a></li>
+			<li><a href="/tags/#RVM">RVM<span>3</span></a></li>
 		
-			<li><a href="/tags/#S3">S3<span>10</span></a></li>
+			<li><a href="/tags/#IAM">IAM<span>3</span></a></li>
 		
-			<li><a href="/tags/#Minecraft">Minecraft<span>1</span></a></li>
+			<li><a href="/tags/#PostgreSQL">PostgreSQL<span>6</span></a></li>
 		
-			<li><a href="/tags/#Screen">Screen<span>1</span></a></li>
+			<li><a href="/tags/#Docker">Docker<span>3</span></a></li>
+		
+			<li><a href="/tags/#感悟">感悟<span>1</span></a></li>
+		
+			<li><a href="/tags/#Github">Github<span>4</span></a></li>
 		
 		
-		   <li><a href="/tags">...<span>68</span></a></li>
+		   <li><a href="/tags">...<span>73</span></a></li>
 		 
 		</ul>
 	</div>
@@ -814,23 +798,23 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2020/10/24/upgrade-postgresql-version-on-aws-RDS/" ><i class="fa fa-file-o"></i>AWS RDS PostgreSQL版本升级</a>
+      </li>
+    
+      <li>
+        <a href="/2020/10/22/wkhtmltopdf-to-support-chinese-charactor/" ><i class="fa fa-file-o"></i>wkhtmltopdf支持中文字体</a>
+      </li>
+    
+      <li>
+        <a href="/2020/10/14/why-disk-space-not-restored-after-deleting-iphone-backup-on-macos/" ><i class="fa fa-file-o"></i>MacOS下使用iTunes删除iphone备份磁盘空...</a>
+      </li>
+    
+      <li>
+        <a href="/2020/08/04/some-tips-of-aws-lightsail/" ><i class="fa fa-file-o"></i>AWS LightSail Tips</a>
+      </li>
+    
+      <li>
         <a href="/2020/08/01/advanced-configure-of-nginx-rtmp/" ><i class="fa fa-file-o"></i>Nginx RTMP服务器配置</a>
-      </li>
-    
-      <li>
-        <a href="/2020/07/29/how-to-setup-nginx-rtmp-on-centos-7/" ><i class="fa fa-file-o"></i>CentOS 7中搭建基础的Nginx RMPT服务器</a>
-      </li>
-    
-      <li>
-        <a href="/2020/07/03/redis-basic/" ><i class="fa fa-file-o"></i>Redis基础</a>
-      </li>
-    
-      <li>
-        <a href="/2020/06/29/transaction-isolation-level-in-postgresql-and-mysql/" ><i class="fa fa-file-o"></i>Postgresql和Mysql中的事务隔离</a>
-      </li>
-    
-      <li>
-        <a href="/2020/06/23/resolve-sudo-error-in-crontab-job/" ><i class="fa fa-file-o"></i>Crontab中解决sorry, you must h...</a>
       </li>
     
   </ul>

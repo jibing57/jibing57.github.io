@@ -139,6 +139,188 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
+			<div class="date"> 2018-03-14 </div>
+			<div class="article-title"><a href="/2018/03/14/AWS-RDS-recovery-due-to-issue-with-underlying-hardware/" >AWS RDS recovery due to issue with underlying hardware</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>早上刚上班就收到一封主题为”RDS Notification Message”的订阅邮件，message内容为”Recovery of the DB instance has started. Recovery time will vary with the amount of data to be recovered”。</p>
+<p>上Web Console查看发生了什么事，发现RDS已经自我恢复完毕了。最新的Event消息提示为”Recovery of the DB instance is complete.”</p>
+<p><img src="/images/AWS/RDS/rds_recovery_event.png" alt="rds_recovery_event"></p>
+<p>提了Case询问了下，也在网上搜了一下，基本搞清楚了是怎么个回事，记录如下。</p>
+	
+	</div>
+  <a type="button" href="/2018/03/14/AWS-RDS-recovery-due-to-issue-with-underlying-hardware/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2018-03-12 </div>
+			<div class="article-title"><a href="/2018/03/12/how-to-handle-Retirement-Notification-Amazon-EC2-Instance-scheduled-for-retirement/" >EC2底层硬件Retirement的处理方法</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>AWS的EC2的实例是在物理机上虚拟化出来的，当承载EC2的物理机出现问题或者要退役时，AWS会发送一封主题为<strong>[Retirement Notification] Amazon EC2 Instance scheduled for retirement</strong>的email到AWS Account的注册邮箱中。</p>
+<p>以前多次收到过这类邮件，但提示的目标instance-ID都是AutoScaling中运行的EC2，而AutoScaling中的Instance自动伸缩不会影响业务，因此也从没有主动去处理过。</p>
+<p>这次突然收到通知邮件，说一台运行后台任务的Instance的underlying hardware hosting出问题了。在此记录一下相关的现象和解决方法。</p>
+	
+	</div>
+  <a type="button" href="/2018/03/12/how-to-handle-Retirement-Notification-Amazon-EC2-Instance-scheduled-for-retirement/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2018-02-11 </div>
+			<div class="article-title"><a href="/2018/02/11/a-way-to-use-csv-file-to-populate-the-database-by-rake-db-seed-on-rails/" >使用seed将csv格式的db文件导入DB</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>一段将csv格式的db文件导入对应表结构的代码。</p>
+<h3 id="前提要求"><a href="#前提要求" class="headerlink" title="前提要求"></a>前提要求</h3><ol>
+<li>csv文件名字和Model Class需要一一对应， 比如用户表users, Model中定义是<code>class User &lt; ActiveRecord::Base</code>, 那么csv文件名字得是user.csv</li>
+<li>csv文件需要有header,并且header名字需要同数据库中对应表的字段名相同</li>
+</ol>
+	
+	</div>
+  <a type="button" href="/2018/02/11/a-way-to-use-csv-file-to-populate-the-database-by-rake-db-seed-on-rails/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2018-02-11 </div>
+			<div class="article-title"><a href="/2018/02/11/aws-s3-cli-to-backup-and-restore-bucket-acl/" >使用AWS CLI来备份和恢复S3 Bucket的ACL</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>S3 Bucket层面的权限管理，推荐使用Bucket Policy来管理，但可能会有一些遗留的S3 Bucket, 还使用着Bucket ACL来进行权限管理。</p>
+<p>在将Bucket ACl升级为Bucket Policy或者是更新Bucket ACL的时候，会有备份Bucket ACL的需求。此处介绍一下如何使用AWS CLI来备份和恢复Bucket的Bucket ACL。</p>
+<h3 id="备份-Bucket-ACL"><a href="#备份-Bucket-ACL" class="headerlink" title="备份 Bucket ACL"></a>备份 Bucket ACL</h3><p>使用CLI中s3api中的<a href="https://docs.aws.amazon.com/cli/latest/reference/s3api/get-bucket-acl.html" target="_blank" rel="external">get-bucket-acl</a>命令来保存bucket acl。</p>
+<h4 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">  get-bucket-acl</div><div class="line">--bucket &lt;value&gt;</div><div class="line">[--cli-input-json &lt;value&gt;]</div><div class="line">[--generate-cli-skeleton &lt;value&gt;]</div></pre></td></tr></table></figure>
+	
+	</div>
+  <a type="button" href="/2018/02/11/aws-s3-cli-to-backup-and-restore-bucket-acl/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2018-02-09 </div>
+			<div class="article-title"><a href="/2018/02/09/non-greedy-match-in-grep-on-macos/" >Macos下如何实现grep的非贪婪模式</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>有时候需要使用正则的<code>非贪婪模式(non-greedy或者叫lazy模式)</code>来搜一些内容，但Macos系统自带的<code>grep</code>无法胜任。<br>Mac下的<code>grep</code>是BSD系的，不能使用-P参数来使用perl模式。Linux下的<code>GNU grep</code>就可以使用-P参数来支持非贪婪模式。</p>
+<p>MacOS自带的<code>grep</code>的示例:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">$ cat grep_on_macos.txt</div><div class="line">carl has a nice car. the car has four wheels.</div><div class="line">$</div><div class="line"># 支持普通正则</div><div class="line">$ grep -o &quot;car.*has&quot; grep_on_macos.txt</div><div class="line">carl has a nice car. the car has</div><div class="line">$</div><div class="line"># 不支持带?的非贪婪模式</div><div class="line">$ grep -o &quot;car.*?has&quot; grep_on_macos.txt</div><div class="line">$</div></pre></td></tr></table></figure>
+<p>此处记录两个可行的方法来解决该问题</p>
+	
+	</div>
+  <a type="button" href="/2018/02/09/non-greedy-match-in-grep-on-macos/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2018-02-07 </div>
+			<div class="article-title"><a href="/2018/02/07/AWS-Certified-Solutions-Architect-Professional/" >AWS Certified Solutions Architect - Professional Road Map</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h2 id="Official-AWS-Certification-Page"><a href="#Official-AWS-Certification-Page" class="headerlink" title="Official AWS Certification Page"></a>Official AWS Certification Page</h2><p>访问官网<a href="https://amazonaws-china.com/certification/certification-prep/" target="_blank" rel="external">AWS Certification</a></p>
+<ul>
+<li>参加 AWS 培训课程</li>
+<li>查看考试指南和样题<ul>
+<li>了解考试涉及的概念并整体了解需要学习哪些内容, <a href="http://d0.awsstatic-china.com/Train%20&amp;%20Cert/docs/AWS_certified_solutions_architect_professional_blueprint.pdf" target="_blank" rel="external">AWS Certified Solutions Architect – Professional 考试指南</a> 相当于考试大纲, 必看,而且需要反复的看。因为学习过一阵后再来看Guide，会有更深的体会。</li>
+<li><a href="https://d0.awsstatic-china.com/training-and-certification/docs/AWS_certified_solutions_architect_professional_examsample.pdf" target="_blank" rel="external">考试样题</a>用于熟悉题目题型。几个样题都是大段大段的文字，实际考试题目中也有字数少的题目。但题目的阅读量绝对是比Asoocaiated的大得多。</li>
+</ul>
+</li>
+<li>练习试验<ul>
+<li>注册一个AWS全球账号，使用一年的免费额度结合Blueprint中的各个内容进行试验。</li>
+</ul>
+</li>
+<li>学习 AWS 白皮书<ul>
+<li>白皮书是纯英文的，每个白皮书篇幅都很长。</li>
+<li>在BluePrint的描述中，和AWS Certified Solutions Architect - Associate的白皮书列表相比，多了<strong>Defining Fault Tolerant Applications in the AWS Cloud</strong>这一份白皮书，官网找了一下，只有一个名字类似的名为<a href="https://d1.awsstatic.com/whitepapers/aws-building-fault-tolerant-applications.pdf" target="_blank" rel="external">Building Fault-Tolerant Applications on AWS</a>的白皮书，时间还是October 2011的。不管怎样，但愿好理念永不过时，还是整个念一遍吧。</li>
+</ul>
+</li>
+<li>查看 AWS 常见问题<ul>
+<li>官网推荐的FAQ都建议看完。</li>
+</ul>
+</li>
+<li>参加模拟考试<ul>
+<li>40美刀一次。是否值得因人而异。参加Professional的考试，肯定都已经经历过AWS Certified Solutions Architect – Associate的洗礼了, 因此熟悉考试界面肯定不是决定要参加模拟考试的目的。一个合理的理由是，可以提前熟悉一下Professional考题阅读难度, 为正式考试的时候做好心理准备。网上都说AWS Certified Solutions Architect – Professional这个考试最大的难度就是要在170分钟内阅读，理解77~80道字数不算少的题，然后选出最优的答案。网上一些母语是英语的老外都感慨阅读量比较大，何况是我们这种非英语系的国家的考生了。</li>
+</ul>
+</li>
+<li>报名考试并获得认证<ul>
+<li>登陆<a href="https://www.aws.training/certification" target="_blank" rel="external">https://www.aws.training/certification</a>注册进行考试</li>
+</ul>
+</li>
+</ul>
+	
+	</div>
+  <a type="button" href="/2018/02/07/AWS-Certified-Solutions-Architect-Professional/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
 			<div class="date"> 2017-12-26 </div>
 			<div class="article-title"><a href="/2017/12/26/a-simple-elb-access-log-parser-by-ruby/" >A Simple ELB Access Log Parser By Ruby</a></div>						
 		</h3>
@@ -241,194 +423,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2017-12-20 </div>
-			<div class="article-title"><a href="/2017/12/20/How-to-add-staging-log-to-EB-logs/" >如何在Elastic Beanstalk的Rails环境中配置staging.log为可下载</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>新建了一个EB环境，来跑一个staging模式的rails。EB环境变量设置好后，部署成功。一系列测试都没问题，结果却在一个不起眼的地方出了点幺蛾子。</p>
-<p>Rails代码中，没有特殊配置config.logger,因此staging模式时，默认的输出日志为logs/staging.log, 但是在EB的Web console中尝试获取Full Logs后，在BundleLogs中发现没有staging.log。</p>
-<p>赶紧调查试验了一下，并将调查结果记录如下。</p>
-	
-	</div>
-  <a type="button" href="/2017/12/20/How-to-add-staging-log-to-EB-logs/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2017-12-20 </div>
-			<div class="article-title"><a href="/2017/12/20/expired-of-S3-RRS/" >S3 RRS价格注意点</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="S3-存储类型"><a href="#S3-存储类型" class="headerlink" title="S3 存储类型"></a>S3 存储类型</h3><p>S3 总共提供三种存储类型</p>
-<ul>
-<li>标准(Standard)</li>
-<li>标准-低频率访问(Standard - Infrequent Access)</li>
-<li>低冗余存储(Reduced Redundancy Storage)
-	
-	</div>
-  <a type="button" href="/2017/12/20/expired-of-S3-RRS/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2017-12-19 </div>
-			<div class="article-title"><a href="/2017/12/19/deep-dig-on-s3-bucket-permission-exam/" >深挖AWS S3的权限管理(实验篇)</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>在<a href="/2017/12/14/deep-dig-on-s3-bucket-permission/" title="深挖AWS S3的权限管理">深挖AWS S3的权限管理</a> 一文中介绍了AWS S3权限管理的三种方法。此处再通过几个实验来看下三种方法的使用方法。</p>
-<hr>
-<h3 id="实验前准备"><a href="#实验前准备" class="headerlink" title="实验前准备"></a>实验前准备</h3><h4 id="实验用相关账号介绍"><a href="#实验用相关账号介绍" class="headerlink" title="实验用相关账号介绍"></a>实验用相关账号介绍</h4><ul>
-<li>IAM User carl.shen - carl.shen有AdministratorAccess权限，用来上传图片到S3</li>
-<li>IAM User carl - 测试IAM User一号，初始没有任何权限</li>
-<li>IAM User shen - 测试IAM User二号，初始没有任何权限</li>
-<li>IAM Group S3Exam - 用来给IAM User carl和shen统一赋权限</li>
-</ul>
-<p>建好三个IAM账号，下载各自的Access key ID和Secret Access Key, 并设置好AWS CLI。AWS CLI多profile的设置方法可以参照 <a href="/2017/10/24/how-to-use-aws-cli-with-multi-user/" title="如何在aws cli中使用多个配置文件">如何在aws cli中使用多个配置文件</a><br>
-	
-	</div>
-  <a type="button" href="/2017/12/19/deep-dig-on-s3-bucket-permission-exam/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2017-12-14 </div>
-			<div class="article-title"><a href="/2017/12/14/deep-dig-on-s3-bucket-permission/" >深挖AWS S3的权限管理</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>AWS共有三种方式用来管理S3的访问权限</p>
-<ul>
-<li>IAM policy</li>
-<li>Bucket Policy</li>
-<li>S3 ACL</li>
-</ul>
-<p>此处深挖一下这三种访问控制的用法和区别</p>
-<h3 id="三种访问控制的介绍"><a href="#三种访问控制的介绍" class="headerlink" title="三种访问控制的介绍"></a>三种访问控制的介绍</h3><p>S3的三种访问控制如下:</p>
-<ul>
-<li>IAM Policy, 是基于用户层面的控制，attach to IAM实体(User, Role或Group),规定了谁能对哪些S3做什么操作</li>
-<li>Bucket Policy, 是基于Bucket层面的控制, attach to Bucket, 规定了哪些人能对我这个Bucket中的resource做什么操作。</li>
-<li>S3 ACL, 是基于Bucket或单个对象的，规定了谁能对我这个Bucket或对象做什么操作。</li>
-</ul>
-	
-	</div>
-  <a type="button" href="/2017/12/14/deep-dig-on-s3-bucket-permission/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2017-12-12 </div>
-			<div class="article-title"><a href="/2017/12/12/how-to-write-multiline-to-file-by-shell/" >使用shell添加多行到文件的几个办法</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>使用shell添加多行到某个文件的几个办法, 启动EC2设置User Data时可能会用到。</p>
-<h4 id="方法一-逐行echo添加"><a href="#方法一-逐行echo添加" class="headerlink" title="方法一: 逐行echo添加"></a>方法一: 逐行echo添加</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">echo &apos;#!/bin/bash&apos; &gt; way1.sh</div><div class="line">echo &apos;export PATH=$PATH:~/bin/&apos; &gt;&gt; way1.sh</div></pre></td></tr></table></figure>
-<p>查看文件内容为:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ cat way1.sh</div><div class="line">#!/bin/bash</div><div class="line">export PATH=$PATH:~/bin/</div><div class="line">$</div></pre></td></tr></table></figure></p>
-	
-	</div>
-  <a type="button" href="/2017/12/12/how-to-write-multiline-to-file-by-shell/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2017-12-04 </div>
-			<div class="article-title"><a href="/2017/12/04/AWS-Certified-Sysops-Administrator-Associate/" >AWS Certified Sysops Administrator - Associate Road Map</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h2 id="Official-AWS-Certification-Page"><a href="#Official-AWS-Certification-Page" class="headerlink" title="Official AWS Certification Page"></a>Official AWS Certification Page</h2><p>访问官网<a href="https://amazonaws-china.com/certification/certification-prep/" target="_blank" rel="external">AWS Certification</a></p>
-<ul>
-<li>参加 AWS 培训课程</li>
-<li>查看考试指南和样题<ul>
-<li>了解考试涉及的概念并整体了解需要学习哪些内容, <a href="http://awstrainingandcertification.s3.amazonaws.com/production/AWS_certified_sysops_associate_blueprint.pdf" target="_blank" rel="external">AWS Certified SysOps Administrator - Associate 考试指南</a> 相当于考试大纲, 必看,而且需要反复的看。因为学习过一阵后再来看Guide，会有更深的体会。</li>
-<li><a href="http://awstrainingandcertification.s3.amazonaws.com/production/AWS_certified_sysops_associate_examsample.pdf" target="_blank" rel="external">考试样题</a>用于熟悉题目题型</li>
-</ul>
-</li>
-<li>完成自主进度动手实验和备考任务<ul>
-<li>官方<a href="https://www.qwiklabs.com/learning_paths/20/lab_catalogue?locale=en" target="_blank" rel="external">qwikLABS 任务</a>提供了一系列动手实验, 提供部分免费实验，但大部分实验所需的积分都需要购买。高性价比的做法是， 注册一个AWS全球账号，使用一年的免费额度来对照着实验手册来进行试验。</li>
-</ul>
-</li>
-<li>学习 AWS 白皮书<ul>
-<li>白皮书是纯英文的，而且每个白皮书篇幅都很长，读起来既费时又枯燥。但是有时间还是建议把推荐的几个都看一下。</li>
-</ul>
-</li>
-<li>查看 AWS 常见问题</li>
-<li>参加模拟考试<ul>
-<li>20美刀一次，主要目的是为了让人熟悉考试时上机的流程。是否需要因人而异, 特别想先熟悉下考试流程的可以考虑参加一次。我个人觉得没有必要, 因为真实考试时，操作界面一目了然，没有磕磕绊绊的机关，省下20美刀可以去买一份课程。</li>
-</ul>
-</li>
-<li>报名考试并获得认证<ul>
-<li>登陆<a href="https://www.aws.training/certification" target="_blank" rel="external">https://www.aws.training/certification</a>注册进行考试
-	
-	</div>
-  <a type="button" href="/2017/12/04/AWS-Certified-Sysops-Administrator-Associate/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -492,21 +486,21 @@ var _hmt = _hmt || [];
 		<h4>分类</h4>
 		<ul class="tag_box inline list-unstyled">
 		
-			<li><a href="/categories/#AWS">AWS<span>35</span></a></li>
+			<li><a href="/categories/#AWS">AWS<span>37</span></a></li>
 		
 			<li><a href="/categories/#AWS Certified">AWS Certified<span>4</span></a></li>
 		
 			<li><a href="/categories/#Blog">Blog<span>6</span></a></li>
 		
-			<li><a href="/categories/#Code">Code<span>5</span></a></li>
+			<li><a href="/categories/#Code">Code<span>6</span></a></li>
 		
-			<li><a href="/categories/#Kubernetes">Kubernetes<span>1</span></a></li>
+			<li><a href="/categories/#Kubernetes">Kubernetes<span>2</span></a></li>
 		
 			<li><a href="/categories/#Linux">Linux<span>11</span></a></li>
 		
 			<li><a href="/categories/#Shell">Shell<span>8</span></a></li>
 		
-			<li><a href="/categories/#Tools">Tools<span>32</span></a></li>
+			<li><a href="/categories/#Tools">Tools<span>34</span></a></li>
 		
 			<li><a href="/categories/#杂">杂<span>1</span></a></li>
 		
@@ -520,48 +514,48 @@ var _hmt = _hmt || [];
 		<h4>标签云</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/#Docker">Docker<span>2</span></a></li>
+			<li><a href="/tags/#Yarn">Yarn<span>1</span></a></li>
 		
-			<li><a href="/tags/#RDS">RDS<span>3</span></a></li>
-		
-			<li><a href="/tags/#DynamoDB">DynamoDB<span>1</span></a></li>
-		
-			<li><a href="/tags/#Tips">Tips<span>1</span></a></li>
-		
-			<li><a href="/tags/#Aliyun">Aliyun<span>2</span></a></li>
-		
-			<li><a href="/tags/#感悟">感悟<span>1</span></a></li>
-		
-			<li><a href="/tags/#Network">Network<span>4</span></a></li>
-		
-			<li><a href="/tags/#CentOS">CentOS<span>12</span></a></li>
-		
-			<li><a href="/tags/#LCD">LCD<span>1</span></a></li>
-		
-			<li><a href="/tags/#iOS">iOS<span>1</span></a></li>
-		
-			<li><a href="/tags/#Sysops">Sysops<span>1</span></a></li>
-		
-			<li><a href="/tags/#Ruby">Ruby<span>10</span></a></li>
-		
-			<li><a href="/tags/#CloudWatch">CloudWatch<span>1</span></a></li>
-		
-			<li><a href="/tags/#VMware">VMware<span>2</span></a></li>
-		
-			<li><a href="/tags/#Screen">Screen<span>1</span></a></li>
-		
-			<li><a href="/tags/#RTMP">RTMP<span>2</span></a></li>
-		
-			<li><a href="/tags/#AWS Deep Dive">AWS Deep Dive<span>2</span></a></li>
+			<li><a href="/tags/#OLED">OLED<span>1</span></a></li>
 		
 			<li><a href="/tags/#Docker Hub">Docker Hub<span>1</span></a></li>
 		
+			<li><a href="/tags/#RTMP">RTMP<span>2</span></a></li>
+		
+			<li><a href="/tags/#Git">Git<span>2</span></a></li>
+		
+			<li><a href="/tags/#LCD">LCD<span>1</span></a></li>
+		
+			<li><a href="/tags/#Solutions Architect">Solutions Architect<span>1</span></a></li>
+		
+			<li><a href="/tags/#Mysql">Mysql<span>1</span></a></li>
+		
+			<li><a href="/tags/#MacOS">MacOS<span>22</span></a></li>
+		
+			<li><a href="/tags/#Office">Office<span>2</span></a></li>
+		
 			<li><a href="/tags/#Douban">Douban<span>2</span></a></li>
 		
-			<li><a href="/tags/#HTTPS">HTTPS<span>1</span></a></li>
+			<li><a href="/tags/#Linux">Linux<span>15</span></a></li>
+		
+			<li><a href="/tags/#EC2 User Data">EC2 User Data<span>1</span></a></li>
+		
+			<li><a href="/tags/#EC2">EC2<span>8</span></a></li>
+		
+			<li><a href="/tags/#Hexo">Hexo<span>8</span></a></li>
+		
+			<li><a href="/tags/#Docker">Docker<span>3</span></a></li>
+		
+			<li><a href="/tags/#AWS SDK">AWS SDK<span>2</span></a></li>
+		
+			<li><a href="/tags/#HTTP">HTTP<span>5</span></a></li>
+		
+			<li><a href="/tags/#PostgreSQL">PostgreSQL<span>6</span></a></li>
+		
+			<li><a href="/tags/#Wkhtmltopdf">Wkhtmltopdf<span>2</span></a></li>
 		
 		
-		   <li><a href="/tags">...<span>68</span></a></li>
+		   <li><a href="/tags">...<span>73</span></a></li>
 		 
 		</ul>
 	</div>
@@ -574,23 +568,23 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2020/10/24/upgrade-postgresql-version-on-aws-RDS/" ><i class="fa fa-file-o"></i>AWS RDS PostgreSQL版本升级</a>
+      </li>
+    
+      <li>
+        <a href="/2020/10/22/wkhtmltopdf-to-support-chinese-charactor/" ><i class="fa fa-file-o"></i>wkhtmltopdf支持中文字体</a>
+      </li>
+    
+      <li>
+        <a href="/2020/10/14/why-disk-space-not-restored-after-deleting-iphone-backup-on-macos/" ><i class="fa fa-file-o"></i>MacOS下使用iTunes删除iphone备份磁盘空...</a>
+      </li>
+    
+      <li>
+        <a href="/2020/08/04/some-tips-of-aws-lightsail/" ><i class="fa fa-file-o"></i>AWS LightSail Tips</a>
+      </li>
+    
+      <li>
         <a href="/2020/08/01/advanced-configure-of-nginx-rtmp/" ><i class="fa fa-file-o"></i>Nginx RTMP服务器配置</a>
-      </li>
-    
-      <li>
-        <a href="/2020/07/29/how-to-setup-nginx-rtmp-on-centos-7/" ><i class="fa fa-file-o"></i>CentOS 7中搭建基础的Nginx RMPT服务器</a>
-      </li>
-    
-      <li>
-        <a href="/2020/07/03/redis-basic/" ><i class="fa fa-file-o"></i>Redis基础</a>
-      </li>
-    
-      <li>
-        <a href="/2020/06/29/transaction-isolation-level-in-postgresql-and-mysql/" ><i class="fa fa-file-o"></i>Postgresql和Mysql中的事务隔离</a>
-      </li>
-    
-      <li>
-        <a href="/2020/06/23/resolve-sudo-error-in-crontab-job/" ><i class="fa fa-file-o"></i>Crontab中解决sorry, you must h...</a>
       </li>
     
   </ul>

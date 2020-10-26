@@ -139,6 +139,166 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
+			<div class="date"> 2020-02-24 </div>
+			<div class="article-title"><a href="/2020/02/24/how-to-speed-yarn-install-interiorly/" >如何在国内加速yarn install</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p><code>yarn install</code>安装包时，在国内的网络环境下，不挂梯子，访问不稳定，会比较慢。</p>
+<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p><code>yarn install</code>默认是去<code>npm</code>,<code>yarn</code>官方源去获取软件信息的。</p>
+<p>使用<code>yarn config list</code>可以查看到<code>registry</code>的默认值是<code>https://registry.yarnpkg.com</code>。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">$ yarn config list</div><div class="line">yarn config v1.7.0</div><div class="line">info yarn config</div><div class="line">&#123; &apos;version-tag-prefix&apos;: &apos;v&apos;,</div><div class="line">  &apos;version-git-tag&apos;: true,</div><div class="line">  &apos;version-commit-hooks&apos;: true,</div><div class="line">  &apos;version-git-sign&apos;: false,</div><div class="line">  &apos;version-git-message&apos;: &apos;v%s&apos;,</div><div class="line">  &apos;init-version&apos;: &apos;1.0.0&apos;,</div><div class="line">  &apos;init-license&apos;: &apos;MIT&apos;,</div><div class="line">  &apos;save-prefix&apos;: &apos;^&apos;,</div><div class="line">  &apos;bin-links&apos;: true,</div><div class="line">  &apos;ignore-scripts&apos;: false,</div><div class="line">  &apos;ignore-optional&apos;: false,</div><div class="line">  registry: &apos;https://registry.yarnpkg.com&apos;,</div><div class="line">  &apos;strict-ssl&apos;: true,</div><div class="line">  &apos;user-agent&apos;: &apos;yarn/1.7.0 npm/? node/v8.11.2 linux x64&apos; &#125;</div><div class="line">info npm config</div><div class="line">&#123;&#125;</div><div class="line">Done in 0.03s.</div><div class="line">$</div></pre></td></tr></table></figure></p>
+	
+	</div>
+  <a type="button" href="/2020/02/24/how-to-speed-yarn-install-interiorly/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2020-01-31 </div>
+			<div class="article-title"><a href="/2020/01/31/How-to-install-rails-on-Ubuntu-18-04/" >在Ubuntu 18.04中安装Rails开发环境</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>本文介绍在Ubuntu 18.04上不用Docker，使用本地安装组件的方式搭建Rails+PostgreSQL开发环境的步骤。</p>
+<h3 id="搭建步骤"><a href="#搭建步骤" class="headerlink" title="搭建步骤"></a>搭建步骤</h3><ol>
+<li>下载Ubuntu 18.04.3 TLS安装镜像，下载地址: <a href="https://ubuntu.com/download/desktop" target="_blank" rel="external">https://ubuntu.com/download/desktop</a>。安装完成后，登录系统，打开Terminal。</li>
+<li><p>安装vim编辑器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt install vim</div></pre></td></tr></table></figure>
+</li>
+<li><p>按照<a href="https://github.com/rvm/ubuntu_rvm" target="_blank" rel="external">https://github.com/rvm/ubuntu_rvm</a>的安装方法，安装rvm, 命令如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">sudo apt install gnupg2</div><div class="line">gpg2 --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB</div><div class="line">sudo apt-get install software-properties-common</div><div class="line"></div><div class="line">sudo apt-add-repository -y ppa:rael-gc/rvm</div><div class="line">sudo apt-get update</div><div class="line">sudo apt-get install rvm</div></pre></td></tr></table></figure>
+</li>
+<li><p>rvm安装完毕后，为了每次登陆时自动load rvm，执行如下命令。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">echo &apos;source &quot;/etc/profile.d/rvm.sh&quot;&apos; &gt;&gt; ~/.bashrc</div></pre></td></tr></table></figure>
+</li>
+<li><p>退出当前Terminal重新登陆，重新加载rvm环境变量</p>
+	
+	</div>
+  <a type="button" href="/2020/01/31/How-to-install-rails-on-Ubuntu-18-04/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2019-12-31 </div>
+			<div class="article-title"><a href="/2019/12/31/after-upgrade-the-openssl-in-macos/" >MacOS下Brew升级openssl的后续处理</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>Brew安装软件的时候，不小心把openssl版本升了。然后电脑就炸了。vim打不开，ruby不能运行，一些命令出错。<br>一个一个的填坑，填坑记录如下:</p>
+<h3 id="vim"><a href="#vim" class="headerlink" title="vim"></a>vim</h3><p>vim问题参见 <a href="/2019/12/31/macos-youcompleteme-ERROR-root-code-for-hash-md5-was-not-found/" title="Macos下vim中YouCompleteMe报错 ERROR:root:code for hash md5 was not found">Macos下vim中YouCompleteMe报错 ERROR:root:code for hash md5 was not found</a></p>
+<h3 id="Ruby"><a href="#Ruby" class="headerlink" title="Ruby"></a>Ruby</h3><p>我的ruby是通过rvm安装的。本地存有多个版本，每个版本又因为项目隔离需要，使用了不同的gemset。<br>openssl升级到1.1过后，全部都炸了。只能重新安装编译。</p>
+	
+	</div>
+  <a type="button" href="/2019/12/31/after-upgrade-the-openssl-in-macos/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2019-12-31 </div>
+			<div class="article-title"><a href="/2019/12/31/macos-youcompleteme-ERROR-root-code-for-hash-md5-was-not-found/" >Macos下vim中YouCompleteMe报错 ERROR:root:code for hash md5 was not found</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>Macos中brew安装某个软件的时候，brew自动把openssl版本也升级了。<br>升级过后，打开vim就发现有错误提示<code>ERROR:root:code for hash md5 was not found.</code></p>
+<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>报错的是vim中的一个自动补全的插件<a href="https://github.com/ycm-core/YouCompleteMe" target="_blank" rel="external">YouCompleteMe</a>, 该插件是python写的。</p>
+<p>网上搜了下，是因为openssl版本升级了，python找不到编译时的openssl的lib了。所以报错了。</p>
+<h3 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h3><p>解决办法就是使用brew重新装下python<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew reinstall python@2</div></pre></td></tr></table></figure></p>
+	
+	</div>
+  <a type="button" href="/2019/12/31/macos-youcompleteme-ERROR-root-code-for-hash-md5-was-not-found/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2019-12-15 </div>
+			<div class="article-title"><a href="/2019/12/15/way-to-download-udemy-course/" >访问Udemy慢的一个解决办法</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>最近不知道是什么原因，家里的电信宽带连接Udemy非常不稳。不用梯子看课程卡顿，用上了梯子看视频还是卡顿。<br>在线看不行，那就试着下载下来看。Udemy的APP提供了下载视频功能，就尝试在Pad上下载了视频观看。但不知道是APP问题还是网络的问题。APP上下载的视频，明明显示是下载完成了，但很多都是看几分钟就卡住了。我猜测是没有下载完整。</p>
+<p>看个课程还这么费劲，真是抓狂，纠结。</p>
+	
+	</div>
+  <a type="button" href="/2019/12/15/way-to-download-udemy-course/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2019-12-02 </div>
+			<div class="article-title"><a href="/2019/12/02/ImageMagick-watermark/" >使用ImageMagick来给图片打文字水印</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>博客中，难免要为有些图片打上水印。下面摘录两个打文字水印的方法。<br>摘录来自博客<a href="https://aotu.io/notes/2018/06/06/ImageMagick_intro/index.html" target="_blank" rel="external">图像处理 - ImageMagick 简单介绍与案例</a></p>
+<p>工具使用的是强大的<a href="https://www.imagemagick.org/script/index.php" target="_blank" rel="external">ImageMagick</a>, Mac下可以通过<a href="https://brew.sh/" target="_blank" rel="external">Homebrew</a>来安装。安装命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew install imagemagick</div></pre></td></tr></table></figure></p>
+<h3 id="给图片打上透明的文字水印"><a href="#给图片打上透明的文字水印" class="headerlink" title="给图片打上透明的文字水印"></a>给图片打上透明的文字水印</h3><p>命令:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">convert  -draw &apos;text 0,0 &quot;WWW.JIBING57.COM&quot;&apos;  -fill &apos;rgba(221, 34, 17, 0.25)&apos;  -pointsize 36  \</div><div class="line">-font Arial  -gravity center  src.png  src_with_watermark.png</div></pre></td></tr></table></figure></p>
+	
+	</div>
+  <a type="button" href="/2019/12/02/ImageMagick-watermark/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
 			<div class="date"> 2019-11-28 </div>
 			<div class="article-title"><a href="/2019/11/28/way-to-install-wkhtmltopdf-and-wkhtmltoimage-to-CentOS-7/" >如何在CentOS 7 中安装wkhtmltopdf和wkhtmltoimage</a></div>						
 		</h3>
@@ -235,219 +395,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2019-10-18 </div>
-			<div class="article-title"><a href="/2019/10/18/AWS-Advanced-Networking-Specialty/" >AWS Advanced Networking Specialty 考试心得</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>过了AWS的网络专项AWS Certified Advanced Networking -Specialty的考试，将学习过程中用到的资料罗列如下。<br><strong>注: 本文不是完整的学习考试指导，只是记录了我在准备考试的过程中所用到的一些资料和心得。</strong></p>
-<h3 id="考试说明"><a href="#考试说明" class="headerlink" title="考试说明"></a>考试说明</h3><ul>
-<li><a href="https://amazonaws-china.com/certification/certified-advanced-networking-specialty/" target="_blank" rel="external">考试说明主页</a></li>
-<li><a href="https://amazonaws-china.com/certification/certification-prep/" target="_blank" rel="external">AWS官方考试步骤的说明网页-包含sample question，Guide的下载地址等</a></li>
-<li><a href="https://d1.awsstatic-china.com/training-and-certification/docs-advnetworking-spec/AWS%20Certified%20Advanced%20Networking%20-%20Speciality_Exam_Guide_v1.2_FINAL.pdf" target="_blank" rel="external">AWS Certified Advanced Networking - Specialty Exam Guide</a></li>
-<li><a href="https://d1.awsstatic-china.com/training-and-certification/docs-advnetworking-spec/AWS_Certified_Advanced_Networking_Specialty_SampleExam.pdf" target="_blank" rel="external">官方例题下载</a></li>
-<li><a href="https://www.amazon.com/Certified-Advanced-Networking-Official-Study/dp/1119439833/ref=sr_1_1?s=books&amp;ie=UTF8&amp;qid=1519925473&amp;sr=1-1&amp;keywords=advanced+networking" target="_blank" rel="external">官方教材购买地址</a><ul>
-<li>网上也能找得到pdf版本</li>
-</ul>
-</li>
-</ul>
-<h3 id="一些参考资料"><a href="#一些参考资料" class="headerlink" title="一些参考资料"></a>一些参考资料</h3><ul>
-<li>Acloudguru上网络专项的视频教材,前7天免费，可随时取消。 - <a href="https://acloud.guru/learn/aws-certified-advanced-networking-specialty" target="_blank" rel="external">https://acloud.guru/learn/aws-certified-advanced-networking-specialty</a></li>
-<li>练习题: whizlabs上网络专项的练习题 - <a href="https://www.whizlabs.com/aws-advanced-networking-speciality/" target="_blank" rel="external">https://www.whizlabs.com/aws-advanced-networking-speciality/</a><ul>
-<li><strong>注意: whizlab上的题目仅仅是练习题，不是题库，是用来做考前练习，对知识点进行查漏补缺用的。我在实际考试中没有遇到一道和whizlab上一样的题目。</strong></li>
-</ul>
-</li>
-<li>几篇中文的考试心得<ul>
-<li>IT茶馆的博客 <a href="https://www.xiaopeiqing.com/posts/2896.html" target="_blank" rel="external">顺利通过AWS Certified Advanced Networking – Specialty考试</a></li>
-<li><a href="https://blog.51cto.com/8493144/2160058" target="_blank" rel="external">经验分享: 成功通过AWS Advanced Networking Specialty认证考试</a></li>
-</ul>
-</li>
-<li>几个老外的考试心得<ul>
-<li>学习AWS绕不开的一个博客–Jayendra的博客。他的这篇<a href="http://jayendrapatil.com/aws-certified-advanced-networking-speciality-ans-c00-exam-learning-path/" target="_blank" rel="external">AWS Certified Advanced Networking – Speciality (ANS-C00) Exam Learning Path</a>介绍了网络专项考试中会涉及到的大部分基础知识点，可以帮助理解考试知识点。</li>
-<li>一个老外的考试心得, 和我一样也是用了AcloudGuru和Whizlabs的材料进行的复习, 文章中对whizlab习题中的知识点做了系统的总结。<a href="https://daviseford.com/blog/2018/12/21/aws-advanced-networking-specialty-exam-tips.html" target="_blank" rel="external">AWS Advanced Networking Specialty Exam Tips and Tricks</a></li>
-<li>老外的考试心得2 <a href="https://blog.ashiny.cloud/2018/07/29/aws-certified-advanced-networking-specialty/" target="_blank" rel="external">AWS Certified Advanced Networking Specialty: Exam Notes and Observations</a></li>
-</ul>
-</li>
-</ul>
-	
-	</div>
-  <a type="button" href="/2019/10/18/AWS-Advanced-Networking-Specialty/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2019-09-30 </div>
-			<div class="article-title"><a href="/2019/09/30/apple-airport-express-access-unexpected-error-occurred/" >设置AirPort Express时获取不到设备信息的解决方案</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>设置新airport express，使用AirPort Utility获取设备信息时，提示”An unexpected error occurred try again”。</p>
-<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><p>解决办法如下:</p>
-<ol>
-<li>打开系统设置”System Preferences”，选择网络”Network”</li>
-<li>左侧选择连接设备的网络，”Wi-Fi”或者有线网络, 点击右下角的”Advanced..”</li>
-<li>选择”TCP/IP”的tab</li>
-<li>在”Configure IPv6”页面，选择”Link-local only”</li>
-<li>点击”OK”和”Apply”</li>
-</ol>
-	
-	</div>
-  <a type="button" href="/2019/09/30/apple-airport-express-access-unexpected-error-occurred/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2019-09-29 </div>
-			<div class="article-title"><a href="/2019/09/29/still-password-when-setting-public-key-ssh-authorization/" >ssh设置私钥登录后还是提示需要输入密码</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><p>在客户机器上配置好使用key免密登录后，尝试使用私钥登录，却被提示还是需要密码。<br>检查了一圈服务器上<code>~/.ssh/</code>, <code>~/.ssh/authorized_keys</code>的权限, 权限设置都没有问题。<br>可登录时还是提示需要输入密码。只能一步一步来检查调试</p>
-<h3 id="解决步骤"><a href="#解决步骤" class="headerlink" title="解决步骤"></a>解决步骤</h3><ul>
-<li>首先尝试在客户端ssh时加上-vv参数来输出debug信息, 看是否有明显的错误信息。<br>debug输出如下<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">debug1: SSH2_MSG_EXT_INFO received</div><div class="line">debug1: kex_input_ext_info: server-sig-algs=&lt;ssh-ed25519,ssh-rsa,rsa-sha2-256,rsa-sha2-512,ssh-dss,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521&gt;</div><div class="line">debug2: service_accept: ssh-userauth</div><div class="line">debug1: SSH2_MSG_SERVICE_ACCEPT received</div><div class="line">debug1: Authentications that can continue: publickey,password,keyboard-interactive</div><div class="line">debug1: Next authentication method: publickey</div><div class="line">debug1: Trying private key: /home/deployer/.ssh/id_rsa_sync</div><div class="line">debug2: we sent a publickey packet, wait for reply</div><div class="line">debug1: Authentications that can continue: publickey,password,keyboard-interactive</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>在正常情况下，<code>Trying private key: /home/deployer/.ssh/id_rsa_sync</code>之后，应该是提示密钥验证成功<code>Authentication succeeded (publickey).</code>并登录到服务器上。<br>这边是直接提示<code>Authentications that can continue: publickey,password,keyboard-interactive</code>，表示没有成功。<br>
-	
-	</div>
-  <a type="button" href="/2019/09/29/still-password-when-setting-public-key-ssh-authorization/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2019-09-24 </div>
-			<div class="article-title"><a href="/2019/09/24/backup-tools-borgbackup/" >BorgBackup -- 基于命令行的增量备份工具</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p><a href="https://www.borgbackup.org/" target="_blank" rel="external">BorgBackup</a>(简称 Borg)是一款基于命令行的增量备份工具。Github地址:<a href="https://github.com/borgbackup/borg" target="_blank" rel="external">https://github.com/borgbackup/borg</a><br>官网上所述的优势如下:</p>
-<ul>
-<li>Space efficient storage of backups. - 高效存储</li>
-<li>Secure, authenticated encryption. - 可加密</li>
-<li>Compression: LZ4, zlib, LZMA, zstd (since borg 1.1.4). - 支持多种压缩算法</li>
-<li>Mountable backups with FUSE. - 可使用FUSE异地本非</li>
-<li>Easy installation on multiple platforms: Linux, macOS, BSD, … - 支持多个平台</li>
-<li>Free software (BSD license). - 开源</li>
-<li>Backed by a large and active open source community.</li>
-</ul>
-<h3 id="CentOS下安装"><a href="#CentOS下安装" class="headerlink" title="CentOS下安装"></a>CentOS下安装</h3><p>borgbackup在EPEL中已有提供，CentOS 7下使用如下命令安装:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm</div><div class="line">yum install -y borgbackup</div></pre></td></tr></table></figure></p>
-	
-	</div>
-  <a type="button" href="/2019/09/24/backup-tools-borgbackup/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2019-07-24 </div>
-			<div class="article-title"><a href="/2019/07/24/setlocale-LC-CTYPE-cannot-change-locale-UTF-8-issue-when-ssh-to-linux-in-Mac/" >在Mac下远程登录Linux时,提示cannot change locale (UTF-8) No such file or directory</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><ul>
-<li>Mac下设置第一语言为English</li>
-<li>在Terminal或者iTerm2上登录远端Linux时，Linux的prompt提示 <code>setlocale: LC_CTYPE: cannot change locale (UTF-8): No such file or directory</code></li>
-<li>登录Linux后无法正常显示中文</li>
-</ul>
-<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><ol>
-<li>Mac下设置为英文后，locale字符集默认是”C”，Terminal或者iTerm2中有选项会自动设置LC_CTYPE或者LC_LANG为UTF-8</li>
-<li>Mac下ssh客户端的配置文件<code>/etc/ssh/ssh_config</code>中，会尝试设置本地的LANG到远端服务器中。</li>
-<li>远端Linux服务器，没有UTF-8的字符集，就导致了setlocale的警报</li>
-</ol>
-<h3 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h3><p>为了登录而来，修改每个服务器的字符集，操作上是不可行的。最简单的办法就是修改Mac本地的ssh客户端配置，不要将LANG设置发送到服务器端。<br>打开ssh配置文件，<code>sudo vim /etc/ssh/ssh_config</code>, 注释掉如下几行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Host *</div><div class="line">	SendEnv LANG LC_*</div></pre></td></tr></table></figure></p>
-<p>重新ssh到服务器，就不会再有setlocale的告警了。</p>
-
-	
-	</div>
-  <a type="button" href="/2019/07/24/setlocale-LC-CTYPE-cannot-change-locale-UTF-8-issue-when-ssh-to-linux-in-Mac/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2019-07-06 </div>
-			<div class="article-title"><a href="/2019/07/06/how-to-check-network-throughput-on-aws-EC2/" >AWS EC2各个类型的网络性能的测试方法</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>在AWS中，不同类型的EC2 instance,拥有的网络带宽是不同的。</p>
-<p>让人犯糊的是，在<a href="https://amazonaws-china.com/ec2/instance-types/" target="_blank" rel="external">AWS EC2的介绍页面</a>中,并没有清晰的标明每种类型的Instance的带宽具体是多少？一些类型的Instance只是标注了网络性能(Network Performance)为<code>Up to 5</code>,<code>Low</code>,<code>Moderate</code>或者<code>High</code>。</p>
-<p>老外的<a href="https://cloudonaut.io/ec2-network-performance-cheat-sheet/" target="_blank" rel="external">EC2 Network Performance Cheat Sheet</a>这篇文章中，记录了作者使用<a href="(https://github.com/esnet/iperf)">iperf3</a>测试出来的各个Instance类型的带宽。如果选取类型的时候比较在意带宽，可以用来参考下。</p>
-<p>顺带介绍一下如何在AWS EC2中使用<a href="(https://github.com/esnet/iperf)">iperf3</a>来测试Instance带宽。如果确实有需要，就可以自己来进行测速。<br>测试环境如下:</p>
-<ul>
-<li>测试Region是美国Oregon</li>
-<li>使用两台m4.large的EC2，一台运行服务，一台用作客户端。</li>
-<li>介绍两种Amazon Linux的测试方法<ul>
-<li>Amazon Linux AMI 2018.03.0 (HVM), SSD Volume Type</li>
-<li>Amazon Linux 2 AMI (HVM), SSD Volume Type</li>
-</ul>
-</li>
-</ul>
-	
-	</div>
-  <a type="button" href="/2019/07/06/how-to-check-network-throughput-on-aws-EC2/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -511,21 +458,21 @@ var _hmt = _hmt || [];
 		<h4>分类</h4>
 		<ul class="tag_box inline list-unstyled">
 		
-			<li><a href="/categories/#AWS">AWS<span>35</span></a></li>
+			<li><a href="/categories/#AWS">AWS<span>37</span></a></li>
 		
 			<li><a href="/categories/#AWS Certified">AWS Certified<span>4</span></a></li>
 		
 			<li><a href="/categories/#Blog">Blog<span>6</span></a></li>
 		
-			<li><a href="/categories/#Code">Code<span>5</span></a></li>
+			<li><a href="/categories/#Code">Code<span>6</span></a></li>
 		
-			<li><a href="/categories/#Kubernetes">Kubernetes<span>1</span></a></li>
+			<li><a href="/categories/#Kubernetes">Kubernetes<span>2</span></a></li>
 		
 			<li><a href="/categories/#Linux">Linux<span>11</span></a></li>
 		
 			<li><a href="/categories/#Shell">Shell<span>8</span></a></li>
 		
-			<li><a href="/categories/#Tools">Tools<span>32</span></a></li>
+			<li><a href="/categories/#Tools">Tools<span>34</span></a></li>
 		
 			<li><a href="/categories/#杂">杂<span>1</span></a></li>
 		
@@ -539,48 +486,48 @@ var _hmt = _hmt || [];
 		<h4>标签云</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/#Kubernetes">Kubernetes<span>1</span></a></li>
+			<li><a href="/tags/#Tips">Tips<span>1</span></a></li>
+		
+			<li><a href="/tags/#Elastic Load Balancing">Elastic Load Balancing<span>6</span></a></li>
+		
+			<li><a href="/tags/#Lightsail">Lightsail<span>3</span></a></li>
 		
 			<li><a href="/tags/#Network">Network<span>4</span></a></li>
 		
-			<li><a href="/tags/#AWS Deep Dive">AWS Deep Dive<span>2</span></a></li>
+			<li><a href="/tags/#Firewall">Firewall<span>1</span></a></li>
 		
-			<li><a href="/tags/#Office">Office<span>2</span></a></li>
+			<li><a href="/tags/#VMware">VMware<span>2</span></a></li>
 		
-			<li><a href="/tags/#OLED">OLED<span>1</span></a></li>
-		
-			<li><a href="/tags/#Douban">Douban<span>2</span></a></li>
-		
-			<li><a href="/tags/#Ubuntu">Ubuntu<span>1</span></a></li>
-		
-			<li><a href="/tags/#Minecraft">Minecraft<span>1</span></a></li>
-		
-			<li><a href="/tags/#Git">Git<span>2</span></a></li>
-		
-			<li><a href="/tags/#Yarn">Yarn<span>1</span></a></li>
-		
-			<li><a href="/tags/#Solutions Architect">Solutions Architect<span>1</span></a></li>
-		
-			<li><a href="/tags/#Linux">Linux<span>15</span></a></li>
-		
-			<li><a href="/tags/#Mysql">Mysql<span>1</span></a></li>
-		
-			<li><a href="/tags/#Yum">Yum<span>1</span></a></li>
+			<li><a href="/tags/#S3">S3<span>10</span></a></li>
 		
 			<li><a href="/tags/#Hexo">Hexo<span>8</span></a></li>
 		
-			<li><a href="/tags/#RTMP">RTMP<span>2</span></a></li>
+			<li><a href="/tags/#RDS">RDS<span>4</span></a></li>
 		
-			<li><a href="/tags/#IAM">IAM<span>3</span></a></li>
+			<li><a href="/tags/#EC2 User Data">EC2 User Data<span>1</span></a></li>
 		
-			<li><a href="/tags/#Github">Github<span>4</span></a></li>
+			<li><a href="/tags/#Yum">Yum<span>1</span></a></li>
+		
+			<li><a href="/tags/#Video">Video<span>1</span></a></li>
 		
 			<li><a href="/tags/#FFMPEG">FFMPEG<span>4</span></a></li>
 		
+			<li><a href="/tags/#Kubernetes">Kubernetes<span>1</span></a></li>
+		
+			<li><a href="/tags/#Ruby">Ruby<span>11</span></a></li>
+		
+			<li><a href="/tags/#Minecraft">Minecraft<span>1</span></a></li>
+		
+			<li><a href="/tags/#PostgreSQL">PostgreSQL<span>6</span></a></li>
+		
+			<li><a href="/tags/#CentOS">CentOS<span>14</span></a></li>
+		
 			<li><a href="/tags/#Crontab">Crontab<span>1</span></a></li>
 		
+			<li><a href="/tags/#Elastic Beanstalk">Elastic Beanstalk<span>7</span></a></li>
 		
-		   <li><a href="/tags">...<span>68</span></a></li>
+		
+		   <li><a href="/tags">...<span>73</span></a></li>
 		 
 		</ul>
 	</div>
@@ -593,23 +540,23 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2020/10/24/upgrade-postgresql-version-on-aws-RDS/" ><i class="fa fa-file-o"></i>AWS RDS PostgreSQL版本升级</a>
+      </li>
+    
+      <li>
+        <a href="/2020/10/22/wkhtmltopdf-to-support-chinese-charactor/" ><i class="fa fa-file-o"></i>wkhtmltopdf支持中文字体</a>
+      </li>
+    
+      <li>
+        <a href="/2020/10/14/why-disk-space-not-restored-after-deleting-iphone-backup-on-macos/" ><i class="fa fa-file-o"></i>MacOS下使用iTunes删除iphone备份磁盘空...</a>
+      </li>
+    
+      <li>
+        <a href="/2020/08/04/some-tips-of-aws-lightsail/" ><i class="fa fa-file-o"></i>AWS LightSail Tips</a>
+      </li>
+    
+      <li>
         <a href="/2020/08/01/advanced-configure-of-nginx-rtmp/" ><i class="fa fa-file-o"></i>Nginx RTMP服务器配置</a>
-      </li>
-    
-      <li>
-        <a href="/2020/07/29/how-to-setup-nginx-rtmp-on-centos-7/" ><i class="fa fa-file-o"></i>CentOS 7中搭建基础的Nginx RMPT服务器</a>
-      </li>
-    
-      <li>
-        <a href="/2020/07/03/redis-basic/" ><i class="fa fa-file-o"></i>Redis基础</a>
-      </li>
-    
-      <li>
-        <a href="/2020/06/29/transaction-isolation-level-in-postgresql-and-mysql/" ><i class="fa fa-file-o"></i>Postgresql和Mysql中的事务隔离</a>
-      </li>
-    
-      <li>
-        <a href="/2020/06/23/resolve-sudo-error-in-crontab-job/" ><i class="fa fa-file-o"></i>Crontab中解决sorry, you must h...</a>
       </li>
     
   </ul>

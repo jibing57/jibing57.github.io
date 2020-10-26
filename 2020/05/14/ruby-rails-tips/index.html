@@ -1,0 +1,367 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Ruby &amp; Rails Tips | Recording</title>
+  <meta name="author" content="jibing57">
+  
+  <meta name="description" content="AWS, 阅读, Architecture, PostgreSQL">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Ruby &amp; Rails Tips"/>
+  <meta property="og:site_name" content="Recording"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/css/themes/bootstrap.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/comment.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+  
+  <!-- analytics -->
+  
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-111771042-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?59d3e14cdc96877383afed646f44d216";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+</head>
+
+ <body>  
+  <nav id="main-nav" class="navbar  navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+	<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+       <a class="navbar-brand" href="/">Recording</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class="fa fa-archive"></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class="fa fa-folder"></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class="fa fa-tags"></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/books" title="Douban">
+			  <i class="fa fa-book"></i>Douban
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header ">		
+			<h1 class="title "> Ruby &amp; Rails Tips</h1>
+		</div>		
+	
+
+
+
+
+   <style type="text/css">
+           img, video {
+                -webkit-box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+                -moz-box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+                box-shadow:0 0 10px rgba(0, 0, 0, .5);  
+           }
+   </style>
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
+
+	<!-- content -->
+	<div class="mypage">		
+	  		
+
+	  <h3 id="Struct-amp-OpenStruct"><a href="#Struct-amp-OpenStruct" class="headerlink" title="Struct &amp; OpenStruct"></a>Struct &amp; OpenStruct</h3><h4 id="Struct"><a href="#Struct" class="headerlink" title="Struct"></a>Struct</h4><p>Struct 用于快速声明一个类。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Person = Struct.new(:age, :name, :sex)</div><div class="line">me = Person.new(24, &apos;Spirit&apos;, &apos;male&apos;)</div><div class="line">me.age  # =&gt; 24</div><div class="line">me.name = &apos;Test&apos;</div><div class="line">me.name # =&gt; &apos;Test&apos;</div><div class="line">me.height # =&gt; NoMethodError</div></pre></td></tr></table></figure></p>
+<p>优点: 快速声明和实现<br>缺点: 只能响应定义的字段，不能响应任意的属性</p>
+<h4 id="OpenStruct"><a href="#OpenStruct" class="headerlink" title="OpenStruct"></a>OpenStruct</h4><p>参考<a href="https://ruby-china.org/topics/21617" target="_blank" rel="external">Ruby Ruby 中的 OpenStruct 详解</a><br>OpenStruct可以自由设置set和get的一个类<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">p = OpenStruct.new()</div><div class="line">p.name=&apos;hello&apos;</div><div class="line">p.name  # p.name就是hello</div><div class="line">p.age=12</div><div class="line">p.age   # p.age就是12</div></pre></td></tr></table></figure></p>
+<h3 id="skip-before-action"><a href="#skip-before-action" class="headerlink" title="skip before_action"></a>skip before_action</h3><ul>
+<li><a href="https://stackoverflow.com/questions/36878355/exclude-a-controller-from-before-action" target="_blank" rel="external">Exclude a controller from before_action</a></li>
+</ul>
+<h3 id="API接口中使用cookies的方法"><a href="#API接口中使用cookies的方法" class="headerlink" title="API接口中使用cookies的方法"></a>API接口中使用cookies的方法</h3><p>方法一: 在Controller中添加<code>include ActionController::Cookies</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">class ApplicationController &lt; ActionController::API</div><div class="line">  include ActionController::Cookies</div></pre></td></tr></table></figure>
+<p>在Controller中就可以访问到cookies变量了。</p>
+<p>方法二: 如果不想引入过多的方法，可以在Controller中定义cookies方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">def cookies</div><div class="line">  # helpers not available in --api mode</div><div class="line">  request.cookie_jar</div><div class="line">end</div></pre></td></tr></table></figure></p>
+<h3 id="Rails-4中memory-store缓存的使用"><a href="#Rails-4中memory-store缓存的使用" class="headerlink" title="Rails 4中memory_store缓存的使用"></a>Rails 4中memory_store缓存的使用</h3><p>Rails 4中<code>memory_store</code>类型的基础用法</p>
+<h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><p>需要在<code>config/environments/development.rb</code>或者<code>config/environments/production.rb</code>中设置开启cache</p>
+<ul>
+<li><code>config.action_controller.perform_caching</code>设置为true</li>
+<li><code>config.cache_store</code>设置为<code>:memory_store</code></li>
+</ul>
+<h4 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h4><p>所有方法参考: <a href="https://api.rubyonrails.org/v4.0.13/classes/ActiveSupport/Cache/Store.html" target="_blank" rel="external">ActiveSupport::Cache::Store on Ruby on Rails 4.0.13</a></p>
+<ul>
+<li><p>写入Cache,使用<code>Rails.cache.write</code>，使用<code>expires_in</code>来设置过期时间，不设置的话默认不过期。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Rails.cache.write(cache_key, 10 ,expires_in: 10.seconds)</div></pre></td></tr></table></figure>
+</li>
+<li><p>读取Cache, 使用<code>Rails.cache.read</code>,传入key，读取value</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Rails.cache.read(cache_key)</div></pre></td></tr></table></figure>
+</li>
+<li><p>获取Cache对象,使用<code>Rails.cache.send</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Rails.cache.send(:read_entry, cache_key,&#123;&#125;)</div></pre></td></tr></table></figure>
+</li>
+<li><p>增加Cache中integer类型的值, 使用<code>Rails.cache.increment</code>, 注意这边如果不设置<code>expires_in</code>，则该条目就不再过期，无论原先记录write时有没有设置过期时间。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Rails.cache.increment(cache_key,1, expires_in: 10.seconds)</div></pre></td></tr></table></figure>
+</li>
+<li><p>读取Cache，如果没有就获取内容后插入, 使用<code>Rails.cache.fetch</code></p>
+<ul>
+<li>fetch不加block，就相当于read</li>
+<li>fetch加了block，那么如果要获取的cache不存在，就会将block中的值添加到cache中，并返回。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Rails.cache.fetch(&apos;test_key&apos;) do</div><div class="line">  &apos;hello world&apos;</div><div class="line">end</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<p>上述几个命令操作过程的记录<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">2.3.8 :135 &gt;   cache_key=&apos;test_key&apos;</div><div class="line"> =&gt; &quot;test_key&quot;</div><div class="line">2.3.8 :136 &gt; Rails.cache.write(cache_key, 10 ,expires_in: 10.seconds)</div><div class="line"> =&gt; true</div><div class="line">2.3.8 :137 &gt; Rails.cache.send(:read_entry, cache_key,&#123;&#125;)</div><div class="line"> =&gt; #&lt;ActiveSupport::Cache::Entry:0x00007fbfa8151750 @value=10, @created_at=1603420143.660662, @expires_in=10.0&gt;</div><div class="line">2.3.8 :138 &gt; Rails.cache.read(cache_key)</div><div class="line"> =&gt; 10</div><div class="line">2.3.8 :139 &gt; Rails.cache.increment(cache_key,1, expires_in: 10.seconds)</div><div class="line"> =&gt; 11</div><div class="line">2.3.8 :140 &gt; Rails.cache.read(cache_key)</div><div class="line"> =&gt; 11</div><div class="line">2.3.8 :141 &gt; Rails.cache.send(:read_entry, cache_key,&#123;&#125;)</div><div class="line"> =&gt; #&lt;ActiveSupport::Cache::Entry:0x00007fbfa9003f78 @value=11, @created_at=1603420143.666131, @expires_in=10.0&gt;</div><div class="line">2.3.8 :142 &gt;</div></pre></td></tr></table></figure></p>
+<h4 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h4><ul>
+<li><a href="https://api.rubyonrails.org/v4.0.13/classes/ActiveSupport/Cache/Store.html" target="_blank" rel="external">ActiveSupport::Cache::Store on Ruby on Rails 4.0.13</a></li>
+<li><a href="https://stackoverflow.com/questions/22379157/rails-cache-fetch-vs-cache-read-write" target="_blank" rel="external">Rails: cache.fetch vs cache.read/write</a></li>
+<li><a href="https://stackoverflow.com/questions/39868775/get-expiration-time-of-rails-cached-item" target="_blank" rel="external">Get expiration time of Rails cached item</a></li>
+</ul>
+	  
+	</div>
+
+	<div>
+  	<center>
+	<div class="pagination">
+<ul class="pagination">
+	 
+				
+    	<li class="prev"><a href="/2020/05/27/Add-registry-mirror-to-docker/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>上一页</a></li>
+  		
+
+        <li><a href="/archives"><i class="fa fa-archive"></i>Archive</a></li>
+
+		
+		   <li class="next"><a href="/2020/05/04/imageMagick-fonts-issue-on-Aliyun-Linux-2/" class="alignright next">下一页<i class="fa fa-arrow-circle-o-right"></i></a></li>         
+        
+	
+</ul>
+</div>
+
+    </center>
+	</div>
+
+    <!-- share -->
+    
+        
+    <div class="bdsharebuttonbox">
+        <a href="#" class="bds_more" data-cmd="more"></a>
+        <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+        <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+        <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+        <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+        <a href="#" class="bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+        <a href="#" class="bds_evernotecn" data-cmd="evernotecn" title="分享到印象笔记"></a>
+        <a href="#" class="bds_youdao" data-cmd="youdao" title="分享到有道云笔记"></a>
+        <a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+    </div>
+    <script>
+        window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"24"},"share":{}};
+        with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+    </script>
+
+
+        
+
+    
+	
+	<!-- comment -->
+	
+<section id="comment">
+  <h2 class="title">留言</h2>
+  
+  	 <div id="disqus_thread">
+     <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  	 </div>
+  
+</section>
+
+
+	</div> <!-- col-md-9/col-md-12 -->
+		
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta">
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2020-05-14
+	</div>
+	
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
+	   <div id="toc" class="toc collapse in">
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#Struct-amp-OpenStruct"><span class="toc-article-text">Struct & OpenStruct</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#Struct"><span class="toc-article-text">Struct</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#OpenStruct"><span class="toc-article-text">OpenStruct</span></a></li></ol></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#skip-before-action"><span class="toc-article-text">skip before_action</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#API接口中使用cookies的方法"><span class="toc-article-text">API接口中使用cookies的方法</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#Rails-4中memory-store缓存的使用"><span class="toc-article-text">Rails 4中memory_store缓存的使用</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#配置"><span class="toc-article-text">配置</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#命令"><span class="toc-article-text">命令</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#Reference"><span class="toc-article-text">Reference</span></a></li></ol></li></ol>
+		</div>
+	
+	</div>
+
+	<!-- categories -->
+    
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>
+    <ul id="categorys" class="tag_box list-unstyled collapse in">
+          
+  <li>
+    <li><a href="/categories/Code/">Code<span>6</span></a></li>
+  </li>
+
+    </ul>
+	</div>
+	
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>
+    <ul id="tags" class="tag_box list-unstyled collapse in">
+	    
+  <li><a href="/tags/Ruby/">Ruby<span>11</span></a></li> <li><a href="/tags/Rails/">Rails<span>5</span></a></li> <li><a href="/tags/Cache/">Cache<span>1</span></a></li>
+    </ul>
+	</div>
+	
+
+    <hr>
+
+</div><!-- col-md-3 -->
+
+	</div>
+		
+
+</div><!-- row -->
+
+<script type="text/javascript">
+var disqus_shortname = 'jibing57-blog';
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  &copy; 2020 jibing57
+  
+      with help from <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>.    
+</p> </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>

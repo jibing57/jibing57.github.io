@@ -1,14 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://www.jibing57.com/2020/10/24/upgrade-postgresql-version-on-aws-RDS/</loc>
+    <lastmod>2020-10-25</lastmod>
+  </url>  <url>
+    <loc>https://www.jibing57.com/2020/06/14/docker-basic/</loc>
+    <lastmod>2020-10-24</lastmod>
+  </url>  <url>
+    <loc>https://www.jibing57.com/2020/05/14/ruby-rails-tips/</loc>
+    <lastmod>2020-10-23</lastmod>
+  </url>  <url>
+    <loc>https://www.jibing57.com/2020/10/22/wkhtmltopdf-to-support-chinese-charactor/</loc>
+    <lastmod>2020-10-22</lastmod>
+  </url>  <url>
+    <loc>https://www.jibing57.com/2019/04/26/command-tips/</loc>
+    <lastmod>2020-10-19</lastmod>
+  </url>  <url>
+    <loc>https://www.jibing57.com/2020/10/14/why-disk-space-not-restored-after-deleting-iphone-backup-on-macos/</loc>
+    <lastmod>2020-10-14</lastmod>
+  </url>  <url>
+    <loc>https://www.jibing57.com/2019/04/20/niu-x-resource/</loc>
+    <lastmod>2020-08-07</lastmod>
+  </url>  <url>
+    <loc>https://www.jibing57.com/2020/08/04/some-tips-of-aws-lightsail/</loc>
+    <lastmod>2020-08-05</lastmod>
+  </url>  <url>
     <loc>https://www.jibing57.com/2020/08/01/advanced-configure-of-nginx-rtmp/</loc>
     <lastmod>2020-08-04</lastmod>
   </url>  <url>
     <loc>https://www.jibing57.com/2020/07/29/how-to-setup-nginx-rtmp-on-centos-7/</loc>
     <lastmod>2020-08-04</lastmod>
-  </url>  <url>
-    <loc>https://www.jibing57.com/2019/04/26/command-tips/</loc>
-    <lastmod>2020-07-15</lastmod>
   </url>  <url>
     <loc>https://www.jibing57.com/2019/12/31/after-upgrade-the-openssl-in-macos/</loc>
     <lastmod>2020-07-15</lastmod>
@@ -148,9 +169,6 @@
     <loc>https://www.jibing57.com/2019/04/20/firewall-cmd-basic-usage/</loc>
     <lastmod>2019-05-08</lastmod>
   </url>  <url>
-    <loc>https://www.jibing57.com/2019/04/20/niu-x-resource/</loc>
-    <lastmod>2019-05-05</lastmod>
-  </url>  <url>
     <loc>https://www.jibing57.com/2019/05/01/way-to-make-centos7-bootable-usb-on-macos/</loc>
     <lastmod>2019-05-04</lastmod>
   </url>  <url>
@@ -277,31 +295,31 @@
     <loc>https://www.jibing57.com/2017/07/25/how-to-read-text-on-macos/</loc>
     <lastmod>2017-12-25</lastmod>
   </url>  <url>
-    <loc>https://www.jibing57.com/2017/10/30/how-to-use-post-link-on-hexo/</loc>
+    <loc>https://www.jibing57.com/2017/10/24/how-to-use-aws-cli-with-multi-user/</loc>
     <lastmod>2017-12-25</lastmod>
   </url>  <url>
-    <loc>https://www.jibing57.com/2017/11/29/how-to-enable-slow-query-on-aws-rds-postgresql/</loc>
+    <loc>https://www.jibing57.com/2017/10/30/how-to-use-post-link-on-hexo/</loc>
     <lastmod>2017-12-25</lastmod>
   </url>  <url>
     <loc>https://www.jibing57.com/2017/12/12/how-to-write-multiline-to-file-by-shell/</loc>
     <lastmod>2017-12-25</lastmod>
   </url>  <url>
-    <loc>https://www.jibing57.com/2017/10/24/how-to-use-aws-cli-with-multi-user/</loc>
+    <loc>https://www.jibing57.com/2017/11/29/how-to-enable-slow-query-on-aws-rds-postgresql/</loc>
+    <lastmod>2017-12-25</lastmod>
+  </url>  <url>
+    <loc>https://www.jibing57.com/2017/10/31/hexo-bind-domain-to-github-pages/</loc>
+    <lastmod>2017-12-25</lastmod>
+  </url>  <url>
+    <loc>https://www.jibing57.com/2017/12/20/expired-of-S3-RRS/</loc>
+    <lastmod>2017-12-25</lastmod>
+  </url>  <url>
+    <loc>https://www.jibing57.com/2017/12/14/deep-dig-on-s3-bucket-permission/</loc>
     <lastmod>2017-12-25</lastmod>
   </url>  <url>
     <loc>https://www.jibing57.com/2017/10/31/account-setting-by-aws/</loc>
     <lastmod>2017-12-25</lastmod>
   </url>  <url>
     <loc>https://www.jibing57.com/2017/12/19/deep-dig-on-s3-bucket-permission-exam/</loc>
-    <lastmod>2017-12-25</lastmod>
-  </url>  <url>
-    <loc>https://www.jibing57.com/2017/12/14/deep-dig-on-s3-bucket-permission/</loc>
-    <lastmod>2017-12-25</lastmod>
-  </url>  <url>
-    <loc>https://www.jibing57.com/2017/12/20/expired-of-S3-RRS/</loc>
-    <lastmod>2017-12-25</lastmod>
-  </url>  <url>
-    <loc>https://www.jibing57.com/2017/10/31/hexo-bind-domain-to-github-pages/</loc>
     <lastmod>2017-12-25</lastmod>
   </url>  <url>
     <loc>https://www.jibing57.com/2017/12/20/How-to-add-staging-log-to-EB-logs/</loc>

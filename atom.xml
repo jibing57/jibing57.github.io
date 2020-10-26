@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.jibing57.com/"/>
-  <updated>2020-08-04T03:39:33.421Z</updated>
+  <updated>2020-10-25T09:13:58.437Z</updated>
   <id>https://www.jibing57.com/</id>
   
   <author>
@@ -15,6 +15,127 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>AWS RDS PostgreSQL版本升级</title>
+    <link href="https://www.jibing57.com/2020/10/24/upgrade-postgresql-version-on-aws-RDS/"/>
+    <id>https://www.jibing57.com/2020/10/24/upgrade-postgresql-version-on-aws-RDS/</id>
+    <published>2020-10-24T06:23:22.000Z</published>
+    <updated>2020-10-25T09:13:58.437Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;起因&quot;&gt;&lt;a href=&quot;#起因&quot; class=&quot;headerlink&quot; title=&quot;起因&quot;&gt;&lt;/a&gt;起因&lt;/h3&gt;&lt;p&gt;海外AWS中有一套系统采用的是PostgreSQL 9.5， 因为PG 9.5在2021年2月11号之后不再被PG社区所支持了, PG社区对版本的支持参见&lt;a href=&quot;https://www.postgresql.org/support/versioning/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Versioning Policy&lt;/a&gt;。因此AWS发送了邮件，提示我们尽快升级到9.6。并且介于PG 9.6在2020年11月11号之后也会停止支持，AWS建议直接升级到PostgreSQL 12或以上版本。 &lt;/p&gt;
+&lt;p&gt;基于直接从9.5升级到12，中间跨越版本太大，可能会有问题。因此决定先暂时升级到9.6。等后续完整测试12后，再升级到12。&lt;/p&gt;
+&lt;h3 id=&quot;升级步骤&quot;&gt;&lt;a href=&quot;#升级步骤&quot; class=&quot;headerlink&quot; title=&quot;升级步骤&quot;&gt;&lt;/a&gt;升级步骤&lt;/h3&gt;&lt;p&gt;AWS升级，可以在Web Console中点击几个按钮就可以升级。但升级时，Event提示升级失败，PreUpgrade checks Fails。报错如下:&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;The instance could not be upgraded from 9.5.22.R1 to 9.6.19.R1 because of following reasons. Please take appropriate action on databases that have usages incompatible with requested major engine version upgrade and try again.&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;Following usages in database &amp;apos;xxxxx&amp;apos; need to be corrected before upgrade:&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;-- The instance could not be upgraded because there are one or more databases with an older version of PostGIS extension or its dependent extensions (address_standardizer, address_standardizer_data_us, postgis_tiger_geocoder, postgis_topology) installed. Please upgrade all installations of PostGIS and drop its dependent extensions and try again.&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;Following usages in database &amp;apos;nest_demo&amp;apos; need to be corrected before upgrade:&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;提示升级检查失败，原因是&lt;code&gt;PostGIS&lt;/code&gt;的版本存在问题。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="AWS" scheme="https://www.jibing57.com/categories/AWS/"/>
+    
+    
+      <category term="RDS" scheme="https://www.jibing57.com/tags/RDS/"/>
+    
+      <category term="PostgreSQL" scheme="https://www.jibing57.com/tags/PostgreSQL/"/>
+    
+      <category term="AWS" scheme="https://www.jibing57.com/tags/AWS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>wkhtmltopdf支持中文字体</title>
+    <link href="https://www.jibing57.com/2020/10/22/wkhtmltopdf-to-support-chinese-charactor/"/>
+    <id>https://www.jibing57.com/2020/10/22/wkhtmltopdf-to-support-chinese-charactor/</id>
+    <published>2020-10-22T13:31:30.000Z</published>
+    <updated>2020-10-22T09:14:01.628Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;问题&quot;&gt;&lt;a href=&quot;#问题&quot; class=&quot;headerlink&quot; title=&quot;问题&quot;&gt;&lt;/a&gt;问题&lt;/h3&gt;&lt;p&gt;CentOS 7.8环境中，要使用wkhtmltopdf来从网页中生成PDF。&lt;br&gt;没有使用rpm包来安装wkhtmltopdf命令，而是使用了&lt;code&gt;gem &amp;#39;wkhtmltopdf-binary&amp;#39;&lt;/code&gt;在Rails项目下安装了&lt;code&gt;wkhtmltopdf&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;运行后发现，网页中的中文在PDF中没法显示。&lt;/p&gt;
+&lt;h3 id=&quot;解决办法&quot;&gt;&lt;a href=&quot;#解决办法&quot; class=&quot;headerlink&quot; title=&quot;解决办法&quot;&gt;&lt;/a&gt;解决办法&lt;/h3&gt;&lt;p&gt;调查后发现是因为系统中缺少中文字体的支持，使用如下命令安装字体后，可以解决。两者选其一。&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;sudo yum install -y wqy-microhei-fonts&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;# 或者&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;sudo yum install -y xorg-x11-fonts-75dpi&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+    
+    </summary>
+    
+      <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
+    
+    
+      <category term="CentOS" scheme="https://www.jibing57.com/tags/CentOS/"/>
+    
+      <category term="Wkhtmltopdf" scheme="https://www.jibing57.com/tags/Wkhtmltopdf/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MacOS下使用iTunes删除iphone备份磁盘空间没回收</title>
+    <link href="https://www.jibing57.com/2020/10/14/why-disk-space-not-restored-after-deleting-iphone-backup-on-macos/"/>
+    <id>https://www.jibing57.com/2020/10/14/why-disk-space-not-restored-after-deleting-iphone-backup-on-macos/</id>
+    <published>2020-10-14T13:11:30.000Z</published>
+    <updated>2020-10-14T05:05:39.738Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;记一次有趣的经历。&lt;/p&gt;
+&lt;h3 id=&quot;事情经过&quot;&gt;&lt;a href=&quot;#事情经过&quot; class=&quot;headerlink&quot; title=&quot;事情经过&quot;&gt;&lt;/a&gt;事情经过&lt;/h3&gt;&lt;p&gt;为了能用Watch 6，升级了手机系统到IOS 14。升级之前在电脑上用itunes备份了下(&lt;strong&gt;没错，是itunes，我mac系统还在用10.14,所以还是itunes,不是Finder&lt;/strong&gt;)，占了几十个G的空间，电脑上磁盘空间一下子紧张了。手机升级完毕后，看了下没啥问题，就准备把电脑上的iphone备份给删了。&lt;/p&gt;
+&lt;p&gt;以前删备份都是打开Terminal, 进入&lt;code&gt;~/Library/Application\ Support/MobileSync/Backup/&lt;/code&gt;后手动&lt;code&gt;rm -r xxx&lt;/code&gt;的。可这次不知道为啥，鬼使神差的用了itunes自带的删除备份的功能。就是下面这个界面。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/Apple/device_backup_on_itunes.jpg&quot; alt=&quot;device_backup_on_itunes.jpg&quot;&gt;&lt;/p&gt;
+&lt;p&gt;一通操作，在界面上把备份删除了。&lt;/p&gt;
+&lt;p&gt;然后信心满满地敲下了&lt;code&gt;df -h&lt;/code&gt;来查看回收了多少磁盘空间。&lt;/p&gt;
+&lt;p&gt;命令一敲，啥情况。怎么空间没有被回收？&lt;/p&gt;
+&lt;p&gt;猜想，可能是itune的Bug，文件没有被删除吧。算了算了，还是手动删一下吧。打开Terminal，潇洒的敲击&lt;code&gt;cd ~/Library/Application\ Support/MobileSync/Backup/&lt;/code&gt;，熟练的敲击&lt;code&gt;du -sh ./*&lt;/code&gt;来查看是哪个目录没有被回收。&lt;/p&gt;
+&lt;p&gt;一敲下去，发现不对劲，怎么显示Backup占用的磁盘空间是0B?&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ du -sh ./*&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  0B	./00008020-000464E03BD8002E&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;$&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+    
+    </summary>
+    
+      <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
+    
+    
+      <category term="MacOS" scheme="https://www.jibing57.com/tags/MacOS/"/>
+    
+      <category term="iPhone" scheme="https://www.jibing57.com/tags/iPhone/"/>
+    
+      <category term="iTunes" scheme="https://www.jibing57.com/tags/iTunes/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>AWS LightSail Tips</title>
+    <link href="https://www.jibing57.com/2020/08/04/some-tips-of-aws-lightsail/"/>
+    <id>https://www.jibing57.com/2020/08/04/some-tips-of-aws-lightsail/</id>
+    <published>2020-08-04T14:38:06.000Z</published>
+    <updated>2020-08-05T01:56:20.619Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;如何跨区域迁移LightSail&quot;&gt;&lt;a href=&quot;#如何跨区域迁移LightSail&quot; class=&quot;headerlink&quot; title=&quot;如何跨区域迁移LightSail&quot;&gt;&lt;/a&gt;如何跨区域迁移LightSail&lt;/h3&gt;&lt;p&gt;步骤:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;现在源区域中对LightSail Instance做snapshot&lt;/li&gt;
+&lt;li&gt;然后对该snapshot进行”Copy to another Region”的操作，选择目标Region进行拷贝&lt;/li&gt;
+&lt;li&gt;在目标Region中选择拷贝来的snapshot，选择”Create new instance”&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;官网介绍操作的两篇文章, 清晰易懂。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-copying-snapshots-from-one-region-to-another&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Copying snapshots from one AWS Region to another in Amazon Lightsail&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://lightsail.aws.amazon.com/ls/docs/en_us/articles/lightsail-how-to-create-instance-from-snapshot&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Creating an instance from a manual snapshot in Amazon Lightsail&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;LightSail&quot;&gt;&lt;a href=&quot;#LightSail&quot; class=&quot;headerlink&quot; title=&quot;LightSail&quot;&gt;&lt;/a&gt;LightSail&lt;/h3&gt;&lt;p&gt;和EC2 Instance不同，LightSail在stopped状态时也是会收费的。参照&lt;a href=&quot;https://aws.amazon.com/lightsail/faq/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;官方fAQ&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Q: When am I getting charged for a plan?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Your Lightsail instances are charged only when they’re in the running or stopped state. If you delete your Lightsail instance before the end of the month, we only charge you a prorated cost, based on the total number of hours that you used your Lightsail instance. For example, if you use the least expensive Lightsail plan for 100 hours in a month, you will be charged 47 cents (100*0.0047).&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;a href=&quot;https://blog.skeddly.com/2017/01/understanding-lightsail-pricing.html#:~:text=Your%20Lightsail%20instances%20are%20charged,you%20used%20your%20Lightsail%20instance.&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Understanding Lightsail Pricing&lt;/a&gt;这个文章还介绍了LightSail的计费方式。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="AWS" scheme="https://www.jibing57.com/categories/AWS/"/>
+    
+    
+      <category term="Lightsail" scheme="https://www.jibing57.com/tags/Lightsail/"/>
+    
+  </entry>
   
   <entry>
     <title>Nginx RTMP服务器配置</title>
@@ -197,6 +318,33 @@
   </entry>
   
   <entry>
+    <title>Docker基础</title>
+    <link href="https://www.jibing57.com/2020/06/14/docker-basic/"/>
+    <id>https://www.jibing57.com/2020/06/14/docker-basic/</id>
+    <published>2020-06-14T09:35:03.000Z</published>
+    <updated>2020-10-24T06:17:38.350Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;Docker安装&quot;&gt;&lt;a href=&quot;#Docker安装&quot; class=&quot;headerlink&quot; title=&quot;Docker安装&quot;&gt;&lt;/a&gt;Docker安装&lt;/h2&gt;&lt;h3 id=&quot;Docker安装-CentOS-7&quot;&gt;&lt;a href=&quot;#Docker安装-CentOS-7&quot; class=&quot;headerlink&quot; title=&quot;Docker安装(CentOS 7)&quot;&gt;&lt;/a&gt;Docker安装(CentOS 7)&lt;/h3&gt;&lt;p&gt;Docker在CentOS 7上的安装，直接参考官网安装手册即可: &lt;a href=&quot;https://docs.docker.com/engine/install/centos/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Install Docker Engine on CentOS&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;安装Dockerd主版本的步骤如下，要按照特定版本的，参考Docker官网。&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;sudo yum -y install epel-release&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;sudo yum install -y yum-utils&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;sudo yum-config-manager     --add-repo     https://download.docker.com/linux/centos/docker-ce.repo&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;# sudo yum list docker-ce --showduplicates | sort -r&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;sudo yum -y install docker-ce docker-ce-cli containerd.io -y&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;sudo systemctl start docker&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;systemctl enable docker&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;执行&lt;code&gt;docker version&lt;/code&gt;来验证docker是否正常安装。&lt;/p&gt;
+&lt;p&gt;Tips:&lt;br&gt;也可以换用阿里云的docker镜像源&lt;code&gt;yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo&lt;/code&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Kubernetes" scheme="https://www.jibing57.com/categories/Kubernetes/"/>
+    
+    
+      <category term="Docker" scheme="https://www.jibing57.com/tags/Docker/"/>
+    
+      <category term="CentOS" scheme="https://www.jibing57.com/tags/CentOS/"/>
+    
+      <category term="DockerHub" scheme="https://www.jibing57.com/tags/DockerHub/"/>
+    
+  </entry>
+  
+  <entry>
     <title>一些常用的Nginx+Passenger配置</title>
     <link href="https://www.jibing57.com/2020/06/09/some-new-nginx-config/"/>
     <id>https://www.jibing57.com/2020/06/09/some-new-nginx-config/</id>
@@ -337,6 +485,33 @@
   </entry>
   
   <entry>
+    <title>Ruby &amp; Rails Tips</title>
+    <link href="https://www.jibing57.com/2020/05/14/ruby-rails-tips/"/>
+    <id>https://www.jibing57.com/2020/05/14/ruby-rails-tips/</id>
+    <published>2020-05-14T09:19:04.000Z</published>
+    <updated>2020-10-23T03:00:04.809Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;Struct-amp-OpenStruct&quot;&gt;&lt;a href=&quot;#Struct-amp-OpenStruct&quot; class=&quot;headerlink&quot; title=&quot;Struct &amp;amp; OpenStruct&quot;&gt;&lt;/a&gt;Struct &amp;amp; OpenStru
+      
+    
+    </summary>
+    
+      <category term="Code" scheme="https://www.jibing57.com/categories/Code/"/>
+    
+    
+      <category term="Ruby" scheme="https://www.jibing57.com/tags/Ruby/"/>
+    
+      <category term="Rails" scheme="https://www.jibing57.com/tags/Rails/"/>
+    
+      <category term="Cache" scheme="https://www.jibing57.com/tags/Cache/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Aliyun Linux 2上imageMagick的fonts配置问题</title>
     <link href="https://www.jibing57.com/2020/05/04/imageMagick-fonts-issue-on-Aliyun-Linux-2/"/>
     <id>https://www.jibing57.com/2020/05/04/imageMagick-fonts-issue-on-Aliyun-Linux-2/</id>
@@ -357,9 +532,9 @@
       <category term="Linux" scheme="https://www.jibing57.com/categories/Linux/"/>
     
     
-      <category term="Aliyun" scheme="https://www.jibing57.com/tags/Aliyun/"/>
-    
       <category term="Image" scheme="https://www.jibing57.com/tags/Image/"/>
+    
+      <category term="Aliyun" scheme="https://www.jibing57.com/tags/Aliyun/"/>
     
       <category term="CentOS" scheme="https://www.jibing57.com/tags/CentOS/"/>
     
@@ -444,160 +619,6 @@
       <category term="Ruby" scheme="https://www.jibing57.com/tags/Ruby/"/>
     
       <category term="RVM" scheme="https://www.jibing57.com/tags/RVM/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>如何在国内加速yarn install</title>
-    <link href="https://www.jibing57.com/2020/02/24/how-to-speed-yarn-install-interiorly/"/>
-    <id>https://www.jibing57.com/2020/02/24/how-to-speed-yarn-install-interiorly/</id>
-    <published>2020-02-24T13:07:33.000Z</published>
-    <updated>2020-02-25T06:57:26.679Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;问题&quot;&gt;&lt;a href=&quot;#问题&quot; class=&quot;headerlink&quot; title=&quot;问题&quot;&gt;&lt;/a&gt;问题&lt;/h3&gt;&lt;p&gt;&lt;code&gt;yarn install&lt;/code&gt;安装包时，在国内的网络环境下，不挂梯子，访问不稳定，会比较慢。&lt;/p&gt;
-&lt;h3 id=&quot;原因&quot;&gt;&lt;a href=&quot;#原因&quot; class=&quot;headerlink&quot; title=&quot;原因&quot;&gt;&lt;/a&gt;原因&lt;/h3&gt;&lt;p&gt;&lt;code&gt;yarn install&lt;/code&gt;默认是去&lt;code&gt;npm&lt;/code&gt;,&lt;code&gt;yarn&lt;/code&gt;官方源去获取软件信息的。&lt;/p&gt;
-&lt;p&gt;使用&lt;code&gt;yarn config list&lt;/code&gt;可以查看到&lt;code&gt;registry&lt;/code&gt;的默认值是&lt;code&gt;https://registry.yarnpkg.com&lt;/code&gt;。&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;10&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;11&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;12&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;13&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;14&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;15&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;16&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;17&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;18&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;19&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;20&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;21&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ yarn config list&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;yarn config v1.7.0&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;info yarn config&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#123; &amp;apos;version-tag-prefix&amp;apos;: &amp;apos;v&amp;apos;,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &amp;apos;version-git-tag&amp;apos;: true,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &amp;apos;version-commit-hooks&amp;apos;: true,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &amp;apos;version-git-sign&amp;apos;: false,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &amp;apos;version-git-message&amp;apos;: &amp;apos;v%s&amp;apos;,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &amp;apos;init-version&amp;apos;: &amp;apos;1.0.0&amp;apos;,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &amp;apos;init-license&amp;apos;: &amp;apos;MIT&amp;apos;,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &amp;apos;save-prefix&amp;apos;: &amp;apos;^&amp;apos;,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &amp;apos;bin-links&amp;apos;: true,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &amp;apos;ignore-scripts&amp;apos;: false,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &amp;apos;ignore-optional&amp;apos;: false,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  registry: &amp;apos;https://registry.yarnpkg.com&amp;apos;,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &amp;apos;strict-ssl&amp;apos;: true,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &amp;apos;user-agent&amp;apos;: &amp;apos;yarn/1.7.0 npm/? node/v8.11.2 linux x64&amp;apos; &amp;#125;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;info npm config&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#123;&amp;#125;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;Done in 0.03s.&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;$&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
-    
-    
-      <category term="Nodejs" scheme="https://www.jibing57.com/tags/Nodejs/"/>
-    
-      <category term="Yarn" scheme="https://www.jibing57.com/tags/Yarn/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>在Ubuntu 18.04中安装Rails开发环境</title>
-    <link href="https://www.jibing57.com/2020/01/31/How-to-install-rails-on-Ubuntu-18-04/"/>
-    <id>https://www.jibing57.com/2020/01/31/How-to-install-rails-on-Ubuntu-18-04/</id>
-    <published>2020-01-31T06:10:58.000Z</published>
-    <updated>2020-02-03T16:20:27.369Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;本文介绍在Ubuntu 18.04上不用Docker，使用本地安装组件的方式搭建Rails+PostgreSQL开发环境的步骤。&lt;/p&gt;
-&lt;h3 id=&quot;搭建步骤&quot;&gt;&lt;a href=&quot;#搭建步骤&quot; class=&quot;headerlink&quot; title=&quot;搭建步骤&quot;&gt;&lt;/a&gt;搭建步骤&lt;/h3&gt;&lt;ol&gt;
-&lt;li&gt;下载Ubuntu 18.04.3 TLS安装镜像，下载地址: &lt;a href=&quot;https://ubuntu.com/download/desktop&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://ubuntu.com/download/desktop&lt;/a&gt;。安装完成后，登录系统，打开Terminal。&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;安装vim编辑器&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;sudo apt install vim&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;按照&lt;a href=&quot;https://github.com/rvm/ubuntu_rvm&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/rvm/ubuntu_rvm&lt;/a&gt;的安装方法，安装rvm, 命令如下:&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;sudo apt install gnupg2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;gpg2 --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;sudo apt-get install software-properties-common&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;sudo apt-add-repository -y ppa:rael-gc/rvm&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;sudo apt-get update&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;sudo apt-get install rvm&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;rvm安装完毕后，为了每次登陆时自动load rvm，执行如下命令。&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;echo &amp;apos;source &amp;quot;/etc/profile.d/rvm.sh&amp;quot;&amp;apos; &amp;gt;&amp;gt; ~/.bashrc&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;退出当前Terminal重新登陆，重新加载rvm环境变量&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="Linux" scheme="https://www.jibing57.com/categories/Linux/"/>
-    
-    
-      <category term="Rails" scheme="https://www.jibing57.com/tags/Rails/"/>
-    
-      <category term="RVM" scheme="https://www.jibing57.com/tags/RVM/"/>
-    
-      <category term="Ubuntu" scheme="https://www.jibing57.com/tags/Ubuntu/"/>
-    
-      <category term="PostgreSQL" scheme="https://www.jibing57.com/tags/PostgreSQL/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>MacOS下Brew升级openssl的后续处理</title>
-    <link href="https://www.jibing57.com/2019/12/31/after-upgrade-the-openssl-in-macos/"/>
-    <id>https://www.jibing57.com/2019/12/31/after-upgrade-the-openssl-in-macos/</id>
-    <published>2019-12-31T13:56:11.000Z</published>
-    <updated>2020-07-15T07:55:15.208Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;Brew安装软件的时候，不小心把openssl版本升了。然后电脑就炸了。vim打不开，ruby不能运行，一些命令出错。&lt;br&gt;一个一个的填坑，填坑记录如下:&lt;/p&gt;
-&lt;h3 id=&quot;vim&quot;&gt;&lt;a href=&quot;#vim&quot; class=&quot;headerlink&quot; title=&quot;vim&quot;&gt;&lt;/a&gt;vim&lt;/h3&gt;&lt;p&gt;vim问题参见 &lt;a href=&quot;/2019/12/31/macos-youcompleteme-ERROR-root-code-for-hash-md5-was-not-found/&quot; title=&quot;Macos下vim中YouCompleteMe报错 ERROR:root:code for hash md5 was not found&quot;&gt;Macos下vim中YouCompleteMe报错 ERROR:root:code for hash md5 was not found&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&quot;Ruby&quot;&gt;&lt;a href=&quot;#Ruby&quot; class=&quot;headerlink&quot; title=&quot;Ruby&quot;&gt;&lt;/a&gt;Ruby&lt;/h3&gt;&lt;p&gt;我的ruby是通过rvm安装的。本地存有多个版本，每个版本又因为项目隔离需要，使用了不同的gemset。&lt;br&gt;openssl升级到1.1过后，全部都炸了。只能重新安装编译。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
-    
-    
-      <category term="MacOS" scheme="https://www.jibing57.com/tags/MacOS/"/>
-    
-      <category term="Ruby" scheme="https://www.jibing57.com/tags/Ruby/"/>
-    
-      <category term="FFMPEG" scheme="https://www.jibing57.com/tags/FFMPEG/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Macos下vim中YouCompleteMe报错 ERROR:root:code for hash md5 was not found</title>
-    <link href="https://www.jibing57.com/2019/12/31/macos-youcompleteme-ERROR-root-code-for-hash-md5-was-not-found/"/>
-    <id>https://www.jibing57.com/2019/12/31/macos-youcompleteme-ERROR-root-code-for-hash-md5-was-not-found/</id>
-    <published>2019-12-31T05:27:47.000Z</published>
-    <updated>2019-12-31T05:54:52.653Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;问题&quot;&gt;&lt;a href=&quot;#问题&quot; class=&quot;headerlink&quot; title=&quot;问题&quot;&gt;&lt;/a&gt;问题&lt;/h3&gt;&lt;p&gt;Macos中brew安装某个软件的时候，brew自动把openssl版本也升级了。&lt;br&gt;升级过后，打开vim就发现有错误提示&lt;code&gt;ERROR:root:code for hash md5 was not found.&lt;/code&gt;&lt;/p&gt;
-&lt;h3 id=&quot;原因&quot;&gt;&lt;a href=&quot;#原因&quot; class=&quot;headerlink&quot; title=&quot;原因&quot;&gt;&lt;/a&gt;原因&lt;/h3&gt;&lt;p&gt;报错的是vim中的一个自动补全的插件&lt;a href=&quot;https://github.com/ycm-core/YouCompleteMe&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;YouCompleteMe&lt;/a&gt;, 该插件是python写的。&lt;/p&gt;
-&lt;p&gt;网上搜了下，是因为openssl版本升级了，python找不到编译时的openssl的lib了。所以报错了。&lt;/p&gt;
-&lt;h3 id=&quot;解决&quot;&gt;&lt;a href=&quot;#解决&quot; class=&quot;headerlink&quot; title=&quot;解决&quot;&gt;&lt;/a&gt;解决&lt;/h3&gt;&lt;p&gt;解决办法就是使用brew重新装下python&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;brew reinstall python@2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
-    
-    
-      <category term="MacOS" scheme="https://www.jibing57.com/tags/MacOS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>访问Udemy慢的一个解决办法</title>
-    <link href="https://www.jibing57.com/2019/12/15/way-to-download-udemy-course/"/>
-    <id>https://www.jibing57.com/2019/12/15/way-to-download-udemy-course/</id>
-    <published>2019-12-15T05:44:56.000Z</published>
-    <updated>2019-12-16T02:29:10.137Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;问题&quot;&gt;&lt;a href=&quot;#问题&quot; class=&quot;headerlink&quot; title=&quot;问题&quot;&gt;&lt;/a&gt;问题&lt;/h3&gt;&lt;p&gt;最近不知道是什么原因，家里的电信宽带连接Udemy非常不稳。不用梯子看课程卡顿，用上了梯子看视频还是卡顿。&lt;br&gt;在线看不行，那就试着下载下来看。Udemy的APP提供了下载视频功能，就尝试在Pad上下载了视频观看。但不知道是APP问题还是网络的问题。APP上下载的视频，明明显示是下载完成了，但很多都是看几分钟就卡住了。我猜测是没有下载完整。&lt;/p&gt;
-&lt;p&gt;看个课程还这么费劲，真是抓狂，纠结。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
-    
-    
-      <category term="Udemy" scheme="https://www.jibing57.com/tags/Udemy/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>使用ImageMagick来给图片打文字水印</title>
-    <link href="https://www.jibing57.com/2019/12/02/ImageMagick-watermark/"/>
-    <id>https://www.jibing57.com/2019/12/02/ImageMagick-watermark/</id>
-    <published>2019-12-02T13:35:05.000Z</published>
-    <updated>2019-12-04T06:28:35.576Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h3&gt;&lt;p&gt;博客中，难免要为有些图片打上水印。下面摘录两个打文字水印的方法。&lt;br&gt;摘录来自博客&lt;a href=&quot;https://aotu.io/notes/2018/06/06/ImageMagick_intro/index.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;图像处理 - ImageMagick 简单介绍与案例&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;工具使用的是强大的&lt;a href=&quot;https://www.imagemagick.org/script/index.php&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;ImageMagick&lt;/a&gt;, Mac下可以通过&lt;a href=&quot;https://brew.sh/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Homebrew&lt;/a&gt;来安装。安装命令&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;brew install imagemagick&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-&lt;h3 id=&quot;给图片打上透明的文字水印&quot;&gt;&lt;a href=&quot;#给图片打上透明的文字水印&quot; class=&quot;headerlink&quot; title=&quot;给图片打上透明的文字水印&quot;&gt;&lt;/a&gt;给图片打上透明的文字水印&lt;/h3&gt;&lt;p&gt;命令:&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;convert  -draw &amp;apos;text 0,0 &amp;quot;WWW.JIBING57.COM&amp;quot;&amp;apos;  -fill &amp;apos;rgba(221, 34, 17, 0.25)&amp;apos;  -pointsize 36  \&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;-font Arial  -gravity center  src.png  src_with_watermark.png&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
-    
-    
-      <category term="Image" scheme="https://www.jibing57.com/tags/Image/"/>
     
   </entry>
   

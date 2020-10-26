@@ -3,6 +3,184 @@
   
     
     <entry>
+      <title><![CDATA[AWS RDS PostgreSQL版本升级]]></title>
+      <url>/2020/10/24/upgrade-postgresql-version-on-aws-RDS/</url>
+      <content type="html"><![CDATA[<h3 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h3><p>海外AWS中有一套系统采用的是PostgreSQL 9.5， 因为PG 9.5在2021年2月11号之后不再被PG社区所支持了, PG社区对版本的支持参见<a href="https://www.postgresql.org/support/versioning/" target="_blank" rel="external">Versioning Policy</a>。因此AWS发送了邮件，提示我们尽快升级到9.6。并且介于PG 9.6在2020年11月11号之后也会停止支持，AWS建议直接升级到PostgreSQL 12或以上版本。 </p>
+<p>基于直接从9.5升级到12，中间跨越版本太大，可能会有问题。因此决定先暂时升级到9.6。等后续完整测试12后，再升级到12。</p>
+<h3 id="升级步骤"><a href="#升级步骤" class="headerlink" title="升级步骤"></a>升级步骤</h3><p>AWS升级，可以在Web Console中点击几个按钮就可以升级。但升级时，Event提示升级失败，PreUpgrade checks Fails。报错如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">The instance could not be upgraded from 9.5.22.R1 to 9.6.19.R1 because of following reasons. Please take appropriate action on databases that have usages incompatible with requested major engine version upgrade and try again.</div><div class="line"></div><div class="line">Following usages in database &apos;xxxxx&apos; need to be corrected before upgrade:</div><div class="line">-- The instance could not be upgraded because there are one or more databases with an older version of PostGIS extension or its dependent extensions (address_standardizer, address_standardizer_data_us, postgis_tiger_geocoder, postgis_topology) installed. Please upgrade all installations of PostGIS and drop its dependent extensions and try again.</div><div class="line">Following usages in database &apos;nest_demo&apos; need to be corrected before upgrade:</div></pre></td></tr></table></figure></p>
+<p>提示升级检查失败，原因是<code>PostGIS</code>的版本存在问题。</p>
+<a id="more"></a>
+<h3 id="失败原因调查"><a href="#失败原因调查" class="headerlink" title="失败原因调查"></a>失败原因调查</h3><p>既然出错了，就上网找原因和解决方案。<br>AWS官网和PostgreSQL官网一通找。找到了问题所在。<br>目前我们PostgreSQL数据库中的PostGIS版本是<code>2.1.3</code>，根据PostgreSQL和PostGIS版本支持的说明，PostgreSQL 9.6中，最少支持2.2以上版本。所以导致了升级9.6失败。<br><img src="/images/AWS/RDS/postgresql_postgis_version_compatibility.png" alt="postgresql_postgis_version_compatibility.png"></p>
+<p>不过说来也怪，根据这表格的说明，9.5版本中应该也已经不支持<code>2.1.3</code>了，但实际上目前我们数据库中PG版本是<code>9.5.22</code>, 而PostGIS版本是<code>2.1.3</code>。不过总之，升级到9.6需要升级对应的PostGIS版本就对了。</p>
+<h3 id="升级步骤-1"><a href="#升级步骤-1" class="headerlink" title="升级步骤"></a>升级步骤</h3><ol>
+<li><p>查看当前数据库PostGIS版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">xxxx=&gt; \dx</div><div class="line">                                        List of installed extensions</div><div class="line">     Name      | Version |   Schema   |                             Description</div><div class="line">---------------+---------+------------+---------------------------------------------------------------------</div><div class="line">...</div><div class="line"> postgis       | 2.1.3   | public     | PostGIS geometry, geography, and raster spatial types and functions</div><div class="line">...</div><div class="line">xxxx=&gt;</div></pre></td></tr></table></figure>
+</li>
+<li><p>查看可升级的PostGIS版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">xxxx=&gt; SELECT * FROM pg_available_extension_versions where name=&apos;postgis&apos;;</div><div class="line">  name   | version | installed | superuser | relocatable | schema | requires |                               comment</div><div class="line">---------+---------+-----------+-----------+-------------+--------+----------+---------------------------------------------------------------------</div><div class="line"> postgis | 2.5.2   | f         | t         | f           |        |          | PostGIS geometry, geography, and raster spatial types and functions</div><div class="line"> postgis | 2.1.8   | f         | t         | f           |        |          | PostGIS geometry, geography, and raster spatial types and functions</div><div class="line"> postgis | 2.2.5   | f         | t         | f           |        |          | PostGIS geometry, geography, and raster spatial types and functions</div><div class="line">(3 rows)</div><div class="line"></div><div class="line">xxxx=&gt;</div></pre></td></tr></table></figure>
+</li>
+<li><p>升级PostGIS至版本<code>2.2.5</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">xxxx=&gt; ALTER EXTENSION postgis UPDATE TO &apos;2.2.5&apos;;</div><div class="line">WARNING:  &apos;postgis.backend&apos; is already set and cannot be changed until you reconnect</div><div class="line">CONTEXT:  SQL statement &quot;SELECT                  postgis_lib_version()&quot;</div><div class="line">PL/pgSQL function postgis_major_version_check() line 21 at SQL statement</div><div class="line">ALTER EXTENSION</div><div class="line">xxxx=&gt;</div></pre></td></tr></table></figure>
+</li>
+<li><p>AWS Web Console进行升级操作<br>在Web Console中选中需要升级的RDS Instance，选择升级为<code>9.6.19</code>，顺利升级成功。</p>
+</li>
+<li><p>升级后续处理<br>升级后，对每个表进行<code>ANALYZE</code>刷新<code>pg_statistic</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">analyze verbose table_name_1;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_UpgradeDBInstance.PostgreSQL.html" target="_blank" rel="external">Upgrading the PostgreSQL DB engine for Amazon RDS</a></li>
+<li><a href="https://www.postgis.net/eol_policy/" target="_blank" rel="external">PostGIS version compatibility and EOL policy</a></li>
+<li><a href="https://trac.osgeo.org/postgis/wiki/UsersWikiPostgreSQLPostGIS" target="_blank" rel="external">UsersWikiPostgreSQLPostGIS</a></li>
+<li><a href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_PostgreSQL.html#PostgreSQL.Concepts.General.FeaturesExtensions" target="_blank" rel="external">RDS PostgreSQL extension版本</a></li>
+<li><a href="https://www.postgresql.org/support/versioning/" target="_blank" rel="external">Versioning Policy</a></li>
+<li><a href="https://stackoverflow.com/questions/42634626/postgresql-upgrade-on-amazon-rds-blocked-by-postgis-version" target="_blank" rel="external">PostgreSQL upgrade on Amazon RDS blocked by PostGIS version</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> AWS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> RDS </tag>
+            
+            <tag> PostgreSQL </tag>
+            
+            <tag> AWS </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[wkhtmltopdf支持中文字体]]></title>
+      <url>/2020/10/22/wkhtmltopdf-to-support-chinese-charactor/</url>
+      <content type="html"><![CDATA[<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>CentOS 7.8环境中，要使用wkhtmltopdf来从网页中生成PDF。<br>没有使用rpm包来安装wkhtmltopdf命令，而是使用了<code>gem &#39;wkhtmltopdf-binary&#39;</code>在Rails项目下安装了<code>wkhtmltopdf</code></p>
+<p>运行后发现，网页中的中文在PDF中没法显示。</p>
+<h3 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h3><p>调查后发现是因为系统中缺少中文字体的支持，使用如下命令安装字体后，可以解决。两者选其一。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo yum install -y wqy-microhei-fonts</div><div class="line"># 或者</div><div class="line">sudo yum install -y xorg-x11-fonts-75dpi</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<h3 id="延伸阅读"><a href="#延伸阅读" class="headerlink" title="延伸阅读"></a>延伸阅读</h3><ul>
+<li><a href="/2019/11/28/way-to-install-wkhtmltopdf-and-wkhtmltoimage-to-CentOS-7/" title="如何在CentOS 7 中安装wkhtmltopdf和wkhtmltoimage">如何在CentOS 7 中安装wkhtmltopdf和wkhtmltoimage</a>
+</li>
+</ul>
+<h3 id="其他相关"><a href="#其他相关" class="headerlink" title="其他相关"></a>其他相关</h3><p>CentOS下Font相关的命令</p>
+<ul>
+<li><code>fc-list</code>: 列出系统中安装的font</li>
+<li><code>fc-cache -f -v</code>: 刷新字font缓存</li>
+</ul>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://dalibornasevic.com/posts/76-figuring-out-missing-fonts-for-wkhtmltopdf" target="_blank" rel="external">Figuring out missing fonts for wkHTMLtoPDF</a></li>
+<li><a href="https://help.ubuntu.com/community/Fonts#Chinese.2C_Japanese.2C_and_Korean_Fonts" target="_blank" rel="external">Fonts#Chinese.2C_Japanese.2C_and_Korean_Fonts</a></li>
+<li><a href="https://blog.yctin.com/install-wkhtmltopdf-wkhtmltoimage-to-centos-with-chinese-asian-fonts-support/" target="_blank" rel="external">Install wkhtmltopdf &amp; wkhtmltoimage to CentOS with Chinese &amp; Asian fonts support</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> Tools </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> CentOS </tag>
+            
+            <tag> Wkhtmltopdf </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[MacOS下使用iTunes删除iphone备份磁盘空间没回收]]></title>
+      <url>/2020/10/14/why-disk-space-not-restored-after-deleting-iphone-backup-on-macos/</url>
+      <content type="html"><![CDATA[<p>记一次有趣的经历。</p>
+<h3 id="事情经过"><a href="#事情经过" class="headerlink" title="事情经过"></a>事情经过</h3><p>为了能用Watch 6，升级了手机系统到IOS 14。升级之前在电脑上用itunes备份了下(<strong>没错，是itunes，我mac系统还在用10.14,所以还是itunes,不是Finder</strong>)，占了几十个G的空间，电脑上磁盘空间一下子紧张了。手机升级完毕后，看了下没啥问题，就准备把电脑上的iphone备份给删了。</p>
+<p>以前删备份都是打开Terminal, 进入<code>~/Library/Application\ Support/MobileSync/Backup/</code>后手动<code>rm -r xxx</code>的。可这次不知道为啥，鬼使神差的用了itunes自带的删除备份的功能。就是下面这个界面。</p>
+<p><img src="/images/Apple/device_backup_on_itunes.jpg" alt="device_backup_on_itunes.jpg"></p>
+<p>一通操作，在界面上把备份删除了。</p>
+<p>然后信心满满地敲下了<code>df -h</code>来查看回收了多少磁盘空间。</p>
+<p>命令一敲，啥情况。怎么空间没有被回收？</p>
+<p>猜想，可能是itune的Bug，文件没有被删除吧。算了算了，还是手动删一下吧。打开Terminal，潇洒的敲击<code>cd ~/Library/Application\ Support/MobileSync/Backup/</code>，熟练的敲击<code>du -sh ./*</code>来查看是哪个目录没有被回收。</p>
+<p>一敲下去，发现不对劲，怎么显示Backup占用的磁盘空间是0B?</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ du -sh ./*</div><div class="line">  0B	./00008020-000464E03BD8002E</div><div class="line">$</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>揉了揉眼睛，确信自己没有看错，再揉了揉眼睛，再次确信自己没有看错。</p>
+<p>莫非现在Macos下iphone的备份路径改了，于是网上一通乱找，但似乎都说备份就是在<code>~/Library/Application\ Support/MobileSync/Backup/</code>下。</p>
+<p>又在网上乱找一通，还是没搞定。没办法，只能用最原始的方式，在家目录逐级统计目录大小，几十个G的磁盘，不可能凭空就没了。</p>
+<p><code>cd ~</code>进入家目录，敲击<code>du -sh .[!.]* * | sort -h</code>统计当前路径下所有文件和目录的大小。</p>
+<p>然后就发现了问题所在<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ du -sh .[!.]* * | sort -h</div><div class="line"> ...</div><div class="line"> 48G	.Trash</div><div class="line"> ...</div><div class="line">$</div></pre></td></tr></table></figure></p>
+<p>回收站怎么这么胖? 一下子就知道为啥空间没有被回收了。一打开，就发现里面胖胖的iphone备份目录正在冲我笑。</p>
+<p>手起刀落，<code>rm -r xxxx</code>删除了备份，然后空间就回来了。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>经此一折腾，终于发现了一个我从没发现过的秘密。MacOS 10.14.4下的iTunes 12.9.4.94(<strong>其他操作系统的其他iTunes版本不保证</strong>)中，在GUI界面中删除iphone的备份，是不会直接删除备份文件，而是会将文件移到回收站。</p>
+<h3 id="经验教训"><a href="#经验教训" class="headerlink" title="经验教训"></a>经验教训</h3><p>GUI下次还是自己手敲命令删除来的靠谱。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> Tools </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> MacOS </tag>
+            
+            <tag> iPhone </tag>
+            
+            <tag> iTunes </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[AWS LightSail Tips]]></title>
+      <url>/2020/08/04/some-tips-of-aws-lightsail/</url>
+      <content type="html"><![CDATA[<h3 id="如何跨区域迁移LightSail"><a href="#如何跨区域迁移LightSail" class="headerlink" title="如何跨区域迁移LightSail"></a>如何跨区域迁移LightSail</h3><p>步骤:</p>
+<ol>
+<li>现在源区域中对LightSail Instance做snapshot</li>
+<li>然后对该snapshot进行”Copy to another Region”的操作，选择目标Region进行拷贝</li>
+<li>在目标Region中选择拷贝来的snapshot，选择”Create new instance”</li>
+</ol>
+<p>官网介绍操作的两篇文章, 清晰易懂。</p>
+<ul>
+<li><a href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-copying-snapshots-from-one-region-to-another" target="_blank" rel="external">Copying snapshots from one AWS Region to another in Amazon Lightsail</a></li>
+<li><a href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/lightsail-how-to-create-instance-from-snapshot" target="_blank" rel="external">Creating an instance from a manual snapshot in Amazon Lightsail</a></li>
+</ul>
+<h3 id="LightSail"><a href="#LightSail" class="headerlink" title="LightSail"></a>LightSail</h3><p>和EC2 Instance不同，LightSail在stopped状态时也是会收费的。参照<a href="https://aws.amazon.com/lightsail/faq/" target="_blank" rel="external">官方fAQ</a></p>
+<blockquote>
+<p><strong>Q: When am I getting charged for a plan?</strong></p>
+<p>Your Lightsail instances are charged only when they’re in the running or stopped state. If you delete your Lightsail instance before the end of the month, we only charge you a prorated cost, based on the total number of hours that you used your Lightsail instance. For example, if you use the least expensive Lightsail plan for 100 hours in a month, you will be charged 47 cents (100*0.0047).</p>
+</blockquote>
+<p><a href="https://blog.skeddly.com/2017/01/understanding-lightsail-pricing.html#:~:text=Your%20Lightsail%20instances%20are%20charged,you%20used%20your%20Lightsail%20instance." target="_blank" rel="external">Understanding Lightsail Pricing</a>这个文章还介绍了LightSail的计费方式。</p>
+<a id="more"></a>
+]]></content>
+      
+        <categories>
+            
+            <category> AWS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Lightsail </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[Nginx RTMP服务器配置]]></title>
       <url>/2020/08/01/advanced-configure-of-nginx-rtmp/</url>
       <content type="html"><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>本篇是<a href="/2020/07/29/how-to-setup-nginx-rtmp-on-centos-7/" title="CentOS 7中搭建基础的Nginx RMPT服务器">CentOS 7中搭建基础的Nginx RMPT服务器</a>的续篇，记录了Nignx RTMP使用过程中的一些有用的配置和一些坑。<br>下面的内容，是以文章<a href="/2020/07/29/how-to-setup-nginx-rtmp-on-centos-7/" title="CentOS 7中搭建基础的Nginx RMPT服务器">CentOS 7中搭建基础的Nginx RMPT服务器</a>中的配置为基准进行的修改。</p>
@@ -832,6 +1010,285 @@
     </entry>
     
     <entry>
+      <title><![CDATA[Docker基础]]></title>
+      <url>/2020/06/14/docker-basic/</url>
+      <content type="html"><![CDATA[<h2 id="Docker安装"><a href="#Docker安装" class="headerlink" title="Docker安装"></a>Docker安装</h2><h3 id="Docker安装-CentOS-7"><a href="#Docker安装-CentOS-7" class="headerlink" title="Docker安装(CentOS 7)"></a>Docker安装(CentOS 7)</h3><p>Docker在CentOS 7上的安装，直接参考官网安装手册即可: <a href="https://docs.docker.com/engine/install/centos/" target="_blank" rel="external">Install Docker Engine on CentOS</a></p>
+<p>安装Dockerd主版本的步骤如下，要按照特定版本的，参考Docker官网。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">sudo yum -y install epel-release</div><div class="line">sudo yum install -y yum-utils</div><div class="line">sudo yum-config-manager     --add-repo     https://download.docker.com/linux/centos/docker-ce.repo</div><div class="line"># sudo yum list docker-ce --showduplicates | sort -r</div><div class="line">sudo yum -y install docker-ce docker-ce-cli containerd.io -y</div><div class="line">sudo systemctl start docker</div><div class="line">systemctl enable docker</div></pre></td></tr></table></figure></p>
+<p>执行<code>docker version</code>来验证docker是否正常安装。</p>
+<p>Tips:<br>也可以换用阿里云的docker镜像源<code>yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo</code></p>
+<a id="more"></a>
+<h3 id="设置镜像加速"><a href="#设置镜像加速" class="headerlink" title="设置镜像加速"></a>设置镜像加速</h3><p>设置网易云镜像加速</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">sudo mkdir -p /etc/docker</div><div class="line">sudo tee /etc/docker/daemon.json &lt;&lt;-&apos;EOF&apos;</div><div class="line">&#123;</div><div class="line">  &quot;registry-mirrors&quot;: [&quot;http://hub-mirror.c.163.com&quot;]</div><div class="line">&#125;</div><div class="line">EOF</div><div class="line">sudo systemctl daemon-reload</div><div class="line">sudo systemctl restart docker</div></pre></td></tr></table></figure>
+<p>检查镜像加速是否设置成功, 查看<code>Registry Mirrors</code>中是否有163的镜像。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">$ docker info</div><div class="line"> ...</div><div class="line"> Registry Mirrors:</div><div class="line">  http://hub-mirror.c.163.com/</div><div class="line"> ...</div><div class="line"></div><div class="line">$</div></pre></td></tr></table></figure>
+<p>执行hello-world镜像<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker run hello-world</div></pre></td></tr></table></figure></p>
+<h2 id="Docker命令"><a href="#Docker命令" class="headerlink" title="Docker命令"></a>Docker命令</h2><h3 id="Docker帮助命令"><a href="#Docker帮助命令" class="headerlink" title="Docker帮助命令"></a>Docker帮助命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">docker version</div><div class="line">docker info # 输出docker目前的状态概述，包括系统资源，镜像和容器数量等</div><div class="line">docker COMMAND --help # 依次逐级获取命令支持的参数和作用</div></pre></td></tr></table></figure>
+<h3 id="镜像命令"><a href="#镜像命令" class="headerlink" title="镜像命令"></a>镜像命令</h3><h4 id="列出本机镜像"><a href="#列出本机镜像" class="headerlink" title="列出本机镜像"></a>列出本机镜像</h4><p>列出本地的镜像<code>docker images</code>, 使用REPOSITORY:TAG来定义不同的镜像<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# docker images</div><div class="line">REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE</div><div class="line">hello-world         latest              bf756fb1ae65        9 months ago        13.3kB</div><div class="line">[root@localhost ~]#</div></pre></td></tr></table></figure></p>
+<p>参数</p>
+<ul>
+<li><code>-a</code>: 列出所有的镜像</li>
+<li><code>-q</code>: 列出镜像的ID</li>
+<li><code>--digests</code>: 显示镜像的digest摘要信息</li>
+<li><code>--no-trunc</code>: 显示ID的完整信息</li>
+</ul>
+<h4 id="搜索镜像"><a href="#搜索镜像" class="headerlink" title="搜索镜像"></a>搜索镜像</h4><p><code>docker search</code>从Docker Hub上搜索镜像<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# docker search tomcat</div><div class="line">NAME                          DESCRIPTION                                     STARS               OFFICIAL            AUTOMATED</div><div class="line">tomcat                        Apache Tomcat is an open source implementati…   2847                [OK]</div><div class="line">tomee                         Apache TomEE is an all-Apache Java EE certif…   83                  [OK]</div><div class="line">dordoka/tomcat                Ubuntu 14.04, Oracle JDK 8 and Tomcat 8 base…   55                                      [OK]</div><div class="line">bitnami/tomcat                Bitnami Tomcat Docker Image                     36                                      [OK]</div><div class="line">kubeguide/tomcat-app          Tomcat image for Chapter 1                      29</div><div class="line">consol/tomcat-7.0             Tomcat 7.0.57, 8080, &quot;admin/admin&quot;              17                                      [OK]</div><div class="line">...</div><div class="line">[root@localhost ~]#</div></pre></td></tr></table></figure></p>
+<p>其中<code>OFFICIAL</code>表示是否是官方镜像，<code>STARS</code>表示星星数。</p>
+<p>常用参数</p>
+<ul>
+<li><code>--filter</code>: 加上过滤条件，比如<code>--filter=stars=10</code>就是索索star数大于等于10的镜像</li>
+<li><code>--no-trunc</code>: 输出完整的信息，比如Description中不要省略</li>
+</ul>
+<h4 id="拉取镜像"><a href="#拉取镜像" class="headerlink" title="拉取镜像"></a>拉取镜像</h4><p><code>docker pull</code>拉取镜像，<code>docker pull IMAGE_NAME:TAG</code>，如果省略TAG，那么默认拉取latest</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# docker pull alpine</div><div class="line">Using default tag: latest</div><div class="line">latest: Pulling from library/alpine</div><div class="line">df20fa9351a1: Pulling fs layer</div><div class="line">latest: Pulling from library/alpine</div><div class="line">df20fa9351a1: Pull complete</div><div class="line">Digest: sha256:185518070891758909c9f839cf4ca393ee977ac378609f700f60a771a2dfe321</div><div class="line">Status: Downloaded newer image for alpine:latest</div><div class="line">docker.io/library/alpine:latest</div><div class="line">[root@localhost ~]#</div></pre></td></tr></table></figure>
+<h4 id="删除镜像"><a href="#删除镜像" class="headerlink" title="删除镜像"></a>删除镜像</h4><p><code>docker rmi</code>用来删除镜像<br>如果镜像被某个container在使用时，删除会提示类似<code>Error response from daemon: conflict: unable to remove repository reference &quot;hello-world&quot; (must force) - container a8a7d78cf5b4 is using its referenced image bf756fb1ae65</code>的错误信息。<br>此时加上<code>-f</code>参数进行强制删除即可,<code>docker rmi hello-world -f</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># 删除单个</div><div class="line">docker rmi -f 镜像ID:TAG</div><div class="line"></div><div class="line"># 删除多个</div><div class="line">docker rmi -f 镜像ID_1:TAG 镜像ID_2:TAG</div><div class="line"></div><div class="line"># 删除全部</div><div class="line">docker rmi -f $(docker images -qa)</div></pre></td></tr></table></figure>
+<h3 id="容器命令"><a href="#容器命令" class="headerlink" title="容器命令"></a>容器命令</h3><h4 id="新建并启动容器"><a href="#新建并启动容器" class="headerlink" title="新建并启动容器"></a>新建并启动容器</h4><p><code>docker run</code>: 按照某个镜像新建容器示例。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker run -it 7e6257c9f8d8</div></pre></td></tr></table></figure>
+<p>常用参数:</p>
+<ul>
+<li><code>--name</code>: 执行容器名字</li>
+<li><code>-d</code>: 后台运行容器</li>
+<li><code>-i</code>: 以命令交互模式运行容器，常和-t同时使用</li>
+<li><code>-t</code>: 为容器重新分配一个伪输入终端，通常和-i一起使用</li>
+<li><code>-P</code>: 随机端口映射</li>
+<li><code>-p</code>: 指定端口映射<ul>
+<li>ip:hostPort:containerPort</li>
+<li>ip::containerPort</li>
+<li>hostPort:containerPort</li>
+<li>containerPort</li>
+</ul>
+</li>
+</ul>
+<h4 id="显示docker内容"><a href="#显示docker内容" class="headerlink" title="显示docker内容"></a>显示docker内容</h4><p><code>docker ps</code>查看docker里面的container</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# docker ps -a</div><div class="line">CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                       PORTS               NAMES</div><div class="line">6623ec31499b        7e6257c9f8d8        &quot;/bin/bash&quot;         6 minutes ago       Exited (130) 3 minutes ago                       gallant_feynman</div><div class="line">786aa38d950b        hello-world         &quot;/hello&quot;            19 hours ago        Exited (0) 19 hours ago                          confident_allen</div><div class="line">[root@localhost ~]#</div></pre></td></tr></table></figure>
+<p>常用参数</p>
+<ul>
+<li><code>-a</code>: 列出当前所有正在运行和历史上运行过的容器</li>
+<li><code>-l</code>: 列出最新创建的容器</li>
+<li><code>-n</code>: 显示最近n个创建的容器</li>
+<li><code>-q</code>: 静默模式，只显示容器编号</li>
+<li><code>--no-trunc</code>: 不截断输出</li>
+</ul>
+<h4 id="查看镜像layer"><a href="#查看镜像layer" class="headerlink" title="查看镜像layer"></a>查看镜像layer</h4><p>命令<code>docker history image_id</code>来查看镜像的layer数据</p>
+<p>例子:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# docker history 7e6257c9f8d8</div><div class="line">IMAGE               CREATED             CREATED BY                                      SIZE                COMMENT</div><div class="line">7e6257c9f8d8        2 months ago        /bin/sh -c #(nop)  CMD [&quot;/bin/bash&quot;]            0B</div><div class="line">&lt;missing&gt;           2 months ago        /bin/sh -c #(nop)  LABEL org.label-schema.sc…   0B</div><div class="line">&lt;missing&gt;           2 months ago        /bin/sh -c #(nop) ADD file:61908381d3142ffba…   203MB</div><div class="line">[root@localhost ~]#</div></pre></td></tr></table></figure></p>
+<h4 id="启动容器"><a href="#启动容器" class="headerlink" title="启动容器"></a>启动容器</h4><p>命令<code>docker start [OPTIONS] CONTAINER [CONTAINER...]</code>来启动已经停止的容器。<br><code>docker ps -a</code>找出container id，然后再<code>docker start container_id</code>启动容器</p>
+<h4 id="重启容器"><a href="#重启容器" class="headerlink" title="重启容器"></a>重启容器</h4><p>命令<code>docker restart [OPTIONS] CONTAINER [CONTAINER...]</code>来重启容器</p>
+<h4 id="停止容器"><a href="#停止容器" class="headerlink" title="停止容器"></a>停止容器</h4><p>命令<code>docker stop [OPTIONS] CONTAINER [CONTAINER...]</code>来停止容器</p>
+<h4 id="强制关闭容器"><a href="#强制关闭容器" class="headerlink" title="强制关闭容器"></a>强制关闭容器</h4><p>命令<code>docker kill [OPTIONS] CONTAINER [CONTAINER...]</code>来强制停止容器</p>
+<h4 id="删除已停止的容器"><a href="#删除已停止的容器" class="headerlink" title="删除已停止的容器"></a>删除已停止的容器</h4><p>命令<code>docker rm [OPTIONS] CONTAINER [CONTAINER...]</code>来删除容器<br>参数:</p>
+<ul>
+<li><code>-f, --force</code>: 强制删除容器，即使在运行中也会被删除。</li>
+</ul>
+<p>用法:</p>
+<ul>
+<li>一次性删除所有容器<ul>
+<li><code>docker rm -f $(docker ps -a -q)</code></li>
+<li><code>docker ps -q -q | xargs docker rm</code></li>
+</ul>
+</li>
+</ul>
+<h4 id="容器退出"><a href="#容器退出" class="headerlink" title="容器退出"></a>容器退出</h4><p><code>-it</code>模式下</p>
+<ul>
+<li><code>exit</code>, 退出容器并关闭容器</li>
+<li><code>ctrl + P + Q</code>, 退出容器但不关闭容器</li>
+</ul>
+<h4 id="启动守护进程"><a href="#启动守护进程" class="headerlink" title="启动守护进程"></a>启动守护进程</h4><p>命令<code>docker run -d</code>以守护进程来启动容器</p>
+<p>注意:</p>
+<ul>
+<li>Docker容器后台运行，就必须有一个前台进程，容器运行的命令如果不是那些一直挂起的命令(比如top,tail)等，容器会自动退出。</li>
+<li>所以使用docker来启动服务时，需要以前台方式进行。nginx为例，正常机器下，启动nginx的service即可，systemctl start nginx。但是在容器中，因为没有前台进程在运行，这种方式下docker会退出。</li>
+</ul>
+<h4 id="保存镜像到文件"><a href="#保存镜像到文件" class="headerlink" title="保存镜像到文件"></a>保存镜像到文件</h4><p>命令<code>docker save</code>用于保存镜像到文件中。完整形式<code>docker save [OPTIONS] IMAGE [IMAGE...]</code></p>
+<p>用法:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker save carl/mycentos7:latest &gt; carl_mycentos7_latest.tar</div></pre></td></tr></table></figure></p>
+<h4 id="从镜像文件导入镜像"><a href="#从镜像文件导入镜像" class="headerlink" title="从镜像文件导入镜像"></a>从镜像文件导入镜像</h4><p>命令<code>docker load</code>用于从镜像文件中导入镜像</p>
+<p>用法:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker load &lt; carl_mycentos7_latest.tar</div></pre></td></tr></table></figure></p>
+<h4 id="将容器导出为镜像文件"><a href="#将容器导出为镜像文件" class="headerlink" title="将容器导出为镜像文件"></a>将容器导出为镜像文件</h4><p>命令<code>docker export</code>用于将容器内容导出为镜像文件，<code>docker export [OPTIONS] CONTAINER</code><br>和<code>docker save</code>的区别是<code>save</code>是将image保存为文件，<code>export</code>是将容器保存为文件。</p>
+<p>用法:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker export 3a809727879b &gt; carl_mycentos7_export.tar</div></pre></td></tr></table></figure></p>
+<h4 id="将export导出的文件导入为文件"><a href="#将export导出的文件导入为文件" class="headerlink" title="将export导出的文件导入为文件"></a>将export导出的文件导入为文件</h4><p>命令<code>docker import</code>将导出的tar文件导入为镜像。<code>docker import [OPTIONS] file|URL|- [REPOSITORY[:TAG]]</code></p>
+<p>用法:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker import carl_mycentos7_export.tar carl/mycentos7:from_export</div></pre></td></tr></table></figure></p>
+<h4 id="查看容器日志"><a href="#查看容器日志" class="headerlink" title="查看容器日志"></a>查看容器日志</h4><p><code>docker logs -f -t --tail 容器ID</code><br>参数:</p>
+<ul>
+<li><code>-t</code>: 加入时间戳</li>
+<li><code>-f</code>: 跟随最新的日志打印</li>
+<li><code>--tail</code>: 数字，显示最后多少条</li>
+</ul>
+<h4 id="查看容器内进程"><a href="#查看容器内进程" class="headerlink" title="查看容器内进程"></a>查看容器内进程</h4><p><code>docker top CONTAINER</code>查看某个container中的进程</p>
+<h4 id="查看容器内部细节"><a href="#查看容器内部细节" class="headerlink" title="查看容器内部细节"></a>查看容器内部细节</h4><p><code>docker inspect NAME|ID</code>, 查看容器的配置参数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div><div class="line">203</div><div class="line">204</div><div class="line">205</div><div class="line">206</div><div class="line">207</div><div class="line">208</div><div class="line">209</div><div class="line">210</div><div class="line">211</div><div class="line">212</div><div class="line">213</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# docker inspect 859a0d5a0491</div><div class="line">[</div><div class="line">    &#123;</div><div class="line">        &quot;Id&quot;: &quot;859a0d5a0491dc3b8fb3e715b28c2e6374d17f7e55dd71f120fc8452b8ef81e6&quot;,</div><div class="line">        &quot;Created&quot;: &quot;2020-10-15T06:07:27.545519123Z&quot;,</div><div class="line">        &quot;Path&quot;: &quot;/bin/sh&quot;,</div><div class="line">        &quot;Args&quot;: [</div><div class="line">            &quot;-c&quot;,</div><div class="line">            &quot;while true; do echo hello zzyy; sleep 2; done&quot;</div><div class="line">        ],</div><div class="line">        &quot;State&quot;: &#123;</div><div class="line">            &quot;Status&quot;: &quot;running&quot;,</div><div class="line">            &quot;Running&quot;: true,</div><div class="line">            &quot;Paused&quot;: false,</div><div class="line">            &quot;Restarting&quot;: false,</div><div class="line">            &quot;OOMKilled&quot;: false,</div><div class="line">            &quot;Dead&quot;: false,</div><div class="line">            &quot;Pid&quot;: 22951,</div><div class="line">            &quot;ExitCode&quot;: 0,</div><div class="line">            &quot;Error&quot;: &quot;&quot;,</div><div class="line">            &quot;StartedAt&quot;: &quot;2020-10-15T06:07:27.784040202Z&quot;,</div><div class="line">            &quot;FinishedAt&quot;: &quot;0001-01-01T00:00:00Z&quot;</div><div class="line">        &#125;,</div><div class="line">        &quot;Image&quot;: &quot;sha256:7e6257c9f8d8d4cdff5e155f196d67150b871bbe8c02761026f803a704acb3e9&quot;,</div><div class="line">        &quot;ResolvConfPath&quot;: &quot;/var/lib/docker/containers/859a0d5a0491dc3b8fb3e715b28c2e6374d17f7e55dd71f120fc8452b8ef81e6/resolv.conf&quot;,</div><div class="line">        &quot;HostnamePath&quot;: &quot;/var/lib/docker/containers/859a0d5a0491dc3b8fb3e715b28c2e6374d17f7e55dd71f120fc8452b8ef81e6/hostname&quot;,</div><div class="line">        &quot;HostsPath&quot;: &quot;/var/lib/docker/containers/859a0d5a0491dc3b8fb3e715b28c2e6374d17f7e55dd71f120fc8452b8ef81e6/hosts&quot;,</div><div class="line">        &quot;LogPath&quot;: &quot;/var/lib/docker/containers/859a0d5a0491dc3b8fb3e715b28c2e6374d17f7e55dd71f120fc8452b8ef81e6/859a0d5a0491dc3b8fb3e715b28c2e6374d17f7e55dd71f120fc8452b8ef81e6-json.log&quot;,</div><div class="line">        &quot;Name&quot;: &quot;/pensive_ride&quot;,</div><div class="line">        &quot;RestartCount&quot;: 0,</div><div class="line">        &quot;Driver&quot;: &quot;overlay2&quot;,</div><div class="line">        &quot;Platform&quot;: &quot;linux&quot;,</div><div class="line">        &quot;MountLabel&quot;: &quot;&quot;,</div><div class="line">        &quot;ProcessLabel&quot;: &quot;&quot;,</div><div class="line">        &quot;AppArmorProfile&quot;: &quot;&quot;,</div><div class="line">        &quot;ExecIDs&quot;: null,</div><div class="line">        &quot;HostConfig&quot;: &#123;</div><div class="line">            &quot;Binds&quot;: null,</div><div class="line">            &quot;ContainerIDFile&quot;: &quot;&quot;,</div><div class="line">            &quot;LogConfig&quot;: &#123;</div><div class="line">                &quot;Type&quot;: &quot;json-file&quot;,</div><div class="line">                &quot;Config&quot;: &#123;&#125;</div><div class="line">            &#125;,</div><div class="line">            &quot;NetworkMode&quot;: &quot;default&quot;,</div><div class="line">            &quot;PortBindings&quot;: &#123;&#125;,</div><div class="line">            &quot;RestartPolicy&quot;: &#123;</div><div class="line">                &quot;Name&quot;: &quot;no&quot;,</div><div class="line">                &quot;MaximumRetryCount&quot;: 0</div><div class="line">            &#125;,</div><div class="line">            &quot;AutoRemove&quot;: false,</div><div class="line">            &quot;VolumeDriver&quot;: &quot;&quot;,</div><div class="line">            &quot;VolumesFrom&quot;: null,</div><div class="line">            &quot;CapAdd&quot;: null,</div><div class="line">            &quot;CapDrop&quot;: null,</div><div class="line">            &quot;Capabilities&quot;: null,</div><div class="line">            &quot;Dns&quot;: [],</div><div class="line">            &quot;DnsOptions&quot;: [],</div><div class="line">            &quot;DnsSearch&quot;: [],</div><div class="line">            &quot;ExtraHosts&quot;: null,</div><div class="line">            &quot;GroupAdd&quot;: null,</div><div class="line">            &quot;IpcMode&quot;: &quot;private&quot;,</div><div class="line">            &quot;Cgroup&quot;: &quot;&quot;,</div><div class="line">            &quot;Links&quot;: null,</div><div class="line">            &quot;OomScoreAdj&quot;: 0,</div><div class="line">            &quot;PidMode&quot;: &quot;&quot;,</div><div class="line">            &quot;Privileged&quot;: false,</div><div class="line">            &quot;PublishAllPorts&quot;: false,</div><div class="line">            &quot;ReadonlyRootfs&quot;: false,</div><div class="line">            &quot;SecurityOpt&quot;: null,</div><div class="line">            &quot;UTSMode&quot;: &quot;&quot;,</div><div class="line">            &quot;UsernsMode&quot;: &quot;&quot;,</div><div class="line">            &quot;ShmSize&quot;: 67108864,</div><div class="line">            &quot;Runtime&quot;: &quot;runc&quot;,</div><div class="line">            &quot;ConsoleSize&quot;: [</div><div class="line">                0,</div><div class="line">                0</div><div class="line">            ],</div><div class="line">            &quot;Isolation&quot;: &quot;&quot;,</div><div class="line">            &quot;CpuShares&quot;: 0,</div><div class="line">            &quot;Memory&quot;: 0,</div><div class="line">            &quot;NanoCpus&quot;: 0,</div><div class="line">            &quot;CgroupParent&quot;: &quot;&quot;,</div><div class="line">            &quot;BlkioWeight&quot;: 0,</div><div class="line">            &quot;BlkioWeightDevice&quot;: [],</div><div class="line">            &quot;BlkioDeviceReadBps&quot;: null,</div><div class="line">            &quot;BlkioDeviceWriteBps&quot;: null,</div><div class="line">            &quot;BlkioDeviceReadIOps&quot;: null,</div><div class="line">            &quot;BlkioDeviceWriteIOps&quot;: null,</div><div class="line">            &quot;CpuPeriod&quot;: 0,</div><div class="line">            &quot;CpuQuota&quot;: 0,</div><div class="line">            &quot;CpuRealtimePeriod&quot;: 0,</div><div class="line">            &quot;CpuRealtimeRuntime&quot;: 0,</div><div class="line">            &quot;CpusetCpus&quot;: &quot;&quot;,</div><div class="line">            &quot;CpusetMems&quot;: &quot;&quot;,</div><div class="line">            &quot;Devices&quot;: [],</div><div class="line">            &quot;DeviceCgroupRules&quot;: null,</div><div class="line">            &quot;DeviceRequests&quot;: null,</div><div class="line">            &quot;KernelMemory&quot;: 0,</div><div class="line">            &quot;KernelMemoryTCP&quot;: 0,</div><div class="line">            &quot;MemoryReservation&quot;: 0,</div><div class="line">            &quot;MemorySwap&quot;: 0,</div><div class="line">            &quot;MemorySwappiness&quot;: null,</div><div class="line">            &quot;OomKillDisable&quot;: false,</div><div class="line">            &quot;PidsLimit&quot;: null,</div><div class="line">            &quot;Ulimits&quot;: null,</div><div class="line">            &quot;CpuCount&quot;: 0,</div><div class="line">            &quot;CpuPercent&quot;: 0,</div><div class="line">            &quot;IOMaximumIOps&quot;: 0,</div><div class="line">            &quot;IOMaximumBandwidth&quot;: 0,</div><div class="line">            &quot;MaskedPaths&quot;: [</div><div class="line">                &quot;/proc/asound&quot;,</div><div class="line">                &quot;/proc/acpi&quot;,</div><div class="line">                &quot;/proc/kcore&quot;,</div><div class="line">                &quot;/proc/keys&quot;,</div><div class="line">                &quot;/proc/latency_stats&quot;,</div><div class="line">                &quot;/proc/timer_list&quot;,</div><div class="line">                &quot;/proc/timer_stats&quot;,</div><div class="line">                &quot;/proc/sched_debug&quot;,</div><div class="line">                &quot;/proc/scsi&quot;,</div><div class="line">                &quot;/sys/firmware&quot;</div><div class="line">            ],</div><div class="line">            &quot;ReadonlyPaths&quot;: [</div><div class="line">                &quot;/proc/bus&quot;,</div><div class="line">                &quot;/proc/fs&quot;,</div><div class="line">                &quot;/proc/irq&quot;,</div><div class="line">                &quot;/proc/sys&quot;,</div><div class="line">                &quot;/proc/sysrq-trigger&quot;</div><div class="line">            ]</div><div class="line">        &#125;,</div><div class="line">        &quot;GraphDriver&quot;: &#123;</div><div class="line">            &quot;Data&quot;: &#123;</div><div class="line">                &quot;LowerDir&quot;: &quot;/var/lib/docker/overlay2/b02579cda6e3f5050474b15434ec336589824f5a163bbeabebc39ad406c0f03a-init/diff:/var/lib/docker/overlay2/5010927575b48d2cd9437b03a5cb78a044a2a0a7796f0cc1d8592300afc700ea/diff&quot;,</div><div class="line">                &quot;MergedDir&quot;: &quot;/var/lib/docker/overlay2/b02579cda6e3f5050474b15434ec336589824f5a163bbeabebc39ad406c0f03a/merged&quot;,</div><div class="line">                &quot;UpperDir&quot;: &quot;/var/lib/docker/overlay2/b02579cda6e3f5050474b15434ec336589824f5a163bbeabebc39ad406c0f03a/diff&quot;,</div><div class="line">                &quot;WorkDir&quot;: &quot;/var/lib/docker/overlay2/b02579cda6e3f5050474b15434ec336589824f5a163bbeabebc39ad406c0f03a/work&quot;</div><div class="line">            &#125;,</div><div class="line">            &quot;Name&quot;: &quot;overlay2&quot;</div><div class="line">        &#125;,</div><div class="line">        &quot;Mounts&quot;: [],</div><div class="line">        &quot;Config&quot;: &#123;</div><div class="line">            &quot;Hostname&quot;: &quot;859a0d5a0491&quot;,</div><div class="line">            &quot;Domainname&quot;: &quot;&quot;,</div><div class="line">            &quot;User&quot;: &quot;&quot;,</div><div class="line">            &quot;AttachStdin&quot;: false,</div><div class="line">            &quot;AttachStdout&quot;: false,</div><div class="line">            &quot;AttachStderr&quot;: false,</div><div class="line">            &quot;Tty&quot;: false,</div><div class="line">            &quot;OpenStdin&quot;: false,</div><div class="line">            &quot;StdinOnce&quot;: false,</div><div class="line">            &quot;Env&quot;: [</div><div class="line">                &quot;PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin&quot;</div><div class="line">            ],</div><div class="line">            &quot;Cmd&quot;: [</div><div class="line">                &quot;/bin/sh&quot;,</div><div class="line">                &quot;-c&quot;,</div><div class="line">                &quot;while true; do echo hello zzyy; sleep 2; done&quot;</div><div class="line">            ],</div><div class="line">            &quot;Image&quot;: &quot;centos:centos7&quot;,</div><div class="line">            &quot;Volumes&quot;: null,</div><div class="line">            &quot;WorkingDir&quot;: &quot;&quot;,</div><div class="line">            &quot;Entrypoint&quot;: null,</div><div class="line">            &quot;OnBuild&quot;: null,</div><div class="line">            &quot;Labels&quot;: &#123;</div><div class="line">                &quot;org.label-schema.build-date&quot;: &quot;20200809&quot;,</div><div class="line">                &quot;org.label-schema.license&quot;: &quot;GPLv2&quot;,</div><div class="line">                &quot;org.label-schema.name&quot;: &quot;CentOS Base Image&quot;,</div><div class="line">                &quot;org.label-schema.schema-version&quot;: &quot;1.0&quot;,</div><div class="line">                &quot;org.label-schema.vendor&quot;: &quot;CentOS&quot;,</div><div class="line">                &quot;org.opencontainers.image.created&quot;: &quot;2020-08-09 00:00:00+01:00&quot;,</div><div class="line">                &quot;org.opencontainers.image.licenses&quot;: &quot;GPL-2.0-only&quot;,</div><div class="line">                &quot;org.opencontainers.image.title&quot;: &quot;CentOS Base Image&quot;,</div><div class="line">                &quot;org.opencontainers.image.vendor&quot;: &quot;CentOS&quot;</div><div class="line">            &#125;</div><div class="line">        &#125;,</div><div class="line">        &quot;NetworkSettings&quot;: &#123;</div><div class="line">            &quot;Bridge&quot;: &quot;&quot;,</div><div class="line">            &quot;SandboxID&quot;: &quot;55b96a904a1cac67be763136b989b9c972223f80d7286184b1e0abc68a684692&quot;,</div><div class="line">            &quot;HairpinMode&quot;: false,</div><div class="line">            &quot;LinkLocalIPv6Address&quot;: &quot;&quot;,</div><div class="line">            &quot;LinkLocalIPv6PrefixLen&quot;: 0,</div><div class="line">            &quot;Ports&quot;: &#123;&#125;,</div><div class="line">            &quot;SandboxKey&quot;: &quot;/var/run/docker/netns/55b96a904a1c&quot;,</div><div class="line">            &quot;SecondaryIPAddresses&quot;: null,</div><div class="line">            &quot;SecondaryIPv6Addresses&quot;: null,</div><div class="line">            &quot;EndpointID&quot;: &quot;c14678728ac18495a503b0063c44f585ccdd6dd5f94097b8f2a4c337debd8832&quot;,</div><div class="line">            &quot;Gateway&quot;: &quot;172.17.0.1&quot;,</div><div class="line">            &quot;GlobalIPv6Address&quot;: &quot;&quot;,</div><div class="line">            &quot;GlobalIPv6PrefixLen&quot;: 0,</div><div class="line">            &quot;IPAddress&quot;: &quot;172.17.0.2&quot;,</div><div class="line">            &quot;IPPrefixLen&quot;: 16,</div><div class="line">            &quot;IPv6Gateway&quot;: &quot;&quot;,</div><div class="line">            &quot;MacAddress&quot;: &quot;02:42:ac:11:00:02&quot;,</div><div class="line">            &quot;Networks&quot;: &#123;</div><div class="line">                &quot;bridge&quot;: &#123;</div><div class="line">                    &quot;IPAMConfig&quot;: null,</div><div class="line">                    &quot;Links&quot;: null,</div><div class="line">                    &quot;Aliases&quot;: null,</div><div class="line">                    &quot;NetworkID&quot;: &quot;5068459f90949c40739af743d9543bf327807d90f2bfa0e6362c7273570a0b47&quot;,</div><div class="line">                    &quot;EndpointID&quot;: &quot;c14678728ac18495a503b0063c44f585ccdd6dd5f94097b8f2a4c337debd8832&quot;,</div><div class="line">                    &quot;Gateway&quot;: &quot;172.17.0.1&quot;,</div><div class="line">                    &quot;IPAddress&quot;: &quot;172.17.0.2&quot;,</div><div class="line">                    &quot;IPPrefixLen&quot;: 16,</div><div class="line">                    &quot;IPv6Gateway&quot;: &quot;&quot;,</div><div class="line">                    &quot;GlobalIPv6Address&quot;: &quot;&quot;,</div><div class="line">                    &quot;GlobalIPv6PrefixLen&quot;: 0,</div><div class="line">                    &quot;MacAddress&quot;: &quot;02:42:ac:11:00:02&quot;,</div><div class="line">                    &quot;DriverOpts&quot;: null</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">]</div><div class="line">[root@localhost ~]#</div></pre></td></tr></table></figure></p>
+<h4 id="重新进入容器"><a href="#重新进入容器" class="headerlink" title="重新进入容器"></a>重新进入容器</h4><p><code>docker attach CONTAINER</code> 重新进入运行的容器<br><code>docker exec -t CONTAINER COMMAND</code>，不进入容器运行命令。例如<code>docker exec -t 8599f87085d7 ls -l /tmp/</code></p>
+<h4 id="从容器中拷贝文件到宿主机"><a href="#从容器中拷贝文件到宿主机" class="headerlink" title="从容器中拷贝文件到宿主机"></a>从容器中拷贝文件到宿主机</h4><p>命令<code>docker cp [OPTIONS] CONTAINER:SRC_PATH DEST_PATH</code><br>例子: <code>docker cp 8599f87085d7:/tmp/yum.log ./</code></p>
+<h3 id="Docker镜像原理"><a href="#Docker镜像原理" class="headerlink" title="Docker镜像原理"></a>Docker镜像原理</h3><h4 id="UnionFS"><a href="#UnionFS" class="headerlink" title="UnionFS"></a>UnionFS</h4><p>UnionFS（联合文件系统）：Union文件系统（UnionFS）是一种分层、轻量级并且高性能的文件系统，它支持对文件系统的修改作为一次提交来一层层的叠加，同时可以将不同目录挂载到同一个虚拟文件系统下(unite several directories into a single virtual filesystem)。Union 文件系统是 Docker 镜像的基础。镜像可以通过分层来进行继承，基于基础镜像（没有父镜像），可以制作各种具体的应用镜像。 特性：一次同时加载多个文件系统，但从外面看起来，只能看到一个文件系统，联合加载会把各层文件系统叠加起来，这样最终的文件系统会包含所有底层的文件和目录</p>
+<h3 id="镜像commit"><a href="#镜像commit" class="headerlink" title="镜像commit"></a>镜像commit</h3><p><code>docker commit -a &quot;author name&quot; -m &quot;commit message&quot; CONTAINER REPOSITORY[:TAG]</code>将修改后的容器副本，使之成为一个新的镜像</p>
+<p>例子<br><code>docker commit -a &quot;carl&quot; -m &quot;repackage tomcat&quot; 1238e0d02ff5 carl/tomcat:v1</code></p>
+<h2 id="容器数据卷"><a href="#容器数据卷" class="headerlink" title="容器数据卷"></a>容器数据卷</h2><h3 id="使用命令挂载数据卷"><a href="#使用命令挂载数据卷" class="headerlink" title="使用命令挂载数据卷"></a>使用命令挂载数据卷</h3><p>命令<code>docker run -it -v /宿主机绝对路径目录:/容器内目录 镜像名</code></p>
+<p>例子:<br><code>docker run -it -v /myDataVolumn:/container_data_info centos:centos7 /bin/bash</code></p>
+<p>挂载带读写权限,在容器内目录后面加上<code>:ro</code>, <code>docker run -it -v /宿主机绝对路径目录:/容器内目录:ro 镜像名</code></p>
+<h3 id="使用Dockerfile来挂载容器卷"><a href="#使用Dockerfile来挂载容器卷" class="headerlink" title="使用Dockerfile来挂载容器卷"></a>使用Dockerfile来挂载容器卷</h3><p>可在Dockerfile中使用VOLUME指令来给镜像添加一个或多个数据卷<br><code>VOLUME[&quot;/dataVolumeContainer&quot;,&quot;/dataVolumeContainer2&quot;,&quot;/dataVolumeContainer3&quot;]</code><br>说明:<br>出于可移植和分享的考虑，用-v 主机目录:容器目录这种方法不能够直接在Dockerfile中实现。由于宿主机目录是依赖于特定宿主机的，并不能够保证在所有的宿主机上都存在这样的特定目录。</p>
+<ol>
+<li><p>编写Dockerfile</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># volume test</div><div class="line">FROM centos:centos7</div><div class="line">VOLUME [&quot;/dataVolumeContainer1&quot;, &quot;/dataVolumeContainer2&quot;]</div><div class="line">CMD echo &quot;finished,==== success1&quot;</div><div class="line">CMD /bin/bash</div></pre></td></tr></table></figure>
+</li>
+<li><p>docker build</p>
+</li>
+</ol>
+<p><code>docker build -f /mydocker/Dockerfile -t carl/centos7 .</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">[root@localhost mydocker]# docker build -f /mydocker/Dockerfile -t carl/centos7 .</div><div class="line">Sending build context to Docker daemon  2.048kB</div><div class="line">Step 1/4 : FROM centos:centos7</div><div class="line"> ---&gt; 7e6257c9f8d8</div><div class="line">Step 2/4 : VOLUME [&quot;/dataVolumeContainer1&quot;, &quot;/dataVolumeContainer2&quot;]</div><div class="line"> ---&gt; Running in 85a640f348d6</div><div class="line">Removing intermediate container 85a640f348d6</div><div class="line"> ---&gt; a616037a068b</div><div class="line">Step 3/4 : CMD echo &quot;finished,==== success1&quot;</div><div class="line"> ---&gt; Running in dc1542f6b493</div><div class="line">Removing intermediate container dc1542f6b493</div><div class="line"> ---&gt; a9186d5923c6</div><div class="line">Step 4/4 : CMD /bin/bash</div><div class="line"> ---&gt; Running in 2f116d647925</div><div class="line">Removing intermediate container 2f116d647925</div><div class="line"> ---&gt; 54e2ebd7b090</div><div class="line">Successfully built 54e2ebd7b090</div><div class="line">Successfully tagged carl/centos7:latest</div><div class="line">[root@localhost mydocker]#</div></pre></td></tr></table></figure>
+<ol>
+<li>查看构建的新images<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# docker images</div><div class="line">REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE</div><div class="line">carl/centos7        latest              54e2ebd7b090        10 minutes ago      203MB</div><div class="line">carl/tomcat         v1                  45cab61abaa6        19 hours ago        652MB</div><div class="line">tomcat              latest              891fcd9c5b3a        47 hours ago        647MB</div><div class="line">centos              centos7             7e6257c9f8d8        2 months ago        203MB</div><div class="line">hello-world         latest              bf756fb1ae65        9 months ago        13.3kB</div><div class="line">[root@localhost ~]#</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="容器数据卷volumes-from"><a href="#容器数据卷volumes-from" class="headerlink" title="容器数据卷volumes-from"></a>容器数据卷volumes-from</h3><p>命名的容器挂载数据卷，其他容器通过挂载这个（父容器)实现数据共享，挂载数据卷的容器，称之为数据卷容器。</p>
+<p><code>docker run</code>时使用<code>--volumes-from container_name_xx</code>来挂载<code>container_name_xx</code>中的volume。<br>例子:<br><code>docker run -it --name dc02 --volumes-from dc01 carl/centos7</code>, 即运行一个名为<code>dc02</code>的容器，并挂载来自<code>dc01</code>的卷。</p>
+<p>结论: 容器之间配置信息的传递，数据卷的生命周期一直持续到没有容器使用它为止。</p>
+<h2 id="Dockfile解析"><a href="#Dockfile解析" class="headerlink" title="Dockfile解析"></a>Dockfile解析</h2><h3 id="Dockerfile是什么"><a href="#Dockerfile是什么" class="headerlink" title="Dockerfile是什么"></a>Dockerfile是什么</h3><p>Dockerfile是用来构建Docker镜像的构建文件，是由一系列命令和参数构成的脚本。</p>
+<p>docker构三步骤:</p>
+<ol>
+<li>手动编写一个dockerfile文件，要符合file的规范</li>
+<li>有这个文件后，直接docker build命令执行，获得一个自定义的镜像</li>
+<li>run</li>
+</ol>
+<h3 id="Dockerfile构建过程解析"><a href="#Dockerfile构建过程解析" class="headerlink" title="Dockerfile构建过程解析"></a>Dockerfile构建过程解析</h3><h4 id="Dockerfile-内容基础知识"><a href="#Dockerfile-内容基础知识" class="headerlink" title="Dockerfile 内容基础知识"></a>Dockerfile 内容基础知识</h4><ol>
+<li>每条保留字指令都必须为大写字母且后面要跟随至少一个参数</li>
+<li>指令按照从上到下，顺序执行</li>
+<li># 表示注释</li>
+<li>每条指令都会创建一个新的镜像层，并对镜像进行提交</li>
+</ol>
+<h4 id="docker执行Dockerfile的大致流程"><a href="#docker执行Dockerfile的大致流程" class="headerlink" title="docker执行Dockerfile的大致流程"></a>docker执行Dockerfile的大致流程</h4><ol>
+<li>docker从基础镜像运行一个容器</li>
+<li>执行一条指令并对容器作出修改</li>
+<li>执行类似docker commit的操作提交一个新的镜像层</li>
+<li>docker再基于刚提交的镜像运行一个新容器</li>
+<li>执行dockerfile中的下一条指令直到所有指令都执行完成</li>
+</ol>
+<p>从应用软件的角度来看，Dockerfile、Docker镜像与Docker容器分别代表软件的三个不同阶段，</p>
+<ul>
+<li>Dockerfile是软件的原材料</li>
+<li>Docker镜像是软件的交付品  </li>
+<li>Docker容器则可以认为是软件的运行态。<br>Dockerfile面向开发，Docker镜像成为交付标准，Docker容器则涉及部署与运维，三者缺一不可，合力充当Docker体系的基石</li>
+</ul>
+<h4 id="Dockerfile体系结构-保留字指令"><a href="#Dockerfile体系结构-保留字指令" class="headerlink" title="Dockerfile体系结构(保留字指令)"></a>Dockerfile体系结构(保留字指令)</h4><ul>
+<li>FROM: 基础镜像，当前镜像是基于哪个镜像的</li>
+<li>MAINTAINER: 镜像维护者的姓名和邮箱地址</li>
+<li>RUN: 容器构建时需要运行的命令</li>
+<li>EXPOSE: 当前容器对外暴露出的端口</li>
+<li>WORKDIR: 指定在创建容器后，终端默认登录的进来的工作目录</li>
+<li>ENV: 用来在构建镜像过程中设置环境变量, 如<code>ENV MY_PATH /usr/mypath</code></li>
+<li>ADD: 将宿主机目录下的文件拷贝进镜像，且ADD命令会自动处理URL和解压tar压缩包</li>
+<li>COPY:<ul>
+<li>类似ADD,拷贝文件和目录到镜像中。将从构建上下文目录中&lt;源路径&gt;的文件或目录复制到新一层的镜像内的&lt;目录路径&gt;的位置</li>
+<li>写法:<ul>
+<li>Shell写法: COPY src dst</li>
+<li>JSON数组写法: COPY [“src”, “dst”]</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>VOLUME: 容器数据卷，用于数据保持和持久化工作</li>
+<li>CMD: 指定一个容器启动时要运行的命令。Dockerfile中可以有多个CMD命令，但只有最后一个生效，CMD会被docker run之后的参数替换</li>
+<li>ENTRYPOINT: 指定一个容器启动时要运行的命令，ENTRYPOINT的目的和CMD一样，都是在指定容器启动程序和参数，docker run的命令会添加到ENTRYPOINT的后面。</li>
+<li>ONBUILD: 当构建一个被继承的Dockerfile时运行命令，父镜像在被子继承后父镜像的onbuild被触发。</li>
+</ul>
+<h4 id="DockerFile案例，自定义镜像centos"><a href="#DockerFile案例，自定义镜像centos" class="headerlink" title="DockerFile案例，自定义镜像centos"></a>DockerFile案例，自定义镜像centos</h4><p>Base镜像(scratch)</p>
+<p>自定义镜像需求</p>
+<ul>
+<li>设置登录后的默认路径</li>
+<li>安装vim编辑器</li>
+<li>查看网络配置ifconfig支持</li>
+</ul>
+<ol>
+<li><p>创建DockerFile</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">FROM centos:centos7</div><div class="line">MAINTAINER xxxx&lt;xxxx@yyy.com&gt;</div><div class="line">ENV MYPATH /use/local</div><div class="line"></div><div class="line">WORKDIR $MYPATH</div><div class="line"></div><div class="line">RUN yum -y install vim</div><div class="line">RUN yum -y install net-tools</div><div class="line"></div><div class="line">EXPOSE 80</div><div class="line"></div><div class="line">CMD echo $MYPATH</div><div class="line">CMD echo &quot;success--------ok&quot;</div><div class="line">CMD /bin/bash</div></pre></td></tr></table></figure>
+</li>
+<li><p>根据Dockerfil构建镜像<br><code>docker build -t mycentos:1.3 .</code></p>
+</li>
+<li><p>根据创建好的镜像，运行容器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker run -it mycentos:1.3</div></pre></td></tr></table></figure>
+</li>
+<li><p>查看镜像历史</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# docker history mycentos:1.3</div><div class="line">IMAGE               CREATED             CREATED BY                                      SIZE                COMMENT</div><div class="line">6099241fa296        4 minutes ago       /bin/sh -c #(nop)  CMD [&quot;/bin/sh&quot; &quot;-c&quot; &quot;/bin…   0B</div><div class="line">dcfbaf894d59        4 minutes ago       /bin/sh -c #(nop)  CMD [&quot;/bin/sh&quot; &quot;-c&quot; &quot;echo…   0B</div><div class="line">6fd7a4095306        4 minutes ago       /bin/sh -c #(nop)  CMD [&quot;/bin/sh&quot; &quot;-c&quot; &quot;echo…   0B</div><div class="line">707263299b11        4 minutes ago       /bin/sh -c #(nop)  EXPOSE 80                    0B</div><div class="line">48d44a7faba4        4 minutes ago       /bin/sh -c yum -y install net-tools             92.3MB</div><div class="line">ce4deda18898        4 minutes ago       /bin/sh -c yum -y install vim                   147MB</div><div class="line">db4e75c1541a        5 minutes ago       /bin/sh -c #(nop) WORKDIR /use/local            0B</div><div class="line">5ec65a85b950        5 minutes ago       /bin/sh -c #(nop)  ENV MYPATH=/use/local        0B</div><div class="line">108c8029c6a5        5 minutes ago       /bin/sh -c #(nop)  MAINTAINER xxxx&lt;xxxx@yyy.…   0B</div><div class="line">7e6257c9f8d8        2 months ago        /bin/sh -c #(nop)  CMD [&quot;/bin/bash&quot;]            0B</div><div class="line">&lt;missing&gt;           2 months ago        /bin/sh -c #(nop)  LABEL org.label-schema.sc…   0B</div><div class="line">&lt;missing&gt;           2 months ago        /bin/sh -c #(nop) ADD file:61908381d3142ffba…   203MB</div><div class="line">[root@localhost ~]#</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="CMD-ENTRYPOINT镜像案例"><a href="#CMD-ENTRYPOINT镜像案例" class="headerlink" title="CMD/ENTRYPOINT镜像案例"></a>CMD/ENTRYPOINT镜像案例</h4><p>CMD</p>
+<ul>
+<li>CMD的命令会被docker run后添加的命令参数所覆盖。</li>
+</ul>
+<p>ENTRYPOINT</p>
+<ul>
+<li>docker run之后的参数会被当做参数传递给ENTRYPOINT, 之后形成新的命令组合</li>
+</ul>
+<h4 id="Dockerfile案例-–-自定义的tomcat9"><a href="#Dockerfile案例-–-自定义的tomcat9" class="headerlink" title="Dockerfile案例 – 自定义的tomcat9"></a>Dockerfile案例 – 自定义的tomcat9</h4><h2 id="Docker常用安装"><a href="#Docker常用安装" class="headerlink" title="Docker常用安装"></a>Docker常用安装</h2><h3 id="安装mysql"><a href="#安装mysql" class="headerlink" title="安装mysql"></a>安装mysql</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"># 虚拟机中启动mysql</div><div class="line">docker pull mysql:5.6</div><div class="line">docker run -p 12345:3306 --name mysql -v /zzyyuse/mysql/conf:/etc/mysql/conf.d -v /zzyyuse/mysql/logs:/logs -v /zzyyuse/mysql/data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=123456 -d mysql:5.6</div><div class="line"></div><div class="line"># 虚拟机中进入docker</div><div class="line">docker exec -it 8810fbb3c2e6 /bin/bash </div><div class="line"></div><div class="line"># 在最外层的mac下通过虚拟机映射的12345端口访问虚拟机运行的docker中的mysql</div><div class="line">mysql -h 192.168.187.30 -uroot -P 12345 -p # 该命令在Mac下执行，192.168.187.30为虚拟机的IP</div></pre></td></tr></table></figure>
+<p>安装中遇到的问题<br>第一次<code>docker run</code>时，把密码写错写成了<code>-e MYSQL_ROOT_PASSWORD=123455</code>，然后进入到mysql的容器中<code>mysql -uroot -p</code>时输密码<code>123456</code>死活报<code>ERROR 1045 (28000): Access denied for user &#39;root&#39;@&#39;localhost&#39; (using password: YES)</code>。把容器删了重新跑命令也不顶用。最后才反应过来，因为容器跑的时候添加了<code>-v</code>挂载配置文件的目录到宿主机上了。因此配置文件中设置的密码，一直都是第一次输错的密码<code>123455</code>, 把<code>/zzyyuse/mysql</code>目录下全部清掉,重新<code>docker run</code>后，就OK了。</p>
+<h2 id="一些要点"><a href="#一些要点" class="headerlink" title="一些要点"></a>一些要点</h2><h3 id="CMD-和-ENTRYPOINT的区别"><a href="#CMD-和-ENTRYPOINT的区别" class="headerlink" title="CMD 和 ENTRYPOINT的区别"></a>CMD 和 ENTRYPOINT的区别</h3><h4 id="Dockerfile中"><a href="#Dockerfile中" class="headerlink" title="Dockerfile中"></a>Dockerfile中</h4><ul>
+<li><p>CMD，会被命令行参数覆盖</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"># Dockerfile</div><div class="line">FROM Ubuntu</div><div class="line"></div><div class="line">CMD sleep 5</div><div class="line"></div><div class="line"># 命令行要修改sleep时间时，需要连命令一起带入</div><div class="line">docker run ubuntu-sleeper sleep 10</div></pre></td></tr></table></figure>
+</li>
+<li><p>ENTRYPOINT的命令，一定会被执行，不会被命令行参数覆盖。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"># Dockerfile</div><div class="line">FROM Ubuntu</div><div class="line"></div><div class="line">ENTRYPOINT [&quot;sleep&quot;]</div><div class="line"></div><div class="line"># 命令行执行时，加秒数即可</div><div class="line">docker run ubuntu-sleeper 10</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="Shell-vs-Exec模式"><a href="#Shell-vs-Exec模式" class="headerlink" title="Shell vs. Exec模式"></a>Shell vs. Exec模式</h4><p>推荐使用exec模式(JSON格式), Shell模式是先使用shell来调用命令，多一层调用，如果从外部发送任何POSIX信号到docker容器, 由于/bin/sh命令不会转发消息给实际运行的ping命令, 则不能安全得关闭docker容器(参考更详细的文档:<a href="https://www.ctl.io/developers/blog/post/gracefully-stopping-docker-containers/" target="_blank" rel="external">Gracefully Stopping Docker Containers</a>).<br>注意Exec模式，是不能获取$HOME等环境变量的，因为环境变量是shell相关的。</p>
+<h4 id="组合使用"><a href="#组合使用" class="headerlink" title="组合使用"></a>组合使用</h4><p>组合使用ENTRYPOINT和CMD, ENTRYPOINT指定默认的运行命令, CMD指定默认的运行参数. 例子如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">FROM ubuntu:trusty</div><div class="line">ENTRYPOINT [&quot;/bin/ping&quot;,&quot;-c&quot;,&quot;3&quot;]</div><div class="line">CMD [&quot;localhost&quot;]</div></pre></td></tr></table></figure></p>
+<p>则从外面可以修改CMD，但是<code>/bin/ping -c 3</code>被当做强行命令不能被命令行参数所修改。</p>
+<h4 id="强制修改Dockerfile中的entrypoint"><a href="#强制修改Dockerfile中的entrypoint" class="headerlink" title="强制修改Dockerfile中的entrypoint"></a>强制修改Dockerfile中的entrypoint</h4><p>使用<code>--entrypoint</code>参数来修改Dockerfile中的ENTRYPOINT命令<br>例子:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker run --entrypoint sleep2.0 ubuntu-sleeper 10</div></pre></td></tr></table></figure></p>
+<p>在docker起来后，会执行命令<code>sleep2.0 10</code>。</p>
+<h3 id="export-和save的区别"><a href="#export-和save的区别" class="headerlink" title="export 和save的区别"></a>export 和save的区别</h3><ol>
+<li>是否包含镜像历史</li>
+</ol>
+<ul>
+<li><code>export</code> 导出（<code>import</code> 导入）是根据容器拿到的镜像，再导入时会丢失镜像所有的历史记录和元数据信息（即仅保存容器当时的快照状态），所以无法进行回滚操作。</li>
+<li>而 <code>save</code> 保存（<code>load</code> 加载）的镜像，没有丢失镜像的历史，可以回滚到之前的层（layer）。</li>
+</ul>
+<ol>
+<li>是否可以对镜像重命名</li>
+</ol>
+<ul>
+<li><code>docker import</code> 可以为镜像指定新名称</li>
+<li><code>docker load</code> 不能对载入的镜像重命名</li>
+</ul>
+<ol>
+<li>是否可以同时将多个镜像打包到一个文件中</li>
+</ol>
+<ul>
+<li><code>docker export</code> 不支持</li>
+<li><code>docker save</code> 支持</li>
+</ul>
+<ol>
+<li>是否包含容器修改</li>
+</ol>
+<ul>
+<li><code>docker save</code>是基于镜像的操作，因此容器中的修改内容不会体现到镜像文件中。</li>
+<li><code>docker export</code>是基于容器的操作，因此容器中所做的修改会体现到镜像文件中。</li>
+</ul>
+<h3 id="Docker-基础命令"><a href="#Docker-基础命令" class="headerlink" title="Docker 基础命令"></a>Docker 基础命令</h3><p>docker run<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"># 以交互方式运行名为nginx的image</div><div class="line">docker run -it nginx &apos;/bin/bash&apos;</div><div class="line"></div><div class="line"># 后台运行名为nginx:1.14-apline的image，并将container起名为webapp</div><div class="line">docker run -d --name webapp nginx:1.14-alpine</div><div class="line"></div><div class="line"># docker 绑定主机的80端口和容器的8080端口, TCP端口</div><div class="line">docker run -p 127.0.0.1:80:8080/tcp ubuntu bash</div><div class="line"></div><div class="line"># 运行container并设置环境变量APP_COLOR=blue</div><div class="line">docker run -d -p 38282:8080 --name blue-app -e APP_COLOR=blue image_name</div><div class="line"></div><div class="line"># 指定network运行</div><div class="line">docker run --name alpine-2 --network=none alpine</div><div class="line"></div><div class="line"># 连接其他container运行</div><div class="line">docker run --network=wp-mysql-network -e DB_Host=mysql-db -e DB_Password=db_pass123 -p 38080:8080 --name webapp --link mysql-db:mysql-db -d kodekloud/simple-webapp-mysql</div></pre></td></tr></table></figure></p>
+<p>获取某个container的环境变量<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"># 获取全部信息，手动查找</div><div class="line">docker inspect container_name </div><div class="line"></div><div class="line"># 逐行列出环境变量, 无论container是否在运行都可以使用</div><div class="line">docker inspect -f \</div><div class="line">    &apos;&#123;&#123;range $index, $value := .Config.Env&#125;&#125;&#123;&#123;println $value&#125;&#125;&#123;&#123;end&#125;&#125;&apos; \</div><div class="line">    container_name | grep MYSQL_</div><div class="line"></div><div class="line"># 打印出环境变量的值, container在运行时可用</div><div class="line">docker exec container env</div></pre></td></tr></table></figure></p>
+<p>docker build<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># 根据当前目录Dockerfile打包Image,命名为webapp-color</div><div class="line">docker build -t webapp-color .</div></pre></td></tr></table></figure></p>
+<p>docker network create<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"># 查看docker network create的参数</div><div class="line">docker network create -h</div><div class="line"></div><div class="line"># 创建driver是bridge，网段是182.18.0.1、24，网关是182.18.0.1，名字是wp-mysql-network的网络</div><div class="line">docker network create --driver bridge --subnet 182.18.0.1/24 --gateway 182.18.0.1 wp-mysql-network</div><div class="line"></div><div class="line"># 查看创建的网络</div><div class="line">docker network ls</div><div class="line"></div><div class="line"># 查看网络的详情</div><div class="line">docker network inspect wp-mysql-network</div></pre></td></tr></table></figure></p>
+<p>获取container网络有关的信息<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker inspect container_name -f &quot;&#123;&#123;json .NetworkSettings.Networks &#125;&#125;&quot;</div></pre></td></tr></table></figure></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><a href="https://www.hangge.com/blog/cache/detail_2411.html" target="_blank" rel="external">Docker - 实现本地镜像的导出、导入（export、import、save、load）</a></li>
+<li><a href="https://www.bilibili.com/video/BV1Ls411n7mx" target="_blank" rel="external">尚硅谷Docker核心基础(快速上手,迅速入门)</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> Kubernetes </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Docker </tag>
+            
+            <tag> CentOS </tag>
+            
+            <tag> DockerHub </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[一些常用的Nginx+Passenger配置]]></title>
       <url>/2020/06/09/some-new-nginx-config/</url>
       <content type="html"><![CDATA[<p>摘记一些常用的nginx和passenger(Passenger + Nginx)配置</p>
@@ -1311,6 +1768,74 @@
     </entry>
     
     <entry>
+      <title><![CDATA[Ruby & Rails Tips]]></title>
+      <url>/2020/05/14/ruby-rails-tips/</url>
+      <content type="html"><![CDATA[<h3 id="Struct-amp-OpenStruct"><a href="#Struct-amp-OpenStruct" class="headerlink" title="Struct &amp; OpenStruct"></a>Struct &amp; OpenStruct</h3><h4 id="Struct"><a href="#Struct" class="headerlink" title="Struct"></a>Struct</h4><p>Struct 用于快速声明一个类。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Person = Struct.new(:age, :name, :sex)</div><div class="line">me = Person.new(24, &apos;Spirit&apos;, &apos;male&apos;)</div><div class="line">me.age  # =&gt; 24</div><div class="line">me.name = &apos;Test&apos;</div><div class="line">me.name # =&gt; &apos;Test&apos;</div><div class="line">me.height # =&gt; NoMethodError</div></pre></td></tr></table></figure></p>
+<p>优点: 快速声明和实现<br>缺点: 只能响应定义的字段，不能响应任意的属性</p>
+<h4 id="OpenStruct"><a href="#OpenStruct" class="headerlink" title="OpenStruct"></a>OpenStruct</h4><p>参考<a href="https://ruby-china.org/topics/21617" target="_blank" rel="external">Ruby Ruby 中的 OpenStruct 详解</a><br>OpenStruct可以自由设置set和get的一个类<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">p = OpenStruct.new()</div><div class="line">p.name=&apos;hello&apos;</div><div class="line">p.name  # p.name就是hello</div><div class="line">p.age=12</div><div class="line">p.age   # p.age就是12</div></pre></td></tr></table></figure></p>
+<h3 id="skip-before-action"><a href="#skip-before-action" class="headerlink" title="skip before_action"></a>skip before_action</h3><ul>
+<li><a href="https://stackoverflow.com/questions/36878355/exclude-a-controller-from-before-action" target="_blank" rel="external">Exclude a controller from before_action</a></li>
+</ul>
+<h3 id="API接口中使用cookies的方法"><a href="#API接口中使用cookies的方法" class="headerlink" title="API接口中使用cookies的方法"></a>API接口中使用cookies的方法</h3><p>方法一: 在Controller中添加<code>include ActionController::Cookies</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">class ApplicationController &lt; ActionController::API</div><div class="line">  include ActionController::Cookies</div></pre></td></tr></table></figure>
+<p>在Controller中就可以访问到cookies变量了。</p>
+<p>方法二: 如果不想引入过多的方法，可以在Controller中定义cookies方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">def cookies</div><div class="line">  # helpers not available in --api mode</div><div class="line">  request.cookie_jar</div><div class="line">end</div></pre></td></tr></table></figure></p>
+<h3 id="Rails-4中memory-store缓存的使用"><a href="#Rails-4中memory-store缓存的使用" class="headerlink" title="Rails 4中memory_store缓存的使用"></a>Rails 4中memory_store缓存的使用</h3><p>Rails 4中<code>memory_store</code>类型的基础用法</p>
+<h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><p>需要在<code>config/environments/development.rb</code>或者<code>config/environments/production.rb</code>中设置开启cache</p>
+<ul>
+<li><code>config.action_controller.perform_caching</code>设置为true</li>
+<li><code>config.cache_store</code>设置为<code>:memory_store</code></li>
+</ul>
+<h4 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h4><p>所有方法参考: <a href="https://api.rubyonrails.org/v4.0.13/classes/ActiveSupport/Cache/Store.html" target="_blank" rel="external">ActiveSupport::Cache::Store on Ruby on Rails 4.0.13</a></p>
+<ul>
+<li><p>写入Cache,使用<code>Rails.cache.write</code>，使用<code>expires_in</code>来设置过期时间，不设置的话默认不过期。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Rails.cache.write(cache_key, 10 ,expires_in: 10.seconds)</div></pre></td></tr></table></figure>
+</li>
+<li><p>读取Cache, 使用<code>Rails.cache.read</code>,传入key，读取value</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Rails.cache.read(cache_key)</div></pre></td></tr></table></figure>
+</li>
+<li><p>获取Cache对象,使用<code>Rails.cache.send</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Rails.cache.send(:read_entry, cache_key,&#123;&#125;)</div></pre></td></tr></table></figure>
+</li>
+<li><p>增加Cache中integer类型的值, 使用<code>Rails.cache.increment</code>, 注意这边如果不设置<code>expires_in</code>，则该条目就不再过期，无论原先记录write时有没有设置过期时间。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Rails.cache.increment(cache_key,1, expires_in: 10.seconds)</div></pre></td></tr></table></figure>
+</li>
+<li><p>读取Cache，如果没有就获取内容后插入, 使用<code>Rails.cache.fetch</code></p>
+<ul>
+<li>fetch不加block，就相当于read</li>
+<li>fetch加了block，那么如果要获取的cache不存在，就会将block中的值添加到cache中，并返回。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Rails.cache.fetch(&apos;test_key&apos;) do</div><div class="line">  &apos;hello world&apos;</div><div class="line">end</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<p>上述几个命令操作过程的记录<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">2.3.8 :135 &gt;   cache_key=&apos;test_key&apos;</div><div class="line"> =&gt; &quot;test_key&quot;</div><div class="line">2.3.8 :136 &gt; Rails.cache.write(cache_key, 10 ,expires_in: 10.seconds)</div><div class="line"> =&gt; true</div><div class="line">2.3.8 :137 &gt; Rails.cache.send(:read_entry, cache_key,&#123;&#125;)</div><div class="line"> =&gt; #&lt;ActiveSupport::Cache::Entry:0x00007fbfa8151750 @value=10, @created_at=1603420143.660662, @expires_in=10.0&gt;</div><div class="line">2.3.8 :138 &gt; Rails.cache.read(cache_key)</div><div class="line"> =&gt; 10</div><div class="line">2.3.8 :139 &gt; Rails.cache.increment(cache_key,1, expires_in: 10.seconds)</div><div class="line"> =&gt; 11</div><div class="line">2.3.8 :140 &gt; Rails.cache.read(cache_key)</div><div class="line"> =&gt; 11</div><div class="line">2.3.8 :141 &gt; Rails.cache.send(:read_entry, cache_key,&#123;&#125;)</div><div class="line"> =&gt; #&lt;ActiveSupport::Cache::Entry:0x00007fbfa9003f78 @value=11, @created_at=1603420143.666131, @expires_in=10.0&gt;</div><div class="line">2.3.8 :142 &gt;</div></pre></td></tr></table></figure></p>
+<h4 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h4><ul>
+<li><a href="https://api.rubyonrails.org/v4.0.13/classes/ActiveSupport/Cache/Store.html" target="_blank" rel="external">ActiveSupport::Cache::Store on Ruby on Rails 4.0.13</a></li>
+<li><a href="https://stackoverflow.com/questions/22379157/rails-cache-fetch-vs-cache-read-write" target="_blank" rel="external">Rails: cache.fetch vs cache.read/write</a></li>
+<li><a href="https://stackoverflow.com/questions/39868775/get-expiration-time-of-rails-cached-item" target="_blank" rel="external">Get expiration time of Rails cached item</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> Code </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Ruby </tag>
+            
+            <tag> Rails </tag>
+            
+            <tag> Cache </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[Aliyun Linux 2上imageMagick的fonts配置问题]]></title>
       <url>/2020/05/04/imageMagick-fonts-issue-on-Aliyun-Linux-2/</url>
       <content type="html"><![CDATA[<h3 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h3><p>公司阿里云服务器部署Rails程序时，发现Gem <a href="https://github.com/pludoni/simple-captcha" target="_blank" rel="external">simple_captcha2</a>生成的验证码图片，和以前的不太一样。图片中的数字会比正常情况下靠上很多, 影响用户体验。</p>
@@ -1402,9 +1927,9 @@
         
         <tags>
             
-            <tag> Aliyun </tag>
-            
             <tag> Image </tag>
+            
+            <tag> Aliyun </tag>
             
             <tag> CentOS </tag>
             
@@ -2712,9 +3237,9 @@
         
         <tags>
             
-            <tag> MacOS </tag>
-            
             <tag> Network </tag>
+            
+            <tag> MacOS </tag>
             
         </tags>
         
@@ -3701,10 +4226,12 @@
 <hr>
 <h3 id="Macos下tree显示中文"><a href="#Macos下tree显示中文" class="headerlink" title="Macos下tree显示中文"></a>Macos下tree显示中文</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># 安装tree</div><div class="line">brew install tree`</div><div class="line"></div><div class="line"># 中文不乱码加参数 -N</div><div class="line">tree -N</div></pre></td></tr></table></figure>
 <hr>
-<h3 id="CentoOS-7-最小化安装后可能需要的一些命令"><a href="#CentoOS-7-最小化安装后可能需要的一些命令" class="headerlink" title="CentoOS 7 最小化安装后可能需要的一些命令"></a>CentoOS 7 最小化安装后可能需要的一些命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">yum install wget curl</div><div class="line">yum install unzip</div><div class="line">yum install tree</div><div class="line">yum install net-tools</div></pre></td></tr></table></figure>
+<h3 id="CentoOS-7-最小化安装后可能需要的一些命令"><a href="#CentoOS-7-最小化安装后可能需要的一些命令" class="headerlink" title="CentoOS 7 最小化安装后可能需要的一些命令"></a>CentoOS 7 最小化安装后可能需要的一些命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">yum install wget curl</div><div class="line">yum install unzip</div><div class="line">yum install tree</div><div class="line">yum install net-tools</div><div class="line">yum install lszrz</div></pre></td></tr></table></figure>
 <a id="more"></a>
 <hr>
 <h3 id="CentOS-7-中命令行UI编辑网口信息的命令"><a href="#CentOS-7-中命令行UI编辑网口信息的命令" class="headerlink" title="CentOS 7 中命令行UI编辑网口信息的命令"></a>CentOS 7 中命令行UI编辑网口信息的命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ yum install NetworkManager-tui</div><div class="line"></div><div class="line">$ nmtui</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="CentOS-7中命令行安装GUI组件"><a href="#CentOS-7中命令行安装GUI组件" class="headerlink" title="CentOS 7中命令行安装GUI组件"></a>CentOS 7中命令行安装GUI组件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># 安装组件</div><div class="line">yum groupinstall &quot;GNOME Desktop&quot; &quot;Graphical Administration Tools&quot;</div><div class="line"># 更改系统运行级别</div><div class="line">ln -sf /lib/systemd/system/runlevel5.target /etc/systemd/system/default.target</div><div class="line"># 重启</div><div class="line">reboot</div></pre></td></tr></table></figure>
 <hr>
 <h3 id="MacOS-ffplay只有声音没有图像"><a href="#MacOS-ffplay只有声音没有图像" class="headerlink" title="MacOS ffplay只有声音没有图像"></a>MacOS ffplay只有声音没有图像</h3><p>如果rtmp地址加了单引号，ffplay会偶尔抽风只播放声音而没有视频, 去掉单引号或者使用双引号代替<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># 可能会抽风，没有图像,只能解析音频信号</div><div class="line">ffplay &apos;rtmp://192.168.187.128/live/room8878&apos;</div><div class="line"></div><div class="line"># 去掉单引号或换用双引号，没发现过问题 </div><div class="line">ffplay rtmp://192.168.187.128/live/room8878</div><div class="line">ffplay &quot;rtmp://192.168.187.128/live/room8878&quot;</div></pre></td></tr></table></figure></p>
 <hr>
@@ -3847,6 +4374,16 @@
 <p>例子:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ tar czvf ~/tmp/info.tar.gz --exclude=test_on_20180827 ./</div></pre></td></tr></table></figure></p>
 <hr>
 <h3 id="Linux下查看网卡速率"><a href="#Linux下查看网卡速率" class="headerlink" title="Linux下查看网卡速率"></a>Linux下查看网卡速率</h3><p>使用ethtool命令查看网速信息。<br><code>Supported link modes</code>中表示网卡支持的速率。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"># ethtool em1</div><div class="line">Settings for em1:</div><div class="line">	Supported ports: [ TP ]</div><div class="line">	Supported link modes:   10baseT/Half 10baseT/Full</div><div class="line">	                        100baseT/Half 100baseT/Full</div><div class="line">	                        1000baseT/Half 1000baseT/Full</div><div class="line">	Supported pause frame use: No</div><div class="line">	Supports auto-negotiation: Yes</div><div class="line">	Supported FEC modes: Not reported</div><div class="line">	Advertised link modes:  10baseT/Half 10baseT/Full</div><div class="line">	                        100baseT/Half 100baseT/Full</div><div class="line">	                        1000baseT/Half 1000baseT/Full</div><div class="line">	Advertised pause frame use: Symmetric</div><div class="line">	Advertised auto-negotiation: Yes</div><div class="line">	Advertised FEC modes: Not reported</div><div class="line">	Link partner advertised link modes:  10baseT/Half 10baseT/Full</div><div class="line">	                                     100baseT/Half 100baseT/Full</div><div class="line">	                                     1000baseT/Half 1000baseT/Full</div><div class="line">	Link partner advertised pause frame use: No</div><div class="line">	Link partner advertised auto-negotiation: Yes</div><div class="line">	Link partner advertised FEC modes: Not reported</div><div class="line">	Speed: 1000Mb/s</div><div class="line">	Duplex: Full</div><div class="line">	Port: Twisted Pair</div><div class="line">	PHYAD: 1</div><div class="line">	Transceiver: internal</div><div class="line">	Auto-negotiation: on</div><div class="line">	MDI-X: on</div><div class="line">	Supports Wake-on: g</div><div class="line">	Wake-on: d</div><div class="line">	Current message level: 0x000000ff (255)</div><div class="line">			       drv probe link timer ifdown ifup rx_err tx_err</div><div class="line">	Link detected: yes</div><div class="line">#</div></pre></td></tr></table></figure></p>
+<hr>
+<h3 id="vim中查看识别的文件类型"><a href="#vim中查看识别的文件类型" class="headerlink" title="vim中查看识别的文件类型"></a>vim中查看识别的文件类型</h3><p>命令如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">:verbose set filetype?</div></pre></td></tr></table></figure></p>
+<p>markdown文件显示如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">filetype=markdown</div><div class="line">      Last set from ~/.vimrc line 1063</div></pre></td></tr></table></figure></p>
+<hr>
+<h3 id="vim中ESC失效问题"><a href="#vim中ESC失效问题" class="headerlink" title="vim中ESC失效问题"></a>vim中ESC失效问题</h3><p>不知道装的哪个插件，有时候会导致ESC失效，按ESC会输出<code>^M</code><br>此时可以先Ctrl + c, 然后就可以正常使用了。</p>
+<hr>
+<h3 id="iTerm2-分屏快捷键"><a href="#iTerm2-分屏快捷键" class="headerlink" title="iTerm2 分屏快捷键"></a>iTerm2 分屏快捷键</h3><p>新建tab: command + t<br>新建window: command + n<br>tab间切换: command + 数字键(9表示左右一个tab)<br>tab间切换: command + 方向键<br>同一tab垂直分屏: command + d<br>同一tab水平分屏: comamnd + shift + d<br>最近使用的分屏间切换: comamnd + ]和command + [<br>tab间切换: command + option + 方向键</p>
+<hr>
+<h3 id="Macos下安装OpenJDK"><a href="#Macos下安装OpenJDK" class="headerlink" title="Macos下安装OpenJDK"></a>Macos下安装OpenJDK</h3><p>使用brew安装openJDK<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">$ brew reinstall openjdk</div><div class="line">==&gt; Downloading https://homebrew.bintray.com/bottles/openjdk-14.0.1.mojave.bottle.tar.gz</div><div class="line">Already downloaded: /Users/carlshen/Library/Caches/Homebrew/downloads/44add4279f37d89a5cd5e80a8776dac90b324b06512be00eaf3e186675c6561a--openjdk-14.0.1.mojave.bottle.tar.gz</div><div class="line">==&gt; Reinstalling openjdk</div><div class="line">==&gt; Pouring openjdk-14.0.1.mojave.bottle.tar.gz</div><div class="line">==&gt; Caveats</div><div class="line">For the system Java wrappers to find this JDK, symlink it with</div><div class="line">  sudo ln -sfn /usr/local/opt/openjdk/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk.jdk</div><div class="line"></div><div class="line">openjdk is keg-only, which means it was not symlinked into /usr/local,</div><div class="line">because it shadows the macOS `java` wrapper.</div><div class="line"></div><div class="line">If you need to have openjdk first in your PATH run:</div><div class="line">  echo &apos;export PATH=&quot;/usr/local/opt/openjdk/bin:$PATH&quot;&apos; &gt;&gt; /Users/carlshen/.bash_profile</div><div class="line"></div><div class="line">For compilers to find openjdk you may need to set:</div><div class="line">  export CPPFLAGS=&quot;-I/usr/local/opt/openjdk/include&quot;</div><div class="line"></div><div class="line">==&gt; Summary</div><div class="line">🍺  /usr/local/Cellar/openjdk/14.0.1: 634 files, 319MB</div><div class="line">$</div></pre></td></tr></table></figure></p>
+<p>设置系统java来使用openJDK<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo ln -sfn /usr/local/opt/openjdk/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk.jdk</div></pre></td></tr></table></figure></p>
 ]]></content>
       
         <categories>
@@ -3899,6 +4436,11 @@
 <h3 id="AWS-架构图标"><a href="#AWS-架构图标" class="headerlink" title="AWS 架构图标"></a>AWS 架构图标</h3><p>网址: <a href="https://amazonaws-china.com/cn/architecture/icons/?from=groupmessage&amp;isappinstalled=0" target="_blank" rel="external">AWS 架构图标</a><br>包含了Microsoft PowerPoint的工具包和一些推荐的在线工具</p>
 <hr>
 <h3 id="MacOS下default-write的隐藏设置"><a href="#MacOS下default-write的隐藏设置" class="headerlink" title="MacOS下default write的隐藏设置"></a>MacOS下default write的隐藏设置</h3><p>网址: <a href="https://www.defaults-write.com/" target="_blank" rel="external">defaults-write.com</a><br>MacOS下一些系统设置，可以使用命令行来设置。超级方便，不用一个一个GUI点开来设置了，尤其是迁移到新机器时。</p>
+<hr>
+<h3 id="The-best-Programming-books"><a href="#The-best-Programming-books" class="headerlink" title="The best Programming books"></a>The best Programming books</h3><p>一个网站，汇聚了作者认为的最好的编程书籍。<br><a href="https://www.best-books.dev/" target="_blank" rel="external">Best-Books.dev</a></p>
+<blockquote>
+<h4 id="Best-Books-dev"><a href="#Best-Books-dev" class="headerlink" title="Best-Books.dev"></a>Best-Books.dev</h4><h4 id="The-best-Programming-books-1"><a href="#The-best-Programming-books-1" class="headerlink" title="The best Programming books."></a>The best Programming books.</h4><p>Compiling thousands of lists and recommendations, all in one place.</p>
+</blockquote>
 ]]></content>
       
         <categories>
@@ -4131,9 +4673,9 @@
         
         <tags>
             
-            <tag> EC2 </tag>
-            
             <tag> Network </tag>
+            
+            <tag> EC2 </tag>
             
         </tags>
         
@@ -5059,9 +5601,9 @@
         
         <tags>
             
-            <tag> EC2 </tag>
-            
             <tag> MacOS </tag>
+            
+            <tag> EC2 </tag>
             
             <tag> SSH </tag>
             
@@ -11929,9 +12471,9 @@ You can wait for the scheduled retirement date - when the instance is stopped - 
             
             <tag> RDS </tag>
             
-            <tag> AWS SDK </tag>
-            
             <tag> Ruby </tag>
+            
+            <tag> AWS SDK </tag>
             
             <tag> PostgreSQL </tag>
             

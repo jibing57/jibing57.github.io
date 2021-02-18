@@ -3,6 +3,272 @@
   
     
     <entry>
+      <title><![CDATA[Postgresql数据库磁盘快速增长的一个可能原因]]></title>
+      <url>/2021/02/07/one-record-about-continuous-disk-rise-of-Postgresql/</url>
+      <content type="html"><![CDATA[<h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><p>Postgresql中发现磁盘占用空间莫名快速增长时，有一种可能是因为<code>pg_stat_activity</code>中有异常的很久之前的查询导致的。<br>持续时间特别长的查询会导致Postgresql不停的维护该查询之后所有更新的数据记录，导致表大小快速的膨胀。</p>
+<h3 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h3><h4 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h4><p>AWS上一套系统的RDS之前从Postgresql 9.5升级到了9.6。升级之后跑的好好的，突然在1月中接到警报，说磁盘不足。<br>很好奇,这是一个访问量不大的网站, 之前记得一百多个G空间的。怎么突然就警报空间不足了。</p>
+<h4 id="调查"><a href="#调查" class="headerlink" title="调查"></a>调查</h4><p>登录AWS Console一看，吓了一跳，RDS的数据库剩余磁盘容量，2个星期内从180G下降到80G。空间下降这么快，肯定是哪边出了问题。<br>使用<code>psql</code>登录后台，查看了各表的大小<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">FROM (</div><div class="line">    SELECT</div><div class="line">        table_name,</div><div class="line">        pg_table_size(table_name) AS table_size,</div><div class="line">        pg_indexes_size(table_name) AS indexes_size,</div><div class="line">        pg_total_relation_size(table_name) AS total_size</div><div class="line">    FROM (</div><div class="line">        SELECT (&apos;&quot;&apos; || table_schema || &apos;&quot;.&quot;&apos; || table_name || &apos;&quot;&apos;) AS table_name</div><div class="line">        FROM information_schema.tables</div><div class="line">    ) AS all_tables</div><div class="line">    ORDER BY total_size DESC</div><div class="line">) AS pretty_sizes</div></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>发现一个名为<code>listings</code>表的size异常的大。</p>
+<p>首先第一反应，手动执行命令<code>vacuum VERBOSE analyze listings</code>来尝试清理<code>listings</code>表。<br>在输出结果中发现了奇怪的地方，<code>xxxxxxx dead row versions cannot be removed yet.</code>。提示有几百万条旧记录无法被删除。</p>
+<h4 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h4><p>网上一通找，在<a href="https://www.postgresql.org/message-id/1510740365.2424.22.camel%40cybertec.at" target="_blank" rel="external">Vacuum not removing dead tuples</a>中找到了原因。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">There are three possibilities:</div><div class="line"></div><div class="line">1) Active transactions:</div><div class="line">   SELECT backend_xmin, xact_start, datname, pid, query</div><div class="line">   FROM pg_stat_activity</div><div class="line">   WHERE state &lt;&gt; &apos;idle&apos;</div><div class="line">   ORDER BY xact_start;</div><div class="line"></div><div class="line">2) Prepared transactions:</div><div class="line">   SELECT xid, prepared</div><div class="line">   FROM pg_prepared_xacts;</div><div class="line"></div><div class="line">3) Lagging replication slots:</div><div class="line">   SELECT xmin, slot_name, active, active_pid</div><div class="line">   FROM pg_replication_slots;</div><div class="line"></div><div class="line">The &quot;xid&quot; columns will tell you which tuples VACUUM can</div><div class="line">remove: Any tuple with &quot;xmax&quot; less than this are fair game.</div></pre></td></tr></table></figure></p>
+<p>检查<code>pg_stat_activity</code>中的sql，发现一个运行了长达两星期的listings查询, 为了维护该transaction，Postgresql不得不将后续所有数据的更新都保存了下来，导致了大量的磁盘消耗。<br>使用<code>SELECT pg_terminate_backend PID</code>杀死了这个查询。然后再使用<code>vacuum VERBOSE analyze listings</code>命名清理<code>listings</code>表，磁盘容量恢复到130个G。</p>
+<h4 id="疑问"><a href="#疑问" class="headerlink" title="疑问"></a>疑问</h4><p>至今还是不知道是什么原因导致一个查询可以在客户端已经terminate的情况下，在数据库端执行了两个多星期还没有被终结。即使是全表都扫一遍撑死也就几分钟的事情。</p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://www.postgresql.org/message-id/1510740365.2424.22.camel%40cybertec.at" target="_blank" rel="external">Vacuum not removing dead tuples</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> AWS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> RDS </tag>
+            
+            <tag> PostgreSQL </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[CentOS 7.0.1406上yum install提示exiting on user cancel错误的解决方法]]></title>
+      <url>/2021/02/07/yum-install-exiting-on-user-cancel-on-centos-7-0-1406/</url>
+      <content type="html"><![CDATA[<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>公司一台老CentOS 7机器上要安装某个软件，<code>yum install</code>后，提示安装失败，提示<code>Exiting on user cancel</code>。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">File &quot;/usr/libexec/urlgrabber-ext-down&quot;, line 75, in &lt;module&gt;</div><div class="line">main()</div><div class="line">File &quot;/usr/libexec/urlgrabber-ext-down&quot;, line 61, in main</div><div class="line">fo = PyCurlFileObject(opts.url, opts.filename, opts)</div><div class="line">File &quot;/usr/lib/python2.7/site-packages/urlgrabber/grabber.py&quot;, line 1258, in __init__</div><div class="line">self._do_open()</div><div class="line">File &quot;/usr/lib/python2.7/site-packages/urlgrabber/grabber.py&quot;, line 1589, in _do_open</div><div class="line">self._do_grab()</div><div class="line">File &quot;/usr/lib/python2.7/site-packages/urlgrabber/grabber.py&quot;, line 1723, in _do_grab</div><div class="line">self._do_perform()</div><div class="line">File &quot;/usr/lib/python2.7/site-packages/urlgrabber/grabber.py&quot;, line 1517, in _do_perform</div><div class="line">raise KeyboardInterrupt</div><div class="line">KeyboardInterrupt</div><div class="line"></div><div class="line"></div><div class="line">Exiting on user cancel</div></pre></td></tr></table></figure></p>
+<p>试了多次都是这样，一脸诧异。<br>查看了下CentOS版本是<code>CentOS Linux release 7.0.1406 (Core)</code>, 网上搜一通，发现是CentOS 7.0.1406中yum的一个Bug。摘录解决方法如下。</p>
+<a id="more"></a>
+<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><p>CentOS社区论坛上有相关描述，参见<a href="https://forums.centos.org/viewtopic.php?f=47&amp;t=47372&amp;start=10" target="_blank" rel="external">SSH and Yum don’t work in clean CentOS 7</a></p>
+<p>后续版本中已经解决了。但在<code>CentOS 7.0.1406</code>中的解决方法，需要修改<code>/usr/lib/python2.7/site-packages/urlgrabber/grabber.py</code>文件的1510行。<br>将<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">elif errcode in (42, 55, 56):</div></pre></td></tr></table></figure></p>
+<p>修改为<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">elif errcode == 42:</div></pre></td></tr></table></figure></p>
+<p>修改后再<code>yum install</code>就解决了。</p>
+<p>有趣的一点是，1510行下面的注释。从中就可以看出，即使是操作系统的基础包，很多时候也是包含了妥协的成分。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">elif errcode in (42, 55, 56):</div><div class="line">    # this is probably wrong but ultimately this is what happens</div><div class="line">    # we have a legit http code and a pycurl &apos;writer failed&apos; code</div><div class="line">    # which almost always means something aborted it from outside</div><div class="line">    # since we cannot know what it is -I&apos;m banking on it being</div><div class="line">    # a ctrl-c. XXXX - if there&apos;s a way of going back two raises to</div><div class="line">    # figure out what aborted the pycurl process FIXME</div><div class="line">    raise KeyboardInterrupt</div></pre></td></tr></table></figure></p>
+]]></content>
+      
+        <categories>
+            
+            <category> Linux </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> CentOS </tag>
+            
+            <tag> Yum </tag>
+            
+            <tag> Bug </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[MacOS下复制快捷键失效问题]]></title>
+      <url>/2021/01/15/why-command-c-cannot-copy-on-macos/</url>
+      <content type="html"><![CDATA[<p>不知道从哪个版本的OSX系统开始，复制快捷键<code>Command + C</code>就开始不怎么灵，有时候按一下复制不成功，需要多按几下才有效。<br>之前网上查找没找到什么可靠的说法。就一直以为是系统的Bug。<br>这么多年已经习惯每次复制时，按两下<code>Command + C</code>了。</p>
+<p>直到今天无意间看到公众号上的一个评论，说可能是第三方词典app的划词功能导致的。<br>试了一下，关闭了电脑上欧路词典的划词搜索后，瞬间豁然开朗, <code>Command + C</code>如丝般柔顺，再也没出现过拷贝不生效的情况了。</p>
+<p>不禁再次反思自己，懊恼自己这么多年的妥协，16年知乎上就有帖子<a href="https://www.zhihu.com/question/35784714/answer/127996256" target="_blank" rel="external">Mac OS复制粘贴功能经常失效，问题出在哪里？有何解决办法？</a>回答过这个问题了，而我却一直忍受了这个问题到2021年。</p>
+<p>相同的一例反思, 也是词典APP导致的不兼容: <a href="/2019/10/31/why-format-painter-not-working-on-mac-office-365/" title="Mac下Word不能双击格式刷重复刷的问题">Mac下Word不能双击格式刷重复刷的问题</a></p>
+]]></content>
+      
+        <categories>
+            
+            <category> Tools </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> MacOS </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[如何让Nginx支持带点的header]]></title>
+      <url>/2020/11/11/how-to-let-nginx-process-request-header-with-dots/</url>
+      <content type="html"><![CDATA[<h3 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h3><p>公司有个比较久远的遗留APP项目，服务端用的是之前公司自己写的一个HTTP的服务器。最近这个项目被要求升级使用https。<br>但自研的HTTP服务器自身不支持https, 老代码了也已经没人没精力去再开发了。<br>一合计，就决定在前面架一个Nginx来做反向代理，用来终止SSL再转发请求给自写的HTTP服务器。</p>
+<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>咵咵咵，三下五除二，申请了https证书，配置了nginx，项目就跑起来了。<br>可测试阶段，发现有个别请求会失败。一检查，发现是服务端接收到的请求中，有一个Header的值没有获取到。</p>
+<h3 id="结果过程"><a href="#结果过程" class="headerlink" title="结果过程"></a>结果过程</h3><p>挠了挠头皮，调查了下。发现这个自定义的header比较奇怪，名字中带有<code>.</code>, 类似<code>user.token</code>。<br>上网一通找，找到几个文章</p>
+<ul>
+<li><a href="https://forum.nginx.org/read.php?2,44453,44453#msg-44453" target="_blank" rel="external">Having dot in the header name</a></li>
+<li><a href="https://trac.nginx.org/nginx/ticket/629" target="_blank" rel="external">Nginx as a reverse proxy will not pass headers that contain a period.</a></li>
+</ul>
+<p>大意就是虽然RFC中没有规定带<code>.</code>的header是非法的，但Nginx默认就是不支持带<code>.</code>的header的。如果需要支持，可以考虑使用<a href="http://nginx.org/en/docs/http/ngx_http_core_module.html#ignore_invalid_headers" target="_blank" rel="external">ignore_invalid_headers</a>来实现。<br>尝试着修改了nginx配置，添加了<code>ignore_invalid_headers off;</code>后, 解决了该问题。</p>
+<h3 id="云厂商负载均衡服务的行为"><a href="#云厂商负载均衡服务的行为" class="headerlink" title="云厂商负载均衡服务的行为"></a>云厂商负载均衡服务的行为</h3><h4 id="Cloudflare"><a href="#Cloudflare" class="headerlink" title="Cloudflare"></a>Cloudflare</h4><p>Cloudflare会丢弃带<code>.</code>的header</p>
+<blockquote>
+<p>Cloudflare strips any header that contains dots (.) from origin web server responses. For example, the origin web server header test.header:data is removed by Cloudflare’s proxy.<br>来自: <a href="https://support.cloudflare.com/hc/en-us/articles/200170986-How-does-Cloudflare-handle-HTTP-Request-headers-" target="_blank" rel="external">How does Cloudflare handle HTTP Request headers?</a></p>
+</blockquote>
+<h4 id="AWS"><a href="#AWS" class="headerlink" title="AWS"></a>AWS</h4><p>待调查，参考资料</p>
+<ul>
+<li><a href="https://forums.aws.amazon.com/thread.jspa?messageID=923182" target="_blank" rel="external">ALB removes header “access_token” from incoming request</a></li>
+</ul>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://trac.nginx.org/nginx/ticket/629" target="_blank" rel="external">Nginx as a reverse proxy will not pass headers that contain a period.</a></li>
+<li><a href="http://nginx.org/en/docs/http/ngx_http_core_module.html#ignore_invalid_headers" target="_blank" rel="external">ignore_invalid_headers</a></li>
+<li><a href="https://forum.nginx.org/read.php?2,44453,44453#msg-44453" target="_blank" rel="external">Having dot in the header name</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> Tools </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Nginx </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[在CentOS 7中使用kubeadm搭建kubernetes集群]]></title>
+      <url>/2020/11/07/build-k8s-cluster-with-kubeadm-on-centos7/</url>
+      <content type="html"><![CDATA[<p>在CentOS 7上使用kubeadm安装kubernetes cluster的方法。</p>
+<h3 id="安装公共组件"><a href="#安装公共组件" class="headerlink" title="安装公共组件"></a>安装公共组件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo yum install -y wget net-tools vim</div></pre></td></tr></table></figure>
+<h3 id="安装Docker"><a href="#安装Docker" class="headerlink" title="安装Docker"></a>安装Docker</h3><p>CentOS 7中安装docker参见之前文章<a href="/2020/06/14/docker-basic/" title="Docker基础">Docker基础</a></p>
+<h3 id="安装Kubernetes"><a href="#安装Kubernetes" class="headerlink" title="安装Kubernetes"></a>安装Kubernetes</h3><h4 id="添加kubenetes的yum源"><a href="#添加kubenetes的yum源" class="headerlink" title="添加kubenetes的yum源"></a>添加kubenetes的yum源</h4><p>在Master和Node中同时添加阿里云的yum源。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">sudo cat &lt;&lt;EOF &gt; /etc/yum.repos.d/kubernetes.repo</div><div class="line">[kubernetes]</div><div class="line">name=Kubernetes</div><div class="line">baseurl=https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64/</div><div class="line">enabled=1</div><div class="line">gpgcheck=1</div><div class="line">repo_gpgcheck=1</div><div class="line">gpgkey=https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg</div><div class="line">EOF</div></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<h4 id="安装kubelet-kubeadm和kubectl"><a href="#安装kubelet-kubeadm和kubectl" class="headerlink" title="安装kubelet, kubeadm和kubectl"></a>安装kubelet, kubeadm和kubectl</h4><p>在Master和Node中安装kubelet, kubeadm和kubectl。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo yum install -y kubelet kubeadm kubectl</div><div class="line">sudo systemctl enable kubelet</div><div class="line">sudo systemctl start kubelet</div></pre></td></tr></table></figure></p>
+<h4 id="设置主机名"><a href="#设置主机名" class="headerlink" title="设置主机名"></a>设置主机名</h4><p>设置主机名, 根据预先的规划，设置主机名字。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo hostnamectl set-hostname k8smaster01</div><div class="line">sudo hostnamectl set-hostname k8snode01</div><div class="line">sudo hostnamectl set-hostname k8snode02</div></pre></td></tr></table></figure></p>
+<p>在master上修改主机记录, 这边IP地址修改为自己的IP地址。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">sudo cat &gt;&gt; /etc/hosts &lt;&lt; EOF</div><div class="line">192.168.187.51 k8smaster01 </div><div class="line">192.168.187.55 k8snode01</div><div class="line">192.168.187.56 k8snode02</div><div class="line">EOF</div></pre></td></tr></table></figure></p>
+<h4 id="配置防火墙"><a href="#配置防火墙" class="headerlink" title="配置防火墙"></a>配置防火墙</h4><p>k8s默认使用一些固定的端口来进行通讯, 参见<a href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#check-required-ports" target="_blank" rel="external">Check required ports</a></p>
+<p>master节点需要的端口</p>
+<table>
+<thead>
+<tr>
+<th>Protocol</th>
+<th>Direction</th>
+<th>Port Range</th>
+<th>Purpose</th>
+<th>Used By</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TCP</td>
+<td>Inbound</td>
+<td>6443*</td>
+<td>Kubernetes API server</td>
+<td>All</td>
+</tr>
+<tr>
+<td>TCP</td>
+<td>Inbound</td>
+<td>2379-2380</td>
+<td>etcd server client API</td>
+<td>kube-apiserver, etcd</td>
+</tr>
+<tr>
+<td>TCP</td>
+<td>Inbound</td>
+<td>10250</td>
+<td>Kubelet API</td>
+<td>Self, Control plane</td>
+</tr>
+<tr>
+<td>TCP</td>
+<td>Inbound</td>
+<td>10251</td>
+<td>kube-scheduler</td>
+<td>Self</td>
+</tr>
+<tr>
+<td>TCP</td>
+<td>Inbound</td>
+<td>10252</td>
+<td>kube-controller-manager</td>
+<td>Self</td>
+</tr>
+</tbody>
+</table>
+<p>Node节点需要打开的端口</p>
+<table>
+<thead>
+<tr>
+<th>Protocol</th>
+<th>Direction</th>
+<th>Port Range</th>
+<th>Purpose</th>
+<th>Used By</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TCP</td>
+<td>Inbound</td>
+<td>10250</td>
+<td>Kubelet API</td>
+<td>Self, Control plane</td>
+</tr>
+<tr>
+<td>TCP</td>
+<td>Inbound</td>
+<td>30000-32767</td>
+<td>NodePort Services†</td>
+<td>All</td>
+</tr>
+</tbody>
+</table>
+<p>所以，在Master节点上，执行如下命令开启对应的端口<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">sudo firewall-cmd --permanent --add-port=6443/tcp</div><div class="line">sudo firewall-cmd --permanent --add-port=2379-2380/tcp</div><div class="line">sudo firewall-cmd --permanent --add-port=10250/tcp</div><div class="line">sudo firewall-cmd --permanent --add-port=10251/tcp</div><div class="line">sudo firewall-cmd --permanent --add-port=10252/tcp</div><div class="line">sudo firewall-cmd --permanent --add-port=10255/tcp</div><div class="line">sudo firewall-cmd --reload</div></pre></td></tr></table></figure></p>
+<p>在Node节点上，执行如下命令开启对应的端口<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">sudo firewall-cmd --permanent --add-port=10251/tcp</div><div class="line">sudo firewall-cmd --permanent --add-port=10255/tcp</div><div class="line">sudo firewall-cmd --permanent --add-port=30000-32767/tcp</div><div class="line">firewall-cmd --reload</div></pre></td></tr></table></figure></p>
+<h4 id="更新iptable设置"><a href="#更新iptable设置" class="headerlink" title="更新iptable设置"></a>更新iptable设置</h4><p>在Master和Node节点上，更新iptable设置，确保桥接的 IPv4 流量传递到 iptables 的链<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">cat &lt;&lt;EOF | sudo tee /etc/sysctl.d/k8s.conf</div><div class="line">net.bridge.bridge-nf-call-ip6tables = 1</div><div class="line">net.bridge.bridge-nf-call-iptables = 1</div><div class="line">EOF</div><div class="line">sudo sysctl --system</div></pre></td></tr></table></figure></p>
+<h4 id="设置SELinux为permissive-mode"><a href="#设置SELinux为permissive-mode" class="headerlink" title="设置SELinux为permissive mode"></a>设置SELinux为permissive mode</h4><p>在Master和Node节点上，设置SELinux为permissive模式<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># Set SELinux in permissive mode (effectively disabling it)</div><div class="line">sudo setenforce 0</div><div class="line">sudo sed -i &apos;s/^SELINUX=enforcing$/SELINUX=permissive/&apos; /etc/selinux/config</div></pre></td></tr></table></figure></p>
+<h4 id="禁用swap分区"><a href="#禁用swap分区" class="headerlink" title="禁用swap分区"></a>禁用swap分区</h4><p>在Master和Node节点上，禁用swap分区。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo sed -i &apos;/swap/d&apos; /etc/fstab</div><div class="line">sudo swapoff -a</div></pre></td></tr></table></figure></p>
+<h4 id="时钟同步"><a href="#时钟同步" class="headerlink" title="时钟同步"></a>时钟同步</h4><p>在Master和Node节点上，安装ntp来同步时间。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo yum install ntpdate -y</div><div class="line">sudo ntpdate time.windows.com</div></pre></td></tr></table></figure></p>
+<h3 id="安装k8s-cluster"><a href="#安装k8s-cluster" class="headerlink" title="安装k8s cluster"></a>安装k8s cluster</h3><h4 id="Master节点中kubeadm-init"><a href="#Master节点中kubeadm-init" class="headerlink" title="Master节点中kubeadm init"></a>Master节点中kubeadm init</h4><p>在Master节点上，使用<code>kubeadm init</code>来初始化kubeadm。</p>
+<ul>
+<li>参数<code>--image-repository</code>来设置image来源为阿里云</li>
+<li>参数<code>--pod-network-cidr</code>来设置Pod的网路地址快，需要和后续使用的Pod网络插件中设置的网络地址块相同。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">kubeadm init \</div><div class="line">--image-repository registry.aliyuncs.com/google_containers \</div><div class="line">--service-cidr=10.96.0.0/12 \</div><div class="line">--pod-network-cidr=10.244.0.0/16</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>完成后，会有kubeadm join命令的输出，使用该命令来将worker node添加到k8s集群中。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">Your Kubernetes control-plane has initialized successfully!</div><div class="line"></div><div class="line">To start using your cluster, you need to run the following as a regular user:</div><div class="line"></div><div class="line">  mkdir -p $HOME/.kube</div><div class="line">  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config</div><div class="line">  sudo chown $(id -u):$(id -g) $HOME/.kube/config</div><div class="line"></div><div class="line">You should now deploy a pod network to the cluster.</div><div class="line">Run &quot;kubectl apply -f [podnetwork].yaml&quot; with one of the options listed at:</div><div class="line">  https://kubernetes.io/docs/concepts/cluster-administration/addons/</div><div class="line"></div><div class="line">Then you can join any number of worker nodes by running the following on each as root:</div><div class="line"></div><div class="line">kubeadm join 192.168.187.51:6443 --token igzzla.bqinr52oatzfcej0 \</div><div class="line">    --discovery-token-ca-cert-hash sha256:df3922b35e6fe58aca068d85ad832566f7d3aeff0cafac69e9860944ef3e7e54</div></pre></td></tr></table></figure>
+<h4 id="设置用户使用kubelet"><a href="#设置用户使用kubelet" class="headerlink" title="设置用户使用kubelet"></a>设置用户使用kubelet</h4><p>在Master节点上的用户目录下，执行如下命令，赋予当前用户访问k8s资源的权限。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">mkdir -p $HOME/.kube</div><div class="line">sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config</div><div class="line">sudo chown $(id -u):$(id -g) $HOME/.kube/config</div></pre></td></tr></table></figure></p>
+<h4 id="设置Pod网络"><a href="#设置Pod网络" class="headerlink" title="设置Pod网络"></a>设置Pod网络</h4><p>k8s自身没有实现Pod网络组件功能，Pod网络是由第三方插件来实现的。具体参见<a href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/#pod-network" target="_blank" rel="external">Installing a Pod network add-on</a><br>此处采用flannel。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml</div></pre></td></tr></table></figure></p>
+<p>使用<code>kubectl get nodes</code>检查cluster中node节点状态。应该可以看到状态为<code>Ready</code>。</p>
+<h4 id="将worker-node加入cluster"><a href="#将worker-node加入cluster" class="headerlink" title="将worker node加入cluster"></a>将worker node加入cluster</h4><p>在worker节点上执行之前master节点<code>kubeadm init</code>输出的<code>kubeadm join</code>命令。来将worker node加入到cluster中。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">kubeadm join 192.168.187.51:6443 --token igzzla.bqinr52oatzfcej0 \</div><div class="line">    --discovery-token-ca-cert-hash sha256:df3922b35e6fe58aca068d85ad832566f7d3aeff0cafac69e9860944ef3e7e54</div></pre></td></tr></table></figure></p>
+<p>加入完毕后，在master节点中<code>kubectl get nodes</code>，就可以看到worker node已经加入cluster了。</p>
+<h3 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h3><h4 id="kubeadm-join失败"><a href="#kubeadm-join失败" class="headerlink" title="kubeadm join失败"></a>kubeadm join失败</h4><p>在worker node中执行<code>kubeadm join</code>加入cluster时，报错如下: <code>error execution phase kubelet-start: a Node with name &quot;k8smaster01&quot; and status &quot;Ready&quot; already exists in the cluster. You must delete the existing Node or change the name of this new joining Node</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">[root@localhost kubernetes]# kubeadm join 192.168.187.51:6443 --token igzzla.bqinr52oatzfcej0 --discovery-token-ca-cert-hash sha256:df3922b35e6fe58aca068d85ad832566f7d3aeff0cafac69e9860944ef3e7e54</div><div class="line">[preflight] Running pre-flight checks</div><div class="line">	[WARNING IsDockerSystemdCheck]: detected &quot;cgroupfs&quot; as the Docker cgroup driver. The recommended driver is &quot;systemd&quot;. Please follow the guide at https://kubernetes.io/docs/setup/cri/</div><div class="line">	[WARNING Hostname]: hostname &quot;k8smaster01&quot; could not be reached</div><div class="line">	[WARNING Hostname]: hostname &quot;k8smaster01&quot;: lookup k8smaster01 on 192.168.187.2:53: no such host</div><div class="line">[preflight] Reading configuration from the cluster...</div><div class="line">[preflight] FYI: You can look at this config file with &apos;kubectl -n kube-system get cm kubeadm-config -oyaml&apos;</div><div class="line">error execution phase kubelet-start: a Node with name &quot;k8smaster01&quot; and status &quot;Ready&quot; already exists in the cluster. You must delete the existing Node or change the name of this new joining Node</div><div class="line">To see the stack trace of this error execute with --v=5 or higher</div></pre></td></tr></table></figure>
+<p>原因是误将worker node的hostname设置为和master节点一样的<code>k8smaster01</code>，导致在worker node上输入<code>kubeadm join</code>时，报了如上错误。修正hostname后，问题解决。</p>
+<h4 id="CentOS下kubelet命令自动补全"><a href="#CentOS下kubelet命令自动补全" class="headerlink" title="CentOS下kubelet命令自动补全"></a>CentOS下kubelet命令自动补全</h4><p>执行如下命令来启动kubelet启动命令自动补全功能。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">k8s 命令自动补全 </div><div class="line">yum install -y bash-completion</div><div class="line">source /usr/share/bash-completion/bash_completion</div><div class="line">source &lt;(kubectl completion bash)</div><div class="line">echo &quot;source &lt;(kubectl completion bash)&quot; &gt;&gt; ~/.bashrc</div></pre></td></tr></table></figure></p>
+]]></content>
+      
+        <categories>
+            
+            <category> Kubernetes </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Docker </tag>
+            
+            <tag> CentOS </tag>
+            
+            <tag> Kubernetes </tag>
+            
+            <tag> Kubeadm </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[AWS RDS PostgreSQL版本升级]]></title>
       <url>/2020/10/24/upgrade-postgresql-version-on-aws-RDS/</url>
       <content type="html"><![CDATA[<h3 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h3><p>海外AWS中有一套系统采用的是PostgreSQL 9.5， 因为PG 9.5在2021年2月11号之后不再被PG社区所支持了, PG社区对版本的支持参见<a href="https://www.postgresql.org/support/versioning/" target="_blank" rel="external">Versioning Policy</a>。因此AWS发送了邮件，提示我们尽快升级到9.6。并且介于PG 9.6在2020年11月11号之后也会停止支持，AWS建议直接升级到PostgreSQL 12或以上版本。 </p>
@@ -1770,16 +2036,20 @@
     <entry>
       <title><![CDATA[Ruby & Rails Tips]]></title>
       <url>/2020/05/14/ruby-rails-tips/</url>
-      <content type="html"><![CDATA[<h3 id="Struct-amp-OpenStruct"><a href="#Struct-amp-OpenStruct" class="headerlink" title="Struct &amp; OpenStruct"></a>Struct &amp; OpenStruct</h3><h4 id="Struct"><a href="#Struct" class="headerlink" title="Struct"></a>Struct</h4><p>Struct 用于快速声明一个类。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Person = Struct.new(:age, :name, :sex)</div><div class="line">me = Person.new(24, &apos;Spirit&apos;, &apos;male&apos;)</div><div class="line">me.age  # =&gt; 24</div><div class="line">me.name = &apos;Test&apos;</div><div class="line">me.name # =&gt; &apos;Test&apos;</div><div class="line">me.height # =&gt; NoMethodError</div></pre></td></tr></table></figure></p>
+      <content type="html"><![CDATA[<hr>
+<h3 id="Struct-amp-OpenStruct"><a href="#Struct-amp-OpenStruct" class="headerlink" title="Struct &amp; OpenStruct"></a>Struct &amp; OpenStruct</h3><h4 id="Struct"><a href="#Struct" class="headerlink" title="Struct"></a>Struct</h4><p>Struct 用于快速声明一个类。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Person = Struct.new(:age, :name, :sex)</div><div class="line">me = Person.new(24, &apos;Spirit&apos;, &apos;male&apos;)</div><div class="line">me.age  # =&gt; 24</div><div class="line">me.name = &apos;Test&apos;</div><div class="line">me.name # =&gt; &apos;Test&apos;</div><div class="line">me.height # =&gt; NoMethodError</div></pre></td></tr></table></figure></p>
 <p>优点: 快速声明和实现<br>缺点: 只能响应定义的字段，不能响应任意的属性</p>
 <h4 id="OpenStruct"><a href="#OpenStruct" class="headerlink" title="OpenStruct"></a>OpenStruct</h4><p>参考<a href="https://ruby-china.org/topics/21617" target="_blank" rel="external">Ruby Ruby 中的 OpenStruct 详解</a><br>OpenStruct可以自由设置set和get的一个类<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">p = OpenStruct.new()</div><div class="line">p.name=&apos;hello&apos;</div><div class="line">p.name  # p.name就是hello</div><div class="line">p.age=12</div><div class="line">p.age   # p.age就是12</div></pre></td></tr></table></figure></p>
+<hr>
 <h3 id="skip-before-action"><a href="#skip-before-action" class="headerlink" title="skip before_action"></a>skip before_action</h3><ul>
 <li><a href="https://stackoverflow.com/questions/36878355/exclude-a-controller-from-before-action" target="_blank" rel="external">Exclude a controller from before_action</a></li>
 </ul>
+<hr>
 <h3 id="API接口中使用cookies的方法"><a href="#API接口中使用cookies的方法" class="headerlink" title="API接口中使用cookies的方法"></a>API接口中使用cookies的方法</h3><p>方法一: 在Controller中添加<code>include ActionController::Cookies</code></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">class ApplicationController &lt; ActionController::API</div><div class="line">  include ActionController::Cookies</div></pre></td></tr></table></figure>
 <p>在Controller中就可以访问到cookies变量了。</p>
 <p>方法二: 如果不想引入过多的方法，可以在Controller中定义cookies方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">def cookies</div><div class="line">  # helpers not available in --api mode</div><div class="line">  request.cookie_jar</div><div class="line">end</div></pre></td></tr></table></figure></p>
+<hr>
 <h3 id="Rails-4中memory-store缓存的使用"><a href="#Rails-4中memory-store缓存的使用" class="headerlink" title="Rails 4中memory_store缓存的使用"></a>Rails 4中memory_store缓存的使用</h3><p>Rails 4中<code>memory_store</code>类型的基础用法</p>
 <h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><p>需要在<code>config/environments/development.rb</code>或者<code>config/environments/production.rb</code>中设置开启cache</p>
 <ul>
@@ -1814,6 +2084,42 @@
 <li><a href="https://stackoverflow.com/questions/22379157/rails-cache-fetch-vs-cache-read-write" target="_blank" rel="external">Rails: cache.fetch vs cache.read/write</a></li>
 <li><a href="https://stackoverflow.com/questions/39868775/get-expiration-time-of-rails-cached-item" target="_blank" rel="external">Get expiration time of Rails cached item</a></li>
 </ul>
+<hr>
+<h3 id="输出请求中所有header的值"><a href="#输出请求中所有header的值" class="headerlink" title="输出请求中所有header的值"></a>输出请求中所有header的值</h3><p>在base controller中添加如下代码输出headers值。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">before_action :output_headers</div><div class="line"></div><div class="line">def output_headers</div><div class="line">  headers = request.headers.env.select do |k, _|</div><div class="line">    k.downcase.start_with?(&apos;http&apos;) ||</div><div class="line">    k.in?(ActionDispatch::Http::Headers::CGI_VARIABLES)</div><div class="line">  end</div><div class="line">  headers = headers.sort.to_h</div><div class="line">  headers.each do |k,v|</div><div class="line">    Rails.logger.info &quot;#&#123;k&#125; = #&#123;v&#125;&quot;</div><div class="line">  end</div><div class="line">end</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="Ruby中Hash根据key值进行排序"><a href="#Ruby中Hash根据key值进行排序" class="headerlink" title="Ruby中Hash根据key值进行排序"></a>Ruby中Hash根据key值进行排序</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Hash.new.sort.to_h</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="Ruby中将Html转为plain-text的方法"><a href="#Ruby中将Html转为plain-text的方法" class="headerlink" title="Ruby中将Html转为plain text的方法"></a>Ruby中将Html转为plain text的方法</h3><p>方法一: Gem <code>html_to_plain_text</code></p>
+<ul>
+<li>地址: <a href="https://github.com/bdurand/html_to_plain_text" target="_blank" rel="external">html_to_plain_text</a></li>
+<li>用法:<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">require &apos;html_to_plain_text&apos;</div><div class="line">html = &quot;&lt;h1&gt;Hello&lt;/h1&gt;&lt;p&gt;world!&lt;/p&gt;&quot;</div><div class="line">HtmlToPlainText.plain_text(html)</div><div class="line">=&gt; &quot;Hello\n\nworld!&quot;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>方法二: Rails的strip_tags函数</p>
+<ul>
+<li>地址: <a href="https://apidock.com/rails/ActionView/Helpers/SanitizeHelper/strip_tags" target="_blank" rel="external">strip_tags</a></li>
+<li>用法:<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">include ActionView::Helpers::SanitizeHelper</div><div class="line">strip_tags(&quot;Strip &lt;i&gt;these&lt;/i&gt; tags!&quot;)</div><div class="line"># =&gt; Strip these tags!</div><div class="line"></div><div class="line">strip_tags(&quot;&lt;b&gt;Bold&lt;/b&gt; no more!  &lt;a href=&apos;more.html&apos;&gt;See more here&lt;/a&gt;...&quot;)</div><div class="line"># =&gt; Bold no more!  See more here...</div><div class="line"></div><div class="line">strip_tags(&quot;&lt;div id=&apos;top-bar&apos;&gt;Welcome to my website!&lt;/div&gt;&quot;)</div><div class="line"># =&gt; Welcome to my website!</div><div class="line"></div><div class="line">strip_tags(&quot;&gt; A quote from Smith &amp; Wesson&quot;)</div><div class="line"># =&gt; &gt; A quote from Smith &amp; Wesson</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<h3 id="Ruby中获取类的父类的途径"><a href="#Ruby中获取类的父类的途径" class="headerlink" title="Ruby中获取类的父类的途径"></a>Ruby中获取类的父类的途径</h3><p>类的<code>.ancestors</code>方法，可以获取父类的列表。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">2.7.1 :014 &gt; Integer.ancestors</div><div class="line"> =&gt; [ActiveSupport::NumericWithFormat, ActiveSupport::ToJsonWithActiveSupportEncoder, Integer, Mongoid::Criteria::Queryable::Extensions::Numeric, Mongoid::Extensions::Integer, BSON::Integer, JSON::Ext::Generator::GeneratorMethods::Integer, MessagePack::CoreExt, Numeric, Comparable, ActiveSupport::Dependencies::ZeitwerkIntegration::RequireDependency, ActiveSupport::ToJsonWithActiveSupportEncoder, Object, PP::ObjectMixin, Mongoid::Criteria::Queryable::Extensions::Object, Mongoid::Extensions::Object, BSON::Object, JSON::Ext::Generator::GeneratorMethods::Object, ActiveSupport::Tryable, ActiveSupport::Dependencies::Loadable, Kernel, BasicObject]</div><div class="line">2.7.1 :015 &gt;</div><div class="line">2.7.1 :016 &gt; 1.class.ancestors</div><div class="line"> =&gt; [ActiveSupport::NumericWithFormat, ActiveSupport::ToJsonWithActiveSupportEncoder, Integer, Mongoid::Criteria::Queryable::Extensions::Numeric, Mongoid::Extensions::Integer, BSON::Integer, JSON::Ext::Generator::GeneratorMethods::Integer, MessagePack::CoreExt, Numeric, Comparable, ActiveSupport::Dependencies::ZeitwerkIntegration::RequireDependency, ActiveSupport::ToJsonWithActiveSupportEncoder, Object, PP::ObjectMixin, Mongoid::Criteria::Queryable::Extensions::Object, Mongoid::Extensions::Object, BSON::Object, JSON::Ext::Generator::GeneratorMethods::Object, ActiveSupport::Tryable, ActiveSupport::Dependencies::Loadable, Kernel, BasicObject]</div><div class="line">2.7.1 :017 &gt;</div></pre></td></tr></table></figure></p>
+<hr>
+<h3 id="Ruby产生随机数"><a href="#Ruby产生随机数" class="headerlink" title="Ruby产生随机数"></a>Ruby产生随机数</h3><p>使用<code>rand</code>和<code>Random.rand</code>来生成随机数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">2.7.1 :026 &gt; rand(1..10)</div><div class="line"> =&gt; 10</div><div class="line">2.7.1 :027 &gt; rand(1.1..99.99)</div><div class="line"> =&gt; 22.250780345080248</div><div class="line">2.7.1 :028 &gt;</div><div class="line">2.7.1 :029 &gt;</div><div class="line">2.7.1 :030 &gt; Random.rand(1...10)</div><div class="line"> =&gt; 1</div><div class="line">2.7.1 :031 &gt; Random.rand(1.0...10)</div><div class="line"> =&gt; 7.646093836025024</div><div class="line">2.7.1 :032 &gt;</div></pre></td></tr></table></figure></p>
+<hr>
+<h3 id="产生测试数据的Gem-Faker"><a href="#产生测试数据的Gem-Faker" class="headerlink" title="产生测试数据的Gem Faker"></a>产生测试数据的Gem Faker</h3><p><a href="https://github.com/faker-ruby/faker" target="_blank" rel="external">faker-ruby/faker</a>这个Gem，可方便地用于生成测试数据。</p>
+<h4 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h4><p>Gemfile中 添加在<code>development</code>组里<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">group :development do</div><div class="line">...</div><div class="line">  gem &apos;faker&apos;</div><div class="line">...</div><div class="line">end</div></pre></td></tr></table></figure></p>
+<hr>
+<h4 id="常用方法"><a href="#常用方法" class="headerlink" title="常用方法"></a>常用方法</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"># 生成随机图片</div><div class="line">image_size = &quot;#&#123;rand(400...500)&#125;x#&#123;rand(500...600)&#125;&quot;</div><div class="line">Faker::LoremFlickr.image(size: image_size, search_terms: [&apos;sports&apos;])</div><div class="line"></div><div class="line"># 生成随机email</div><div class="line">Faker::Internet.email</div><div class="line"></div><div class="line"># 生成标题</div><div class="line">title = [Faker::Company.name,  Faker::Company.industry].join(&apos; - &apos;)</div><div class="line"></div><div class="line"># 生成描述文字</div><div class="line">desc = Faker::Quote.matz</div><div class="line">desc = Faker::Hipster.sentences.sample</div><div class="line"></div><div class="line"># 生成随机时间</div><div class="line">time = Faker::Time.between(from: DateTime.now - 365, to: DateTime.now + 365, format: :default)</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="从数组中随机挑选出一个元素"><a href="#从数组中随机挑选出一个元素" class="headerlink" title="从数组中随机挑选出一个元素"></a>从数组中随机挑选出一个元素</h3><p>使用Array.sample方法实现随机挑选的操作。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">2.7.1 :047 &gt; (1..100).to_a.sample</div><div class="line"> =&gt; 81</div><div class="line">2.7.1 :048 &gt; (1..100).to_a.sample</div><div class="line"> =&gt; 13</div><div class="line">2.7.1 :049 &gt; (1..100).to_a.sample</div><div class="line"> =&gt; 91</div><div class="line">2.7.1 :050 &gt;</div></pre></td></tr></table></figure></p>
+<hr>
+<h3 id="Rails中转换为Datetime"><a href="#Rails中转换为Datetime" class="headerlink" title="Rails中转换为Datetime"></a>Rails中转换为Datetime</h3><p>从字符中得到Datetime: <code>&#39;2020-01-01 00:00:00&#39;.to_datetime</code><br>从timestamp得到Datetime: <code>Time.at(1).to_datetime</code></p>
+<hr>
+<h3 id="Rails中validate添加自定义错误"><a href="#Rails中validate添加自定义错误" class="headerlink" title="Rails中validate添加自定义错误"></a>Rails中validate添加自定义错误</h3><p>使用<code>.errors.add :base, string</code>来添加自定义的错误。<br>例如: 实现unique validate的自定义错误。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">validate do |block_key_word|</div><div class="line">    existing_record = BlockKeyWord.where(:name =&gt; block_key_word.name).first</div><div class="line">    unless existing_record.nil? || existing_record.id == block_key_word.id</div><div class="line">        block_key_word.errors.add :base, (&quot;关键字-#&#123;block_key_word.name&#125;已存在。&quot;)</div><div class="line">    end</div><div class="line">end</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="ruby操作Excel的基本操作"><a href="#ruby操作Excel的基本操作" class="headerlink" title="ruby操作Excel的基本操作"></a>ruby操作Excel的基本操作</h3><p>可以使用<a href="https://github.com/weshatheleopard/rubyXL" target="_blank" rel="external">rubyXL</a>来操作excel<br>写Excel的例子<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">require &apos;rubyXL&apos;</div><div class="line">workbook = RubyXL::Workbook.new</div><div class="line">workbook[0].add_cell(0, 0, &quot;写入内容&quot;)</div><div class="line">workbook.write(&quot;#&#123;Rails.root&#125;/tmp/file.xlsx&quot;)</div></pre></td></tr></table></figure></p>
 ]]></content>
       
         <categories>
@@ -2624,6 +2930,65 @@
 <h3 id="刷新sequence为表的最大值"><a href="#刷新sequence为表的最大值" class="headerlink" title="刷新sequence为表的最大值"></a>刷新sequence为表的最大值</h3><h4 id="更新单表"><a href="#更新单表" class="headerlink" title="更新单表"></a>更新单表</h4><p>Postgresql的主键自增是通过sequence机制来实现的。重建或者手动insert数据的时候，sequence可能不会被更新。<br>此时，可以手动更新sequence中的last_value为对应表的最大值。</p>
 <p>以users表为例:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SELECT setval(&apos;users_id_seq&apos;, (SELECT MAX(id) FROM users));</div></pre></td></tr></table></figure></p>
 <h4 id="更新全部表"><a href="#更新全部表" class="headerlink" title="更新全部表"></a>更新全部表</h4><p><a href="https://wiki.postgresql.org" target="_blank" rel="external">https://wiki.postgresql.org</a>上有更新全部表sequence的方法<a href="https://wiki.postgresql.org/wiki/Fixing_Sequences" target="_blank" rel="external">Fixing Sequences</a></p>
+<hr>
+<h3 id="PG的range函数"><a href="#PG的range函数" class="headerlink" title="PG的range函数"></a>PG的range函数</h3><p>PG中自带了range类型和函数，可以用来方便的计算数值范围。具体类型，操作符和函数参见官方文档</p>
+<ul>
+<li><a href="https://www.postgresql.org/docs/9.6/functions-range.html" target="_blank" rel="external">Range Functions and Operators</a></li>
+<li><a href="https://www.postgresql.org/docs/9.6/rangetypes.html" target="_blank" rel="external">Range Types</a></li>
+</ul>
+<p>此处简单摘录一下时间范围tsrange的用法</p>
+<ol>
+<li><p>tsrange类型的定义，使用tsrange(start_time, end_time)来定义一个时间区间，可选的第三个参数，可以来定义区间是开区间还是闭区间。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">test=# select tsrange(&apos;2020-01-01 11:00:00&apos;, &apos;2020-01-02 00:00:00&apos;), tsrange(&apos;2020-01-01 11:00:00&apos;, &apos;2020-01-02 00:00:00&apos;, &apos;[]&apos;);</div><div class="line">                    tsrange                    |                    tsrange</div><div class="line">-----------------------------------------------+-----------------------------------------------</div><div class="line"> [&quot;2020-01-01 11:00:00&quot;,&quot;2020-01-02 00:00:00&quot;) | [&quot;2020-01-01 11:00:00&quot;,&quot;2020-01-02 00:00:00&quot;]</div><div class="line">(1 row)</div><div class="line"></div><div class="line">test=#</div></pre></td></tr></table></figure>
+</li>
+<li><p>使用<code>@&gt;</code>来判定值是否在区间内。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">test=# select tsrange(&apos;2020-01-01 11:00:00&apos;, &apos;2020-01-02 00:00:00&apos;) @&gt; &apos;2020-01-01 10:00:00&apos;::timestamp as is_in_range;</div><div class="line"> is_in_range</div><div class="line">-------------</div><div class="line"> f</div><div class="line">(1 row)</div><div class="line"></div><div class="line">test=#</div></pre></td></tr></table></figure>
+</li>
+<li><p>使用<code>upper</code>和<code>lower</code>来获取区间长度</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">test=# select upper((tsrange(&apos;2020-01-01 11:00:00&apos;, &apos;2020-01-02 00:00:00&apos;))) - lower((tsrange(&apos;2020-01-01 11:00:00&apos;, &apos;2020-01-02 00:00:00&apos;))) as length;</div><div class="line">  length</div><div class="line">----------</div><div class="line"> 13:00:00</div><div class="line">(1 row)</div><div class="line"></div><div class="line">test=#</div></pre></td></tr></table></figure>
+</li>
+<li><p>使用<code>&amp;&amp;</code>来判断区间是否重合</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">-- 有区间重合</div><div class="line">test=# select tsrange(&apos;2020-01-01 00:00:00&apos;, &apos;2020-01-02 00:00:00&apos;) &amp;&amp; tsrange(&apos;2020-01-01 23:00:00&apos;, &apos;2020-01-02 00:00:00&apos;);</div><div class="line"> ?column?</div><div class="line">----------</div><div class="line"> t</div><div class="line">(1 row)</div><div class="line"></div><div class="line">-- 没有区间重合</div><div class="line">test=# select tsrange(&apos;2020-01-01 00:00:00&apos;, &apos;2020-01-02 00:00:00&apos;) &amp;&amp; tsrange(&apos;2020-01-02 00:00:00&apos;, &apos;2020-01-02 01:00:00&apos;);</div><div class="line"> ?column?</div><div class="line">----------</div><div class="line"> f</div><div class="line">(1 row)</div><div class="line"></div><div class="line">test=#</div></pre></td></tr></table></figure>
+</li>
+<li><p>创建索引<br>使用GiST和SP-GiST来为range类型的列来创建索引，可以加速<code>=, &amp;&amp;, &lt;@, @&gt;, &lt;&lt;, &gt;&gt;, -|-, &amp;&lt;, and &amp;&gt;</code>这几类运算符。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">create table events (</div><div class="line">  id int primary key, </div><div class="line">  user_id int not null,</div><div class="line">  event text not null,</div><div class="line">  timerange tsrange not null</div><div class="line">);</div><div class="line"></div><div class="line">CREATE INDEX timerange_on_events_idx ON events USING GIST (timerange);</div></pre></td></tr></table></figure>
+</li>
+<li><p>使用EXCLUDE来限制重复数据</p>
+<ul>
+<li><p>新建表时候就添加exclude</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">create table events (</div><div class="line">  id int primary key, </div><div class="line">  user_id int not null,</div><div class="line">  event text not null,</div><div class="line">  timerange tsrange not null,</div><div class="line">  EXCLUDE USING GIST (timerange WITH &amp;&amp;)</div><div class="line">);</div></pre></td></tr></table></figure>
+</li>
+<li><p>或者表建好后，后续再使用alter来添加exclude</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">create table events (</div><div class="line">  id int primary key, </div><div class="line">  user_id int not null,</div><div class="line">  event text not null,</div><div class="line">  timerange tsrange not null</div><div class="line">);</div><div class="line"></div><div class="line">alter table events add constraint timerange_on_events_excl EXCLUDE USING gist (timerange WITH &amp;&amp;);</div></pre></td></tr></table></figure>
+</li>
+<li><p>添加了exclude后，插入重复数据会报错。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">test=# insert into events(id, user_id, event, timerange) values</div><div class="line">test-# (1, 1, &apos;aaa&apos;, tsrange(&apos;2020-01-01 00:00:00&apos;, &apos;2020-01-02 00:00:00&apos;));</div><div class="line">INSERT 0 1</div><div class="line">test=#</div><div class="line">test=# insert into events(id, user_id, event, timerange) values</div><div class="line">test-# (2, 1, &apos;aaa&apos;, tsrange(&apos;2020-01-01 10:00:00&apos;, &apos;2020-01-01 10:10:00&apos;));</div><div class="line">ERROR:  conflicting key value violates exclusion constraint &quot;timerange_on_events_excl&quot;</div><div class="line">DETAIL:  Key (timerange)=([&quot;2020-01-01 10:00:00&quot;,&quot;2020-01-01 10:10:00&quot;)) conflicts with existing key (timerange)=([&quot;2020-01-01 00:00:00&quot;,&quot;2020-01-02 00:00:00&quot;)).</div><div class="line">test=#</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="trim去除首尾空白字符"><a href="#trim去除首尾空白字符" class="headerlink" title="trim去除首尾空白字符"></a>trim去除首尾空白字符</h3><p>可以看出，使用了<code>trim</code>过后，info前后的空白都被去除了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">test=# select trim(&apos;    info     &apos;)||&apos;,here&apos; as string;</div><div class="line">  string</div><div class="line">-----------</div><div class="line"> info,here</div><div class="line">(1 row)</div><div class="line"></div><div class="line">test=#</div></pre></td></tr></table></figure></p>
+<hr>
+<h3 id="清空整个表并回收空间"><a href="#清空整个表并回收空间" class="headerlink" title="清空整个表并回收空间"></a>清空整个表并回收空间</h3><p>PostgreSQL中要清空某个表并且回收空间，可以使用<code>TRUNCATE</code>命令。<br>官网描述如下:</p>
+<blockquote>
+<p>TRUNCATE quickly removes all rows from a set of tables. It has the same effect as an unqualified DELETE on each table, but since it does not actually scan the tables it is faster. Furthermore, it reclaims disk space immediately, rather than requiring a subsequent VACUUM operation. This is most useful on large tables.<br>用法:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">TRUNCATE removed_images;</div></pre></td></tr></table></figure></p>
+</blockquote>
+<p>参考: <a href="https://www.postgresql.org/docs/current/sql-truncate.html" target="_blank" rel="external">TRUNCATE</a></p>
+<hr>
+<h3 id="创建和查看view"><a href="#创建和查看view" class="headerlink" title="创建和查看view"></a>创建和查看view</h3><p>创建view</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">SELECT questions.id AS question_id,</div><div class="line">   string_agg(question_categories.name::text, &apos;, &apos;::text) AS question_category_name,</div><div class="line">   array_agg(question_categories.id) AS question_category_ids</div><div class="line">  FROM questions</div><div class="line">    JOIN question_question_categories ON question_question_categories.question_id = questions.id</div><div class="line">    JOIN question_categories ON question_categories.id = question_question_categories.question_category_id AND question_categories.deleted_at IS NULL</div><div class="line"> GROUP BY questions.id;</div></pre></td></tr></table></figure>
+<p>查看view, <code>\d+ question_category_view</code></p>
+<hr>
+<h3 id="如何快速删除表中大部分数据"><a href="#如何快速删除表中大部分数据" class="headerlink" title="如何快速删除表中大部分数据"></a>如何快速删除表中大部分数据</h3><p>Reference: <a href="https://stackoverflow.com/questions/8290900/best-way-to-delete-millions-of-rows-by-id" target="_blank" rel="external">Best way to delete millions of rows by ID</a></p>
+<p>思路:</p>
+<ul>
+<li>创建临时表存放需要保存的数据</li>
+<li><code>truncate</code>原表</li>
+<li>从临时表中把数据重新拷贝回原表中</li>
+</ul>
+<p>例子:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">SET temp_buffers = &apos;1000MB&apos;; -- or whatever you can spare temporarily</div><div class="line"></div><div class="line">CREATE TABLE tmp AS</div><div class="line">SELECT t.*</div><div class="line">FROM   tbl t</div><div class="line">LEFT   JOIN del_list d USING (id)</div><div class="line">WHERE  d.id IS NULL;      -- copy surviving rows into temporary table</div><div class="line"></div><div class="line">TRUNCATE tbl;             -- empty table - truncate is very fast for big tables</div><div class="line"></div><div class="line">INSERT INTO tbl</div><div class="line">SELECT * FROM tmp;        -- insert back surviving rows.</div></pre></td></tr></table></figure></p>
+<p><strong>注意: 源stackoverflow中使用的是<code>CREATE TEMP TABLE</code>创建的临时表，临时表只对当前session有效。万一<code>truncate</code>后连接断掉，会导致数据丢失。因此改为<code>CREATE TABLE tmp</code>比较合理。</strong></p>
 ]]></content>
       
         <categories>
@@ -4247,6 +4612,8 @@
 <h3 id="grep搜索排除目录"><a href="#grep搜索排除目录" class="headerlink" title="grep搜索排除目录"></a>grep搜索排除目录</h3><p>使用<code>--exclude-dir</code>参数，如果有多个目录要排除，那么可以添加多个<code>--exclude-dir</code>参数:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ grep -nri &apos;nginx&apos; ./ --exclude-dir=02_codes --exclude-dir=04_tickets</div></pre></td></tr></table></figure>
 <hr>
+<h3 id="grep-搜索隐藏目录"><a href="#grep-搜索隐藏目录" class="headerlink" title="grep 搜索隐藏目录"></a>grep 搜索隐藏目录</h3><p>使用<code>grep -r search * .*</code>来搜索所有的目录，包含隐藏目录和隐藏文件。</p>
+<hr>
 <h3 id="MacOS下Betterzip-quicklook不起作用"><a href="#MacOS下Betterzip-quicklook不起作用" class="headerlink" title="MacOS下Betterzip quicklook不起作用"></a>MacOS下Betterzip quicklook不起作用</h3><p>BetterZipQL被集成到BetterZip中了，因此brew在<a href="https://github.com/Homebrew/homebrew-cask/pull/41954" target="_blank" rel="external">pull request 41954</a>中删除了BetterZipQL。<br>需要使用<code>brew cask install betterzip</code>来安装BetterZip。BetterZip是收费软件，30天免费试用。但官网上说Quick Look功能在试用期结束后，还是可以免费使用。<br><strong>如果安装完成后，发现quicklook功能没起作用，记得需要先在Application中打开一次BetterZip，别问我是怎么知道的。</strong></p>
 <hr>
 <h3 id="MacOS下QuickLook的路径"><a href="#MacOS下QuickLook的路径" class="headerlink" title="MacOS下QuickLook的路径"></a>MacOS下QuickLook的路径</h3><p>全局目录: <code>/Library/QuickLook/</code><br>用户目录: <code>~/Library/QuickLook/</code></p>
@@ -4370,6 +4737,18 @@
 <hr>
 <h3 id="mysql小命令"><a href="#mysql小命令" class="headerlink" title="mysql小命令"></a>mysql小命令</h3><p>手动设置表的AUTO_INCREMENT<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysql&gt; alter table table_name AUTO_INCREMENT = 100;</div></pre></td></tr></table></figure></p>
 <hr>
+<h3 id="CentOS-7删除老旧的mysql并重新安装的步骤"><a href="#CentOS-7删除老旧的mysql并重新安装的步骤" class="headerlink" title="CentOS 7删除老旧的mysql并重新安装的步骤"></a>CentOS 7删除老旧的mysql并重新安装的步骤</h3><ol>
+<li><p>删除老旧的mysql</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum remove mysql mysql-server</div></pre></td></tr></table></figure>
+</li>
+<li><p>移除mysql的数据目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mv /var/lib/mysql /var/lib/mysql.bak</div></pre></td></tr></table></figure>
+</li>
+<li><p>重新安装mysql</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install mysql mysql-server</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<hr>
 <h3 id="tar排除固定目录"><a href="#tar排除固定目录" class="headerlink" title="tar排除固定目录"></a>tar排除固定目录</h3><p>使用<code>--exclude=</code>参数来排除目录，如果有多个目录需要排除，就使用多个<code>--exclude=</code>。<br>记住目录后面不能加<code>/</code>, 否则目录还是会被tar打包</p>
 <p>例子:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ tar czvf ~/tmp/info.tar.gz --exclude=test_on_20180827 ./</div></pre></td></tr></table></figure></p>
 <hr>
@@ -4382,8 +4761,56 @@
 <hr>
 <h3 id="iTerm2-分屏快捷键"><a href="#iTerm2-分屏快捷键" class="headerlink" title="iTerm2 分屏快捷键"></a>iTerm2 分屏快捷键</h3><p>新建tab: command + t<br>新建window: command + n<br>tab间切换: command + 数字键(9表示左右一个tab)<br>tab间切换: command + 方向键<br>同一tab垂直分屏: command + d<br>同一tab水平分屏: comamnd + shift + d<br>最近使用的分屏间切换: comamnd + ]和command + [<br>tab间切换: command + option + 方向键</p>
 <hr>
+<h3 id="iTerm2-如何发送命令到所有窗口"><a href="#iTerm2-如何发送命令到所有窗口" class="headerlink" title="iTerm2 如何发送命令到所有窗口"></a>iTerm2 如何发送命令到所有窗口</h3><p>iTerms给多个Tab同时发送命令。<br><code>Command+Shift+i</code>，之后输入命令，enter</p>
+<hr>
 <h3 id="Macos下安装OpenJDK"><a href="#Macos下安装OpenJDK" class="headerlink" title="Macos下安装OpenJDK"></a>Macos下安装OpenJDK</h3><p>使用brew安装openJDK<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">$ brew reinstall openjdk</div><div class="line">==&gt; Downloading https://homebrew.bintray.com/bottles/openjdk-14.0.1.mojave.bottle.tar.gz</div><div class="line">Already downloaded: /Users/carlshen/Library/Caches/Homebrew/downloads/44add4279f37d89a5cd5e80a8776dac90b324b06512be00eaf3e186675c6561a--openjdk-14.0.1.mojave.bottle.tar.gz</div><div class="line">==&gt; Reinstalling openjdk</div><div class="line">==&gt; Pouring openjdk-14.0.1.mojave.bottle.tar.gz</div><div class="line">==&gt; Caveats</div><div class="line">For the system Java wrappers to find this JDK, symlink it with</div><div class="line">  sudo ln -sfn /usr/local/opt/openjdk/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk.jdk</div><div class="line"></div><div class="line">openjdk is keg-only, which means it was not symlinked into /usr/local,</div><div class="line">because it shadows the macOS `java` wrapper.</div><div class="line"></div><div class="line">If you need to have openjdk first in your PATH run:</div><div class="line">  echo &apos;export PATH=&quot;/usr/local/opt/openjdk/bin:$PATH&quot;&apos; &gt;&gt; /Users/carlshen/.bash_profile</div><div class="line"></div><div class="line">For compilers to find openjdk you may need to set:</div><div class="line">  export CPPFLAGS=&quot;-I/usr/local/opt/openjdk/include&quot;</div><div class="line"></div><div class="line">==&gt; Summary</div><div class="line">🍺  /usr/local/Cellar/openjdk/14.0.1: 634 files, 319MB</div><div class="line">$</div></pre></td></tr></table></figure></p>
 <p>设置系统java来使用openJDK<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo ln -sfn /usr/local/opt/openjdk/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk.jdk</div></pre></td></tr></table></figure></p>
+<hr>
+<h3 id="Github中clone私有仓库"><a href="#Github中clone私有仓库" class="headerlink" title="Github中clone私有仓库"></a>Github中clone私有仓库</h3><p>Github中，对于私有仓库如果直接<code>git clone</code>, 会提示<code>fatal: repository &#39;https://github.com/xxxxxx/yyyyyy.git/&#39; not found</code><br>有两个方法可以用于克隆Github上的私有仓库</p>
+<ol>
+<li>使用ssh key方式</li>
+<li>使用显式的用户名密码的https方式</li>
+</ol>
+<h4 id="Github中使用账号密码方式clone私有仓库"><a href="#Github中使用账号密码方式clone私有仓库" class="headerlink" title="Github中使用账号密码方式clone私有仓库"></a>Github中使用账号密码方式clone私有仓库</h4><p>在<code>git clone</code>命令的url中，添加上github的用户名和密码即可。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git clone https://username:password@github.com/xxxxxx/yyyyyy.git</div></pre></td></tr></table></figure></p>
+<h4 id="Github中使用ssh-key方式clone私有仓库"><a href="#Github中使用ssh-key方式clone私有仓库" class="headerlink" title="Github中使用ssh key方式clone私有仓库"></a>Github中使用ssh key方式clone私有仓库</h4><p>在<code>~/.ssh/config</code>中配置github中使用的key, 类似如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Host &quot;github.com&quot;</div><div class="line">HostName &quot;github.com&quot;</div><div class="line">User &quot;username&quot;</div><div class="line">IdentityFile ~/.ssh/id_rsa_for_github</div></pre></td></tr></table></figure></p>
+<p>接下来就可以clone代码了<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git clone https://github.com/xxxxxx/yyyyyy.git</div></pre></td></tr></table></figure></p>
+<h4 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h4><ul>
+<li><a href="https://stackoverflow.com/questions/22755268/clone-a-private-repo-of-github-with-username-and-password/37698604" target="_blank" rel="external">Clone a private repo of github with username and password</a></li>
+<li><a href="https://github.community/t/clone-private-repo/1371" target="_blank" rel="external">Clone private repo</a></li>
+</ul>
+<hr>
+<h3 id="查看git中所有分支的日志"><a href="#查看git中所有分支的日志" class="headerlink" title="查看git中所有分支的日志"></a>查看git中所有分支的日志</h3><p>使用命令<code>git log --all</code>来查看所有分支的提交日志</p>
+<hr>
+<h3 id="在所有的branch中搜索"><a href="#在所有的branch中搜索" class="headerlink" title="在所有的branch中搜索"></a>在所有的branch中搜索</h3><p>使用命令<code>git grep &quot;search-words&quot; $(git rev-list --all)</code> 来在所有的branch的commit中进行搜索。</p>
+<hr>
+<h3 id="Linux-shell中打印有颜色的字体"><a href="#Linux-shell中打印有颜色的字体" class="headerlink" title="Linux shell中打印有颜色的字体"></a>Linux shell中打印有颜色的字体</h3><p>参考自: <a href="https://www.oreilly.com/library/view/linux-shell-scripting/9781785881985/b0ddd805-aa79-441d-b5a7-380c66c7712d.xhtml" target="_blank" rel="external">Printing a colored output</a></p>
+<h4 id="输出带颜色的字"><a href="#输出带颜色的字" class="headerlink" title="输出带颜色的字"></a>输出带颜色的字</h4><p>Colors for text are represented by color codes, including, reset = 0, black = 30, red = 31, green = 32, yellow = 33, blue = 34, magenta = 35, cyan = 36, and white = 37.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># 打印红色字体, 其中\e[1;31m是设置红色，\e[0m是还原颜色</div><div class="line">echo -e &quot;\e[1;31m This is red text \e[0m This is reset.&quot;</div></pre></td></tr></table></figure></p>
+<h4 id="输出带颜色背景的字"><a href="#输出带颜色背景的字" class="headerlink" title="输出带颜色背景的字"></a>输出带颜色背景的字</h4><p>For a colored background, reset = 0, black = 40, red = 41, green = 42, yellow = 43, blue = 44, magenta = 45, cyan = 46, and white=47, are the commonly used color codes.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># 打印红色背景的字体，</div><div class="line">echo -e &quot;\e[1;41m 这是红色背景的字\e[0m 恢复原背景&quot;</div></pre></td></tr></table></figure></p>
+<p>Mac下貌似不起作用。Mac下原生的echo太原始了。 </p>
+<hr>
+<h3 id="统计代码的小工具"><a href="#统计代码的小工具" class="headerlink" title="统计代码的小工具"></a>统计代码的小工具</h3><p><a href="https://github.com/AlDanial/cloc" target="_blank" rel="external">cloc</a>是用于统计代码的一个小工具。<br>命令的安装方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">npm install -g cloc              # https://www.npmjs.com/package/cloc</div><div class="line">sudo apt install cloc            # Debian, Ubuntu</div><div class="line">sudo yum install cloc            # Red Hat, Fedora</div><div class="line">sudo dnf install cloc            # Fedora 22 or later</div><div class="line">sudo pacman -S cloc              # Arch</div><div class="line">sudo emerge -av dev-util/cloc    # Gentoo https://packages.gentoo.org/packages/dev-util/cloc</div><div class="line">sudo apk add cloc                # Alpine Linux</div><div class="line">doas pkg_add cloc                # OpenBSD</div><div class="line">sudo pkg install cloc            # FreeBSD</div><div class="line">sudo port install cloc           # Mac OS X with MacPorts</div><div class="line">brew install cloc                # Mac OS X with Homebrew</div><div class="line">choco install cloc               # Windows with Chocolatey</div><div class="line">scoop install cloc               # Windows with Scoop</div></pre></td></tr></table></figure></p>
+<p>Docker方式运行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker run --rm -v $PWD:/tmp aldanial/cloc -- cloc /tmp</div></pre></td></tr></table></figure></p>
+<hr>
+<h3 id="FFMPEG从HLS流转换为MP4"><a href="#FFMPEG从HLS流转换为MP4" class="headerlink" title="FFMPEG从HLS流转换为MP4"></a>FFMPEG从HLS流转换为MP4</h3><p>来自: <a href="https://stackoverflow.com/a/32537953" target="_blank" rel="external">FFMPEG mp4 from http live streaming m3u8 file?</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ffmpeg -i http://.../playlist.m3u8 -c copy -bsf:a aac_adtstoasc output.mp4</div></pre></td></tr></table></figure></p>
+<hr>
+<h3 id="you-get如何使用cookie"><a href="#you-get如何使用cookie" class="headerlink" title="you-get如何使用cookie"></a>you-get如何使用cookie</h3><p><code>you-get</code>使用<code>-c</code>可以指定cookie文件，来下载登录视频。<br>MacOS下可以使用firefox的cookie, 命令如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">you-get -c ~/Library/Application\ Support/Firefox/Profiles/xxxxxxxx.default/cookies.sqlite  &apos;https://v.qq.com/x/cover/divl44zx7b2h40k/k00261fum7u.html&apos;</div></pre></td></tr></table></figure></p>
+<hr>
+<h3 id="判断某个PID是否存在"><a href="#判断某个PID是否存在" class="headerlink" title="判断某个PID是否存在"></a>判断某个PID是否存在</h3><p>使用<code>ps -p</code>来判断进程id是否存在。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">output=$(ps -p &quot;$pid&quot;)</div><div class="line">if [ &quot;$?&quot; -eq 0 ]; then</div><div class="line">  echo &quot;Found&quot;</div><div class="line">  echo &quot;$output&quot;</div><div class="line">fi</div></pre></td></tr></table></figure></p>
+<hr>
+<h3 id="yum-命令小结"><a href="#yum-命令小结" class="headerlink" title="yum 命令小结"></a>yum 命令小结</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div></pre></td><td class="code"><pre><div class="line"># 安装yum-config-manager</div><div class="line">yum install yum-utils</div><div class="line"></div><div class="line"># 查看yum repository</div><div class="line">yum repolist [enabled|disabled|all]</div><div class="line"></div><div class="line"># 启用某个yum repository</div><div class="line">1. yum-config-manager --enable repository_name # 或者到</div><div class="line">2. 到/etc/yum.repos.d目录下，找到要启动的repository的文件，修改enabled字段为1</div><div class="line"></div><div class="line"># 禁用某个yum repository</div><div class="line">1. yum-config-manager --disable repository_name</div><div class="line">2. 到/etc/yum.repos.d目录下，找到要启动的repository的文件，修改enabled字段为0</div><div class="line"></div><div class="line"># yum安装</div><div class="line">yum install ftp</div><div class="line"></div><div class="line"># yum更新</div><div class="line">yum update ftp</div><div class="line"></div><div class="line"># yum删除包</div><div class="line">yum remove ftp</div><div class="line"></div><div class="line"># yum 列出包</div><div class="line">yum list ftp # 某个包</div><div class="line">yum list installed # 列出已经安装的包</div><div class="line"></div><div class="line"># 搜索某个包</div><div class="line">yum search ftp</div><div class="line"></div><div class="line"># 查看包的信息</div><div class="line">yum info ftp</div><div class="line"></div><div class="line"># 查看可更新的包</div><div class="line">yum check-update</div><div class="line"></div><div class="line"># yum group 相关</div><div class="line">yum grouplist  # 列出所有组</div><div class="line">yum groupinstall &apos;虚拟化主机&apos;   # 按组安装，支持中文</div><div class="line">yum groupupdate &apos;虚拟化主机&apos;    # 按组更新</div><div class="line">yum groupremove &apos;虚拟化主机&apos;    # 安祖删除</div><div class="line"></div><div class="line"></div><div class="line"># yum 清理cache</div><div class="line">yum clean all</div><div class="line"></div><div class="line"># yum 清理metadat</div><div class="line">yum clean metadata</div><div class="line"></div><div class="line"># 查看yum操作记录</div><div class="line">yum history</div><div class="line"></div><div class="line"># 查看某个repository下的可用包, 以pgdg96为例</div><div class="line">yum --disablerepo=&quot;*&quot; --enablerepo=&quot;pgdg96&quot; list available</div><div class="line"></div><div class="line"># 查看某几个repository下的可用包,  repository之间用逗号隔开</div><div class="line">yum --disablerepo=&quot;*&quot; --enablerepo=&quot;pgdg96,epel&quot; list available</div><div class="line"></div><div class="line"># 只更新来自某个repository的package</div><div class="line">yum --disablerepo=&quot;*&quot; --enablerepo=&quot;pgdg96,epel&quot; update</div><div class="line"></div><div class="line"></div><div class="line"># yum security相关</div><div class="line">yum --security check-update  # 检查安全更新</div><div class="line">yum --security update        # 只更新安全补丁</div><div class="line"></div><div class="line"># 查看包依赖</div><div class="line">yum deplist ImageMagick-devel</div><div class="line"></div><div class="line"># 列出所有的包并安装固定版本的包</div><div class="line">使用`--showduplicates`列出所有的包，然后指定版本安装</div><div class="line">yum list --disablerepo=&quot;*&quot; --enablerepo=&quot;mysql80-community&quot; --showduplicates</div><div class="line"></div><div class="line"></div><div class="line"># 跳过公钥检查</div><div class="line">使用`--nogpgcheck`跳过公钥检查安装</div><div class="line">yum install --nogpgcheck xxxx</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="nc命令检查服务器端口是否开放"><a href="#nc命令检查服务器端口是否开放" class="headerlink" title="nc命令检查服务器端口是否开放"></a>nc命令检查服务器端口是否开放</h3><p>使用<code>nc -vz -w 10 IP Port</code>来检查服务器某个端口是否开启。<br>其中</p>
+<ul>
+<li><code>-v</code>: 设置输出模式</li>
+<li><code>-z</code>: 不交互输入/输出, 仅仅报告链接状态</li>
+<li><code>-w &lt;time&gt;</code>: 设置超时时间<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">$ nc -vz -w 10 www.baidu.com 443</div><div class="line">Ncat: Version 7.50 ( https://nmap.org/ncat )</div><div class="line">Ncat: Connected to 180.101.49.12:443.</div><div class="line">Ncat: 0 bytes sent, 0 bytes received in 0.03 seconds.</div><div class="line">$</div><div class="line">$ nc -vz -w 10 www.baidu.com 440</div><div class="line">Ncat: Version 7.50 ( https://nmap.org/ncat )</div><div class="line">Ncat: Connection to 180.101.49.12 failed: Connection timed out.</div><div class="line">Ncat: Trying next address...</div><div class="line">Ncat: Connection timed out.</div><div class="line">$</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<h3 id="CentOS-7查看和更新密码有效期"><a href="#CentOS-7查看和更新密码有效期" class="headerlink" title="CentOS 7查看和更新密码有效期"></a>CentOS 7查看和更新密码有效期</h3><p>账户密码失效后，运行crontab任务会在<code>/var/log/cron</code>中报告如下出错信息，并且禁止crontab任务的运行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Feb  3 12:32:01 wjds-food-new crond[31367]: (deployer) PAM ERROR (Authentication token is no longer valid; new one required)</div><div class="line">Feb  3 12:32:01 wjds-food-new crond[31368]: (deployer) FAILED to authorize user with PAM (Authentication token is no longer valid; new one required)</div></pre></td></tr></table></figure></p>
+<p>可使用<code>chage -l username</code>来查看密码有效期设定</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"># chage -l deployer</div><div class="line">Last password change					: Nov 03, 2020</div><div class="line">Password expires					: Feb 01, 2021</div><div class="line">Password inactive					: never</div><div class="line">Account expires						: never</div><div class="line">Minimum number of days between password change		: 1</div><div class="line">Maximum number of days between password change		: 90</div><div class="line">Number of days of warning before password expires	: 7</div><div class="line">#</div></pre></td></tr></table></figure>
+<p>可以通过更新密码来重置<code>Password expires</code>时间，也可以使用如下两个命令，直接设置密码永久不需要重置。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">passwd -x -1 username</div><div class="line">chage -M -1 username</div></pre></td></tr></table></figure></p>
 ]]></content>
       
         <categories>
@@ -12471,9 +12898,9 @@ You can wait for the scheduled retirement date - when the instance is stopped - 
             
             <tag> RDS </tag>
             
-            <tag> Ruby </tag>
-            
             <tag> AWS SDK </tag>
+            
+            <tag> Ruby </tag>
             
             <tag> PostgreSQL </tag>
             

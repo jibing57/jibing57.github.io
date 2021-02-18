@@ -139,6 +139,222 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
+			<div class="date"> 2020-05-14 </div>
+			<div class="article-title"><a href="/2020/05/14/ruby-rails-tips/" >Ruby &amp; Rails Tips</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<hr>
+<h3 id="Struct-amp-OpenStruct"><a href="#Struct-amp-OpenStruct" class="headerlink" title="Struct &amp; OpenStruct"></a>Struct &amp; OpenStruct</h3><h4 id="Struct"><a href="#Struct" class="headerlink" title="Struct"></a>Struct</h4><p>Struct 用于快速声明一个类。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Person = Struct.new(:age, :name, :sex)</div><div class="line">me = Person.new(24, &apos;Spirit&apos;, &apos;male&apos;)</div><div class="line">me.age  # =&gt; 24</div><div class="line">me.name = &apos;Test&apos;</div><div class="line">me.name # =&gt; &apos;Test&apos;</div><div class="line">me.height # =&gt; NoMethodError</div></pre></td></tr></table></figure></p>
+<p>优点: 快速声明和实现<br>缺点: 只能响应定义的字段，不能响应任意的属性</p>
+<h4 id="OpenStruct"><a href="#OpenStruct" class="headerlink" title="OpenStruct"></a>OpenStruct</h4><p>参考<a href="https://ruby-china.org/topics/21617" target="_blank" rel="external">Ruby Ruby 中的 OpenStruct 详解</a><br>OpenStruct可以自由设置set和get的一个类<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">p = OpenStruct.new()</div><div class="line">p.name=&apos;hello&apos;</div><div class="line">p.name  # p.name就是hello</div><div class="line">p.age=12</div><div class="line">p.age   # p.age就是12</div></pre></td></tr></table></figure></p>
+<hr>
+<h3 id="skip-before-action"><a href="#skip-before-action" class="headerlink" title="skip before_action"></a>skip before_action</h3><ul>
+<li><a href="https://stackoverflow.com/questions/36878355/exclude-a-controller-from-before-action" target="_blank" rel="external">Exclude a controller from before_action</a></li>
+</ul>
+<hr>
+<h3 id="API接口中使用cookies的方法"><a href="#API接口中使用cookies的方法" class="headerlink" title="API接口中使用cookies的方法"></a>API接口中使用cookies的方法</h3><p>方法一: 在Controller中添加<code>include ActionController::Cookies</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">class ApplicationController &lt; ActionController::API</div><div class="line">  include ActionController::Cookies</div></pre></td></tr></table></figure>
+<p>在Controller中就可以访问到cookies变量了。</p>
+<p>方法二: 如果不想引入过多的方法，可以在Controller中定义cookies方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">def cookies</div><div class="line">  # helpers not available in --api mode</div><div class="line">  request.cookie_jar</div><div class="line">end</div></pre></td></tr></table></figure></p>
+<hr>
+<h3 id="Rails-4中memory-store缓存的使用"><a href="#Rails-4中memory-store缓存的使用" class="headerlink" title="Rails 4中memory_store缓存的使用"></a>Rails 4中memory_store缓存的使用</h3><p>Rails 4中<code>memory_store</code>类型的基础用法</p>
+<h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><p>需要在<code>config/environments/development.rb</code>或者<code>config/environments/production.rb</code>中设置开启cache</p>
+<ul>
+<li><code>config.action_controller.perform_caching</code>设置为true</li>
+<li><code>config.cache_store</code>设置为<code>:memory_store</code></li>
+</ul>
+<h4 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h4><p>所有方法参考: <a href="https://api.rubyonrails.org/v4.0.13/classes/ActiveSupport/Cache/Store.html" target="_blank" rel="external">ActiveSupport::Cache::Store on Ruby on Rails 4.0.13</a></p>
+<ul>
+<li><p>写入Cache,使用<code>Rails.cache.write</code>，使用<code>expires_in</code>来设置过期时间，不设置的话默认不过期。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Rails.cache.write(cache_key, 10 ,expires_in: 10.seconds)</div></pre></td></tr></table></figure>
+</li>
+<li><p>读取Cache, 使用<code>Rails.cache.read</code>,传入key，读取value</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Rails.cache.read(cache_key)</div></pre></td></tr></table></figure>
+</li>
+<li><p>获取Cache对象,使用<code>Rails.cache.send</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Rails.cache.send(:read_entry, cache_key,&#123;&#125;)</div></pre></td></tr></table></figure>
+</li>
+<li><p>增加Cache中integer类型的值, 使用<code>Rails.cache.increment</code>, 注意这边如果不设置<code>expires_in</code>，则该条目就不再过期，无论原先记录write时有没有设置过期时间。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Rails.cache.increment(cache_key,1, expires_in: 10.seconds)</div></pre></td></tr></table></figure>
+</li>
+<li><p>读取Cache，如果没有就获取内容后插入, 使用<code>Rails.cache.fetch</code></p>
+<ul>
+<li>fetch不加block，就相当于read</li>
+<li>fetch加了block，那么如果要获取的cache不存在，就会将block中的值添加到cache中，并返回。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Rails.cache.fetch(&apos;test_key&apos;) do</div><div class="line">  &apos;hello world&apos;</div><div class="line">end</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<p>上述几个命令操作过程的记录<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">2.3.8 :135 &gt;   cache_key=&apos;test_key&apos;</div><div class="line"> =&gt; &quot;test_key&quot;</div><div class="line">2.3.8 :136 &gt; Rails.cache.write(cache_key, 10 ,expires_in: 10.seconds)</div><div class="line"> =&gt; true</div><div class="line">2.3.8 :137 &gt; Rails.cache.send(:read_entry, cache_key,&#123;&#125;)</div><div class="line"> =&gt; #&lt;ActiveSupport::Cache::Entry:0x00007fbfa8151750 @value=10, @created_at=1603420143.660662, @expires_in=10.0&gt;</div><div class="line">2.3.8 :138 &gt; Rails.cache.read(cache_key)</div><div class="line"> =&gt; 10</div><div class="line">2.3.8 :139 &gt; Rails.cache.increment(cache_key,1, expires_in: 10.seconds)</div><div class="line"> =&gt; 11</div><div class="line">2.3.8 :140 &gt; Rails.cache.read(cache_key)</div><div class="line"> =&gt; 11</div><div class="line">2.3.8 :141 &gt; Rails.cache.send(:read_entry, cache_key,&#123;&#125;)</div><div class="line"> =&gt; #&lt;ActiveSupport::Cache::Entry:0x00007fbfa9003f78 @value=11, @created_at=1603420143.666131, @expires_in=10.0&gt;</div><div class="line">2.3.8 :142 &gt;</div></pre></td></tr></table></figure></p>
+<h4 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h4><ul>
+<li><a href="https://api.rubyonrails.org/v4.0.13/classes/ActiveSupport/Cache/Store.html" target="_blank" rel="external">ActiveSupport::Cache::Store on Ruby on Rails 4.0.13</a></li>
+<li><a href="https://stackoverflow.com/questions/22379157/rails-cache-fetch-vs-cache-read-write" target="_blank" rel="external">Rails: cache.fetch vs cache.read/write</a></li>
+<li><a href="https://stackoverflow.com/questions/39868775/get-expiration-time-of-rails-cached-item" target="_blank" rel="external">Get expiration time of Rails cached item</a></li>
+</ul>
+<hr>
+<h3 id="输出请求中所有header的值"><a href="#输出请求中所有header的值" class="headerlink" title="输出请求中所有header的值"></a>输出请求中所有header的值</h3><p>在base controller中添加如下代码输出headers值。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">before_action :output_headers</div><div class="line"></div><div class="line">def output_headers</div><div class="line">  headers = request.headers.env.select do |k, _|</div><div class="line">    k.downcase.start_with?(&apos;http&apos;) ||</div><div class="line">    k.in?(ActionDispatch::Http::Headers::CGI_VARIABLES)</div><div class="line">  end</div><div class="line">  headers = headers.sort.to_h</div><div class="line">  headers.each do |k,v|</div><div class="line">    Rails.logger.info &quot;#&#123;k&#125; = #&#123;v&#125;&quot;</div><div class="line">  end</div><div class="line">end</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="Ruby中Hash根据key值进行排序"><a href="#Ruby中Hash根据key值进行排序" class="headerlink" title="Ruby中Hash根据key值进行排序"></a>Ruby中Hash根据key值进行排序</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Hash.new.sort.to_h</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="Ruby中将Html转为plain-text的方法"><a href="#Ruby中将Html转为plain-text的方法" class="headerlink" title="Ruby中将Html转为plain text的方法"></a>Ruby中将Html转为plain text的方法</h3><p>方法一: Gem <code>html_to_plain_text</code></p>
+<ul>
+<li>地址: <a href="https://github.com/bdurand/html_to_plain_text" target="_blank" rel="external">html_to_plain_text</a></li>
+<li>用法:<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">require &apos;html_to_plain_text&apos;</div><div class="line">html = &quot;&lt;h1&gt;Hello&lt;/h1&gt;&lt;p&gt;world!&lt;/p&gt;&quot;</div><div class="line">HtmlToPlainText.plain_text(html)</div><div class="line">=&gt; &quot;Hello\n\nworld!&quot;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>方法二: Rails的strip_tags函数</p>
+<ul>
+<li>地址: <a href="https://apidock.com/rails/ActionView/Helpers/SanitizeHelper/strip_tags" target="_blank" rel="external">strip_tags</a></li>
+<li>用法:<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">include ActionView::Helpers::SanitizeHelper</div><div class="line">strip_tags(&quot;Strip &lt;i&gt;these&lt;/i&gt; tags!&quot;)</div><div class="line"># =&gt; Strip these tags!</div><div class="line"></div><div class="line">strip_tags(&quot;&lt;b&gt;Bold&lt;/b&gt; no more!  &lt;a href=&apos;more.html&apos;&gt;See more here&lt;/a&gt;...&quot;)</div><div class="line"># =&gt; Bold no more!  See more here...</div><div class="line"></div><div class="line">strip_tags(&quot;&lt;div id=&apos;top-bar&apos;&gt;Welcome to my website!&lt;/div&gt;&quot;)</div><div class="line"># =&gt; Welcome to my website!</div><div class="line"></div><div class="line">strip_tags(&quot;&gt; A quote from Smith &amp; Wesson&quot;)</div><div class="line"># =&gt; &gt; A quote from Smith &amp; Wesson</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<h3 id="Ruby中获取类的父类的途径"><a href="#Ruby中获取类的父类的途径" class="headerlink" title="Ruby中获取类的父类的途径"></a>Ruby中获取类的父类的途径</h3><p>类的<code>.ancestors</code>方法，可以获取父类的列表。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">2.7.1 :014 &gt; Integer.ancestors</div><div class="line"> =&gt; [ActiveSupport::NumericWithFormat, ActiveSupport::ToJsonWithActiveSupportEncoder, Integer, Mongoid::Criteria::Queryable::Extensions::Numeric, Mongoid::Extensions::Integer, BSON::Integer, JSON::Ext::Generator::GeneratorMethods::Integer, MessagePack::CoreExt, Numeric, Comparable, ActiveSupport::Dependencies::ZeitwerkIntegration::RequireDependency, ActiveSupport::ToJsonWithActiveSupportEncoder, Object, PP::ObjectMixin, Mongoid::Criteria::Queryable::Extensions::Object, Mongoid::Extensions::Object, BSON::Object, JSON::Ext::Generator::GeneratorMethods::Object, ActiveSupport::Tryable, ActiveSupport::Dependencies::Loadable, Kernel, BasicObject]</div><div class="line">2.7.1 :015 &gt;</div><div class="line">2.7.1 :016 &gt; 1.class.ancestors</div><div class="line"> =&gt; [ActiveSupport::NumericWithFormat, ActiveSupport::ToJsonWithActiveSupportEncoder, Integer, Mongoid::Criteria::Queryable::Extensions::Numeric, Mongoid::Extensions::Integer, BSON::Integer, JSON::Ext::Generator::GeneratorMethods::Integer, MessagePack::CoreExt, Numeric, Comparable, ActiveSupport::Dependencies::ZeitwerkIntegration::RequireDependency, ActiveSupport::ToJsonWithActiveSupportEncoder, Object, PP::ObjectMixin, Mongoid::Criteria::Queryable::Extensions::Object, Mongoid::Extensions::Object, BSON::Object, JSON::Ext::Generator::GeneratorMethods::Object, ActiveSupport::Tryable, ActiveSupport::Dependencies::Loadable, Kernel, BasicObject]</div><div class="line">2.7.1 :017 &gt;</div></pre></td></tr></table></figure></p>
+<hr>
+<h3 id="Ruby产生随机数"><a href="#Ruby产生随机数" class="headerlink" title="Ruby产生随机数"></a>Ruby产生随机数</h3><p>使用<code>rand</code>和<code>Random.rand</code>来生成随机数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">2.7.1 :026 &gt; rand(1..10)</div><div class="line"> =&gt; 10</div><div class="line">2.7.1 :027 &gt; rand(1.1..99.99)</div><div class="line"> =&gt; 22.250780345080248</div><div class="line">2.7.1 :028 &gt;</div><div class="line">2.7.1 :029 &gt;</div><div class="line">2.7.1 :030 &gt; Random.rand(1...10)</div><div class="line"> =&gt; 1</div><div class="line">2.7.1 :031 &gt; Random.rand(1.0...10)</div><div class="line"> =&gt; 7.646093836025024</div><div class="line">2.7.1 :032 &gt;</div></pre></td></tr></table></figure></p>
+<hr>
+<h3 id="产生测试数据的Gem-Faker"><a href="#产生测试数据的Gem-Faker" class="headerlink" title="产生测试数据的Gem Faker"></a>产生测试数据的Gem Faker</h3><p><a href="https://github.com/faker-ruby/faker" target="_blank" rel="external">faker-ruby/faker</a>这个Gem，可方便地用于生成测试数据。</p>
+<h4 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h4><p>Gemfile中 添加在<code>development</code>组里<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">group :development do</div><div class="line">...</div><div class="line">  gem &apos;faker&apos;</div><div class="line">...</div><div class="line">end</div></pre></td></tr></table></figure></p>
+<hr>
+<h4 id="常用方法"><a href="#常用方法" class="headerlink" title="常用方法"></a>常用方法</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"># 生成随机图片</div><div class="line">image_size = &quot;#&#123;rand(400...500)&#125;x#&#123;rand(500...600)&#125;&quot;</div><div class="line">Faker::LoremFlickr.image(size: image_size, search_terms: [&apos;sports&apos;])</div><div class="line"></div><div class="line"># 生成随机email</div><div class="line">Faker::Internet.email</div><div class="line"></div><div class="line"># 生成标题</div><div class="line">title = [Faker::Company.name,  Faker::Company.industry].join(&apos; - &apos;)</div><div class="line"></div><div class="line"># 生成描述文字</div><div class="line">desc = Faker::Quote.matz</div><div class="line">desc = Faker::Hipster.sentences.sample</div><div class="line"></div><div class="line"># 生成随机时间</div><div class="line">time = Faker::Time.between(from: DateTime.now - 365, to: DateTime.now + 365, format: :default)</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="从数组中随机挑选出一个元素"><a href="#从数组中随机挑选出一个元素" class="headerlink" title="从数组中随机挑选出一个元素"></a>从数组中随机挑选出一个元素</h3><p>使用Array.sample方法实现随机挑选的操作。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">2.7.1 :047 &gt; (1..100).to_a.sample</div><div class="line"> =&gt; 81</div><div class="line">2.7.1 :048 &gt; (1..100).to_a.sample</div><div class="line"> =&gt; 13</div><div class="line">2.7.1 :049 &gt; (1..100).to_a.sample</div><div class="line"> =&gt; 91</div><div class="line">2.7.1 :050 &gt;</div></pre></td></tr></table></figure></p>
+<hr>
+<h3 id="Rails中转换为Datetime"><a href="#Rails中转换为Datetime" class="headerlink" title="Rails中转换为Datetime"></a>Rails中转换为Datetime</h3><p>从字符中得到Datetime: <code>&#39;2020-01-01 00:00:00&#39;.to_datetime</code><br>从timestamp得到Datetime: <code>Time.at(1).to_datetime</code></p>
+<hr>
+<h3 id="Rails中validate添加自定义错误"><a href="#Rails中validate添加自定义错误" class="headerlink" title="Rails中validate添加自定义错误"></a>Rails中validate添加自定义错误</h3><p>使用<code>.errors.add :base, string</code>来添加自定义的错误。<br>例如: 实现unique validate的自定义错误。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">validate do |block_key_word|</div><div class="line">    existing_record = BlockKeyWord.where(:name =&gt; block_key_word.name).first</div><div class="line">    unless existing_record.nil? || existing_record.id == block_key_word.id</div><div class="line">        block_key_word.errors.add :base, (&quot;关键字-#&#123;block_key_word.name&#125;已存在。&quot;)</div><div class="line">    end</div><div class="line">end</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="ruby操作Excel的基本操作"><a href="#ruby操作Excel的基本操作" class="headerlink" title="ruby操作Excel的基本操作"></a>ruby操作Excel的基本操作</h3><p>可以使用<a href="https://github.com/weshatheleopard/rubyXL" target="_blank" rel="external">rubyXL</a>来操作excel<br>写Excel的例子<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">require &apos;rubyXL&apos;</div><div class="line">workbook = RubyXL::Workbook.new</div><div class="line">workbook[0].add_cell(0, 0, &quot;写入内容&quot;)</div><div class="line">workbook.write(&quot;#&#123;Rails.root&#125;/tmp/file.xlsx&quot;)</div></pre></td></tr></table></figure></p>
+
+	
+	</div>
+  <a type="button" href="/2020/05/14/ruby-rails-tips/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2020-05-04 </div>
+			<div class="article-title"><a href="/2020/05/04/imageMagick-fonts-issue-on-Aliyun-Linux-2/" >Aliyun Linux 2上imageMagick的fonts配置问题</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h3><p>公司阿里云服务器部署Rails程序时，发现Gem <a href="https://github.com/pludoni/simple-captcha" target="_blank" rel="external">simple_captcha2</a>生成的验证码图片，和以前的不太一样。图片中的数字会比正常情况下靠上很多, 影响用户体验。</p>
+<p>正常情况下的图片:<br><img src="/images/ImageMagick/fonts_normal.jpeg" alt="fonts_normal.jpeg"></p>
+<p>有问题的图片:<br><img src="/images/ImageMagick/fonts_crooked_image.jpeg" alt="crooked_image.jpeg"></p>
+<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>Aliyun Linux 2(也包含最新的CentOS 7)中升级了ImageMagick的版本到<code>ImageMagick 6.9.10-68</code>, 字体配置文件<code>/etc/ImageMagick-6/type.xml</code>中默认改用了<code>urw-base35-fonts</code>，而不是之前的<code>ghostscript-fonts</code>。</p>
+<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><p>安装并修改ImageMagick使用旧字体。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"># 安装urw-base35-fonts-legacy, fonts在/usr/share/X11/fonts/urw-fonts目录下</div><div class="line">yum install urw-base35-fonts-legacy</div><div class="line"></div><div class="line"># 修改/etc/ImageMagick-6/type.xml配置文件为使用type-ghostscript.xml</div><div class="line">sed -i.bak &apos;s,type-urw-base35.xml,type-ghostscript.xml,g&apos; /etc/ImageMagick-6/type.xml</div><div class="line"></div><div class="line"># 修改 /etc/ImageMagick-6/type-ghostscript.xml为/usr/share/X11/fonts/urw-fonts/</div><div class="line">sed -i.bak &apos;s,metrics=&quot;,metrics=&quot;/usr/share/X11/fonts/urw-fonts/,g&apos; /etc/ImageMagick-6/type-ghostscript.xml</div><div class="line">sed -i &apos;s,glyphs=&quot;,glyphs=&quot;/usr/share/X11/fonts/urw-fonts/,g&apos; /etc/ImageMagick-6/type-ghostscript.xml</div></pre></td></tr></table></figure>
+	
+	</div>
+  <a type="button" href="/2020/05/04/imageMagick-fonts-issue-on-Aliyun-Linux-2/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2020-04-29 </div>
+			<div class="article-title"><a href="/2020/04/29/Install-Postgresql-and-Nodejs-on-Aliyun-Linux-2/" >在Aliyun Linux 2上安装Postgresql和Node.js</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>Aliyun Linux 2上部署环境，遇到了几个问题。记录如下。</p>
+<h3 id="安装Postgresql-11-client"><a href="#安装Postgresql-11-client" class="headerlink" title="安装Postgresql 11 client"></a>安装Postgresql 11 client</h3><h4 id="官方Guide"><a href="#官方Guide" class="headerlink" title="官方Guide"></a>官方Guide</h4><ul>
+<li>Postgresql官方在红帽系Linux的安装Guide地址: <a href="https://www.postgresql.org/download/linux/redhat/" target="_blank" rel="external">https://www.postgresql.org/download/linux/redhat/</a></li>
+<li>Guide中选取对应操作系统后，可以得到Postgresql在RHEL 7系列上的yum源地址是: <a href="https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm" target="_blank" rel="external">https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm</a></li>
+</ul>
+<p>在RHEL 7系列上安装方法为:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">yum install https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm</div><div class="line">yum install postgresql11</div></pre></td></tr></table></figure>
+<h4 id="Aliyun-Linux-2安装问题"><a href="#Aliyun-Linux-2安装问题" class="headerlink" title="Aliyun Linux 2安装问题"></a>Aliyun Linux 2安装问题</h4><p>但该方法在Alinux Linux 2上没法成功安装，因为官方源依赖于yum的变量$releasever,$basearch。在Aliyun Linux 2中，这些变量和RHEL和CentOS上不相同。导致没法直接用官方rpm yum包来安装postgresql11。</p>
+	
+	</div>
+  <a type="button" href="/2020/04/29/Install-Postgresql-and-Nodejs-on-Aliyun-Linux-2/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2020-04-09 </div>
+			<div class="article-title"><a href="/2020/04/09/replace-douban-book-plugin/" >豆瓣插件替换</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>原先使用的<a href="https://github.com/Yikun/hexo-generator-douban" target="_blank" rel="external">Yikun/hexo-generator-douban</a>在豆瓣封了API之后，就彻底没法用了。另外一个插件<a href="https://github.com/mythsman/hexo-douban" target="_blank" rel="external">mythsman/hexo-douban</a>是靠解析网页来生成读书列表，还能工作。就决定换用<a href="https://github.com/mythsman/hexo-douban" target="_blank" rel="external">mythsman/hexo-douban</a>来生成读书列表。<br>以下记录插件替换的过程。</p>
+<h3 id="配置变更"><a href="#配置变更" class="headerlink" title="配置变更"></a>配置变更</h3><h4 id="hexo的配置-config-yml"><a href="#hexo的配置-config-yml" class="headerlink" title="hexo的配置_config.yml"></a>hexo的配置<code>_config.yml</code></h4><p>原先为:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">douban:</div><div class="line">  user: jibing57</div></pre></td></tr></table></figure></p>
+<p>修改为<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">douban:</div><div class="line">  user: jibing57 </div><div class="line">  builtin: false</div><div class="line">  book:</div><div class="line">    title: &apos;豆瓣读书记录&apos;</div><div class="line">    quote: &apos;不完全的读书记录，因为好久才会想起要去豆瓣去点亮一下。&apos;</div><div class="line">  timeout: 10000</div></pre></td></tr></table></figure></p>
+	
+	</div>
+  <a type="button" href="/2020/04/09/replace-douban-book-plugin/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2020-02-29 </div>
+			<div class="article-title"><a href="/2020/02/29/how-to-use-rvm-to-instal-ruby-in-slow-network-connection/" >弱网络环境下如何使用rvm安装ruby</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>下面介绍下如何在屏蔽比较严重的网络情况下使用rvm来半手工的安装ruby, 如下操作基于CentOS 7，其他操作系统可能有所不同。</p>
+<h3 id="安装rvm"><a href="#安装rvm" class="headerlink" title="安装rvm"></a>安装rvm</h3><h4 id="官网安装步骤"><a href="#官网安装步骤" class="headerlink" title="官网安装步骤"></a>官网安装步骤</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">gpg --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB</div><div class="line">curl -L get.rvm.io | bash -s stable</div></pre></td></tr></table></figure>
+<h4 id="问题点"><a href="#问题点" class="headerlink" title="问题点:"></a>问题点:</h4><p><code>get.rvm.io</code>是重定向到<code>https://raw.githubusercontent.com/rvm/rvm/master/binscripts/rvm-installer</code>这个地址的。可是有些国内机构的网络中，<code>raw.githubusercontent.com</code>这个域名是被屏蔽的。</p>
+<h4 id="措施"><a href="#措施" class="headerlink" title="措施:"></a>措施:</h4><p>可先在本地下载rvm-installer脚本，再拷贝脚本到服务器后，再执行安装命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"># 1. 本机上下载</div><div class="line">curl -L get.rvm.io &gt; rvm-installer.sh</div><div class="line"></div><div class="line"># 2. 拷贝rvm-installer.sh到服务器</div><div class="line"></div><div class="line"># 3. 服务器本地执行安装命令</div><div class="line">cat rvm-installer.sh | bash -s stable</div></pre></td></tr></table></figure></p>
+	
+	</div>
+  <a type="button" href="/2020/02/29/how-to-use-rvm-to-instal-ruby-in-slow-network-connection/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
 			<div class="date"> 2020-02-24 </div>
 			<div class="article-title"><a href="/2020/02/24/how-to-speed-yarn-install-interiorly/" >如何在国内加速yarn install</a></div>						
 		</h3>
@@ -269,132 +485,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2019-12-02 </div>
-			<div class="article-title"><a href="/2019/12/02/ImageMagick-watermark/" >使用ImageMagick来给图片打文字水印</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>博客中，难免要为有些图片打上水印。下面摘录两个打文字水印的方法。<br>摘录来自博客<a href="https://aotu.io/notes/2018/06/06/ImageMagick_intro/index.html" target="_blank" rel="external">图像处理 - ImageMagick 简单介绍与案例</a></p>
-<p>工具使用的是强大的<a href="https://www.imagemagick.org/script/index.php" target="_blank" rel="external">ImageMagick</a>, Mac下可以通过<a href="https://brew.sh/" target="_blank" rel="external">Homebrew</a>来安装。安装命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew install imagemagick</div></pre></td></tr></table></figure></p>
-<h3 id="给图片打上透明的文字水印"><a href="#给图片打上透明的文字水印" class="headerlink" title="给图片打上透明的文字水印"></a>给图片打上透明的文字水印</h3><p>命令:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">convert  -draw &apos;text 0,0 &quot;WWW.JIBING57.COM&quot;&apos;  -fill &apos;rgba(221, 34, 17, 0.25)&apos;  -pointsize 36  \</div><div class="line">-font Arial  -gravity center  src.png  src_with_watermark.png</div></pre></td></tr></table></figure></p>
-	
-	</div>
-  <a type="button" href="/2019/12/02/ImageMagick-watermark/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2019-11-28 </div>
-			<div class="article-title"><a href="/2019/11/28/way-to-install-wkhtmltopdf-and-wkhtmltoimage-to-CentOS-7/" >如何在CentOS 7 中安装wkhtmltopdf和wkhtmltoimage</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="工具说明"><a href="#工具说明" class="headerlink" title="工具说明"></a>工具说明</h3><p>wkhtmltopdf和wkhtmltoimage是一个开源的命令行工具，可以将HTML转换为pdf文档和图片。<br>Github 仓库: <a href="https://github.com/wkhtmltopdf/wkhtmltopdf" target="_blank" rel="external">wkhtmltopdf/wkhtmltopdf</a><br>官网: <a href="https://wkhtmltopdf.org/" target="_blank" rel="external">https://wkhtmltopdf.org/</a></p>
-<h3 id="在CentOS7上安装wkhtmltopdf"><a href="#在CentOS7上安装wkhtmltopdf" class="headerlink" title="在CentOS7上安装wkhtmltopdf"></a>在CentOS7上安装wkhtmltopdf</h3><p>CentOS7 下，下载依赖<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">yum install -y xorg-x11-fonts-75dpi</div><div class="line">yum install -y xorg-x11-fonts-Type1</div></pre></td></tr></table></figure></p>
-<p>下载RMP包,  RMP包可以从官网<a href="https://wkhtmltopdf.org/" target="_blank" rel="external">wkhtmltopdf.org</a>下，也可以从Github下。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.2.1/wkhtmltox-0.12.2.1_linux-centos7-amd64.rpm</div></pre></td></tr></table></figure></p>
-	
-	</div>
-  <a type="button" href="/2019/11/28/way-to-install-wkhtmltopdf-and-wkhtmltoimage-to-CentOS-7/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2019-11-19 </div>
-			<div class="article-title"><a href="/2019/11/19/how-to-install-docker-and-kubernetes-on-macos/" >在Macos上安装Docker和Kubernetes</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>Macos下安装Docker和Kubernutes最方便的工具就是<a href="https://www.docker.com/products/docker-desktop" target="_blank" rel="external">Docker Desktop</a>了。</p>
-<h3 id="安装Docker"><a href="#安装Docker" class="headerlink" title="安装Docker"></a>安装Docker</h3><p>访问<a href="https://www.docker.com/products/docker-desktop" target="_blank" rel="external">Docker Desktop</a>官网，点击下载Mac版。会跳转到dockerhub进行下载。需要注册dockerhub才可以进行下载。</p>
-<p>下载过后双击Docker.dmg文件进行安装即可。<br>安装完毕后，Docker就可以正常使用了</p>
-	
-	</div>
-  <a type="button" href="/2019/11/19/how-to-install-docker-and-kubernetes-on-macos/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2019-10-31 </div>
-			<div class="article-title"><a href="/2019/10/31/why-format-painter-not-working-on-mac-office-365/" >Mac下Word不能双击格式刷重复刷的问题</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>Mac下的Word中没法通过双击格式刷来保持格式刷的状态来重复刷格式</p>
-<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>Word的双击格式刷功能，可能和某些字典软件的功能有冲突，会导致双击格式刷功能失效。</p>
-<h3 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h3><p>关掉字典软件即可。</p>
-	
-	</div>
-  <a type="button" href="/2019/10/31/why-format-painter-not-working-on-mac-office-365/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2019-10-27 </div>
-			<div class="article-title"><a href="/2019/10/27/postgresql-tips/" >PostgreSQL Tips</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>收录一些PostgreSQL日常使用的小命令和小配置，备查。</p>
-<hr>
-<h3 id="将sql结果导入csv文件"><a href="#将sql结果导入csv文件" class="headerlink" title="将sql结果导入csv文件"></a>将sql结果导入csv文件</h3><p>使用\copy命令将sql结果导入csv文件, postgresql命令行中输入以下命令:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">\copy (Select * From foo) To &apos;/tmp/test.csv&apos; With CSV HEADER</div></pre></td></tr></table></figure></p>
-<p>Reference :<a href="http://stackoverflow.com/questions/1517635/save-pl-pgsql-output-from-postgresql-to-a-csv-file" target="_blank" rel="external">http://stackoverflow.com/questions/1517635/save-pl-pgsql-output-from-postgresql-to-a-csv-file</a></p>
-	
-	</div>
-  <a type="button" href="/2019/10/27/postgresql-tips/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -458,7 +548,7 @@ var _hmt = _hmt || [];
 		<h4>分类</h4>
 		<ul class="tag_box inline list-unstyled">
 		
-			<li><a href="/categories/#AWS">AWS<span>37</span></a></li>
+			<li><a href="/categories/#AWS">AWS<span>38</span></a></li>
 		
 			<li><a href="/categories/#AWS Certified">AWS Certified<span>4</span></a></li>
 		
@@ -466,13 +556,13 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/#Code">Code<span>6</span></a></li>
 		
-			<li><a href="/categories/#Kubernetes">Kubernetes<span>2</span></a></li>
+			<li><a href="/categories/#Kubernetes">Kubernetes<span>3</span></a></li>
 		
-			<li><a href="/categories/#Linux">Linux<span>11</span></a></li>
+			<li><a href="/categories/#Linux">Linux<span>12</span></a></li>
 		
 			<li><a href="/categories/#Shell">Shell<span>8</span></a></li>
 		
-			<li><a href="/categories/#Tools">Tools<span>34</span></a></li>
+			<li><a href="/categories/#Tools">Tools<span>36</span></a></li>
 		
 			<li><a href="/categories/#杂">杂<span>1</span></a></li>
 		
@@ -486,48 +576,48 @@ var _hmt = _hmt || [];
 		<h4>标签云</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/#Tips">Tips<span>1</span></a></li>
+			<li><a href="/tags/#RDS">RDS<span>5</span></a></li>
 		
-			<li><a href="/tags/#Elastic Load Balancing">Elastic Load Balancing<span>6</span></a></li>
+			<li><a href="/tags/#Udemy">Udemy<span>1</span></a></li>
 		
-			<li><a href="/tags/#Lightsail">Lightsail<span>3</span></a></li>
+			<li><a href="/tags/#Bug">Bug<span>1</span></a></li>
 		
-			<li><a href="/tags/#Network">Network<span>4</span></a></li>
+			<li><a href="/tags/#Kubeadm">Kubeadm<span>1</span></a></li>
 		
-			<li><a href="/tags/#Firewall">Firewall<span>1</span></a></li>
-		
-			<li><a href="/tags/#VMware">VMware<span>2</span></a></li>
-		
-			<li><a href="/tags/#S3">S3<span>10</span></a></li>
-		
-			<li><a href="/tags/#Hexo">Hexo<span>8</span></a></li>
-		
-			<li><a href="/tags/#RDS">RDS<span>4</span></a></li>
-		
-			<li><a href="/tags/#EC2 User Data">EC2 User Data<span>1</span></a></li>
-		
-			<li><a href="/tags/#Yum">Yum<span>1</span></a></li>
-		
-			<li><a href="/tags/#Video">Video<span>1</span></a></li>
+			<li><a href="/tags/#Ubuntu">Ubuntu<span>1</span></a></li>
 		
 			<li><a href="/tags/#FFMPEG">FFMPEG<span>4</span></a></li>
 		
-			<li><a href="/tags/#Kubernetes">Kubernetes<span>1</span></a></li>
+			<li><a href="/tags/#Kubernetes">Kubernetes<span>2</span></a></li>
 		
-			<li><a href="/tags/#Ruby">Ruby<span>11</span></a></li>
+			<li><a href="/tags/#Github">Github<span>4</span></a></li>
+		
+			<li><a href="/tags/#感悟">感悟<span>1</span></a></li>
+		
+			<li><a href="/tags/#RTMP">RTMP<span>2</span></a></li>
 		
 			<li><a href="/tags/#Minecraft">Minecraft<span>1</span></a></li>
 		
-			<li><a href="/tags/#PostgreSQL">PostgreSQL<span>6</span></a></li>
+			<li><a href="/tags/#Nginx">Nginx<span>11</span></a></li>
 		
-			<li><a href="/tags/#CentOS">CentOS<span>14</span></a></li>
+			<li><a href="/tags/#Docker">Docker<span>4</span></a></li>
 		
-			<li><a href="/tags/#Crontab">Crontab<span>1</span></a></li>
+			<li><a href="/tags/#Linux">Linux<span>15</span></a></li>
 		
-			<li><a href="/tags/#Elastic Beanstalk">Elastic Beanstalk<span>7</span></a></li>
+			<li><a href="/tags/#EC2 User Data">EC2 User Data<span>1</span></a></li>
+		
+			<li><a href="/tags/#CentOS">CentOS<span>16</span></a></li>
+		
+			<li><a href="/tags/#RVM">RVM<span>3</span></a></li>
+		
+			<li><a href="/tags/#Douban">Douban<span>2</span></a></li>
+		
+			<li><a href="/tags/#Chrome">Chrome<span>1</span></a></li>
+		
+			<li><a href="/tags/#Video">Video<span>1</span></a></li>
 		
 		
-		   <li><a href="/tags">...<span>73</span></a></li>
+		   <li><a href="/tags">...<span>75</span></a></li>
 		 
 		</ul>
 	</div>
@@ -540,23 +630,23 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
-        <a href="/2020/10/24/upgrade-postgresql-version-on-aws-RDS/" ><i class="fa fa-file-o"></i>AWS RDS PostgreSQL版本升级</a>
+        <a href="/2021/02/07/one-record-about-continuous-disk-rise-of-Postgresql/" ><i class="fa fa-file-o"></i>Postgresql数据库磁盘快速增长的一个可能原因</a>
       </li>
     
       <li>
-        <a href="/2020/10/22/wkhtmltopdf-to-support-chinese-charactor/" ><i class="fa fa-file-o"></i>wkhtmltopdf支持中文字体</a>
+        <a href="/2021/02/07/yum-install-exiting-on-user-cancel-on-centos-7-0-1406/" ><i class="fa fa-file-o"></i>CentOS 7.0.1406上yum install...</a>
       </li>
     
       <li>
-        <a href="/2020/10/14/why-disk-space-not-restored-after-deleting-iphone-backup-on-macos/" ><i class="fa fa-file-o"></i>MacOS下使用iTunes删除iphone备份磁盘空...</a>
+        <a href="/2021/01/15/why-command-c-cannot-copy-on-macos/" ><i class="fa fa-file-o"></i>MacOS下复制快捷键失效问题</a>
       </li>
     
       <li>
-        <a href="/2020/08/04/some-tips-of-aws-lightsail/" ><i class="fa fa-file-o"></i>AWS LightSail Tips</a>
+        <a href="/2020/11/11/how-to-let-nginx-process-request-header-with-dots/" ><i class="fa fa-file-o"></i>如何让Nginx支持带点的header</a>
       </li>
     
       <li>
-        <a href="/2020/08/01/advanced-configure-of-nginx-rtmp/" ><i class="fa fa-file-o"></i>Nginx RTMP服务器配置</a>
+        <a href="/2020/11/07/build-k8s-cluster-with-kubeadm-on-centos7/" ><i class="fa fa-file-o"></i>在CentOS 7中使用kubeadm搭建kubern...</a>
       </li>
     
   </ul>
@@ -593,7 +683,7 @@ var _hmt = _hmt || [];
   </div>
   <div class="container-narrow">
   <footer> <p>
-  &copy; 2020 jibing57
+  &copy; 2021 jibing57
   
       with help from <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>.    
 </p> </footer>

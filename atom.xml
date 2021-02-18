@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.jibing57.com/"/>
-  <updated>2020-10-25T09:13:58.437Z</updated>
+  <updated>2021-02-08T08:04:27.990Z</updated>
   <id>https://www.jibing57.com/</id>
   
   <author>
@@ -15,6 +15,130 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Postgresql数据库磁盘快速增长的一个可能原因</title>
+    <link href="https://www.jibing57.com/2021/02/07/one-record-about-continuous-disk-rise-of-Postgresql/"/>
+    <id>https://www.jibing57.com/2021/02/07/one-record-about-continuous-disk-rise-of-Postgresql/</id>
+    <published>2021-02-07T14:08:22.000Z</published>
+    <updated>2021-02-08T08:04:27.990Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;结论&quot;&gt;&lt;a href=&quot;#结论&quot; class=&quot;headerlink&quot; title=&quot;结论&quot;&gt;&lt;/a&gt;结论&lt;/h3&gt;&lt;p&gt;Postgresql中发现磁盘占用空间莫名快速增长时，有一种可能是因为&lt;code&gt;pg_stat_activity&lt;/code&gt;中有异常的很久之前的查询导致的。&lt;br&gt;持续时间特别长的查询会导致Postgresql不停的维护该查询之后所有更新的数据记录，导致表大小快速的膨胀。&lt;/p&gt;
+&lt;h3 id=&quot;过程&quot;&gt;&lt;a href=&quot;#过程&quot; class=&quot;headerlink&quot; title=&quot;过程&quot;&gt;&lt;/a&gt;过程&lt;/h3&gt;&lt;h4 id=&quot;起因&quot;&gt;&lt;a href=&quot;#起因&quot; class=&quot;headerlink&quot; title=&quot;起因&quot;&gt;&lt;/a&gt;起因&lt;/h4&gt;&lt;p&gt;AWS上一套系统的RDS之前从Postgresql 9.5升级到了9.6。升级之后跑的好好的，突然在1月中接到警报，说磁盘不足。&lt;br&gt;很好奇,这是一个访问量不大的网站, 之前记得一百多个G空间的。怎么突然就警报空间不足了。&lt;/p&gt;
+&lt;h4 id=&quot;调查&quot;&gt;&lt;a href=&quot;#调查&quot; class=&quot;headerlink&quot; title=&quot;调查&quot;&gt;&lt;/a&gt;调查&lt;/h4&gt;&lt;p&gt;登录AWS Console一看，吓了一跳，RDS的数据库剩余磁盘容量，2个星期内从180G下降到80G。空间下降这么快，肯定是哪边出了问题。&lt;br&gt;使用&lt;code&gt;psql&lt;/code&gt;登录后台，查看了各表的大小&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;10&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;11&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;12&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;FROM (&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    SELECT&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        table_name,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        pg_table_size(table_name) AS table_size,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        pg_indexes_size(table_name) AS indexes_size,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        pg_total_relation_size(table_name) AS total_size&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    FROM (&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        SELECT (&amp;apos;&amp;quot;&amp;apos; || table_schema || &amp;apos;&amp;quot;.&amp;quot;&amp;apos; || table_name || &amp;apos;&amp;quot;&amp;apos;) AS table_name&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        FROM information_schema.tables&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    ) AS all_tables&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    ORDER BY total_size DESC&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;) AS pretty_sizes&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="AWS" scheme="https://www.jibing57.com/categories/AWS/"/>
+    
+    
+      <category term="RDS" scheme="https://www.jibing57.com/tags/RDS/"/>
+    
+      <category term="PostgreSQL" scheme="https://www.jibing57.com/tags/PostgreSQL/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>CentOS 7.0.1406上yum install提示exiting on user cancel错误的解决方法</title>
+    <link href="https://www.jibing57.com/2021/02/07/yum-install-exiting-on-user-cancel-on-centos-7-0-1406/"/>
+    <id>https://www.jibing57.com/2021/02/07/yum-install-exiting-on-user-cancel-on-centos-7-0-1406/</id>
+    <published>2021-02-07T13:44:51.000Z</published>
+    <updated>2021-02-08T03:03:37.183Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;问题&quot;&gt;&lt;a href=&quot;#问题&quot; class=&quot;headerlink&quot; title=&quot;问题&quot;&gt;&lt;/a&gt;问题&lt;/h3&gt;&lt;p&gt;公司一台老CentOS 7机器上要安装某个软件，&lt;code&gt;yum install&lt;/code&gt;后，提示安装失败，提示&lt;code&gt;Exiting on user cancel&lt;/code&gt;。&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;10&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;11&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;12&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;13&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;14&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;15&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;16&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;File &amp;quot;/usr/libexec/urlgrabber-ext-down&amp;quot;, line 75, in &amp;lt;module&amp;gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;main()&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;File &amp;quot;/usr/libexec/urlgrabber-ext-down&amp;quot;, line 61, in main&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;fo = PyCurlFileObject(opts.url, opts.filename, opts)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;File &amp;quot;/usr/lib/python2.7/site-packages/urlgrabber/grabber.py&amp;quot;, line 1258, in __init__&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;self._do_open()&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;File &amp;quot;/usr/lib/python2.7/site-packages/urlgrabber/grabber.py&amp;quot;, line 1589, in _do_open&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;self._do_grab()&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;File &amp;quot;/usr/lib/python2.7/site-packages/urlgrabber/grabber.py&amp;quot;, line 1723, in _do_grab&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;self._do_perform()&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;File &amp;quot;/usr/lib/python2.7/site-packages/urlgrabber/grabber.py&amp;quot;, line 1517, in _do_perform&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;raise KeyboardInterrupt&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;KeyboardInterrupt&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;Exiting on user cancel&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;试了多次都是这样，一脸诧异。&lt;br&gt;查看了下CentOS版本是&lt;code&gt;CentOS Linux release 7.0.1406 (Core)&lt;/code&gt;, 网上搜一通，发现是CentOS 7.0.1406中yum的一个Bug。摘录解决方法如下。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Linux" scheme="https://www.jibing57.com/categories/Linux/"/>
+    
+    
+      <category term="CentOS" scheme="https://www.jibing57.com/tags/CentOS/"/>
+    
+      <category term="Yum" scheme="https://www.jibing57.com/tags/Yum/"/>
+    
+      <category term="Bug" scheme="https://www.jibing57.com/tags/Bug/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MacOS下复制快捷键失效问题</title>
+    <link href="https://www.jibing57.com/2021/01/15/why-command-c-cannot-copy-on-macos/"/>
+    <id>https://www.jibing57.com/2021/01/15/why-command-c-cannot-copy-on-macos/</id>
+    <published>2021-01-15T12:18:56.000Z</published>
+    <updated>2021-01-15T06:33:43.856Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;不知道从哪个版本的OSX系统开始，复制快捷键&lt;code&gt;Command + C&lt;/code&gt;就开始不怎么灵，有时候按一下复制不成功，需要多按几下才有效。&lt;br&gt;之前网上查找没找到什么可靠的说法。就一直以为是系统的Bug。&lt;br&gt;这么多年已经习惯每次复制时，按两下&lt;code&gt;
+      
+    
+    </summary>
+    
+      <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
+    
+    
+      <category term="MacOS" scheme="https://www.jibing57.com/tags/MacOS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>如何让Nginx支持带点的header</title>
+    <link href="https://www.jibing57.com/2020/11/11/how-to-let-nginx-process-request-header-with-dots/"/>
+    <id>https://www.jibing57.com/2020/11/11/how-to-let-nginx-process-request-header-with-dots/</id>
+    <published>2020-11-11T12:31:06.000Z</published>
+    <updated>2020-11-12T05:27:45.081Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;起因&quot;&gt;&lt;a href=&quot;#起因&quot; class=&quot;headerlink&quot; title=&quot;起因&quot;&gt;&lt;/a&gt;起因&lt;/h3&gt;&lt;p&gt;公司有个比较久远的遗留APP项目，服务端用的是之前公司自己写的一个HTTP的服务器。最近这个项目被要求升级使用https。&lt;br&gt;但自研的H
+      
+    
+    </summary>
+    
+      <category term="Tools" scheme="https://www.jibing57.com/categories/Tools/"/>
+    
+    
+      <category term="Nginx" scheme="https://www.jibing57.com/tags/Nginx/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>在CentOS 7中使用kubeadm搭建kubernetes集群</title>
+    <link href="https://www.jibing57.com/2020/11/07/build-k8s-cluster-with-kubeadm-on-centos7/"/>
+    <id>https://www.jibing57.com/2020/11/07/build-k8s-cluster-with-kubeadm-on-centos7/</id>
+    <published>2020-11-07T07:35:22.000Z</published>
+    <updated>2020-11-10T09:22:03.252Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在CentOS 7上使用kubeadm安装kubernetes cluster的方法。&lt;/p&gt;
+&lt;h3 id=&quot;安装公共组件&quot;&gt;&lt;a href=&quot;#安装公共组件&quot; class=&quot;headerlink&quot; title=&quot;安装公共组件&quot;&gt;&lt;/a&gt;安装公共组件&lt;/h3&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;sudo yum install -y wget net-tools vim&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h3 id=&quot;安装Docker&quot;&gt;&lt;a href=&quot;#安装Docker&quot; class=&quot;headerlink&quot; title=&quot;安装Docker&quot;&gt;&lt;/a&gt;安装Docker&lt;/h3&gt;&lt;p&gt;CentOS 7中安装docker参见之前文章&lt;a href=&quot;/2020/06/14/docker-basic/&quot; title=&quot;Docker基础&quot;&gt;Docker基础&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&quot;安装Kubernetes&quot;&gt;&lt;a href=&quot;#安装Kubernetes&quot; class=&quot;headerlink&quot; title=&quot;安装Kubernetes&quot;&gt;&lt;/a&gt;安装Kubernetes&lt;/h3&gt;&lt;h4 id=&quot;添加kubenetes的yum源&quot;&gt;&lt;a href=&quot;#添加kubenetes的yum源&quot; class=&quot;headerlink&quot; title=&quot;添加kubenetes的yum源&quot;&gt;&lt;/a&gt;添加kubenetes的yum源&lt;/h4&gt;&lt;p&gt;在Master和Node中同时添加阿里云的yum源。&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;sudo cat &amp;lt;&amp;lt;EOF &amp;gt; /etc/yum.repos.d/kubernetes.repo&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;[kubernetes]&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;name=Kubernetes&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;baseurl=https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64/&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;enabled=1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;gpgcheck=1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;repo_gpgcheck=1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;gpgkey=https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;EOF&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Kubernetes" scheme="https://www.jibing57.com/categories/Kubernetes/"/>
+    
+    
+      <category term="Docker" scheme="https://www.jibing57.com/tags/Docker/"/>
+    
+      <category term="CentOS" scheme="https://www.jibing57.com/tags/CentOS/"/>
+    
+      <category term="Kubernetes" scheme="https://www.jibing57.com/tags/Kubernetes/"/>
+    
+      <category term="Kubeadm" scheme="https://www.jibing57.com/tags/Kubeadm/"/>
+    
+  </entry>
   
   <entry>
     <title>AWS RDS PostgreSQL版本升级</title>
@@ -481,144 +605,6 @@
       <category term="Docker Hub" scheme="https://www.jibing57.com/tags/Docker-Hub/"/>
     
       <category term="MacOS" scheme="https://www.jibing57.com/tags/MacOS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Ruby &amp; Rails Tips</title>
-    <link href="https://www.jibing57.com/2020/05/14/ruby-rails-tips/"/>
-    <id>https://www.jibing57.com/2020/05/14/ruby-rails-tips/</id>
-    <published>2020-05-14T09:19:04.000Z</published>
-    <updated>2020-10-23T03:00:04.809Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h3 id=&quot;Struct-amp-OpenStruct&quot;&gt;&lt;a href=&quot;#Struct-amp-OpenStruct&quot; class=&quot;headerlink&quot; title=&quot;Struct &amp;amp; OpenStruct&quot;&gt;&lt;/a&gt;Struct &amp;amp; OpenStru
-      
-    
-    </summary>
-    
-      <category term="Code" scheme="https://www.jibing57.com/categories/Code/"/>
-    
-    
-      <category term="Ruby" scheme="https://www.jibing57.com/tags/Ruby/"/>
-    
-      <category term="Rails" scheme="https://www.jibing57.com/tags/Rails/"/>
-    
-      <category term="Cache" scheme="https://www.jibing57.com/tags/Cache/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Aliyun Linux 2上imageMagick的fonts配置问题</title>
-    <link href="https://www.jibing57.com/2020/05/04/imageMagick-fonts-issue-on-Aliyun-Linux-2/"/>
-    <id>https://www.jibing57.com/2020/05/04/imageMagick-fonts-issue-on-Aliyun-Linux-2/</id>
-    <published>2020-05-04T02:10:19.000Z</published>
-    <updated>2020-05-06T07:47:14.946Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;现象&quot;&gt;&lt;a href=&quot;#现象&quot; class=&quot;headerlink&quot; title=&quot;现象&quot;&gt;&lt;/a&gt;现象&lt;/h3&gt;&lt;p&gt;公司阿里云服务器部署Rails程序时，发现Gem &lt;a href=&quot;https://github.com/pludoni/simple-captcha&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;simple_captcha2&lt;/a&gt;生成的验证码图片，和以前的不太一样。图片中的数字会比正常情况下靠上很多, 影响用户体验。&lt;/p&gt;
-&lt;p&gt;正常情况下的图片:&lt;br&gt;&lt;img src=&quot;/images/ImageMagick/fonts_normal.jpeg&quot; alt=&quot;fonts_normal.jpeg&quot;&gt;&lt;/p&gt;
-&lt;p&gt;有问题的图片:&lt;br&gt;&lt;img src=&quot;/images/ImageMagick/fonts_crooked_image.jpeg&quot; alt=&quot;crooked_image.jpeg&quot;&gt;&lt;/p&gt;
-&lt;h3 id=&quot;原因&quot;&gt;&lt;a href=&quot;#原因&quot; class=&quot;headerlink&quot; title=&quot;原因&quot;&gt;&lt;/a&gt;原因&lt;/h3&gt;&lt;p&gt;Aliyun Linux 2(也包含最新的CentOS 7)中升级了ImageMagick的版本到&lt;code&gt;ImageMagick 6.9.10-68&lt;/code&gt;, 字体配置文件&lt;code&gt;/etc/ImageMagick-6/type.xml&lt;/code&gt;中默认改用了&lt;code&gt;urw-base35-fonts&lt;/code&gt;，而不是之前的&lt;code&gt;ghostscript-fonts&lt;/code&gt;。&lt;/p&gt;
-&lt;h3 id=&quot;解决方法&quot;&gt;&lt;a href=&quot;#解决方法&quot; class=&quot;headerlink&quot; title=&quot;解决方法&quot;&gt;&lt;/a&gt;解决方法&lt;/h3&gt;&lt;p&gt;安装并修改ImageMagick使用旧字体。&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;# 安装urw-base35-fonts-legacy, fonts在/usr/share/X11/fonts/urw-fonts目录下&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;yum install urw-base35-fonts-legacy&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;# 修改/etc/ImageMagick-6/type.xml配置文件为使用type-ghostscript.xml&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;sed -i.bak &amp;apos;s,type-urw-base35.xml,type-ghostscript.xml,g&amp;apos; /etc/ImageMagick-6/type.xml&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;# 修改 /etc/ImageMagick-6/type-ghostscript.xml为/usr/share/X11/fonts/urw-fonts/&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;sed -i.bak &amp;apos;s,metrics=&amp;quot;,metrics=&amp;quot;/usr/share/X11/fonts/urw-fonts/,g&amp;apos; /etc/ImageMagick-6/type-ghostscript.xml&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;sed -i &amp;apos;s,glyphs=&amp;quot;,glyphs=&amp;quot;/usr/share/X11/fonts/urw-fonts/,g&amp;apos; /etc/ImageMagick-6/type-ghostscript.xml&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-    
-    </summary>
-    
-      <category term="Linux" scheme="https://www.jibing57.com/categories/Linux/"/>
-    
-    
-      <category term="Image" scheme="https://www.jibing57.com/tags/Image/"/>
-    
-      <category term="Aliyun" scheme="https://www.jibing57.com/tags/Aliyun/"/>
-    
-      <category term="CentOS" scheme="https://www.jibing57.com/tags/CentOS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>在Aliyun Linux 2上安装Postgresql和Node.js</title>
-    <link href="https://www.jibing57.com/2020/04/29/Install-Postgresql-and-Nodejs-on-Aliyun-Linux-2/"/>
-    <id>https://www.jibing57.com/2020/04/29/Install-Postgresql-and-Nodejs-on-Aliyun-Linux-2/</id>
-    <published>2020-04-29T13:03:55.000Z</published>
-    <updated>2020-05-06T08:10:36.427Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;Aliyun Linux 2上部署环境，遇到了几个问题。记录如下。&lt;/p&gt;
-&lt;h3 id=&quot;安装Postgresql-11-client&quot;&gt;&lt;a href=&quot;#安装Postgresql-11-client&quot; class=&quot;headerlink&quot; title=&quot;安装Postgresql 11 client&quot;&gt;&lt;/a&gt;安装Postgresql 11 client&lt;/h3&gt;&lt;h4 id=&quot;官方Guide&quot;&gt;&lt;a href=&quot;#官方Guide&quot; class=&quot;headerlink&quot; title=&quot;官方Guide&quot;&gt;&lt;/a&gt;官方Guide&lt;/h4&gt;&lt;ul&gt;
-&lt;li&gt;Postgresql官方在红帽系Linux的安装Guide地址: &lt;a href=&quot;https://www.postgresql.org/download/linux/redhat/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://www.postgresql.org/download/linux/redhat/&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Guide中选取对应操作系统后，可以得到Postgresql在RHEL 7系列上的yum源地址是: &lt;a href=&quot;https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;在RHEL 7系列上安装方法为:&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;yum install https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;yum install postgresql11&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;h4 id=&quot;Aliyun-Linux-2安装问题&quot;&gt;&lt;a href=&quot;#Aliyun-Linux-2安装问题&quot; class=&quot;headerlink&quot; title=&quot;Aliyun Linux 2安装问题&quot;&gt;&lt;/a&gt;Aliyun Linux 2安装问题&lt;/h4&gt;&lt;p&gt;但该方法在Alinux Linux 2上没法成功安装，因为官方源依赖于yum的变量$releasever,$basearch。在Aliyun Linux 2中，这些变量和RHEL和CentOS上不相同。导致没法直接用官方rpm yum包来安装postgresql11。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="Linux" scheme="https://www.jibing57.com/categories/Linux/"/>
-    
-    
-      <category term="PostgreSQL" scheme="https://www.jibing57.com/tags/PostgreSQL/"/>
-    
-      <category term="Aliyun" scheme="https://www.jibing57.com/tags/Aliyun/"/>
-    
-      <category term="Nodejs" scheme="https://www.jibing57.com/tags/Nodejs/"/>
-    
-      <category term="Github" scheme="https://www.jibing57.com/tags/Github/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>豆瓣插件替换</title>
-    <link href="https://www.jibing57.com/2020/04/09/replace-douban-book-plugin/"/>
-    <id>https://www.jibing57.com/2020/04/09/replace-douban-book-plugin/</id>
-    <published>2020-04-09T14:44:02.000Z</published>
-    <updated>2020-04-10T01:26:11.565Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;原先使用的&lt;a href=&quot;https://github.com/Yikun/hexo-generator-douban&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Yikun/hexo-generator-douban&lt;/a&gt;在豆瓣封了API之后，就彻底没法用了。另外一个插件&lt;a href=&quot;https://github.com/mythsman/hexo-douban&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;mythsman/hexo-douban&lt;/a&gt;是靠解析网页来生成读书列表，还能工作。就决定换用&lt;a href=&quot;https://github.com/mythsman/hexo-douban&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;mythsman/hexo-douban&lt;/a&gt;来生成读书列表。&lt;br&gt;以下记录插件替换的过程。&lt;/p&gt;
-&lt;h3 id=&quot;配置变更&quot;&gt;&lt;a href=&quot;#配置变更&quot; class=&quot;headerlink&quot; title=&quot;配置变更&quot;&gt;&lt;/a&gt;配置变更&lt;/h3&gt;&lt;h4 id=&quot;hexo的配置-config-yml&quot;&gt;&lt;a href=&quot;#hexo的配置-config-yml&quot; class=&quot;headerlink&quot; title=&quot;hexo的配置_config.yml&quot;&gt;&lt;/a&gt;hexo的配置&lt;code&gt;_config.yml&lt;/code&gt;&lt;/h4&gt;&lt;p&gt;原先为:&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;douban:&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  user: jibing57&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;修改为&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;douban:&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  user: jibing57 &lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  builtin: false&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  book:&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    title: &amp;apos;豆瓣读书记录&amp;apos;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    quote: &amp;apos;不完全的读书记录，因为好久才会想起要去豆瓣去点亮一下。&amp;apos;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  timeout: 10000&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="Blog" scheme="https://www.jibing57.com/categories/Blog/"/>
-    
-    
-      <category term="Hexo" scheme="https://www.jibing57.com/tags/Hexo/"/>
-    
-      <category term="Douban" scheme="https://www.jibing57.com/tags/Douban/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>弱网络环境下如何使用rvm安装ruby</title>
-    <link href="https://www.jibing57.com/2020/02/29/how-to-use-rvm-to-instal-ruby-in-slow-network-connection/"/>
-    <id>https://www.jibing57.com/2020/02/29/how-to-use-rvm-to-instal-ruby-in-slow-network-connection/</id>
-    <published>2020-02-29T05:41:26.000Z</published>
-    <updated>2020-03-02T01:18:38.417Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;下面介绍下如何在屏蔽比较严重的网络情况下使用rvm来半手工的安装ruby, 如下操作基于CentOS 7，其他操作系统可能有所不同。&lt;/p&gt;
-&lt;h3 id=&quot;安装rvm&quot;&gt;&lt;a href=&quot;#安装rvm&quot; class=&quot;headerlink&quot; title=&quot;安装rvm&quot;&gt;&lt;/a&gt;安装rvm&lt;/h3&gt;&lt;h4 id=&quot;官网安装步骤&quot;&gt;&lt;a href=&quot;#官网安装步骤&quot; class=&quot;headerlink&quot; title=&quot;官网安装步骤&quot;&gt;&lt;/a&gt;官网安装步骤&lt;/h4&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;gpg --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;curl -L get.rvm.io | bash -s stable&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;h4 id=&quot;问题点&quot;&gt;&lt;a href=&quot;#问题点&quot; class=&quot;headerlink&quot; title=&quot;问题点:&quot;&gt;&lt;/a&gt;问题点:&lt;/h4&gt;&lt;p&gt;&lt;code&gt;get.rvm.io&lt;/code&gt;是重定向到&lt;code&gt;https://raw.githubusercontent.com/rvm/rvm/master/binscripts/rvm-installer&lt;/code&gt;这个地址的。可是有些国内机构的网络中，&lt;code&gt;raw.githubusercontent.com&lt;/code&gt;这个域名是被屏蔽的。&lt;/p&gt;
-&lt;h4 id=&quot;措施&quot;&gt;&lt;a href=&quot;#措施&quot; class=&quot;headerlink&quot; title=&quot;措施:&quot;&gt;&lt;/a&gt;措施:&lt;/h4&gt;&lt;p&gt;可先在本地下载rvm-installer脚本，再拷贝脚本到服务器后，再执行安装命令&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;# 1. 本机上下载&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;curl -L get.rvm.io &amp;gt; rvm-installer.sh&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;# 2. 拷贝rvm-installer.sh到服务器&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;# 3. 服务器本地执行安装命令&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;cat rvm-installer.sh | bash -s stable&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="Linux" scheme="https://www.jibing57.com/categories/Linux/"/>
-    
-    
-      <category term="Ruby" scheme="https://www.jibing57.com/tags/Ruby/"/>
-    
-      <category term="RVM" scheme="https://www.jibing57.com/tags/RVM/"/>
     
   </entry>
   

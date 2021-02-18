@@ -139,6 +139,129 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
+			<div class="date"> 2018-12-17 </div>
+			<div class="article-title"><a href="/2018/12/17/how-to-handle-heap-out-of-memory-in-node/" >Node中heap out of memory的解决办法</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h3><p>公司一个ReactOnRails的项目，之前一直都是跑的好好的。上次一个小修改后，发布预编译React代码的时候，屡次出现<code>FATAL ERROR: CALL_AND_RETRY_LAST Allocation failed - JavaScript heap out of memory</code> 的错误。</p>
+<h3 id="调查"><a href="#调查" class="headerlink" title="调查"></a>调查</h3><p>项目使用的是webpacker打包js代码，一开始是以为webpacker的问题，调查了一圈下来，最终发现是node中V8的限制。默认情况下，在64位系统下内存使用是有限制的，有一说是1.4GB，有一说是1.76GB。但在node官网搜了一圈也没找到明确说现在的限制是多少。</p>
+	
+	</div>
+  <a type="button" href="/2018/12/17/how-to-handle-heap-out-of-memory-in-node/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2018-12-11 </div>
+			<div class="article-title"><a href="/2018/12/11/how-to-enable-cors-on-S3/" >在S3上开启CORS</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>在浏览器中使用AWS的SDK直接上传文件到S3时，需要在S3 Bucket上配置CORS才能成功上传，否则ajax请求会被浏览器拦截。</p>
+<h3 id="普通CORS访问配置"><a href="#普通CORS访问配置" class="headerlink" title="普通CORS访问配置"></a>普通CORS访问配置</h3><p>官方文档<a href="https://docs.aws.amazon.com/AmazonS3/latest/dev/cors.html#how-do-i-enable-cors" target="_blank" rel="external">Cross-Origin Resource Sharing (CORS)</a>中提供了开启CORS的范例，摘录如下:</p>
+	
+	</div>
+  <a type="button" href="/2018/12/11/how-to-enable-cors-on-S3/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2018-11-27 </div>
+			<div class="article-title"><a href="/2018/11/27/nginx-with-dynamic-upstreams-to-ELB/" >如何配置Nginx的Dynamic Upstream指向ELB</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h3><p>公司有一个项目，部署有多个AWS环境，但由于一系列复杂的原因，需要先在账号A下备案的域名来使用在账号B中部署的服务，后续再将域名备案转到账号B中。<br>临时的解决办法就是在账号A下起一个Instance，通过Nginx反向代理到账号B的一个Classic ELB中。</p>
+<p>起初服务跑的很顺畅，后来一天突然服务不可用，页面显示504 Gateway Timeout，查看了Nginx的日志，发现有多条<code>upstream timed out (110: Connection timed out) while connecting to upstream</code>的错误日志。</p>
+	
+	</div>
+  <a type="button" href="/2018/11/27/nginx-with-dynamic-upstreams-to-ELB/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2018-11-15 </div>
+			<div class="article-title"><a href="/2018/11/15/a-way-to-install-ffmpeg-to-Amazon-Linux-and-ElasticBeanstalk/" >在Amazon Linux和Elastic Beanstalk中安装ffmpeg的方法</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>因为项目需要，需要在EC2和EB中安装FFMPEG来处理视频。 </p>
+<p>但Amazon Linux默认的yum源中没有FFMPEG，因此需要手动进行安装。</p>
+<p>网上有各种的安装方法，有使用Nux Dextop YUM的安装，也有直接使用Static Builds的方式。经过比较试验，最终决定使用Static Builds的方式进行安装，安装方法记录如下。 </p>
+	
+	</div>
+  <a type="button" href="/2018/11/15/a-way-to-install-ffmpeg-to-Amazon-Linux-and-ElasticBeanstalk/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2018-09-15 </div>
+			<div class="article-title"><a href="/2018/09/15/how-to-access-internal-by-ssh-tunnel/" >使用ssh隧道访问内网资源</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>日常开发过程中，会遇到一些情况需要和对端机构或公司进行联调。此时有可能会需要访问对端机构内部的一些网页或API。</p>
+<p>正规流程中，要访问内网，如果对端机构有VPN服务，应该是申请一个VPN来进行操作，这种方式比较安全可靠。但实际操作过程中，可能对端机构没有VPN服务，或者走VPN流程繁琐。此时如果你有对端机构中某个内网Linux机器的ssh登陆权限,而且该Linux机器可以可以访问相关网页或者API，则可以通过ssh tunnel的方式，临时来访问对端机构的内部资源。</p>
+<p>接下来，通过使用两台EC2来模拟内网环境,来介绍如何在Mac机器上使用ssh tunnel访问内网资源。</p>
+<h3 id="搭建说明"><a href="#搭建说明" class="headerlink" title="搭建说明"></a>搭建说明</h3><h4 id="搭建模拟用的EC2"><a href="#搭建模拟用的EC2" class="headerlink" title="搭建模拟用的EC2"></a>搭建模拟用的EC2</h4><p>首先，开启两台EC2，一台用来模拟ssh的跳板机(Jumpbox)，一台用来模拟内部网页服务器(HttpServer)。</p>
+	
+	</div>
+  <a type="button" href="/2018/09/15/how-to-access-internal-by-ssh-tunnel/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
 			<div class="date"> 2018-08-11 </div>
 			<div class="article-title"><a href="/2018/08/11/EB-warning-due-to-no-space-left-on-device-issue-on-EC2/" >由于EC2中no space left引起的EB警报</a></div>						
 		</h3>
@@ -260,133 +383,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2018-04-21 </div>
-			<div class="article-title"><a href="/2018/04/21/aws-s3-master-permission/" >S3进阶系列(二) ——权限管理</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="什么是S3的权限管理"><a href="#什么是S3的权限管理" class="headerlink" title="什么是S3的权限管理"></a>什么是S3的权限管理</h3><p>S3的权限管理是任何使用S3的人都无法绕开的功能,决定了S3中的Object是否能够被访问。</p>
-<p>权限管理本质上解决了这么一个问题: 谁(Principal)能够在何种条件(condition)下被允许或拒绝(Effect)对哪些资源(Resource)做何种操作(Action)</p>
-	
-	</div>
-  <a type="button" href="/2018/04/21/aws-s3-master-permission/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2018-04-19 </div>
-			<div class="article-title"><a href="/2018/04/19/how-to-remove-the-passphrase-of-ssh-key/" >如何去除SSH key中的passphrase</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="去除passphrase的方法"><a href="#去除passphrase的方法" class="headerlink" title="去除passphrase的方法"></a>去除passphrase的方法</h3><p>使用<code>ssh-keygen</code>来重新设置一个空的passphrase, 就相当于去除了原来的passphrase, 答案来自<a href="https://stackoverflow.com/a/112409" target="_blank" rel="external">stackoverflow</a>, 回答者还很贴心的提示，输入的passphrase会被记录在~/.bash_history中，别忘记处理这个情况。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ssh-keygen -p [-P old_passphrase] [-N new_passphrase] [-f keyfile]</div></pre></td></tr></table></figure></p>
-	
-	</div>
-  <a type="button" href="/2018/04/19/how-to-remove-the-passphrase-of-ssh-key/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2018-04-18 </div>
-			<div class="article-title"><a href="/2018/04/18/aws-s3-master-basic/" >S3进阶系列(一) —— S3基础知识</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>S3是AWS服务最早推出的几项服务之一，也是使用最为频繁的几个AWS服务之一。官网文档以及网上文章零零散散看了不少,实际使用中也用过S3的大多数功能，但“纸上得来终觉浅，绝知此事要躬行”，决定给自己挖个坑，结合已读资料和实际使用经验，系统地来梳理一下S3的已有功能。</p>
-<p>本篇是第一篇,介绍一下S3的一些基础知识。希望能够坚持把这个系列写完。</p>
-	
-	</div>
-  <a type="button" href="/2018/04/18/aws-s3-master-basic/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2018-03-16 </div>
-			<div class="article-title"><a href="/2018/03/16/how-to-subscribe-RDS-event/" >订阅RDS事件</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>关于RDS状态的监控，除了常规的CloudWatch Metric以外。RDS还有一个事件机制，能够将RDS的事件通知到SNS。</p>
-<h3 id="RDS-Event简介"><a href="#RDS-Event简介" class="headerlink" title="RDS Event简介"></a>RDS Event简介</h3><h4 id="RDS-Event-Source-type"><a href="#RDS-Event-Source-type" class="headerlink" title="RDS Event - Source type"></a>RDS Event - Source type</h4><p>RDS的事件类型分为如下六大类:</p>
-<ul>
-<li>数据库实例(DB instance)</li>
-<li>数据库集群(DB cluster)</li>
-<li>数据库快照(DB snapshot)</li>
-<li>数据库集群快照(DB cluster snapshot)</li>
-<li>数据库安全组(DB security group)</li>
-<li>数据库参数组(DB parameter group)</li>
-</ul>
-	
-	</div>
-  <a type="button" href="/2018/03/16/how-to-subscribe-RDS-event/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2018-03-15 </div>
-			<div class="article-title"><a href="/2018/03/15/how-to-set-chrome-to-use-google-with-NoCountryRedirect/" >在Chrome中设置Google搜索为NoCountryRedirect</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>添加代理来科学上网时，使用Google进行搜索，Chrome浏览器默认会重定向到代理国所在的Google域名。比如<code>https://www.google.co.kr/</code>,<code>https://www.google.co.jp/</code>等, 已经在<code>www.google.com</code>登录的Google账号就还得重登, 极度烦躁。</p>
-<p>下面是几个固定使用<code>www.google.com</code>来进行搜索的方法</p>
-	
-	</div>
-  <a type="button" href="/2018/03/15/how-to-set-chrome-to-use-google-with-NoCountryRedirect/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -450,7 +446,7 @@ var _hmt = _hmt || [];
 		<h4>分类</h4>
 		<ul class="tag_box inline list-unstyled">
 		
-			<li><a href="/categories/#AWS">AWS<span>37</span></a></li>
+			<li><a href="/categories/#AWS">AWS<span>38</span></a></li>
 		
 			<li><a href="/categories/#AWS Certified">AWS Certified<span>4</span></a></li>
 		
@@ -458,13 +454,13 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/#Code">Code<span>6</span></a></li>
 		
-			<li><a href="/categories/#Kubernetes">Kubernetes<span>2</span></a></li>
+			<li><a href="/categories/#Kubernetes">Kubernetes<span>3</span></a></li>
 		
-			<li><a href="/categories/#Linux">Linux<span>11</span></a></li>
+			<li><a href="/categories/#Linux">Linux<span>12</span></a></li>
 		
 			<li><a href="/categories/#Shell">Shell<span>8</span></a></li>
 		
-			<li><a href="/categories/#Tools">Tools<span>34</span></a></li>
+			<li><a href="/categories/#Tools">Tools<span>36</span></a></li>
 		
 			<li><a href="/categories/#杂">杂<span>1</span></a></li>
 		
@@ -478,48 +474,48 @@ var _hmt = _hmt || [];
 		<h4>标签云</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/#Lightsail">Lightsail<span>3</span></a></li>
+			<li><a href="/tags/#Wkhtmltopdf">Wkhtmltopdf<span>2</span></a></li>
 		
-			<li><a href="/tags/#Nodejs">Nodejs<span>4</span></a></li>
+			<li><a href="/tags/#LCD">LCD<span>1</span></a></li>
 		
-			<li><a href="/tags/#Github">Github<span>4</span></a></li>
+			<li><a href="/tags/#iOS">iOS<span>1</span></a></li>
 		
-			<li><a href="/tags/#PostgreSQL">PostgreSQL<span>6</span></a></li>
+			<li><a href="/tags/#Nginx">Nginx<span>11</span></a></li>
 		
-			<li><a href="/tags/#Yum">Yum<span>1</span></a></li>
+			<li><a href="/tags/#Wireshark">Wireshark<span>1</span></a></li>
 		
-			<li><a href="/tags/#Chrome">Chrome<span>1</span></a></li>
+			<li><a href="/tags/#SSH">SSH<span>6</span></a></li>
 		
-			<li><a href="/tags/#Application Load Balancing">Application Load Balancing<span>1</span></a></li>
+			<li><a href="/tags/#AWS CLI">AWS CLI<span>6</span></a></li>
 		
-			<li><a href="/tags/#Solutions Architect">Solutions Architect<span>1</span></a></li>
+			<li><a href="/tags/#Screen">Screen<span>1</span></a></li>
 		
-			<li><a href="/tags/#Video">Video<span>1</span></a></li>
+			<li><a href="/tags/#HTTP">HTTP<span>5</span></a></li>
 		
-			<li><a href="/tags/#MacOS">MacOS<span>22</span></a></li>
+			<li><a href="/tags/#Kubeadm">Kubeadm<span>1</span></a></li>
 		
-			<li><a href="/tags/#Tips">Tips<span>1</span></a></li>
+			<li><a href="/tags/#EC2">EC2<span>8</span></a></li>
 		
-			<li><a href="/tags/#AWS">AWS<span>1</span></a></li>
-		
-			<li><a href="/tags/#Minecraft">Minecraft<span>1</span></a></li>
-		
-			<li><a href="/tags/#Yarn">Yarn<span>1</span></a></li>
-		
-			<li><a href="/tags/#AutoScaling">AutoScaling<span>3</span></a></li>
-		
-			<li><a href="/tags/#Docker">Docker<span>3</span></a></li>
+			<li><a href="/tags/#Sysops">Sysops<span>1</span></a></li>
 		
 			<li><a href="/tags/#Linux">Linux<span>15</span></a></li>
 		
-			<li><a href="/tags/#HLS">HLS<span>2</span></a></li>
+			<li><a href="/tags/#CentOS">CentOS<span>16</span></a></li>
 		
-			<li><a href="/tags/#Docker Hub">Docker Hub<span>1</span></a></li>
+			<li><a href="/tags/#Network">Network<span>4</span></a></li>
 		
-			<li><a href="/tags/#Douban">Douban<span>2</span></a></li>
+			<li><a href="/tags/#EC2 User Data">EC2 User Data<span>1</span></a></li>
+		
+			<li><a href="/tags/#Elastic Beanstalk">Elastic Beanstalk<span>7</span></a></li>
+		
+			<li><a href="/tags/#AWS">AWS<span>1</span></a></li>
+		
+			<li><a href="/tags/#RVM">RVM<span>3</span></a></li>
+		
+			<li><a href="/tags/#iPhone">iPhone<span>1</span></a></li>
 		
 		
-		   <li><a href="/tags">...<span>73</span></a></li>
+		   <li><a href="/tags">...<span>75</span></a></li>
 		 
 		</ul>
 	</div>
@@ -532,23 +528,23 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
-        <a href="/2020/10/24/upgrade-postgresql-version-on-aws-RDS/" ><i class="fa fa-file-o"></i>AWS RDS PostgreSQL版本升级</a>
+        <a href="/2021/02/07/one-record-about-continuous-disk-rise-of-Postgresql/" ><i class="fa fa-file-o"></i>Postgresql数据库磁盘快速增长的一个可能原因</a>
       </li>
     
       <li>
-        <a href="/2020/10/22/wkhtmltopdf-to-support-chinese-charactor/" ><i class="fa fa-file-o"></i>wkhtmltopdf支持中文字体</a>
+        <a href="/2021/02/07/yum-install-exiting-on-user-cancel-on-centos-7-0-1406/" ><i class="fa fa-file-o"></i>CentOS 7.0.1406上yum install...</a>
       </li>
     
       <li>
-        <a href="/2020/10/14/why-disk-space-not-restored-after-deleting-iphone-backup-on-macos/" ><i class="fa fa-file-o"></i>MacOS下使用iTunes删除iphone备份磁盘空...</a>
+        <a href="/2021/01/15/why-command-c-cannot-copy-on-macos/" ><i class="fa fa-file-o"></i>MacOS下复制快捷键失效问题</a>
       </li>
     
       <li>
-        <a href="/2020/08/04/some-tips-of-aws-lightsail/" ><i class="fa fa-file-o"></i>AWS LightSail Tips</a>
+        <a href="/2020/11/11/how-to-let-nginx-process-request-header-with-dots/" ><i class="fa fa-file-o"></i>如何让Nginx支持带点的header</a>
       </li>
     
       <li>
-        <a href="/2020/08/01/advanced-configure-of-nginx-rtmp/" ><i class="fa fa-file-o"></i>Nginx RTMP服务器配置</a>
+        <a href="/2020/11/07/build-k8s-cluster-with-kubeadm-on-centos7/" ><i class="fa fa-file-o"></i>在CentOS 7中使用kubeadm搭建kubern...</a>
       </li>
     
   </ul>
@@ -585,7 +581,7 @@ var _hmt = _hmt || [];
   </div>
   <div class="container-narrow">
   <footer> <p>
-  &copy; 2020 jibing57
+  &copy; 2021 jibing57
   
       with help from <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>.    
 </p> </footer>

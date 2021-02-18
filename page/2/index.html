@@ -139,6 +139,158 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
+			<div class="date"> 2020-07-29 </div>
+			<div class="article-title"><a href="/2020/07/29/how-to-setup-nginx-rtmp-on-centos-7/" >CentOS 7中搭建基础的Nginx RMPT服务器</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>介绍下如何在本地CentOS 7中使用<a href="https://github.com/arut/nginx-rtmp-module" target="_blank" rel="external">nginx-rtmp-module</a>来搭建基本的RTMP和HLS直播服务器。<br>基于如下情况进行搭建:</p>
+<ul>
+<li>系统版本: CentOS 7.6 Minimal</li>
+<li>虚拟机IP地址: 192.168.168.199</li>
+<li>Nginx版本:1.14.2</li>
+<li>Nginx Rtmp模块: <a href="https://github.com/arut/nginx-rtmp-module" target="_blank" rel="external">nginx-rtmp-module</a></li>
+<li>如下安装步骤，如果没有特别说明，都是基于root用户进行安装。</li>
+</ul>
+<h3 id="安装nginx"><a href="#安装nginx" class="headerlink" title="安装nginx"></a>安装nginx</h3><p>首先更新CentOS系统<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum update</div></pre></td></tr></table></figure></p>
+<p>安装编译nginx所需的开发包<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">yum install gcc</div><div class="line">yum install pcre pcre-devel pcre-static pcre-tools</div><div class="line">yum install openssl openssl-static openssl-devel</div><div class="line">yum install wget unzip</div></pre></td></tr></table></figure></p>
+	
+	</div>
+  <a type="button" href="/2020/07/29/how-to-setup-nginx-rtmp-on-centos-7/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2020-07-03 </div>
+			<div class="article-title"><a href="/2020/07/03/redis-basic/" >Redis基础</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>Redis基础知识</p>
+<h2 id="Redis-CentOS7下安装"><a href="#Redis-CentOS7下安装" class="headerlink" title="Redis CentOS7下安装"></a>Redis CentOS7下安装</h2><p>Redis的安装，有epel和remi两个yum源可选。当然也可以选择从源码安装。<br>如下介绍epel和remi的两种安装方式。</p>
+<h3 id="EPEL安装"><a href="#EPEL安装" class="headerlink" title="EPEL安装"></a>EPEL安装</h3><p>CentOS 7中EPEL中redis最新的版本是3.2.12-2</p>
+<p>安装命令如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">sudo yum install epel-release yum-utils</div><div class="line">sudo yum install redis</div><div class="line">sudo systemctl start redis</div><div class="line">sudo systemctl enable redis</div><div class="line">sudo systemctl status redis</div></pre></td></tr></table></figure></p>
+	
+	</div>
+  <a type="button" href="/2020/07/03/redis-basic/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2020-06-29 </div>
+			<div class="article-title"><a href="/2020/06/29/transaction-isolation-level-in-postgresql-and-mysql/" >Postgresql和Mysql中的事务隔离</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h2 id="事务的定义"><a href="#事务的定义" class="headerlink" title="事务的定义"></a>事务的定义</h2><p>事务拥有四个重要的特性：</p>
+<ul>
+<li>原子性（Atomicity）<ul>
+<li>事务开始后所有操作，要么全部做完，要么全部不做，不可能停滞在中间环节。事务执行过程中出错，会回滚到事务开始前的状态，所有的操作就像没有发生一样。</li>
+</ul>
+</li>
+<li>一致性（Consistency）<ul>
+<li>指事务将数据库从一种状态转变为另一种一致的的状态。事务开始前和结束后，数据库的完整性约束没有被破坏。</li>
+</ul>
+</li>
+<li>隔离性（Isolation）<ul>
+<li>要求每个读写事务的对象对其他事务的操作对象能互相分离，即该事务提交前对其他事务不可见。 也可以理解为多个事务并发访问时，事务之间是隔离的，一个事务不应该影响其它事务运行效果。这指的是在并发环境中，当不同的事务同时操纵相同的数据时，每个事务都有各自的完整数据空间。由并发事务所做的修改必须与任何其他并发事务所做的修改隔离。</li>
+</ul>
+</li>
+<li>持久性（Durability）<ul>
+<li>事务一旦提交，则其结果就是永久性的。即使发生宕机的故障，数据库也能将数据恢复，也就是说事务完成后，事务对数据库的所有更新将被保存到数据库，不能回滚。<br>这四个特性就是常说的数据库的ACID 特性</li>
+</ul>
+</li>
+</ul>
+	
+	</div>
+  <a type="button" href="/2020/06/29/transaction-isolation-level-in-postgresql-and-mysql/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2020-06-23 </div>
+			<div class="article-title"><a href="/2020/06/23/resolve-sudo-error-in-crontab-job/" >Crontab中解决sorry, you must have a tty to run sudo的方法</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>crontab中使用sudo切换用户执行命令<code>sudo -u user command</code>时，会报<code>sudo: sorry, you must have a tty to run sudo</code>的错误。</p>
+<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>在一些Linux发行版中，会默认设置运行<code>sudo</code>需要在tty中运行。以CentOS 7.0为例，在<code>/etc/sudoers</code>中, 有一个默认设置<code>Defaults    requiretty</code>。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">#</div><div class="line"># Disable &quot;ssh hostname sudo &lt;cmd&gt;&quot;, because it will show the password in clear.</div><div class="line">#         You have to run &quot;ssh -t hostname sudo &lt;cmd&gt;&quot;.</div><div class="line">#</div><div class="line">Defaults    requiretty</div></pre></td></tr></table></figure></p>
+	
+	</div>
+  <a type="button" href="/2020/06/23/resolve-sudo-error-in-crontab-job/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2020-06-21 </div>
+			<div class="article-title"><a href="/2020/06/21/tools-to-control-brightness-of-external-monitor-on-macos/" >Mac下调节外置显示器亮度的工具</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h3><p>家里缺台显示器，趁着狗东6.18活动，入手了一台AOC U2790PQU(穷人表示买不起Dell U2720)。</p>
+<p>到货后拆箱试用，检测了下屏幕，没有坏点, 而且在mac下即插即用，屏幕自动适应缩放，不用特殊设置缩放。一切都挺好。</p>
+<p>唯一的问题是，AOC这台显示器亮度太亮了，我已经在显示器设置中将亮度设为0了，屏幕亮度还是太亮。</p>
+<p>有问题就得尝试解决，于是上网搜索解决方案。</p>
+<h3 id="需要解决的问题"><a href="#需要解决的问题" class="headerlink" title="需要解决的问题"></a>需要解决的问题</h3><p><strong>问题: 显示器亮度太亮，物理调节亮度为0后，黑暗中还是太亮。</strong></p>
+<p>网上搜了一圈，找到了4个在MacBook Pro上实现亮度调节的方法，记录如下: </p>
+<h4 id="相关说明"><a href="#相关说明" class="headerlink" title="相关说明"></a>相关说明</h4><p>网上有说有些方法在某些系统上不起作用。因此贴一下我这边的系统配置, 下面的记录基于如下系统配置。<br><strong>电脑型号: MacBook Pro (13-inch, 2018, Four Thunderbolt 3 Ports)</strong><br><strong>操作系统版本: macOS Mojave 10.14.4 (18E226)</strong></p>
+	
+	</div>
+  <a type="button" href="/2020/06/21/tools-to-control-brightness-of-external-monitor-on-macos/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
 			<div class="date"> 2020-06-14 </div>
 			<div class="article-title"><a href="/2020/06/14/docker-basic/" >Docker基础</a></div>						
 		</h3>
@@ -311,182 +463,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2020-05-14 </div>
-			<div class="article-title"><a href="/2020/05/14/ruby-rails-tips/" >Ruby &amp; Rails Tips</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="Struct-amp-OpenStruct"><a href="#Struct-amp-OpenStruct" class="headerlink" title="Struct &amp; OpenStruct"></a>Struct &amp; OpenStruct</h3><h4 id="Struct"><a href="#Struct" class="headerlink" title="Struct"></a>Struct</h4><p>Struct 用于快速声明一个类。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Person = Struct.new(:age, :name, :sex)</div><div class="line">me = Person.new(24, &apos;Spirit&apos;, &apos;male&apos;)</div><div class="line">me.age  # =&gt; 24</div><div class="line">me.name = &apos;Test&apos;</div><div class="line">me.name # =&gt; &apos;Test&apos;</div><div class="line">me.height # =&gt; NoMethodError</div></pre></td></tr></table></figure></p>
-<p>优点: 快速声明和实现<br>缺点: 只能响应定义的字段，不能响应任意的属性</p>
-<h4 id="OpenStruct"><a href="#OpenStruct" class="headerlink" title="OpenStruct"></a>OpenStruct</h4><p>参考<a href="https://ruby-china.org/topics/21617" target="_blank" rel="external">Ruby Ruby 中的 OpenStruct 详解</a><br>OpenStruct可以自由设置set和get的一个类<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">p = OpenStruct.new()</div><div class="line">p.name=&apos;hello&apos;</div><div class="line">p.name  # p.name就是hello</div><div class="line">p.age=12</div><div class="line">p.age   # p.age就是12</div></pre></td></tr></table></figure></p>
-<h3 id="skip-before-action"><a href="#skip-before-action" class="headerlink" title="skip before_action"></a>skip before_action</h3><ul>
-<li><a href="https://stackoverflow.com/questions/36878355/exclude-a-controller-from-before-action" target="_blank" rel="external">Exclude a controller from before_action</a></li>
-</ul>
-<h3 id="API接口中使用cookies的方法"><a href="#API接口中使用cookies的方法" class="headerlink" title="API接口中使用cookies的方法"></a>API接口中使用cookies的方法</h3><p>方法一: 在Controller中添加<code>include ActionController::Cookies</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">class ApplicationController &lt; ActionController::API</div><div class="line">  include ActionController::Cookies</div></pre></td></tr></table></figure>
-<p>在Controller中就可以访问到cookies变量了。</p>
-<p>方法二: 如果不想引入过多的方法，可以在Controller中定义cookies方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">def cookies</div><div class="line">  # helpers not available in --api mode</div><div class="line">  request.cookie_jar</div><div class="line">end</div></pre></td></tr></table></figure></p>
-<h3 id="Rails-4中memory-store缓存的使用"><a href="#Rails-4中memory-store缓存的使用" class="headerlink" title="Rails 4中memory_store缓存的使用"></a>Rails 4中memory_store缓存的使用</h3><p>Rails 4中<code>memory_store</code>类型的基础用法</p>
-<h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><p>需要在<code>config/environments/development.rb</code>或者<code>config/environments/production.rb</code>中设置开启cache</p>
-<ul>
-<li><code>config.action_controller.perform_caching</code>设置为true</li>
-<li><code>config.cache_store</code>设置为<code>:memory_store</code></li>
-</ul>
-<h4 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h4><p>所有方法参考: <a href="https://api.rubyonrails.org/v4.0.13/classes/ActiveSupport/Cache/Store.html" target="_blank" rel="external">ActiveSupport::Cache::Store on Ruby on Rails 4.0.13</a></p>
-<ul>
-<li><p>写入Cache,使用<code>Rails.cache.write</code>，使用<code>expires_in</code>来设置过期时间，不设置的话默认不过期。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Rails.cache.write(cache_key, 10 ,expires_in: 10.seconds)</div></pre></td></tr></table></figure>
-</li>
-<li><p>读取Cache, 使用<code>Rails.cache.read</code>,传入key，读取value</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Rails.cache.read(cache_key)</div></pre></td></tr></table></figure>
-</li>
-<li><p>获取Cache对象,使用<code>Rails.cache.send</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Rails.cache.send(:read_entry, cache_key,&#123;&#125;)</div></pre></td></tr></table></figure>
-</li>
-<li><p>增加Cache中integer类型的值, 使用<code>Rails.cache.increment</code>, 注意这边如果不设置<code>expires_in</code>，则该条目就不再过期，无论原先记录write时有没有设置过期时间。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Rails.cache.increment(cache_key,1, expires_in: 10.seconds)</div></pre></td></tr></table></figure>
-</li>
-<li><p>读取Cache，如果没有就获取内容后插入, 使用<code>Rails.cache.fetch</code></p>
-<ul>
-<li>fetch不加block，就相当于read</li>
-<li>fetch加了block，那么如果要获取的cache不存在，就会将block中的值添加到cache中，并返回。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Rails.cache.fetch(&apos;test_key&apos;) do</div><div class="line">  &apos;hello world&apos;</div><div class="line">end</div></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-</ul>
-<p>上述几个命令操作过程的记录<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">2.3.8 :135 &gt;   cache_key=&apos;test_key&apos;</div><div class="line"> =&gt; &quot;test_key&quot;</div><div class="line">2.3.8 :136 &gt; Rails.cache.write(cache_key, 10 ,expires_in: 10.seconds)</div><div class="line"> =&gt; true</div><div class="line">2.3.8 :137 &gt; Rails.cache.send(:read_entry, cache_key,&#123;&#125;)</div><div class="line"> =&gt; #&lt;ActiveSupport::Cache::Entry:0x00007fbfa8151750 @value=10, @created_at=1603420143.660662, @expires_in=10.0&gt;</div><div class="line">2.3.8 :138 &gt; Rails.cache.read(cache_key)</div><div class="line"> =&gt; 10</div><div class="line">2.3.8 :139 &gt; Rails.cache.increment(cache_key,1, expires_in: 10.seconds)</div><div class="line"> =&gt; 11</div><div class="line">2.3.8 :140 &gt; Rails.cache.read(cache_key)</div><div class="line"> =&gt; 11</div><div class="line">2.3.8 :141 &gt; Rails.cache.send(:read_entry, cache_key,&#123;&#125;)</div><div class="line"> =&gt; #&lt;ActiveSupport::Cache::Entry:0x00007fbfa9003f78 @value=11, @created_at=1603420143.666131, @expires_in=10.0&gt;</div><div class="line">2.3.8 :142 &gt;</div></pre></td></tr></table></figure></p>
-<h4 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h4><ul>
-<li><a href="https://api.rubyonrails.org/v4.0.13/classes/ActiveSupport/Cache/Store.html" target="_blank" rel="external">ActiveSupport::Cache::Store on Ruby on Rails 4.0.13</a></li>
-<li><a href="https://stackoverflow.com/questions/22379157/rails-cache-fetch-vs-cache-read-write" target="_blank" rel="external">Rails: cache.fetch vs cache.read/write</a></li>
-<li><a href="https://stackoverflow.com/questions/39868775/get-expiration-time-of-rails-cached-item" target="_blank" rel="external">Get expiration time of Rails cached item</a></li>
-</ul>
-
-	
-	</div>
-  <a type="button" href="/2020/05/14/ruby-rails-tips/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2020-05-04 </div>
-			<div class="article-title"><a href="/2020/05/04/imageMagick-fonts-issue-on-Aliyun-Linux-2/" >Aliyun Linux 2上imageMagick的fonts配置问题</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h3><p>公司阿里云服务器部署Rails程序时，发现Gem <a href="https://github.com/pludoni/simple-captcha" target="_blank" rel="external">simple_captcha2</a>生成的验证码图片，和以前的不太一样。图片中的数字会比正常情况下靠上很多, 影响用户体验。</p>
-<p>正常情况下的图片:<br><img src="/images/ImageMagick/fonts_normal.jpeg" alt="fonts_normal.jpeg"></p>
-<p>有问题的图片:<br><img src="/images/ImageMagick/fonts_crooked_image.jpeg" alt="crooked_image.jpeg"></p>
-<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>Aliyun Linux 2(也包含最新的CentOS 7)中升级了ImageMagick的版本到<code>ImageMagick 6.9.10-68</code>, 字体配置文件<code>/etc/ImageMagick-6/type.xml</code>中默认改用了<code>urw-base35-fonts</code>，而不是之前的<code>ghostscript-fonts</code>。</p>
-<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><p>安装并修改ImageMagick使用旧字体。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"># 安装urw-base35-fonts-legacy, fonts在/usr/share/X11/fonts/urw-fonts目录下</div><div class="line">yum install urw-base35-fonts-legacy</div><div class="line"></div><div class="line"># 修改/etc/ImageMagick-6/type.xml配置文件为使用type-ghostscript.xml</div><div class="line">sed -i.bak &apos;s,type-urw-base35.xml,type-ghostscript.xml,g&apos; /etc/ImageMagick-6/type.xml</div><div class="line"></div><div class="line"># 修改 /etc/ImageMagick-6/type-ghostscript.xml为/usr/share/X11/fonts/urw-fonts/</div><div class="line">sed -i.bak &apos;s,metrics=&quot;,metrics=&quot;/usr/share/X11/fonts/urw-fonts/,g&apos; /etc/ImageMagick-6/type-ghostscript.xml</div><div class="line">sed -i &apos;s,glyphs=&quot;,glyphs=&quot;/usr/share/X11/fonts/urw-fonts/,g&apos; /etc/ImageMagick-6/type-ghostscript.xml</div></pre></td></tr></table></figure>
-	
-	</div>
-  <a type="button" href="/2020/05/04/imageMagick-fonts-issue-on-Aliyun-Linux-2/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2020-04-29 </div>
-			<div class="article-title"><a href="/2020/04/29/Install-Postgresql-and-Nodejs-on-Aliyun-Linux-2/" >在Aliyun Linux 2上安装Postgresql和Node.js</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>Aliyun Linux 2上部署环境，遇到了几个问题。记录如下。</p>
-<h3 id="安装Postgresql-11-client"><a href="#安装Postgresql-11-client" class="headerlink" title="安装Postgresql 11 client"></a>安装Postgresql 11 client</h3><h4 id="官方Guide"><a href="#官方Guide" class="headerlink" title="官方Guide"></a>官方Guide</h4><ul>
-<li>Postgresql官方在红帽系Linux的安装Guide地址: <a href="https://www.postgresql.org/download/linux/redhat/" target="_blank" rel="external">https://www.postgresql.org/download/linux/redhat/</a></li>
-<li>Guide中选取对应操作系统后，可以得到Postgresql在RHEL 7系列上的yum源地址是: <a href="https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm" target="_blank" rel="external">https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm</a></li>
-</ul>
-<p>在RHEL 7系列上安装方法为:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">yum install https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm</div><div class="line">yum install postgresql11</div></pre></td></tr></table></figure>
-<h4 id="Aliyun-Linux-2安装问题"><a href="#Aliyun-Linux-2安装问题" class="headerlink" title="Aliyun Linux 2安装问题"></a>Aliyun Linux 2安装问题</h4><p>但该方法在Alinux Linux 2上没法成功安装，因为官方源依赖于yum的变量$releasever,$basearch。在Aliyun Linux 2中，这些变量和RHEL和CentOS上不相同。导致没法直接用官方rpm yum包来安装postgresql11。</p>
-	
-	</div>
-  <a type="button" href="/2020/04/29/Install-Postgresql-and-Nodejs-on-Aliyun-Linux-2/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2020-04-09 </div>
-			<div class="article-title"><a href="/2020/04/09/replace-douban-book-plugin/" >豆瓣插件替换</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>原先使用的<a href="https://github.com/Yikun/hexo-generator-douban" target="_blank" rel="external">Yikun/hexo-generator-douban</a>在豆瓣封了API之后，就彻底没法用了。另外一个插件<a href="https://github.com/mythsman/hexo-douban" target="_blank" rel="external">mythsman/hexo-douban</a>是靠解析网页来生成读书列表，还能工作。就决定换用<a href="https://github.com/mythsman/hexo-douban" target="_blank" rel="external">mythsman/hexo-douban</a>来生成读书列表。<br>以下记录插件替换的过程。</p>
-<h3 id="配置变更"><a href="#配置变更" class="headerlink" title="配置变更"></a>配置变更</h3><h4 id="hexo的配置-config-yml"><a href="#hexo的配置-config-yml" class="headerlink" title="hexo的配置_config.yml"></a>hexo的配置<code>_config.yml</code></h4><p>原先为:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">douban:</div><div class="line">  user: jibing57</div></pre></td></tr></table></figure></p>
-<p>修改为<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">douban:</div><div class="line">  user: jibing57 </div><div class="line">  builtin: false</div><div class="line">  book:</div><div class="line">    title: &apos;豆瓣读书记录&apos;</div><div class="line">    quote: &apos;不完全的读书记录，因为好久才会想起要去豆瓣去点亮一下。&apos;</div><div class="line">  timeout: 10000</div></pre></td></tr></table></figure></p>
-	
-	</div>
-  <a type="button" href="/2020/04/09/replace-douban-book-plugin/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2020-02-29 </div>
-			<div class="article-title"><a href="/2020/02/29/how-to-use-rvm-to-instal-ruby-in-slow-network-connection/" >弱网络环境下如何使用rvm安装ruby</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>下面介绍下如何在屏蔽比较严重的网络情况下使用rvm来半手工的安装ruby, 如下操作基于CentOS 7，其他操作系统可能有所不同。</p>
-<h3 id="安装rvm"><a href="#安装rvm" class="headerlink" title="安装rvm"></a>安装rvm</h3><h4 id="官网安装步骤"><a href="#官网安装步骤" class="headerlink" title="官网安装步骤"></a>官网安装步骤</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">gpg --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB</div><div class="line">curl -L get.rvm.io | bash -s stable</div></pre></td></tr></table></figure>
-<h4 id="问题点"><a href="#问题点" class="headerlink" title="问题点:"></a>问题点:</h4><p><code>get.rvm.io</code>是重定向到<code>https://raw.githubusercontent.com/rvm/rvm/master/binscripts/rvm-installer</code>这个地址的。可是有些国内机构的网络中，<code>raw.githubusercontent.com</code>这个域名是被屏蔽的。</p>
-<h4 id="措施"><a href="#措施" class="headerlink" title="措施:"></a>措施:</h4><p>可先在本地下载rvm-installer脚本，再拷贝脚本到服务器后，再执行安装命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"># 1. 本机上下载</div><div class="line">curl -L get.rvm.io &gt; rvm-installer.sh</div><div class="line"></div><div class="line"># 2. 拷贝rvm-installer.sh到服务器</div><div class="line"></div><div class="line"># 3. 服务器本地执行安装命令</div><div class="line">cat rvm-installer.sh | bash -s stable</div></pre></td></tr></table></figure></p>
-	
-	</div>
-  <a type="button" href="/2020/02/29/how-to-use-rvm-to-instal-ruby-in-slow-network-connection/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -550,7 +526,7 @@ var _hmt = _hmt || [];
 		<h4>分类</h4>
 		<ul class="tag_box inline list-unstyled">
 		
-			<li><a href="/categories/#AWS">AWS<span>37</span></a></li>
+			<li><a href="/categories/#AWS">AWS<span>38</span></a></li>
 		
 			<li><a href="/categories/#AWS Certified">AWS Certified<span>4</span></a></li>
 		
@@ -558,13 +534,13 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/#Code">Code<span>6</span></a></li>
 		
-			<li><a href="/categories/#Kubernetes">Kubernetes<span>2</span></a></li>
+			<li><a href="/categories/#Kubernetes">Kubernetes<span>3</span></a></li>
 		
-			<li><a href="/categories/#Linux">Linux<span>11</span></a></li>
+			<li><a href="/categories/#Linux">Linux<span>12</span></a></li>
 		
 			<li><a href="/categories/#Shell">Shell<span>8</span></a></li>
 		
-			<li><a href="/categories/#Tools">Tools<span>34</span></a></li>
+			<li><a href="/categories/#Tools">Tools<span>36</span></a></li>
 		
 			<li><a href="/categories/#杂">杂<span>1</span></a></li>
 		
@@ -578,48 +554,48 @@ var _hmt = _hmt || [];
 		<h4>标签云</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
+			<li><a href="/tags/#IAM">IAM<span>3</span></a></li>
+		
+			<li><a href="/tags/#Mysql">Mysql<span>1</span></a></li>
+		
+			<li><a href="/tags/#Yarn">Yarn<span>1</span></a></li>
+		
+			<li><a href="/tags/#RVM">RVM<span>3</span></a></li>
+		
+			<li><a href="/tags/#Elastic Load Balancing">Elastic Load Balancing<span>6</span></a></li>
+		
+			<li><a href="/tags/#Kubeadm">Kubeadm<span>1</span></a></li>
+		
+			<li><a href="/tags/#Hexo">Hexo<span>8</span></a></li>
+		
+			<li><a href="/tags/#HLS">HLS<span>2</span></a></li>
+		
+			<li><a href="/tags/#PostgreSQL">PostgreSQL<span>7</span></a></li>
+		
+			<li><a href="/tags/#CloudWatch">CloudWatch<span>1</span></a></li>
+		
+			<li><a href="/tags/#Nginx">Nginx<span>11</span></a></li>
+		
+			<li><a href="/tags/#Minecraft">Minecraft<span>1</span></a></li>
+		
+			<li><a href="/tags/#AWS SDK">AWS SDK<span>2</span></a></li>
+		
+			<li><a href="/tags/#Tips">Tips<span>1</span></a></li>
+		
+			<li><a href="/tags/#Elastic Beanstalk">Elastic Beanstalk<span>7</span></a></li>
+		
+			<li><a href="/tags/#Nodejs">Nodejs<span>4</span></a></li>
+		
+			<li><a href="/tags/#Aliyun">Aliyun<span>2</span></a></li>
+		
 			<li><a href="/tags/#HTTPS">HTTPS<span>1</span></a></li>
-		
-			<li><a href="/tags/#感悟">感悟<span>1</span></a></li>
-		
-			<li><a href="/tags/#AWS Tools">AWS Tools<span>2</span></a></li>
-		
-			<li><a href="/tags/#Passenger">Passenger<span>3</span></a></li>
-		
-			<li><a href="/tags/#AWS Deep Dive">AWS Deep Dive<span>2</span></a></li>
-		
-			<li><a href="/tags/#Ubuntu">Ubuntu<span>1</span></a></li>
 		
 			<li><a href="/tags/#Application Load Balancing">Application Load Balancing<span>1</span></a></li>
 		
 			<li><a href="/tags/#VMware">VMware<span>2</span></a></li>
 		
-			<li><a href="/tags/#HLS">HLS<span>2</span></a></li>
 		
-			<li><a href="/tags/#Udemy">Udemy<span>1</span></a></li>
-		
-			<li><a href="/tags/#Crontab">Crontab<span>1</span></a></li>
-		
-			<li><a href="/tags/#Linux">Linux<span>15</span></a></li>
-		
-			<li><a href="/tags/#DockerHub">DockerHub<span>1</span></a></li>
-		
-			<li><a href="/tags/#Video">Video<span>1</span></a></li>
-		
-			<li><a href="/tags/#iPhone">iPhone<span>1</span></a></li>
-		
-			<li><a href="/tags/#Github">Github<span>4</span></a></li>
-		
-			<li><a href="/tags/#Elastic Beanstalk">Elastic Beanstalk<span>7</span></a></li>
-		
-			<li><a href="/tags/#Douban">Douban<span>2</span></a></li>
-		
-			<li><a href="/tags/#Ruby">Ruby<span>11</span></a></li>
-		
-			<li><a href="/tags/#Yarn">Yarn<span>1</span></a></li>
-		
-		
-		   <li><a href="/tags">...<span>73</span></a></li>
+		   <li><a href="/tags">...<span>75</span></a></li>
 		 
 		</ul>
 	</div>
@@ -632,23 +608,23 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
-        <a href="/2020/10/24/upgrade-postgresql-version-on-aws-RDS/" ><i class="fa fa-file-o"></i>AWS RDS PostgreSQL版本升级</a>
+        <a href="/2021/02/07/one-record-about-continuous-disk-rise-of-Postgresql/" ><i class="fa fa-file-o"></i>Postgresql数据库磁盘快速增长的一个可能原因</a>
       </li>
     
       <li>
-        <a href="/2020/10/22/wkhtmltopdf-to-support-chinese-charactor/" ><i class="fa fa-file-o"></i>wkhtmltopdf支持中文字体</a>
+        <a href="/2021/02/07/yum-install-exiting-on-user-cancel-on-centos-7-0-1406/" ><i class="fa fa-file-o"></i>CentOS 7.0.1406上yum install...</a>
       </li>
     
       <li>
-        <a href="/2020/10/14/why-disk-space-not-restored-after-deleting-iphone-backup-on-macos/" ><i class="fa fa-file-o"></i>MacOS下使用iTunes删除iphone备份磁盘空...</a>
+        <a href="/2021/01/15/why-command-c-cannot-copy-on-macos/" ><i class="fa fa-file-o"></i>MacOS下复制快捷键失效问题</a>
       </li>
     
       <li>
-        <a href="/2020/08/04/some-tips-of-aws-lightsail/" ><i class="fa fa-file-o"></i>AWS LightSail Tips</a>
+        <a href="/2020/11/11/how-to-let-nginx-process-request-header-with-dots/" ><i class="fa fa-file-o"></i>如何让Nginx支持带点的header</a>
       </li>
     
       <li>
-        <a href="/2020/08/01/advanced-configure-of-nginx-rtmp/" ><i class="fa fa-file-o"></i>Nginx RTMP服务器配置</a>
+        <a href="/2020/11/07/build-k8s-cluster-with-kubeadm-on-centos7/" ><i class="fa fa-file-o"></i>在CentOS 7中使用kubeadm搭建kubern...</a>
       </li>
     
   </ul>
@@ -685,7 +661,7 @@ var _hmt = _hmt || [];
   </div>
   <div class="container-narrow">
   <footer> <p>
-  &copy; 2020 jibing57
+  &copy; 2021 jibing57
   
       with help from <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>.    
 </p> </footer>

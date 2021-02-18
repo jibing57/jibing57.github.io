@@ -139,6 +139,132 @@ var _hmt = _hmt || [];
 	
 	<!-- display as entry -->	
 		<h3 class="title">
+			<div class="date"> 2019-12-02 </div>
+			<div class="article-title"><a href="/2019/12/02/ImageMagick-watermark/" >使用ImageMagick来给图片打文字水印</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>博客中，难免要为有些图片打上水印。下面摘录两个打文字水印的方法。<br>摘录来自博客<a href="https://aotu.io/notes/2018/06/06/ImageMagick_intro/index.html" target="_blank" rel="external">图像处理 - ImageMagick 简单介绍与案例</a></p>
+<p>工具使用的是强大的<a href="https://www.imagemagick.org/script/index.php" target="_blank" rel="external">ImageMagick</a>, Mac下可以通过<a href="https://brew.sh/" target="_blank" rel="external">Homebrew</a>来安装。安装命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew install imagemagick</div></pre></td></tr></table></figure></p>
+<h3 id="给图片打上透明的文字水印"><a href="#给图片打上透明的文字水印" class="headerlink" title="给图片打上透明的文字水印"></a>给图片打上透明的文字水印</h3><p>命令:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">convert  -draw &apos;text 0,0 &quot;WWW.JIBING57.COM&quot;&apos;  -fill &apos;rgba(221, 34, 17, 0.25)&apos;  -pointsize 36  \</div><div class="line">-font Arial  -gravity center  src.png  src_with_watermark.png</div></pre></td></tr></table></figure></p>
+	
+	</div>
+  <a type="button" href="/2019/12/02/ImageMagick-watermark/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2019-11-28 </div>
+			<div class="article-title"><a href="/2019/11/28/way-to-install-wkhtmltopdf-and-wkhtmltoimage-to-CentOS-7/" >如何在CentOS 7 中安装wkhtmltopdf和wkhtmltoimage</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="工具说明"><a href="#工具说明" class="headerlink" title="工具说明"></a>工具说明</h3><p>wkhtmltopdf和wkhtmltoimage是一个开源的命令行工具，可以将HTML转换为pdf文档和图片。<br>Github 仓库: <a href="https://github.com/wkhtmltopdf/wkhtmltopdf" target="_blank" rel="external">wkhtmltopdf/wkhtmltopdf</a><br>官网: <a href="https://wkhtmltopdf.org/" target="_blank" rel="external">https://wkhtmltopdf.org/</a></p>
+<h3 id="在CentOS7上安装wkhtmltopdf"><a href="#在CentOS7上安装wkhtmltopdf" class="headerlink" title="在CentOS7上安装wkhtmltopdf"></a>在CentOS7上安装wkhtmltopdf</h3><p>CentOS7 下，下载依赖<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">yum install -y xorg-x11-fonts-75dpi</div><div class="line">yum install -y xorg-x11-fonts-Type1</div></pre></td></tr></table></figure></p>
+<p>下载RMP包,  RMP包可以从官网<a href="https://wkhtmltopdf.org/" target="_blank" rel="external">wkhtmltopdf.org</a>下，也可以从Github下。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.2.1/wkhtmltox-0.12.2.1_linux-centos7-amd64.rpm</div></pre></td></tr></table></figure></p>
+	
+	</div>
+  <a type="button" href="/2019/11/28/way-to-install-wkhtmltopdf-and-wkhtmltoimage-to-CentOS-7/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2019-11-19 </div>
+			<div class="article-title"><a href="/2019/11/19/how-to-install-docker-and-kubernetes-on-macos/" >在Macos上安装Docker和Kubernetes</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>Macos下安装Docker和Kubernutes最方便的工具就是<a href="https://www.docker.com/products/docker-desktop" target="_blank" rel="external">Docker Desktop</a>了。</p>
+<h3 id="安装Docker"><a href="#安装Docker" class="headerlink" title="安装Docker"></a>安装Docker</h3><p>访问<a href="https://www.docker.com/products/docker-desktop" target="_blank" rel="external">Docker Desktop</a>官网，点击下载Mac版。会跳转到dockerhub进行下载。需要注册dockerhub才可以进行下载。</p>
+<p>下载过后双击Docker.dmg文件进行安装即可。<br>安装完毕后，Docker就可以正常使用了</p>
+	
+	</div>
+  <a type="button" href="/2019/11/19/how-to-install-docker-and-kubernetes-on-macos/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2019-10-31 </div>
+			<div class="article-title"><a href="/2019/10/31/why-format-painter-not-working-on-mac-office-365/" >Mac下Word不能双击格式刷重复刷的问题</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>Mac下的Word中没法通过双击格式刷来保持格式刷的状态来重复刷格式</p>
+<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>Word的双击格式刷功能，可能和某些字典软件的功能有冲突，会导致双击格式刷功能失效。</p>
+<h3 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h3><p>关掉字典软件即可。</p>
+	
+	</div>
+  <a type="button" href="/2019/10/31/why-format-painter-not-working-on-mac-office-365/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2019-10-27 </div>
+			<div class="article-title"><a href="/2019/10/27/postgresql-tips/" >PostgreSQL Tips</a></div>						
+		</h3>
+	
+
+
+			  <div class="entry">
+  <div class="row">
+	
+	
+		<p>收录一些PostgreSQL日常使用的小命令和小配置，备查。</p>
+<hr>
+<h3 id="将sql结果导入csv文件"><a href="#将sql结果导入csv文件" class="headerlink" title="将sql结果导入csv文件"></a>将sql结果导入csv文件</h3><p>使用\copy命令将sql结果导入csv文件, postgresql命令行中输入以下命令:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">\copy (Select * From foo) To &apos;/tmp/test.csv&apos; With CSV HEADER</div></pre></td></tr></table></figure></p>
+<p>Reference :<a href="http://stackoverflow.com/questions/1517635/save-pl-pgsql-output-from-postgresql-to-a-csv-file" target="_blank" rel="external">http://stackoverflow.com/questions/1517635/save-pl-pgsql-output-from-postgresql-to-a-csv-file</a></p>
+	
+	</div>
+  <a type="button" href="/2019/10/27/postgresql-tips/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+           
+		
+           
+			  
+	
+	<!-- display as entry -->	
+		<h3 class="title">
 			<div class="date"> 2019-10-18 </div>
 			<div class="article-title"><a href="/2019/10/18/AWS-Advanced-Networking-Specialty/" >AWS Advanced Networking Specialty 考试心得</a></div>						
 		</h3>
@@ -312,168 +438,6 @@ var _hmt = _hmt || [];
 
            
 		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2019-07-06 </div>
-			<div class="article-title"><a href="/2019/07/06/how-to-check-network-throughput-on-aws-EC2/" >AWS EC2各个类型的网络性能的测试方法</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>在AWS中，不同类型的EC2 instance,拥有的网络带宽是不同的。</p>
-<p>让人犯糊的是，在<a href="https://amazonaws-china.com/ec2/instance-types/" target="_blank" rel="external">AWS EC2的介绍页面</a>中,并没有清晰的标明每种类型的Instance的带宽具体是多少？一些类型的Instance只是标注了网络性能(Network Performance)为<code>Up to 5</code>,<code>Low</code>,<code>Moderate</code>或者<code>High</code>。</p>
-<p>老外的<a href="https://cloudonaut.io/ec2-network-performance-cheat-sheet/" target="_blank" rel="external">EC2 Network Performance Cheat Sheet</a>这篇文章中，记录了作者使用<a href="(https://github.com/esnet/iperf)">iperf3</a>测试出来的各个Instance类型的带宽。如果选取类型的时候比较在意带宽，可以用来参考下。</p>
-<p>顺带介绍一下如何在AWS EC2中使用<a href="(https://github.com/esnet/iperf)">iperf3</a>来测试Instance带宽。如果确实有需要，就可以自己来进行测速。<br>测试环境如下:</p>
-<ul>
-<li>测试Region是美国Oregon</li>
-<li>使用两台m4.large的EC2，一台运行服务，一台用作客户端。</li>
-<li>介绍两种Amazon Linux的测试方法<ul>
-<li>Amazon Linux AMI 2018.03.0 (HVM), SSD Volume Type</li>
-<li>Amazon Linux 2 AMI (HVM), SSD Volume Type</li>
-</ul>
-</li>
-</ul>
-	
-	</div>
-  <a type="button" href="/2019/07/06/how-to-check-network-throughput-on-aws-EC2/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2019-07-04 </div>
-			<div class="article-title"><a href="/2019/07/04/how-to-cancel-automatic-spelling-in-macos/" >关闭Mac系统中的自动拼写纠正功能</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>Mac系统中输入英文字母的时候,有一些贴心的设置。拼写错误的时候，系统会自动纠正拼写错误。句子的首字母，会自动帮你设为大写。<br>对于写书来说，这些功能很是贴心，对于码农来说，这些功能有时候就显得很烦人。</p>
-<h3 id="关闭方法"><a href="#关闭方法" class="headerlink" title="关闭方法"></a>关闭方法</h3><p>在设置中，可以关闭自动纠正功能。[System preference] -&gt; [Keyboard] -&gt; [Text]</p>
-<p>下面三个选项前面的勾去掉即可。</p>
-<ul>
-<li>Correct spelling automatically</li>
-<li>Capitalize words automatically</li>
-<li>Add period with double-space</li>
-</ul>
-	
-	</div>
-  <a type="button" href="/2019/07/04/how-to-cancel-automatic-spelling-in-macos/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2019-06-24 </div>
-			<div class="article-title"><a href="/2019/06/24/SACK-Panic-in-CentOS-7/" >SACK Panic</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>在2019-06-17，Netfilx爆出了FreeBSD and Linux系统中的内核上存在严重远程DoS漏洞，攻击者可以构造特定的SACK请求到目标服务器，引起服务器内核奔溃。<br>漏洞编号为: </p>
-<ul>
-<li><a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-11477" target="_blank" rel="external">CVE-2019-11477</a></li>
-<li><a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-11478" target="_blank" rel="external">CVE-2019-11478</a></li>
-<li><a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-11479" target="_blank" rel="external">CVE-2019-11479</a></li>
-</ul>
-<p>几家公司的通告如下:</p>
-<ul>
-<li><a href="https://github.com/Netflix/security-bulletins/blob/master/advisories/third-party/2019-001.md" target="_blank" rel="external">Netflix官方通告</a></li>
-<li><a href="https://access.redhat.com/security/vulnerabilities/tcpsack" target="_blank" rel="external">红帽公告</a></li>
-</ul>
-	
-	</div>
-  <a type="button" href="/2019/06/24/SACK-Panic-in-CentOS-7/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2019-06-11 </div>
-			<div class="article-title"><a href="/2019/06/11/a-tool-goaccess-to-process-web-log/" >GoAccess-一个处理web日志的工具</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<h3 id="GoAccess介绍"><a href="#GoAccess介绍" class="headerlink" title="GoAccess介绍"></a>GoAccess介绍</h3><p>GoAccess是一个开源的基于终端的快速日志分析器。<br>Github地址:<a href="https://github.com/allinurl/goaccess" target="_blank" rel="external">https://github.com/allinurl/goaccess</a><br>官网地址: <a href="https://goaccess.io/" target="_blank" rel="external">https://goaccess.io/</a><br>说明文档: <a href="https://goaccess.io/man" target="_blank" rel="external">https://goaccess.io/man</a></p>
-<p>通过自己配置，可以支持日志格式，默认已经集成的log格式</p>
-<ul>
-<li>Amazon CloudFront (Download Distribution).</li>
-<li>Amazon Simple Storage Service (S3)</li>
-<li>AWS Elastic Load Balancing</li>
-<li>Combined Log Format (XLF/ELF) Apache | Nginx</li>
-<li>Common Log Format (CLF) Apache</li>
-<li>Google Cloud Storage.</li>
-<li>Apache virtual hosts</li>
-<li>Squid Native Format.</li>
-<li>W3C format (IIS)</li>
-</ul>
-<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><h4 id="MacOS下"><a href="#MacOS下" class="headerlink" title="MacOS下"></a>MacOS下</h4><p>使用brew来安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew install goaccess</div></pre></td></tr></table></figure></p>
-	
-	</div>
-  <a type="button" href="/2019/06/11/a-tool-goaccess-to-process-web-log/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
-           
-			  
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2019-06-04 </div>
-			<div class="article-title"><a href="/2019/06/04/how-to-make-local-yum-repository-on-centos-7/" >CentOS 7下制作本地yum源</a></div>						
-		</h3>
-	
-
-
-			  <div class="entry">
-  <div class="row">
-	
-	
-		<p>CentOS 7 制作本地repository的方法, 适用于没有外网访问权限的CentOS 7的升级。<br>大概步骤:</p>
-<ol>
-<li>找一台系统版本相同，但是有外网访问权限的CentOS 7的机器</li>
-<li>在这台机器上下载yum包，并制作本地repository</li>
-<li>拷贝repository到内网机器</li>
-<li>配置内网机器，从制作好的本地repository升级yum包
-	
-	</div>
-  <a type="button" href="/2019/06/04/how-to-make-local-yum-repository-on-centos-7/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-           
-		
 
 		</div>
 
@@ -537,7 +501,7 @@ var _hmt = _hmt || [];
 		<h4>分类</h4>
 		<ul class="tag_box inline list-unstyled">
 		
-			<li><a href="/categories/#AWS">AWS<span>37</span></a></li>
+			<li><a href="/categories/#AWS">AWS<span>38</span></a></li>
 		
 			<li><a href="/categories/#AWS Certified">AWS Certified<span>4</span></a></li>
 		
@@ -545,13 +509,13 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/#Code">Code<span>6</span></a></li>
 		
-			<li><a href="/categories/#Kubernetes">Kubernetes<span>2</span></a></li>
+			<li><a href="/categories/#Kubernetes">Kubernetes<span>3</span></a></li>
 		
-			<li><a href="/categories/#Linux">Linux<span>11</span></a></li>
+			<li><a href="/categories/#Linux">Linux<span>12</span></a></li>
 		
 			<li><a href="/categories/#Shell">Shell<span>8</span></a></li>
 		
-			<li><a href="/categories/#Tools">Tools<span>34</span></a></li>
+			<li><a href="/categories/#Tools">Tools<span>36</span></a></li>
 		
 			<li><a href="/categories/#杂">杂<span>1</span></a></li>
 		
@@ -565,48 +529,48 @@ var _hmt = _hmt || [];
 		<h4>标签云</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/#Office">Office<span>2</span></a></li>
+			<li><a href="/tags/#AWS SDK">AWS SDK<span>2</span></a></li>
 		
-			<li><a href="/tags/#Elastic Load Balancing">Elastic Load Balancing<span>6</span></a></li>
-		
-			<li><a href="/tags/#AWS">AWS<span>1</span></a></li>
-		
-			<li><a href="/tags/#RDS">RDS<span>4</span></a></li>
-		
-			<li><a href="/tags/#Github">Github<span>4</span></a></li>
-		
-			<li><a href="/tags/#HLS">HLS<span>2</span></a></li>
-		
-			<li><a href="/tags/#S3">S3<span>10</span></a></li>
-		
-			<li><a href="/tags/#OLED">OLED<span>1</span></a></li>
-		
-			<li><a href="/tags/#SSH">SSH<span>6</span></a></li>
-		
-			<li><a href="/tags/#Ruby">Ruby<span>11</span></a></li>
-		
-			<li><a href="/tags/#Firewall">Firewall<span>1</span></a></li>
-		
-			<li><a href="/tags/#Wkhtmltopdf">Wkhtmltopdf<span>2</span></a></li>
-		
-			<li><a href="/tags/#Yum">Yum<span>1</span></a></li>
-		
-			<li><a href="/tags/#Redis">Redis<span>1</span></a></li>
+			<li><a href="/tags/#RTMP">RTMP<span>2</span></a></li>
 		
 			<li><a href="/tags/#Passenger">Passenger<span>3</span></a></li>
 		
-			<li><a href="/tags/#MacOS">MacOS<span>22</span></a></li>
+			<li><a href="/tags/#iOS">iOS<span>1</span></a></li>
 		
-			<li><a href="/tags/#EC2 User Data">EC2 User Data<span>1</span></a></li>
+			<li><a href="/tags/#HLS">HLS<span>2</span></a></li>
 		
-			<li><a href="/tags/#Tips">Tips<span>1</span></a></li>
+			<li><a href="/tags/#Firewall">Firewall<span>1</span></a></li>
 		
-			<li><a href="/tags/#CloudWatch">CloudWatch<span>1</span></a></li>
+			<li><a href="/tags/#iPhone">iPhone<span>1</span></a></li>
 		
-			<li><a href="/tags/#AWS CLI">AWS CLI<span>6</span></a></li>
+			<li><a href="/tags/#Kubeadm">Kubeadm<span>1</span></a></li>
+		
+			<li><a href="/tags/#Ruby">Ruby<span>11</span></a></li>
+		
+			<li><a href="/tags/#Bug">Bug<span>1</span></a></li>
+		
+			<li><a href="/tags/#感悟">感悟<span>1</span></a></li>
+		
+			<li><a href="/tags/#iTunes">iTunes<span>1</span></a></li>
+		
+			<li><a href="/tags/#DynamoDB">DynamoDB<span>1</span></a></li>
+		
+			<li><a href="/tags/#Wkhtmltopdf">Wkhtmltopdf<span>2</span></a></li>
+		
+			<li><a href="/tags/#CodeCommit">CodeCommit<span>1</span></a></li>
+		
+			<li><a href="/tags/#Lightsail">Lightsail<span>3</span></a></li>
+		
+			<li><a href="/tags/#VMware">VMware<span>2</span></a></li>
+		
+			<li><a href="/tags/#PostgreSQL">PostgreSQL<span>7</span></a></li>
+		
+			<li><a href="/tags/#SSH">SSH<span>6</span></a></li>
+		
+			<li><a href="/tags/#Elastic Beanstalk">Elastic Beanstalk<span>7</span></a></li>
 		
 		
-		   <li><a href="/tags">...<span>73</span></a></li>
+		   <li><a href="/tags">...<span>75</span></a></li>
 		 
 		</ul>
 	</div>
@@ -619,23 +583,23 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
-        <a href="/2020/10/24/upgrade-postgresql-version-on-aws-RDS/" ><i class="fa fa-file-o"></i>AWS RDS PostgreSQL版本升级</a>
+        <a href="/2021/02/07/one-record-about-continuous-disk-rise-of-Postgresql/" ><i class="fa fa-file-o"></i>Postgresql数据库磁盘快速增长的一个可能原因</a>
       </li>
     
       <li>
-        <a href="/2020/10/22/wkhtmltopdf-to-support-chinese-charactor/" ><i class="fa fa-file-o"></i>wkhtmltopdf支持中文字体</a>
+        <a href="/2021/02/07/yum-install-exiting-on-user-cancel-on-centos-7-0-1406/" ><i class="fa fa-file-o"></i>CentOS 7.0.1406上yum install...</a>
       </li>
     
       <li>
-        <a href="/2020/10/14/why-disk-space-not-restored-after-deleting-iphone-backup-on-macos/" ><i class="fa fa-file-o"></i>MacOS下使用iTunes删除iphone备份磁盘空...</a>
+        <a href="/2021/01/15/why-command-c-cannot-copy-on-macos/" ><i class="fa fa-file-o"></i>MacOS下复制快捷键失效问题</a>
       </li>
     
       <li>
-        <a href="/2020/08/04/some-tips-of-aws-lightsail/" ><i class="fa fa-file-o"></i>AWS LightSail Tips</a>
+        <a href="/2020/11/11/how-to-let-nginx-process-request-header-with-dots/" ><i class="fa fa-file-o"></i>如何让Nginx支持带点的header</a>
       </li>
     
       <li>
-        <a href="/2020/08/01/advanced-configure-of-nginx-rtmp/" ><i class="fa fa-file-o"></i>Nginx RTMP服务器配置</a>
+        <a href="/2020/11/07/build-k8s-cluster-with-kubeadm-on-centos7/" ><i class="fa fa-file-o"></i>在CentOS 7中使用kubeadm搭建kubern...</a>
       </li>
     
   </ul>
@@ -672,7 +636,7 @@ var _hmt = _hmt || [];
   </div>
   <div class="container-narrow">
   <footer> <p>
-  &copy; 2020 jibing57
+  &copy; 2021 jibing57
   
       with help from <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>.    
 </p> </footer>

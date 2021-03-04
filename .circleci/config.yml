@@ -9,5 +9,7 @@ jobs:
     steps:
       - checkout # check out the code in the project directory
       - run: echo "hello world" # run the `echo` command
+      - run: echo "hello world $CONFIG_ENV_PRODUCTION"
+      - run: echo "not exist info $XXXXOOOOO"
       - run: echo "hello world - with environemtn ${CONFIG_ENV_PRODUCTION}" > a.file # run the `echo` command
       - run: echo "cat file" && cat a.file

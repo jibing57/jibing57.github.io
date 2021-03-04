@@ -9,6 +9,21 @@ jobs:
     steps:
       - checkout # check out the code in the project directory
       - run: echo "hello world" # run the `echo` command
+      - run:
+          name: compate
+          command: |
+            if [ "$CONFIG_ENV_PRODUCTION" == "xxxxtion" ];then
+                echo "CONFIG_ENV_PRODUCTION is xxxxtion"
+            else
+                echo "CONFIG_ENV_PRODUCTION is not xxxxtion"
+            fi
+      - run:
+          name: hello
+          command: |
+            set -xe
+            BRANCH=${CIRCLE_BRANCH}
+            echo "export BRANCH=${BRANCH}" >> ${BASH_ENV}
+            echo "export CONFIG_ENV_PRODUCTION=${CONFIG_ENV_PRODUCTION}" >> ${BASH_ENV}
       - run: echo "hello world $CONFIG_ENV_PRODUCTION"
       - run: echo "not exist info $XXXXOOOOO"
       - run: echo "hello world - with environemtn ${CONFIG_ENV_PRODUCTION}" > a.file # run the `echo` command

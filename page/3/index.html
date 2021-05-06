@@ -233,6 +233,8 @@ var _hmt = _hmt || [];
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">validate do |block_key_word|</div><div class="line">    existing_record = BlockKeyWord.where(:name =&gt; block_key_word.name).first</div><div class="line">    unless existing_record.nil? || existing_record.id == block_key_word.id</div><div class="line">        block_key_word.errors.add :base, (&quot;关键字-#&#123;block_key_word.name&#125;已存在。&quot;)</div><div class="line">    end</div><div class="line">end</div></pre></td></tr></table></figure>
 <hr>
 <h3 id="ruby操作Excel的基本操作"><a href="#ruby操作Excel的基本操作" class="headerlink" title="ruby操作Excel的基本操作"></a>ruby操作Excel的基本操作</h3><p>可以使用<a href="https://github.com/weshatheleopard/rubyXL" target="_blank" rel="external">rubyXL</a>来操作excel<br>写Excel的例子<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">require &apos;rubyXL&apos;</div><div class="line">workbook = RubyXL::Workbook.new</div><div class="line">workbook[0].add_cell(0, 0, &quot;写入内容&quot;)</div><div class="line">workbook.write(&quot;#&#123;Rails.root&#125;/tmp/file.xlsx&quot;)</div></pre></td></tr></table></figure></p>
+<hr>
+<h3 id="将html中的相对路径转为绝对路径的方法"><a href="#将html中的相对路径转为绝对路径的方法" class="headerlink" title="将html中的相对路径转为绝对路径的方法"></a>将html中的相对路径转为绝对路径的方法</h3><p>使用<code>URI.join</code>来转换为绝对路径。<code>URI.join(url, image_relative_path).to_s</code><br>如:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">URI.join(&apos;http://www.81.cn/jmywyl/2020-04/04/content_9784967.htm?from=singlemessage&amp;isappinstalled=0&apos;,&apos;../../attachement/jpg/site351/20200404/309c236f8da41ff2b3033e.jpg&apos;).to_s</div></pre></td></tr></table></figure></p>
 
 	
 	</div>
@@ -576,45 +578,45 @@ var _hmt = _hmt || [];
 		<h4>标签云</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/#RDS">RDS<span>5</span></a></li>
-		
-			<li><a href="/tags/#Udemy">Udemy<span>1</span></a></li>
-		
-			<li><a href="/tags/#Bug">Bug<span>1</span></a></li>
-		
-			<li><a href="/tags/#Kubeadm">Kubeadm<span>1</span></a></li>
-		
-			<li><a href="/tags/#Ubuntu">Ubuntu<span>1</span></a></li>
-		
-			<li><a href="/tags/#FFMPEG">FFMPEG<span>4</span></a></li>
+			<li><a href="/tags/#Wireshark">Wireshark<span>1</span></a></li>
 		
 			<li><a href="/tags/#Kubernetes">Kubernetes<span>2</span></a></li>
 		
-			<li><a href="/tags/#Github">Github<span>4</span></a></li>
+			<li><a href="/tags/#HTTPS">HTTPS<span>1</span></a></li>
 		
-			<li><a href="/tags/#感悟">感悟<span>1</span></a></li>
+			<li><a href="/tags/#VMware">VMware<span>2</span></a></li>
 		
-			<li><a href="/tags/#RTMP">RTMP<span>2</span></a></li>
+			<li><a href="/tags/#AutoScaling">AutoScaling<span>3</span></a></li>
+		
+			<li><a href="/tags/#DynamoDB">DynamoDB<span>1</span></a></li>
 		
 			<li><a href="/tags/#Minecraft">Minecraft<span>1</span></a></li>
 		
-			<li><a href="/tags/#Nginx">Nginx<span>11</span></a></li>
+			<li><a href="/tags/#Crontab">Crontab<span>1</span></a></li>
 		
-			<li><a href="/tags/#Docker">Docker<span>4</span></a></li>
-		
-			<li><a href="/tags/#Linux">Linux<span>15</span></a></li>
+			<li><a href="/tags/#DockerHub">DockerHub<span>1</span></a></li>
 		
 			<li><a href="/tags/#EC2 User Data">EC2 User Data<span>1</span></a></li>
 		
-			<li><a href="/tags/#CentOS">CentOS<span>16</span></a></li>
+			<li><a href="/tags/#Kubeadm">Kubeadm<span>1</span></a></li>
 		
-			<li><a href="/tags/#RVM">RVM<span>3</span></a></li>
-		
-			<li><a href="/tags/#Douban">Douban<span>2</span></a></li>
-		
-			<li><a href="/tags/#Chrome">Chrome<span>1</span></a></li>
+			<li><a href="/tags/#Cache">Cache<span>1</span></a></li>
 		
 			<li><a href="/tags/#Video">Video<span>1</span></a></li>
+		
+			<li><a href="/tags/#Aliyun">Aliyun<span>2</span></a></li>
+		
+			<li><a href="/tags/#Udemy">Udemy<span>1</span></a></li>
+		
+			<li><a href="/tags/#AWS Free Tier">AWS Free Tier<span>1</span></a></li>
+		
+			<li><a href="/tags/#SSH">SSH<span>6</span></a></li>
+		
+			<li><a href="/tags/#AWS SDK">AWS SDK<span>2</span></a></li>
+		
+			<li><a href="/tags/#MacOS">MacOS<span>23</span></a></li>
+		
+			<li><a href="/tags/#Elastic Beanstalk">Elastic Beanstalk<span>7</span></a></li>
 		
 		
 		   <li><a href="/tags">...<span>75</span></a></li>

@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://www.jibing57.com/2019/10/27/postgresql-tips/</loc>
+    <lastmod>2021-05-06</lastmod>
+  </url>  <url>
+    <loc>https://www.jibing57.com/2020/06/09/some-new-nginx-config/</loc>
+    <lastmod>2021-04-26</lastmod>
+  </url>  <url>
+    <loc>https://www.jibing57.com/2019/04/26/command-tips/</loc>
+    <lastmod>2021-04-06</lastmod>
+  </url>  <url>
+    <loc>https://www.jibing57.com/2020/05/14/ruby-rails-tips/</loc>
+    <lastmod>2021-03-09</lastmod>
+  </url>  <url>
     <loc>https://www.jibing57.com/2021/02/07/one-record-about-continuous-disk-rise-of-Postgresql/</loc>
     <lastmod>2021-02-08</lastmod>
   </url>  <url>
     <loc>https://www.jibing57.com/2021/02/07/yum-install-exiting-on-user-cancel-on-centos-7-0-1406/</loc>
-    <lastmod>2021-02-08</lastmod>
-  </url>  <url>
-    <loc>https://www.jibing57.com/2019/04/26/command-tips/</loc>
     <lastmod>2021-02-08</lastmod>
   </url>  <url>
     <loc>https://www.jibing57.com/2019/12/15/way-to-download-udemy-course/</loc>
@@ -15,12 +24,6 @@
   </url>  <url>
     <loc>https://www.jibing57.com/2021/01/15/why-command-c-cannot-copy-on-macos/</loc>
     <lastmod>2021-01-15</lastmod>
-  </url>  <url>
-    <loc>https://www.jibing57.com/2019/10/27/postgresql-tips/</loc>
-    <lastmod>2021-01-15</lastmod>
-  </url>  <url>
-    <loc>https://www.jibing57.com/2020/05/14/ruby-rails-tips/</loc>
-    <lastmod>2021-01-14</lastmod>
   </url>  <url>
     <loc>https://www.jibing57.com/2020/11/11/how-to-let-nginx-process-request-header-with-dots/</loc>
     <lastmod>2020-11-12</lastmod>
@@ -66,9 +69,6 @@
   </url>  <url>
     <loc>https://www.jibing57.com/2020/06/21/tools-to-control-brightness-of-external-monitor-on-macos/</loc>
     <lastmod>2020-06-23</lastmod>
-  </url>  <url>
-    <loc>https://www.jibing57.com/2020/06/09/some-new-nginx-config/</loc>
-    <lastmod>2020-06-17</lastmod>
   </url>  <url>
     <loc>https://www.jibing57.com/2020/06/06/screen-overview-of-ak-tech/</loc>
     <lastmod>2020-06-06</lastmod>
@@ -322,7 +322,7 @@
     <loc>https://www.jibing57.com/2017/11/29/how-to-enable-slow-query-on-aws-rds-postgresql/</loc>
     <lastmod>2017-12-25</lastmod>
   </url>  <url>
-    <loc>https://www.jibing57.com/2017/12/14/deep-dig-on-s3-bucket-permission/</loc>
+    <loc>https://www.jibing57.com/2017/12/19/deep-dig-on-s3-bucket-permission-exam/</loc>
     <lastmod>2017-12-25</lastmod>
   </url>  <url>
     <loc>https://www.jibing57.com/2017/12/20/expired-of-S3-RRS/</loc>
@@ -334,7 +334,7 @@
     <loc>https://www.jibing57.com/2017/10/31/account-setting-by-aws/</loc>
     <lastmod>2017-12-25</lastmod>
   </url>  <url>
-    <loc>https://www.jibing57.com/2017/12/19/deep-dig-on-s3-bucket-permission-exam/</loc>
+    <loc>https://www.jibing57.com/2017/12/14/deep-dig-on-s3-bucket-permission/</loc>
     <lastmod>2017-12-25</lastmod>
   </url>  <url>
     <loc>https://www.jibing57.com/2017/12/20/How-to-add-staging-log-to-EB-logs/</loc>

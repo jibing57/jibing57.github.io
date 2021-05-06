@@ -2,6 +2,41 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://www.jibing57.com/2019/10/27/postgresql-tips/</loc>
+    
+    <lastmod>2021-05-06T01:42:23.721Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.jibing57.com/2020/06/09/some-new-nginx-config/</loc>
+    
+    <lastmod>2021-04-26T05:27:35.948Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.jibing57.com/2019/04/26/command-tips/</loc>
+    
+    <lastmod>2021-04-06T03:16:58.278Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.jibing57.com/2020/05/14/ruby-rails-tips/</loc>
+    
+    <lastmod>2021-03-09T07:34:03.385Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.jibing57.com/about/index.html</loc>
+    
+    <lastmod>2021-02-18T09:05:28.662Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.jibing57.com/2021/02/07/one-record-about-continuous-disk-rise-of-Postgresql/</loc>
     
     <lastmod>2021-02-08T08:04:27.990Z</lastmod>
@@ -16,13 +51,6 @@
   </url>
   
   <url>
-    <loc>https://www.jibing57.com/2019/04/26/command-tips/</loc>
-    
-    <lastmod>2021-02-08T02:40:46.323Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://www.jibing57.com/2019/12/15/way-to-download-udemy-course/</loc>
     
     <lastmod>2021-02-05T08:46:36.921Z</lastmod>
@@ -33,20 +61,6 @@
     <loc>https://www.jibing57.com/2021/01/15/why-command-c-cannot-copy-on-macos/</loc>
     
     <lastmod>2021-01-15T06:33:43.856Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.jibing57.com/2019/10/27/postgresql-tips/</loc>
-    
-    <lastmod>2021-01-15T05:56:07.937Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.jibing57.com/2020/05/14/ruby-rails-tips/</loc>
-    
-    <lastmod>2021-01-14T07:36:28.372Z</lastmod>
     
   </url>
   
@@ -152,13 +166,6 @@
     <loc>https://www.jibing57.com/2020/06/21/tools-to-control-brightness-of-external-monitor-on-macos/</loc>
     
     <lastmod>2020-06-23T09:04:33.159Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.jibing57.com/2020/06/09/some-new-nginx-config/</loc>
-    
-    <lastmod>2020-06-17T06:47:30.561Z</lastmod>
     
   </url>
   
@@ -271,13 +278,6 @@
     <loc>https://www.jibing57.com/2019/11/19/how-to-install-docker-and-kubernetes-on-macos/</loc>
     
     <lastmod>2019-11-19T09:02:06.917Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.jibing57.com/about/index.html</loc>
-    
-    <lastmod>2019-11-05T03:24:08.894Z</lastmod>
     
   </url>
   
@@ -758,7 +758,7 @@
   </url>
   
   <url>
-    <loc>https://www.jibing57.com/2017/12/14/deep-dig-on-s3-bucket-permission/</loc>
+    <loc>https://www.jibing57.com/2017/12/19/deep-dig-on-s3-bucket-permission-exam/</loc>
     
     <lastmod>2017-12-25T07:08:09.000Z</lastmod>
     
@@ -786,7 +786,7 @@
   </url>
   
   <url>
-    <loc>https://www.jibing57.com/2017/12/19/deep-dig-on-s3-bucket-permission-exam/</loc>
+    <loc>https://www.jibing57.com/2017/12/14/deep-dig-on-s3-bucket-permission/</loc>
     
     <lastmod>2017-12-25T07:08:09.000Z</lastmod>
     
